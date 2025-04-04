@@ -53,6 +53,8 @@
         .twitch-player {
             grid-column: 1;
             grid-row: 1;
+            width: 100%;
+            max-width: 100%;
         }
         
         .twitch-chat {
@@ -64,6 +66,7 @@
             border: none;
             border-radius: 10px;
             width: 100%;
+            height: 100%;
             background-color: #333;
         }
         
@@ -103,6 +106,7 @@
             .twitch-player {
                 grid-column: 1;
                 grid-row: 1;
+                height: 400px; /* Уменьшенная высота для мобильных */
             }
             
             .twitch-chat {
@@ -130,7 +134,7 @@
         <div class="sidebar">
             <div class="header">ОГЛАВЛЕНИЕ</div>
             <div class="sidebar-menu">
-                <a href="" class="sidebar-item">Main</a>
+                <a href="#main" class="sidebar-item">Main</a>
                 <a href="/social" class="sidebar-item">Social</a>
             </div>
         </div>
@@ -142,7 +146,6 @@
                     <!-- Исправленный плеер Twitch с правильным parent параметром -->
                     <iframe
                         src="https://player.twitch.tv/?channel=kw0rs&parent=kw0rs.fun"
-                        height="600"
                         frameborder="0"
                         allowfullscreen="true"
                         scrolling="no">
@@ -153,7 +156,6 @@
                     <h2>CHAT</h2>
                     <iframe
                         src="https://www.twitch.tv/embed/kw0rs/chat?parent=kw0rs.fun"
-                        height="600"
                         frameborder="0"
                         scrolling="yes">
                     </iframe>
