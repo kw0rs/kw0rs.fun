@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Адаптивные социальные кнопки</title>
+    <style>
+        /* Сброс стилей для всей страницы */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Стили для темного фона */
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Изменено с center на flex-start */
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* Контейнер для кнопок - занимает всю доступную ширину */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Уменьшен отступ между кнопками */
+            width: 100%;
+            max-width: 100%;
+            padding-top: 20px; /* Добавлен отступ сверху */
+        }
+        
+        /* Общие стили для всех кнопок */
+        .social-button {
+            display: block;
+            padding: 15px; /* Уменьшены отступы */
+            color: #ffffff;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+            font-size: 22px; /* Уменьшен размер шрифта */
+            border: 3px solid #ffffff; /* Уменьшена толщина границы */
+            border-radius: 40px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            /* Добавляем светящийся эффект для кнопок */
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .social-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .social-button:active {
+            transform: translateY(1px);
+        }
+
+        /* Специфические стили для каждой кнопки */
+        .telegram-streams {
+            background-color: #ff0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        .telegram-streams:hover {
+            background-color: #cc0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+        }
+
+        .telegram-streams:active {
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+
+        .telegram-academy {
+            background-color: #0088cc;
+            box-shadow: 0 0 15px rgba(0, 136, 204, 0.5);
+        }
+
+        .telegram-academy:hover {
+            background-color: #006699;
+            box-shadow: 0 0 20px rgba(0, 136, 204, 0.7);
+        }
+
+        .telegram-academy:active {
+            box-shadow: 0 0 10px rgba(0, 136, 204, 0.3);
+        }
+
+        .twitch {
+            background-color: #6441a5;
+            box-shadow: 0 0 15px rgba(100, 65, 165, 0.5);
+        }
+
+        .twitch:hover {
+            background-color: #4b367c;
+            box-shadow: 0 0 20px rgba(100, 65, 165, 0.7);
+        }
+
+        .twitch:active {
+            box-shadow: 0 0 10px rgba(100, 65, 165, 0.3);
+        }
+
+        .youtube {
+            background-color: #cc0000;
+            box-shadow: 0 0 15px rgba(204, 0, 0, 0.5);
+        }
+
+        .youtube:hover {
+            background-color: #990000;
+            box-shadow: 0 0 20px rgba(204, 0, 0, 0.7);
+        }
+
+        .youtube:active {
+            box-shadow: 0 0 10px rgba(204, 0, 0, 0.3);
+        }
+
+        .steam {
+            background-color: #2a475e;
+            box-shadow: 0 0 15px rgba(42, 71, 94, 0.5);
+        }
+
+        .steam:hover {
+            background-color: #1f3545;
+            box-shadow: 0 0 20px rgba(42, 71, 94, 0.7);
+        }
+
+        .steam:active {
+            box-shadow: 0 0 10px rgba(42, 71, 94, 0.3);
+        }
+
+        /* Адаптивные стили для разных размеров экранов */
+        @media (min-width: 768px) {
+            .social-button {
+                font-size: 28px;
+                padding: 20px;
+            }
+            
+            .button-container {
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <a href="https://t.me/kw0rs" class="social-button telegram-streams" target="_blank">Telegram Стримов</a>
+        <a href="https://t.me/kw0rs_edu" class="social-button telegram-academy" target="_blank">Telegram Академии</a>
+        <a href="https://www.twitch.tv/kw0rs" class="social-button twitch" target="_blank">Twitch</a>
+        <a href="https://www.youtube.com/@kw0rs" class="social-button youtube" target="_blank">YouTube</a>
+        <a href="https://store.steampowered.com/curator/45513934-%25D0%2590%25D0%25BA%25D0%25B0%25D0%25B4%25D0%25B5%25D0%25BC%25D0%25B8%25D1%258F-%25D0%25B8%25D0%25BC%25D0%25B5%25D0%25BD%25D0%25B8-%25D0%2592%25D0%25B8%25D0%25BB%25D1%258C%25D1%258F%25D0%25BC/" class="social-button steam" target="_blank">Steam Академии</a>
+    </div>
+</body>
+</html>
