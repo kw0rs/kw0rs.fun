@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница не найдена | Академия Кворса</title>
+    <script>
+        // Функция для проверки URL и перенаправления
+        function checkAndRedirect() {
+            var path = window.location.pathname;
+            
+            // Проверяем, соответствует ли путь "/social" в любом регистре
+            if (path.toLowerCase() === '/social' || 
+                path.match(/^\/[sS][oO][cC][iI][aA][lL]$/)) {
+                window.location.href = '/social';
+                return;
+            }
+            
+            // Здесь можно добавить другие перенаправления для других страниц
+            // ...
+            
+            // Если никакие условия не сработали, оставляем на странице 404
+        }
+        
+        // Запускаем проверку при загрузке страницы
+        window.onload = checkAndRedirect;
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+            text-align: center;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        a {
+            color: #0088cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>404</h1>
+    <p>Страница не найдена</p>
+    <p>Вернуться на <a href="/">главную страницу</a></p>
+</body>
+</html>
