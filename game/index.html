@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Угадай героя из Dota 2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: transparent; /* Убираем фон */
+            color: #e0e0e0; /* Светлый текст для тёмного фона */
+        }
+        h1 {
+            color: #e0e0e0;
+            text-align: center;
+            font-size: 24px;
+        }
+        .game-container {
+            background-color: #1a1a1a; /* Тёмный фон контейнера */
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid #333;
+            width: 95%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .hint-container {
+            margin-bottom: 15px;
+        }
+        .hint {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #2a2a2a; /* Тёмный фон для подсказок */
+            border-left: 4px solid #4285F4; /* Google-blue */
+            display: none;
+            color: #e0e0e0;
+            word-wrap: break-word;
+            font-size: 14px;
+        }
+        .visible {
+            display: block;
+        }
+        .hint-number {
+            font-weight: bold;
+            margin-right: 5px;
+            color: #4285F4; /* Google-blue */
+        }
+        .guess-container {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 90%;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #e0e0e0;
+            margin-bottom: 10px;
+        }
+        input[type="text"]::placeholder {
+            color: #888;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            background-color: #4285F4; /* Google-blue */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+            width: auto;
+        }
+        button:hover {
+            background-color: #3367d6; /* Темнее Google-blue при наведении */
+        }
+        button:disabled {
+            background-color: #555555;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 12px;
+            text-align: center;
+            border-radius: 4px;
+            display: none;
+            font-size: 14px;
+            width: 90%;
+        }
+        .correct {
+            background-color: #1e3a1e; /* Тёмно-зелёный */
+            color: #a3e6a3;
+            border: 1px solid #2d5a2d;
+        }
+        .incorrect {
+            background-color: #3a1e1e; /* Тёмно-красный */
+            color: #e6a3a3;
+            border: 1px solid #5a2d2d;
+        }
+        .timer {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #e0e0e0;
+        }
+        .hints-left {
+            text-align: center;
+            margin-bottom: 12px;
+            color: #e0e0e0;
+        }
+        
+        /* Медиа-запросы для адаптивности */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 20px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            .game-container {
+                padding: 10px;
+                width: 95%;
+            }
+            .hint {
+                padding: 8px;
+                font-size: 14px;
+            }
+            button {
+                width: 100%;
+                margin: 5px 0;
+                padding: 12px 10px;
+                font-size: 16px;
+            }
+            input[type="text"] {
+                width: 100%;
+                font-size: 16px;
+                padding: 12px 10px;
+            }
+            .timer, .hints-left {
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 320px) {
+            h1 {
+                font-size: 18px;
+            }
+            .hint {
+                font-size: 13px;
+                padding: 6px;
+            }
+            .game-container {
+                padding: 8px;
+            }
+            button, input[type="text"] {
+                font-size: 14px;
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Угадай героя из Dota 2</h1>
+    
+    <div class="game-container">
+        <div class="timer">Следующий герой через: <span id="countdown">00:00:00</span></div>
+        <div class="hints-left">Осталось подсказок: <span id="hints-count">10</span></div>
+        
+        <div class="hint-container" id="hints">
+            <!-- Подсказки будут добавлены через JavaScript -->
+        </div>
+        
+        <div class="guess-container">
+            <input type="text" id="guess-input" placeholder="Введите имя героя...">
+            <button id="guess-button">Угадать</button>
+        </div>
+        
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        // База данных героев и подсказок - заполните своими подсказками
+        const heroes = [
+            {
+                name: "Anti Mage",
+                hints: [
+                    "Начнём с того что это герой",
+                    "У него есть как минимум 1 пассивный скилл",
+                    "На линии его работа - жрать дерьмо",
+                    "Это не интовик",
+                    "Трансгендер",
+                    "Моя сигна, 55.5% винрейта",
+                    "Герой - очевидный контрпик для другого героя",
+                    "В начале игры от него в большинстве случаев сомнительный импакт",
+                    "У него есть эскейп",
+                    "Крип мечник"
+                ]
+            },
+            {
+                name: "Axe",
+                hints: [
+                    "Играть на нём классно",
+                    "Особенно после смены на заводе",
+                    "Ну нет блять, это не баратрум",
+                    "Не, ну он похож конечно на баратрума чем-то",
+                    "Ну вот мб атрибутом похож",
+                    "На него есть известный коссплей",
+                    "Он умеет атаковать",
+                    "Оглоди",
+                    "Ну красный блять",
+                    "Для долбоёбов линк https://www.youtube.com/watch?v=YPjv8kKLYxw"
+                ]
+            },
+            {
+                name: "Snapfire",
+                hints: [
+                    "Вот какой долбоёб придумал этого героя?",
+                    "А сэты на этого чара кто делат?",
+                    "Вот реально, сделали сэт по песне",
+                    "Ну, чё на подсказку реальную, у героя длинные уши",
+                    "Дава, вспомнай эльфов, не врка, не тракса",
+                    "Да и не керри так-то",
+                    "Стреляет, +-моего возраста",
+                    "Катается на какой-то хуйне",
+                    "Печеньки любит",
+                    "БАБУШКА, БАБУЛЕНЦИЯ, БАБУЛЬКА"
+                ]
+            },
+            {
+                name: "Kunkka",
+                hints: [
+                    "Некоторые игроки не прочь трахнуть этого персонажа",
+                    "У этого персонажа весьма стандартная причёска(много у кого такая IRL)",
+                    "Имеет сочную попку",
+                    "Вроде был в первой доте(не новый герой)",
+                    "Не универсал",
+                    "Один из его скиллов можно выключить сильвером",
+                    "Есть супер редкие шмотки",
+                    "Есть гемы которые что-то у перса меняют",
+                    "У перса есть главный лорный враг",
+                    "Я на него косплей делал"
+                ]
+            }
+            // Добавьте сюда остальных героев и их подсказки
+        ];
+
+        // Функция для получения дня от фиксированной даты начала
+        function getDaysSinceStart() {
+            // Фиксированная дата начала - 27 февраля 2025
+            const startDate = new Date(2025, 1, 27); // Месяцы в JavaScript начинаются с 0, поэтому февраль = 1
+            const now = new Date();
+            
+            // Устанавливаем дату "сейчас" в начало дня для правильного расчёта
+            now.setHours(0, 0, 0, 0);
+            
+            // Разница в миллисекундах
+            const diffTime = now - startDate;
+            
+            // Преобразуем миллисекунды в дни
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            return diffDays;
+        }
+
+        // Выбор героя на основе дней с начала отсчёта
+        function getHeroForToday() {
+            const daysSinceStart = getDaysSinceStart();
+            
+            // Если daysSinceStart отрицательный, значит текущая дата раньше даты начала
+            // В этом случае используем 0 (первый герой)
+            const index = daysSinceStart < 0 ? 0 : daysSinceStart % heroes.length;
+            
+            return heroes[index];
+        }
+
+        // Инициализация игры
+        let currentHero = getHeroForToday();
+        let revealedHints = 0;
+        let gameWon = false;
+
+        // Создаем элементы для подсказок
+        const hintsContainer = document.getElementById('hints');
+        for (let i = 0; i < currentHero.hints.length; i++) {
+            const hintElement = document.createElement('div');
+            hintElement.className = 'hint';
+            hintElement.innerHTML = `<span class="hint-number">${i + 1}:</span> ${currentHero.hints[i]}`;
+            hintsContainer.appendChild(hintElement);
+        }
+
+        // Обновляем счетчик оставшихся подсказок
+        document.getElementById('hints-count').textContent = currentHero.hints.length - revealedHints;
+
+        // Обработчик кнопки проверки ответа
+        document.getElementById('guess-button').addEventListener('click', checkGuess);
+        document.getElementById('guess-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkGuess();
+            }
+        });
+
+        // Настройка таймера до следующего дня
+        function updateCountdown() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            const diff = tomorrow - now;
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('countdown').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+        
+        // Функция для проверки ответа
+        function checkGuess() {
+            if (gameWon) return;
+            
+            const guessInput = document.getElementById('guess-input');
+            const guess = guessInput.value.trim().toLowerCase();
+            const heroName = currentHero.name.toLowerCase();
+            const resultElement = document.getElementById('result');
+            
+            if (guess === heroName) {
+                resultElement.textContent = `Правильно! Это ${currentHero.name}!`;
+                resultElement.className = 'result correct';
+                resultElement.style.display = 'block';
+                gameWon = true;
+                
+                // Показываем все подсказки при победе
+                document.querySelectorAll('.hint').forEach(hint => hint.classList.add('visible'));
+            } else {
+                resultElement.textContent = 'Неверно! Открываю следующую подсказку...';
+                resultElement.className = 'result incorrect';
+                resultElement.style.display = 'block';
+                
+                // Автоматически открываем следующую подсказку при неверном ответе
+                if (revealedHints < currentHero.hints.length) {
+                    document.querySelectorAll('.hint')[revealedHints].classList.add('visible');
+                    revealedHints++;
+                    document.getElementById('hints-count').textContent = currentHero.hints.length - revealedHints;
+                }
+                
+                // Автофокус на поле ввода после неверного ответа
+                setTimeout(() => guessInput.focus(), 100);
+            }
+            
+            guessInput.value = '';
+        }
+    </script>
+</body>
+</html>
