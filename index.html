@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная | Академия Кворса</title>
-
     <script>
     if (location.hostname === 'www.kw0rs.fun') {
         window.location.href = 'https://kw0rs.fun' + location.pathname;
     }
     </script>
-
     <style>
         body {
             background-color: #1a1a1a;
@@ -18,67 +16,163 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+        }
+        
+        .wrapper {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             min-height: 100vh;
         }
-
-        h1 {
-            text-align: center;
+        
+        .sidebar {
+            width: 200px;
+            background-color: #222;
+            padding: 20px;
+            border-right: 1px solid #333;
         }
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
+        
+        .main-content {
+            flex: 1;
             padding: 20px;
         }
-
+        
+        .header {
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            border-bottom: 1px solid #333;
+            margin-bottom: 20px;
+        }
+        
         .content {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            grid-template-rows: auto auto;
             gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
         }
-
+        
+        .twitch-player {
+            grid-column: 1;
+            grid-row: 1;
+        }
+        
+        .twitch-chat {
+            grid-column: 2;
+            grid-row: 1 / span 2;
+        }
+        
+        .telegram {
+            grid-column: 1;
+            grid-row: 2;
+        }
+        
         iframe {
+            border: none;
             border-radius: 10px;
+            width: 100%;
+            background-color: #333;
         }
-
-        @media (max-width: 768px) {
+        
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 50px;
+        }
+        
+        .sidebar-item {
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #333;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .sidebar-item:hover {
+            background-color: #444;
+        }
+        
+        @media (max-width: 1000px) {
             .content {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+            }
+            
+            .twitch-player {
+                grid-column: 1;
+                grid-row: 1;
+            }
+            
+            .twitch-chat {
+                grid-column: 1;
+                grid-row: 2;
+                height: 400px;
+            }
+            
+            .telegram {
+                grid-column: 1;
+                grid-row: 3;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .wrapper {
                 flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #333;
             }
         }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <h1>Добро пожаловать на сайт Академии Кворса</h1>
-
-        <!-- Контент: плеер Twitch, чат и Telegram -->
-        <div class="content">
-            <!-- Плеер Twitch -->
-            <div class="block">
-                <h2>Twitch Трансляция</h2>
-                <iframe src="https://player.twitch.tv/?channel=kw0rs&autoplay=true" height="400" width="100%" frameborder="0" allowfullscreen="true"></iframe>
+    <div class="wrapper">
+        <div class="sidebar">
+            <div class="header">ОГЛАВЛЕНИЕ</div>
+            <div class="sidebar-menu">
+                <a href="#" class="sidebar-item">ЧЕГО-ТО</a>
+                <a href="#" class="sidebar-item">↑</a>
             </div>
-
-            <!-- Чат Twitch -->
-            <div class="block">
-                <h2>Twitch Чат</h2>
-                <iframe src="https://www.twitch.tv/embed/kw0rs/chat?parent=kw0rs.fun" height="600" width="100%" frameborder="0" scrolling="yes"></iframe>
-            </div>
-
-            <!-- Посты Telegram -->
-            <div class="block">
-                <h2>Последние посты с Telegram</h2>
-                <iframe src="https://t.me/kw0rs?embed=1" width="100%" height="500" frameborder="0" allowfullscreen="true"></iframe>
+        </div>
+        
+        <div class="main-content">
+            <div class="content">
+                <div class="twitch-player">
+                    <h2>TWITCH</h2>
+                    <!-- Исправленный плеер Twitch с правильным parent параметром -->
+                    <iframe
+                        src="https://player.twitch.tv/?channel=kw0rs&parent=kw0rs.fun"
+                        height="400"
+                        frameborder="0"
+                        allowfullscreen="true"
+                        scrolling="no">
+                    </iframe>
+                </div>
+                
+                <div class="twitch-chat">
+                    <h2>CHAT</h2>
+                    <iframe
+                        src="https://www.twitch.tv/embed/kw0rs/chat?parent=kw0rs.fun"
+                        height="600"
+                        frameborder="0"
+                        scrolling="yes">
+                    </iframe>
+                </div>
+                
+                <div class="telegram">
+                    <h2>TG</h2>
+                    <!-- Исправленный виджет Telegram -->
+                    <script async src="https://telegram.org/js/telegram-widget.js?22" 
+                        data-telegram-post="kw0rs/1" 
+                        data-width="100%"
+                        data-dark="1">
+                    </script>
+                </div>
             </div>
         </div>
     </div>
-
 </body>
 </html>
