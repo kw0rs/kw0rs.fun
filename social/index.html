@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<script>
+    // Проверяем текущий путь и если буквы большие, редиректим на маленькие
+    var path = window.location.pathname;
+    if (path !== path.toLowerCase()) {
+        window.location.pathname = path.toLowerCase();
+    }
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social | Академия Кворса</title>
