@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social | Академия Кворса</title>
+    <script>
+    if (location.hostname === 'www.kw0rs.fun') {
+        window.location.href = 'https://kw0rs.fun' + location.pathname;
+    }
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background-color: #1a1a1a;
             display: flex;
@@ -49,42 +50,27 @@
             background-color: #ff0000;
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
         }
-        .telegram-streams:hover {
-            background-color: #cc0000;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
-        }
         .telegram-academy {
             background-color: #0088cc;
             box-shadow: 0 0 15px rgba(0, 136, 204, 0.5);
-        }
-        .telegram-academy:hover {
-            background-color: #006699;
-            box-shadow: 0 0 20px rgba(0, 136, 204, 0.7);
         }
         .twitch {
             background-color: #6441a5;
             box-shadow: 0 0 15px rgba(100, 65, 165, 0.5);
         }
-        .twitch:hover {
-            background-color: #4b367c;
-            box-shadow: 0 0 20px rgba(100, 65, 165, 0.7);
-        }
         .youtube {
             background-color: #cc0000;
             box-shadow: 0 0 15px rgba(204, 0, 0, 0.5);
-        }
-        .youtube:hover {
-            background-color: #990000;
-            box-shadow: 0 0 20px rgba(204, 0, 0, 0.7);
         }
         .steam {
             background-color: #2a475e;
             box-shadow: 0 0 15px rgba(42, 71, 94, 0.5);
         }
-        .steam:hover {
-            background-color: #1f3545;
-            box-shadow: 0 0 20px rgba(42, 71, 94, 0.7);
-        }
+        .telegram-streams:hover { background-color: #cc0000; }
+        .telegram-academy:hover { background-color: #006699; }
+        .twitch:hover { background-color: #4b367c; }
+        .youtube:hover { background-color: #990000; }
+        .steam:hover { background-color: #1f3545; }
         @media (max-width: 768px) {
             .social-button {
                 font-size: 20px;
