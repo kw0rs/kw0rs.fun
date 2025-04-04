@@ -7,19 +7,8 @@
     <script>
         // Функция для проверки URL и перенаправления
         function checkAndRedirect() {
-            var path = window.location.pathname;
-            
-            // Проверяем, соответствует ли путь "/social" в любом регистре
-            if (path.toLowerCase() === '/social' || 
-                path.match(/^\/[sS][oO][cC][iI][aA][lL]$/)) {
-                window.location.href = '/social';
-                return;
-            }
-            
-            // Здесь можно добавить другие перенаправления для других страниц
-            // ...
-            
-            // Если никакие условия не сработали, оставляем на странице 404
+            // Перенаправление на главную страницу
+            window.location.href = '/';
         }
         
         // Запускаем проверку при загрузке страницы
@@ -47,18 +36,10 @@
             font-size: 24px;
             margin-bottom: 30px;
         }
-        a {
-            color: #0088cc;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
-    <h1>404</h1>
-    <p>Страница не найдена</p>
-    <p>Вернуться на <a href="/">главную страницу</a></p>
+    <h1>Перенаправление...</h1>
+    <p>Вы будете перенаправлены на главную страницу</p>
 </body>
 </html>
