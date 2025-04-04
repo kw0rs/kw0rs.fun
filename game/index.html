@@ -249,44 +249,28 @@
                     "Я на него косплей делал"
                 ]
             }
-            // Добавьте сюда остальных героев и их подсказки
         ];
 
         // Функция для получения дня от фиксированной даты начала
         function getDaysSinceStart() {
-            // Фиксированная дата начала - 27 февраля 2025
-            const startDate = new Date(2025, 1, 27); // Месяцы в JavaScript начинаются с 0, поэтому февраль = 1
+            const startDate = new Date(2025, 1, 27);
             const now = new Date();
-            
-            // Устанавливаем дату "сейчас" в начало дня для правильного расчёта
             now.setHours(0, 0, 0, 0);
-            
-            // Разница в миллисекундах
             const diffTime = now - startDate;
-            
-            // Преобразуем миллисекунды в дни
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            
             return diffDays;
         }
 
-        // Выбор героя на основе дней с начала отсчёта
         function getHeroForToday() {
             const daysSinceStart = getDaysSinceStart();
-            
-            // Если daysSinceStart отрицательный, значит текущая дата раньше даты начала
-            // В этом случае используем 0 (первый герой)
             const index = daysSinceStart < 0 ? 0 : daysSinceStart % heroes.length;
-            
             return heroes[index];
         }
 
-        // Инициализация игры
         let currentHero = getHeroForToday();
         let revealedHints = 0;
         let gameWon = false;
 
-        // Создаем элементы для подсказок
         const hintsContainer = document.getElementById('hints');
         for (let i = 0; i < currentHero.hints.length; i++) {
             const hintElement = document.createElement('div');
@@ -295,10 +279,8 @@
             hintsContainer.appendChild(hintElement);
         }
 
-        // Обновляем счетчик оставшихся подсказок
         document.getElementById('hints-count').textContent = currentHero.hints.length - revealedHints;
 
-        // Обработчик кнопки проверки ответа
         document.getElementById('guess-button').addEventListener('click', checkGuess);
         document.getElementById('guess-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -306,59 +288,51 @@
             }
         });
 
-        // Настройка таймера до следующего дня
         function updateCountdown() {
             const now = new Date();
             const tomorrow = new Date(now);
             tomorrow.setDate(tomorrow.getDate() + 1);
             tomorrow.setHours(0, 0, 0, 0);
-            
             const diff = tomorrow - now;
-            
             const hours = Math.floor(diff / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
             document.getElementById('countdown').textContent = 
                 `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
         updateCountdown();
         setInterval(updateCountdown, 1000);
-        
-        // Функция для проверки ответа
+
         function checkGuess() {
             if (gameWon) return;
-            
+
             const guessInput = document.getElementById('guess-input');
-            const guess = guessInput.value.trim().toLowerCase();
+            const guess = guessInput.value.trim().toLowerCase();  // Убедитесь, что игра не чувствительна к регистру
             const heroName = currentHero.name.toLowerCase();
             const resultElement = document.getElementById('result');
-            
+
             if (guess === heroName) {
                 resultElement.textContent = `Правильно! Это ${currentHero.name}!`;
                 resultElement.className = 'result correct';
                 resultElement.style.display = 'block';
                 gameWon = true;
-                
-                // Показываем все подсказки при победе
+
                 document.querySelectorAll('.hint').forEach(hint => hint.classList.add('visible'));
             } else {
                 resultElement.textContent = 'Неверно! Открываю следующую подсказку...';
                 resultElement.className = 'result incorrect';
                 resultElement.style.display = 'block';
-                
-                // Автоматически открываем следующую подсказку при неверном ответе
+
                 if (revealedHints < currentHero.hints.length) {
                     document.querySelectorAll('.hint')[revealedHints].classList.add('visible');
                     revealedHints++;
                     document.getElementById('hints-count').textContent = currentHero.hints.length - revealedHints;
                 }
-                
-                // Автофокус на поле ввода после неверного ответа
+
                 setTimeout(() => guessInput.focus(), 100);
             }
-            
+
             guessInput.value = '';
         }
     </script>
