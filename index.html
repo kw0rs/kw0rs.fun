@@ -53,8 +53,20 @@
         .twitch-player {
             grid-column: 1;
             grid-row: 1;
+            position: relative;
             width: 100%;
-            max-width: 100%;
+            height: 0;
+            padding-top: 56.25%; /* соотношение 16:9 */
+        }
+        
+        .twitch-player iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            background-color: #333;
         }
         
         .twitch-chat {
@@ -66,7 +78,6 @@
             border: none;
             border-radius: 10px;
             width: 100%;
-            height: 100%;
             background-color: #333;
         }
         
@@ -106,7 +117,7 @@
             .twitch-player {
                 grid-column: 1;
                 grid-row: 1;
-                height: 400px; /* Уменьшенная высота для мобильных */
+                height: 400px;
             }
             
             .twitch-chat {
