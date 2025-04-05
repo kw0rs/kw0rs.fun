@@ -1,206 +1,157 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
-<link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
-<link rel="manifest" href="/icon/site.webmanifest">
-<link rel="shortcut icon" href="/icon/favicon.ico">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Главная | Академия Кворса</title>
-<script>
-if (location.hostname === 'www.kw0rs.fun') {
-    window.location.href = 'https://kw0rs.fun' + location.pathname;
-}
-function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-}
-</script>
+<link rel="icon" href="/icon/favicon.ico" type="image/x-icon">
 <style>
-body {
+  body {
     background-color: #1a1a1a;
     color: white;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-}
-
-.wrapper {
+    overflow-x: hidden;
+  }
+  .wrapper {
     display: flex;
     min-height: 100vh;
-}
-
-.menu-toggle {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    font-size: 28px;
-    background: #444;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    z-index: 1001;
-    transition: background 0.3s;
-}
-.menu-toggle:hover {
-    background: #555;
-}
-
-.sidebar {
-    width: 200px;
-    background-color: #222;
-    padding: 20px;
-    border-right: 1px solid #333;
-    transform: translateX(-220px);
-    transition: transform 0.3s ease;
+    transition: padding-left 0.3s ease;
+    padding-left: 200px;
+  }
+  .sidebar {
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;
-    z-index: 1000;
-}
-.sidebar.open {
-    transform: translateX(0);
-}
-
-.main-content {
-    flex: 1;
+    width: 200px;
+    height: 100%;
+    background-color: #222;
     padding: 20px;
-    margin-left: 0;
-    transition: margin-left 0.3s ease;
-    width: 100%;
-}
-
-.header {
-    padding: 20px 0;
+    border-right: 1px solid #333;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  }
+  .sidebar.closed {
+    transform: translateX(-100%);
+  }
+  .sidebar .header {
     font-size: 24px;
     font-weight: bold;
-    border-bottom: 1px solid #333;
     margin-bottom: 20px;
-}
-
-.content {
+  }
+  .sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .sidebar-item {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #444;
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+    text-decoration: none;
+    color: white;
+    transition: background 0.3s;
+  }
+  .sidebar-item:hover {
+    background-color: #555;
+  }
+  .menu-toggle {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background-color: #333;
+    border: none;
+    color: white;
+    padding: 10px 12px;
+    font-size: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1100;
+  }
+  .main-content {
+    flex: 1;
+    padding: 20px;
+  }
+  .content {
     display: grid;
     grid-template-columns: 1fr 350px;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto;
     gap: 20px;
-}
-
-.twitch-player {
-    grid-column: 1;
-    grid-row: 1;
+  }
+  .twitch-player {
     position: relative;
     width: 100%;
-    height: 0;
-    padding-top: 56.25%;
-}
-.twitch-player iframe {
+    padding-top: 56.25%; /* 16:9 */
+  }
+  .twitch-player iframe {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     border-radius: 10px;
-    background-color: #333;
-}
-
-.twitch-chat {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    position: relative;
+    background: #333;
+    border: none;
+  }
+  .twitch-chat iframe {
     width: 100%;
-    height: 100%;
-}
-.twitch-chat iframe {
-    width: 100%;
-    height: 100%;
+    height: 600px;
     border-radius: 10px;
-}
-
-.sidebar-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 50px;
-}
-.sidebar-item {
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #444;
-    color: white;
-    text-align: center;
-    cursor: pointer;
-    transition: background 0.3s;
-    font-size: 18px;
-    text-decoration: none;
-}
-.sidebar-item:hover {
-    background-color: #555;
-}
-.sidebar-item:active {
-    background-color: #666;
-}
-
-@media (max-width: 1000px) {
+    background: #333;
+    border: none;
+  }
+  @media (max-width: 1000px) {
     .content {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
     }
-    .twitch-player {
-        grid-column: 1;
-        grid-row: 1;
-        height: 400px;
+    .twitch-chat iframe {
+      height: 400px;
     }
-    .twitch-chat {
-        grid-column: 1;
-        grid-row: 2;
-        height: 400px;
-    }
-}
-@media (max-width: 768px) {
-    .wrapper {
-        flex-direction: column;
-    }
-    .sidebar {
-        width: 100%;
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid #333;
-    }
-}
+  }
 </style>
+<script>
+  function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const wrapper = document.querySelector('.wrapper');
+    sidebar.classList.toggle('closed');
+    if (sidebar.classList.contains('closed')) {
+      wrapper.style.paddingLeft = '0';
+    } else {
+      wrapper.style.paddingLeft = '200px';
+    }
+  }
+</script>
 </head>
-
 <body>
-<div class="wrapper">
-    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
 
-    <div class="sidebar closed" id="sidebar">
-        <div class="header">ОГЛАВЛЕНИЕ</div>
-        <div class="sidebar-menu">
-            <a href="/" class="sidebar-item">Main</a>
-            <a href="/social" class="sidebar-item">Social</a>
-        </div>
-    </div>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
 
-    <div class="main-content">
-        <div id="main" class="content">
-            <div class="twitch-player">
-                <iframe src="https://player.twitch.tv/?channel=kw0rs&parent=kw0rs.fun"
-                        frameborder="0"
-                        allowfullscreen="true"
-                        scrolling="no"></iframe>
-            </div>
-            <div class="twitch-chat">
-                <iframe src="https://www.twitch.tv/embed/kw0rs/chat?parent=kw0rs.fun"
-                        frameborder="0"
-                        scrolling="yes"></iframe>
-            </div>
-        </div>
-    </div>
+<div class="sidebar">
+  <div class="header">ОГЛАВЛЕНИЕ</div>
+  <div class="sidebar-menu">
+    <a href="#main" class="sidebar-item">Main</a>
+    <a href="/social" class="sidebar-item">Social</a>
+  </div>
 </div>
+
+<div class="wrapper">
+  <div class="main-content">
+    <div id="main" class="content">
+      <div class="twitch-player">
+        <iframe src="https://player.twitch.tv/?channel=kw0rs&parent=kw0rs.fun" allowfullscreen></iframe>
+      </div>
+      <div class="twitch-chat">
+        <iframe src="https://www.twitch.tv/embed/kw0rs/chat?parent=kw0rs.fun"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
