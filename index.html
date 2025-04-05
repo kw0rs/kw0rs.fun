@@ -26,12 +26,68 @@ if (location.hostname === 'www.kw0rs.fun') {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wrapper {
+    display: flex;
+    flex: 1;
+  }
+
+  .sidebar {
+    width: 220px;
+    background-color: #222;
+    padding: 20px;
+    border-right: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .sidebar-item {
+    padding: 12px;
+    border-radius: 5px;
+    background-color: #444;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    text-decoration: none;
+    transition: background 0.3s;
+    position: relative;
+  }
+
+  .sidebar-item:hover {
+    background-color: #555;
+  }
+
+  .sidebar-item.active {
+    background-color: #3367d6;
+  }
+
+  .sidebar-item.disabled {
+    background-color: #333;
+    color: #777;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .sidebar-item small {
+    display: block;
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 4px;
+  }
+
+  .main-content {
+    flex: 1;
+    padding: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    overflow-x: hidden;
   }
+
   .about-container {
     background: #222;
     padding: 40px;
@@ -41,11 +97,13 @@ if (location.hostname === 'www.kw0rs.fun') {
     max-width: 700px;
     text-align: center;
   }
+
   h1 {
     font-size: 32px;
     margin-bottom: 20px;
     color: #ffffff;
   }
+
   p {
     font-size: 18px;
     line-height: 1.6;
@@ -55,14 +113,26 @@ if (location.hostname === 'www.kw0rs.fun') {
 </head>
 <body>
 
-<div class="about-container">
-  <h1>Обо мне</h1>
-  <p>
-    Я — kw0rs.<br><br>
-    Стримлю, делаю контент, хуярю проекты для души и просто кайфую.<br><br>
-    Здесь ты найдёшь всё, что связано с моими стримами, социальными сетями и разными активностями.<br><br>
-    Либо оставайся, либо проваливай — всё честно.
-  </p>
+<div class="wrapper">
+  <div class="sidebar">
+    <a href="/" class="sidebar-item active">Главная <small>вы тут</small></a>
+    <a href="/social/" class="sidebar-item">Социальные сети</a>
+    <a href="/contact/" class="sidebar-item">Обратная связь</a>
+    <a href="/watch/" class="sidebar-item">Смотреть</a>
+    <div class="sidebar-item disabled">Игра <small>в разработке</small></div>
+  </div>
+
+  <div class="main-content">
+    <div class="about-container">
+      <h1>Обо мне</h1>
+      <p>
+        Я — kw0rs.<br><br>
+        Стримлю, делаю контент, хуярю проекты для души и просто кайфую.<br><br>
+        Здесь ты найдёшь всё, что связано с моими стримами, социальными сетями и разными активностями.<br><br>
+        Либо оставайся, либо проваливай — всё честно.
+      </p>
+    </div>
+  </div>
 </div>
 
 </body>
