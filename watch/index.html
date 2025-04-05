@@ -1,26 +1,16 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<script>
-const head = document.getElementsByTagName('head')[0];
-
-const icons = [
-  { rel: "icon", type: "image/png", sizes: "32x32", href: "/icon/favicon-32x32.png" },
-  { rel: "icon", type: "image/png", sizes: "16x16", href: "/icon/favicon-16x16.png" },
-  { rel: "apple-touch-icon", href: "/icon/apple-touch-icon.png" },
-  { rel: "manifest", href: "/icon/site.webmanifest" },
-  { rel: "shortcut icon", href: "/icon/favicon.ico" }
-];
-icons.forEach(icon => {
-  const link = document.createElement('link');
-  Object.keys(icon).forEach(attr => link.setAttribute(attr, icon[attr]));
-  head.appendChild(link);
-});
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Смотреть | Академия Кворса</title>
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
+<link rel="manifest" href="/icon/site.webmanifest">
+<link rel="shortcut icon" href="/icon/favicon.ico">
 
 <!-- Перегонка www на без www -->
 <script>
@@ -35,99 +25,102 @@ if (location.hostname === 'www.kw0rs.fun') {
     color: white;
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 30px 20px;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+  }
+  
+  .wrapper {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
+    height: 100vh;
   }
-
+  
   .menu-button {
-    align-self: flex-start;
-    background-color: #222;
-    color: #eee;
-    border: none;
     padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 16px;
-    text-decoration: none;
-    margin-bottom: 30px;
-    transition: background-color 0.3s, transform 0.2s;
-  }
-
-  .menu-button:hover {
-    background-color: #c0392b;
-    transform: scale(1.05);
-    color: #fff;
-  }
-
-  .content {
-    display: grid;
-    grid-template-columns: 1fr 350px;
-    grid-gap: 20px;
-    width: 100%;
-    max-width: 1200px;
-  }
-
-  .twitch-player, .twitch-chat {
-    position: relative;
     background-color: #333;
+    color: white;
+    border: none;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 10px;
+    border-radius: 5px;
+    width: fit-content;
+    transition: background-color 0.3s;
+  }
+  
+  .menu-button:hover {
+    background-color: #555;
+  }
+  
+  .content {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .twitch-player {
+    flex: 1;
+    aspect-ratio: 16 / 9;
+    background: #333;
+    border-radius: 10px;
+    overflow: hidden;
+    min-width: 0;
+  }
+  
+  .twitch-chat {
+    width: 400px;
+    height: 100%;
+    background: #333;
     border-radius: 10px;
     overflow: hidden;
   }
-
-  .twitch-player {
-    padding-top: 56.25%; /* 16:9 */
-  }
-
-  .twitch-player iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
+  
+  iframe {
     width: 100%;
     height: 100%;
     border: none;
+    border-radius: 10px;
   }
-
-  .twitch-chat iframe {
-    width: 100%;
-    height: 500px;
-    border: none;
-  }
-
+  
   @media (max-width: 1000px) {
     .content {
-      grid-template-columns: 1fr;
+      flex-direction: column;
+      padding: 10px;
     }
-    .twitch-chat iframe {
-      height: 400px;
+    .twitch-chat {
+      width: 100%;
+      height: 500px;
     }
   }
 </style>
 </head>
 
 <body>
+<div class="wrapper">
 
-<a href="/menu" class="menu-button">В меню</a>
+  <a href="/menu" class="menu-button">В меню</a>
 
-<div class="content">
-  <div class="twitch-player">
-    <iframe
-      src="https://player.twitch.tv/?channel=kw0rs&parent=kw0rs.fun"
-      frameborder="0"
-      allowfullscreen="true"
-      scrolling="no">
-    </iframe>
+  <div class="content">
+    <div class="twitch-player">
+      <iframe
+        src="https://player.twitch.tv/?channel=kw0rs&parent=kw0rs.fun"
+        allowfullscreen="true"
+        scrolling="no">
+      </iframe>
+    </div>
+
+    <div class="twitch-chat">
+      <iframe
+        src="https://www.twitch.tv/embed/kw0rs/chat?parent=kw0rs.fun"
+        scrolling="yes">
+      </iframe>
+    </div>
   </div>
 
-  <div class="twitch-chat">
-    <iframe
-      src="https://www.twitch.tv/embed/kw0rs/chat?parent=kw0rs.fun"
-      frameborder="0"
-      scrolling="yes">
-    </iframe>
-  </div>
 </div>
-
 </body>
 </html>
