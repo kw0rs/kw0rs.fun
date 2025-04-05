@@ -1,37 +1,30 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
-    <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
-    <link rel="manifest" href="/icon/site.webmanifest">
-    <link rel="shortcut icon" href="/icon/favicon.ico">
+<script>
+const head = document.getElementsByTagName('head')[0];
+
+const icons = [
+  { rel: "icon", type: "image/png", sizes: "32x32", href: "/icon/favicon-32x32.png" },
+  { rel: "icon", type: "image/png", sizes: "16x16", href: "/icon/favicon-16x16.png" },
+  { rel: "apple-touch-icon", href: "/icon/apple-touch-icon.png" },
+  { rel: "manifest", href: "/icon/site.webmanifest" },
+  { rel: "shortcut icon", href: "/icon/favicon.ico" }
+];
+
+icons.forEach(icon => {
+  const link = document.createElement('link');
+  Object.keys(icon).forEach(attr => link.setAttribute(attr, icon[attr]));
+  head.appendChild(link);
+});
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Академия Кворса - стримы и общение">
-    <meta name="keywords" content="кворс, стрим, twitch">
     <title>Главная | Академия Кворса</title>
     <script>
-        // Проверка на www и редирект на версию без www
-        if (location.hostname.startsWith('www.')) {
-            window.location.href = 'https://' + location.hostname.replace('www.', '') + location.pathname + location.search + location.hash;
-        }
-        
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-        }
-        
-        // Закрытие сайдбара при клике вне его области
-        document.addEventListener('click', function(event) {
-            const sidebar = document.getElementById('sidebar');
-            const menuToggle = document.querySelector('.menu-toggle');
-            
-            if (sidebar.classList.contains('open') && 
-                !sidebar.contains(event.target) && 
-                event.target !== menuToggle) {
-                sidebar.classList.remove('open');
-            }
-        });
+    if (location.hostname === 'www.kw0rs.fun') {
+        window.location.href = 'https://kw0rs.fun' + location.pathname;
+    }
     </script>
     <style>
         body {
@@ -41,82 +34,48 @@
             margin: 0;
             padding: 0;
         }
-
+        
         .wrapper {
             display: flex;
             min-height: 100vh;
         }
-
-        .menu-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            font-size: 28px;
-            background: #444;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            z-index: 999; /* Снижен z-index, чтобы быть ниже, чем сайдбар */
-            transition: background 0.3s;
-        }
-        .menu-toggle:hover {
-            background: #555;
-        }
-
+        
         .sidebar {
-            width: 250px;
+            width: 200px;
             background-color: #222;
             padding: 20px;
             border-right: 1px solid #333;
-            transform: translateX(-290px);
-            transition: transform 0.3s ease;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            z-index: 1000;
-            overflow-y: auto;
         }
-        .sidebar.open {
-            transform: translateX(0);
-            box-shadow: 3px 0 10px rgba(0, 0, 0, 0.5);
-        }
-
+        
         .main-content {
             flex: 1;
             padding: 20px;
-            padding-left: 70px; /* Добавлен отступ слева для контента, чтобы кнопка не перекрывала */
-            margin-left: 0;
-            transition: margin-left 0.3s ease;
-            width: calc(100% - 70px); /* Скорректирована ширина с учетом отступа */
         }
-
+        
         .header {
-            padding: 20px 0;
+            padding: 20px;
             font-size: 24px;
             font-weight: bold;
             border-bottom: 1px solid #333;
             margin-bottom: 20px;
-            text-align: center;
         }
-
+        
         .content {
             display: grid;
             grid-template-columns: 1fr 350px;
             grid-template-rows: auto auto;
             gap: 20px;
         }
-
+        
         .twitch-player {
             grid-column: 1;
             grid-row: 1;
             position: relative;
             width: 100%;
             height: 0;
-            padding-top: 56.25%;
+            padding-top: 56.25%; /* соотношение 16:9 */
         }
+        
         .twitch-player iframe {
             position: absolute;
             top: 0;
@@ -126,27 +85,35 @@
             border-radius: 10px;
             background-color: #333;
         }
-
+        
         .twitch-chat {
             grid-column: 2;
             grid-row: 1 / span 2;
             position: relative;
             width: 100%;
             height: 100%;
-            min-height: 500px;
         }
+        
         .twitch-chat iframe {
             width: 100%;
             height: 100%;
             border-radius: 10px;
         }
-
+        
+        iframe {
+            border: none;
+            border-radius: 10px;
+            width: 100%;
+            background-color: #333;
+        }
+        
         .sidebar-menu {
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-top: 50px; /* Отступ от верхнего заголовка */
+            margin-top: 50px;
         }
+        
         .sidebar-item {
             padding: 10px;
             border-radius: 5px;
@@ -158,135 +125,78 @@
             font-size: 18px;
             text-decoration: none;
         }
+        
         .sidebar-item:hover {
             background-color: #555;
         }
+        
         .sidebar-item:active {
             background-color: #666;
         }
-
-        /* Стили для случая отключенного JavaScript */
-        .no-js .sidebar {
-            position: static;
-            transform: none;
-            width: 100%;
-            height: auto;
-            margin-bottom: 20px;
-        }
-        .no-js .menu-toggle {
-            display: none;
-        }
-        .no-js .main-content {
-            margin-left: 0;
-            padding-left: 20px; /* Возвращаем стандартный отступ для случая отключенного JS */
-            width: calc(100% - 40px); /* Корректируем ширину контента */
-        }
-
+        
         @media (max-width: 1000px) {
             .content {
                 grid-template-columns: 1fr;
-                grid-template-rows: auto auto;
+                grid-template-rows: auto auto auto;
             }
+            
             .twitch-player {
                 grid-column: 1;
                 grid-row: 1;
-                position: relative;
-                width: 100%;
-                height: 0;
-                padding-top: 56.25%; /* Поддерживаем соотношение сторон 16:9 */
+                height: 400px;
             }
+            
             .twitch-chat {
                 grid-column: 1;
                 grid-row: 2;
                 height: 400px;
-                min-height: 300px;
             }
         }
         
         @media (max-width: 768px) {
+            .wrapper {
+                flex-direction: column;
+            }
+            
             .sidebar {
                 width: 100%;
-                max-width: 100%;
-                transform: translateY(-100%);
-                height: auto;
-                max-height: 80vh;
-                top: 0;
-                left: 0;
-                right: 0;
                 border-right: none;
                 border-bottom: 1px solid #333;
             }
-            .sidebar.open {
-                transform: translateY(0);
-            }
-            .main-content {
-                padding-left: 20px; /* Меньший отступ для мобильных */
-                width: calc(100% - 40px); /* Корректируем ширину контента */
-            }
-            /* Центрируем кнопку меню на мобильных */
-            .menu-toggle {
-                top: 10px;
-                left: 50%;
-                transform: translateX(-50%);
-            }
         }
     </style>
-    <noscript>
-        <style>
-            .sidebar {
-                position: static !important;
-                transform: none !important;
-                width: 100% !important;
-                height: auto !important;
-                margin-bottom: 20px !important;
-            }
-            .menu-toggle {
-                display: none !important;
-            }
-            .main-content {
-                margin-left: 0 !important;
-                padding-left: 20px !important;
-                width: calc(100% - 40px) !important;
-            }
-        </style>
-    </noscript>
 </head>
-
 <body>
     <div class="wrapper">
-        <button class="menu-toggle" aria-label="Открыть меню" onclick="toggleSidebar()">☰</button>
-
-        <div class="sidebar" id="sidebar">
+        <div class="sidebar">
             <div class="header">ОГЛАВЛЕНИЕ</div>
             <div class="sidebar-menu">
-                <a href="/" class="sidebar-item">Главная</a>
-                <a href="/social" class="sidebar-item">Соцсети</a>
+                <a href="#main" class="sidebar-item">Main</a>
+                <a href="/social" class="sidebar-item">Social</a>
             </div>
         </div>
-
+        
         <div class="main-content">
             <div id="main" class="content">
                 <div class="twitch-player">
-                    <iframe src="https://player.twitch.tv/?channel=kw0rs&parent=kw0rs.fun"
-                            frameborder="0"
-                            allowfullscreen="true"
-                            scrolling="no"
-                            title="Трансляция Kw0rs"></iframe>
+                    <!-- Исправленный плеер Twitch с правильным parent параметром -->
+                    <iframe
+                        src="https://player.twitch.tv/?channel=kw0rs&parent=kw0rs.fun"
+                        frameborder="0"
+                        allowfullscreen="true"
+                        scrolling="no">
+                    </iframe>
                 </div>
+                
                 <div class="twitch-chat">
-                    <iframe src="https://www.twitch.tv/embed/kw0rs/chat?parent=kw0rs.fun"
-                            frameborder="0"
-                            scrolling="yes"
-                            allowfullscreen="true"
-                            title="Чат Kw0rs"></iframe>
+                    <iframe
+                        src="https://www.twitch.tv/embed/kw0rs/chat?parent=kw0rs.fun"
+                        frameborder="0"
+                        scrolling="yes">
+                    </iframe>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        // Проверка загрузки JS
-        document.body.classList.remove('no-js');
-    </script>
 </body>
 </html>
