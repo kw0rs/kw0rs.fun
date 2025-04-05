@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +12,7 @@
 <link rel="manifest" href="/icon/site.webmanifest">
 <link rel="shortcut icon" href="/icon/favicon.ico">
 
-<!-- Redirect WWW to NON-WWW -->
+<!-- Перегонка www на без www -->
 <script>
 if (location.hostname === 'www.kw0rs.fun') {
     window.location.href = 'https://kw0rs.fun' + location.pathname;
@@ -83,22 +83,22 @@ if (location.hostname === 'www.kw0rs.fun') {
 <body>
 
 <div class="form-container">
-  <h1>Send Your Suggestion</h1>
+  <h1>Отправить пожелание</h1>
 
   <form id="contact-form" action="https://formspree.io/f/xaneprpw" method="POST">
-    <input type="text" name="name" placeholder="Your nickname" required>
-    <input type="text" name="game" placeholder="Game you want to see">
-    <textarea name="message" placeholder="Your message..." required></textarea>
-    <button type="submit">Submit</button>
+    <input type="text" name="name" placeholder="Введите ваше имя" required>
+    <input type="text" name="game" placeholder="Введите игру, которую хотите видеть">
+    <textarea name="message" placeholder="Ваше сообщение..." required></textarea>
+    <button type="submit">Отправить</button>
   </form>
 
   <div class="success-message" id="success-message">
-    Thank you! Your suggestion has been sent.
+    Спасибо за отзыв! Ваше сообщение отправлено.
   </div>
 </div>
 
 <script>
-// Обработка отправки формы без перезагрузки
+// Отправка формы без перезагрузки
 const form = document.getElementById('contact-form');
 const successMessage = document.getElementById('success-message');
 
@@ -119,7 +119,7 @@ form.addEventListener('submit', async (e) => {
     form.style.display = 'none';
     successMessage.style.display = 'block';
   } else {
-    alert('Something went wrong. Please try again.');
+    alert('Что-то пошло не так. Попробуйте ещё раз.');
   }
 });
 </script>
