@@ -19,6 +19,13 @@ if (location.hostname === 'www.kw0rs.fun') {
 }
 </script>
 
+<!-- Плавный скролл -->
+<style>
+html {
+  scroll-behavior: smooth;
+}
+</style>
+
 <style>
   body {
     background-color: #1a1a1a;
@@ -27,11 +34,12 @@ if (location.hostname === 'www.kw0rs.fun') {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     min-height: 100vh;
     overflow-x: hidden;
   }
+
   .about-container {
     background: #222;
     padding: 40px;
@@ -40,16 +48,85 @@ if (location.hostname === 'www.kw0rs.fun') {
     width: 90%;
     max-width: 700px;
     text-align: center;
+    margin-top: 100px;
   }
+
   h1 {
     font-size: 32px;
     margin-bottom: 20px;
     color: #ffffff;
   }
+
   p {
     font-size: 18px;
     line-height: 1.6;
     color: #ccc;
+  }
+
+  .go-button {
+    margin-top: 30px;
+    background-color: #2a2a2a;
+    color: #eee;
+    border: 1px solid #444;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .go-button:hover {
+    background-color: #cc0000;
+    color: white;
+  }
+
+  .menu {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding-bottom: 100px;
+  }
+
+  .menu a {
+    color: #e0e0e0;
+    font-size: 24px;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .menu a:hover {
+    color: #4285f4;
+  }
+
+  .active {
+    font-weight: bold;
+    color: #4285f4;
+  }
+
+  .active::after {
+    content: " вы тут";
+    font-size: 12px;
+    color: #888;
+    display: block;
+    margin-top: 4px;
+  }
+
+  .disabled {
+    color: #555;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  .disabled::after {
+    content: "в разработке";
+    font-size: 12px;
+    color: #666;
+    display: block;
+    margin-top: 4px;
   }
 </style>
 </head>
@@ -63,6 +140,16 @@ if (location.hostname === 'www.kw0rs.fun') {
     Здесь ты найдёшь всё, что связано с моими стримами, социальными сетями и разными активностями.<br><br>
     Либо оставайся, либо проваливай — всё честно.
   </p>
+
+  <a href="#menu" class="go-button">Идти дальше</a>
+</div>
+
+<div id="menu" class="menu">
+    <a href="/" class="active">Главная</a>
+    <a href="/social">Социальные сети</a>
+    <a href="/contact">Обратная связь</a>
+    <a href="/watch">Смотреть</a>
+    <a class="disabled">Игра</a>
 </div>
 
 </body>
