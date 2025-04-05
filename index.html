@@ -19,13 +19,6 @@ if (location.hostname === 'www.kw0rs.fun') {
 }
 </script>
 
-<!-- Плавный скролл -->
-<style>
-html {
-  scroll-behavior: smooth;
-}
-</style>
-
 <style>
   body {
     background-color: #1a1a1a;
@@ -81,53 +74,6 @@ html {
     background-color: #cc0000;
     color: white;
   }
-
-  .menu {
-    margin-top: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-    padding-bottom: 100px;
-  }
-
-  .menu a {
-    color: #e0e0e0;
-    font-size: 24px;
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .menu a:hover {
-    color: #4285f4;
-  }
-
-  .active {
-    font-weight: bold;
-    color: #4285f4;
-  }
-
-  .active::after {
-    content: " вы тут";
-    font-size: 12px;
-    color: #888;
-    display: block;
-    margin-top: 4px;
-  }
-
-  .disabled {
-    color: #555;
-    pointer-events: none;
-    cursor: default;
-  }
-
-  .disabled::after {
-    content: "в разработке";
-    font-size: 12px;
-    color: #666;
-    display: block;
-    margin-top: 4px;
-  }
 </style>
 </head>
 <body>
@@ -141,15 +87,7 @@ html {
     Либо оставайся, либо проваливай — всё честно.
   </p>
 
-  <a href="#menu" class="go-button">Идти дальше</a>
-</div>
-
-<div id="menu" class="menu">
-    <a href="/" class="active">Главная</a>
-    <a href="/social">Социальные сети</a>
-    <a href="/contact">Обратная связь</a>
-    <a href="/watch">Смотреть</a>
-    <a class="disabled">Игра</a>
+  <a href="/menu/" class="go-button">Идти дальше</a>
 </div>
 
 </body>
