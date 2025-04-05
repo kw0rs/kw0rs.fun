@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<script>
+const head = document.getElementsByTagName('head')[0];
+
+const icons = [
+  { rel: "icon", type: "image/png", sizes: "32x32", href: "/icon/favicon-32x32.png" },
+  { rel: "icon", type: "image/png", sizes: "16x16", href: "/icon/favicon-16x16.png" },
+  { rel: "apple-touch-icon", href: "/icon/apple-touch-icon.png" },
+  { rel: "manifest", href: "/icon/site.webmanifest" },
+  { rel: "shortcut icon", href: "/icon/favicon.ico" }
+];
+
+icons.forEach(icon => {
+  const link = document.createElement('link');
+  Object.keys(icon).forEach(attr => link.setAttribute(attr, icon[attr]));
+  head.appendChild(link);
+});
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная | Академия Кворса</title>
