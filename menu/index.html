@@ -1,3 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Академия Кворса | Меню</title>
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
+<link rel="manifest" href="/icon/site.webmanifest">
+<link rel="shortcut icon" href="/icon/favicon.ico">
+
+<!-- Перегонка www на без www -->
+<script>
+if (location.hostname === 'www.kw0rs.fun') {
+    window.location.href = 'https://kw0rs.fun' + location.pathname;
+}
+</script>
+
 <style>
   body {
     background-color: #1a1a1a;
@@ -5,74 +26,81 @@
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    min-height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    min-height: 100vh;
   }
-  
+
+  .menu-title {
+    font-size: 32px;
+    margin-bottom: 40px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    letter-spacing: 2px;
+  }
+
   .menu-container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
     width: 90%;
     max-width: 400px;
   }
-  
-  .menu-item {
+
+  .menu-button {
     background-color: #222;
-    padding: 20px;
-    border-radius: 12px;
+    color: #eee;
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 18px;
     text-align: center;
-    font-size: 20px;
-    color: white;
     text-decoration: none;
     transition: background-color 0.3s, transform 0.2s;
-    position: relative;
   }
-  
-  .menu-item:hover {
+
+  .menu-button:hover {
     background-color: #c0392b;
-    transform: translateY(-3px);
+    transform: scale(1.03);
+    color: #fff;
   }
-  
-  .menu-item.active {
-    background-color: #3498db; /* Голубой фон для активного */
-  }
-  
-  .menu-item.active::after {
-    content: "вы тут";
-    display: block;
-    font-size: 12px;
-    color: #ddd;
-    margin-top: 6px;
-  }
-  
-  .menu-item.disabled {
+
+  .menu-button.disabled {
     background-color: #333;
     color: #888;
     cursor: default;
   }
-  
-  .menu-item.disabled:hover {
+
+  .menu-button.disabled:hover {
     background-color: #333;
     transform: none;
   }
-  
-  .menu-item.small-text {
-    font-size: 14px;
+
+  .small-text {
+    font-size: 12px;
     color: #888;
     margin-top: 5px;
   }
 </style>
+</head>
+<body>
+
+<div class="menu-title">МЕНЮ</div>
 
 <div class="menu-container">
-  <a href="/" class="menu-item active">Главная</a>
-  <a href="/social" class="menu-item">Социальные сети</a>
-  <a href="/contact" class="menu-item">Обратная связь</a>
-  <a href="/watch" class="menu-item">Смотреть</a>
-  <div class="menu-item disabled">
+  <a href="/" class="menu-button">Главная</a>
+  <a href="/social" class="menu-button">Социальные сети</a>
+  <a href="/contact" class="menu-button">Обратная связь</a>
+  <a href="/watch" class="menu-button">Смотреть</a>
+  
+  <div class="menu-button disabled">
     Игра
     <div class="small-text">в разработке</div>
   </div>
 </div>
+
+</body>
+</html>
