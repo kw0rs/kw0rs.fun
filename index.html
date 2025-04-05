@@ -58,7 +58,7 @@
             padding: 8px 12px;
             border-radius: 6px;
             cursor: pointer;
-            z-index: 1001;
+            z-index: 999; /* Снижен z-index, чтобы быть ниже, чем сайдбар */
             transition: background 0.3s;
         }
         .menu-toggle:hover {
@@ -87,9 +87,10 @@
         .main-content {
             flex: 1;
             padding: 20px;
+            padding-left: 70px; /* Добавлен отступ слева для контента, чтобы кнопка не перекрывала */
             margin-left: 0;
             transition: margin-left 0.3s ease;
-            width: 100%;
+            width: calc(100% - 70px); /* Скорректирована ширина с учетом отступа */
         }
 
         .header {
@@ -144,7 +145,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-top: 50px;
+            margin-top: 50px; /* Отступ от верхнего заголовка */
         }
         .sidebar-item {
             padding: 10px;
@@ -177,6 +178,8 @@
         }
         .no-js .main-content {
             margin-left: 0;
+            padding-left: 20px; /* Возвращаем стандартный отступ для случая отключенного JS */
+            width: calc(100% - 40px); /* Корректируем ширину контента */
         }
 
         @media (max-width: 1000px) {
@@ -216,6 +219,16 @@
             .sidebar.open {
                 transform: translateY(0);
             }
+            .main-content {
+                padding-left: 20px; /* Меньший отступ для мобильных */
+                width: calc(100% - 40px); /* Корректируем ширину контента */
+            }
+            /* Центрируем кнопку меню на мобильных */
+            .menu-toggle {
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
         }
     </style>
     <noscript>
@@ -232,6 +245,8 @@
             }
             .main-content {
                 margin-left: 0 !important;
+                padding-left: 20px !important;
+                width: calc(100% - 40px) !important;
             }
         </style>
     </noscript>
@@ -270,7 +285,7 @@
     </div>
 
     <script>
-        // Предотвращение добавление класса no-js для случаев, когда JavaScript включен
+        // Проверка загрузки JS
         document.body.classList.remove('no-js');
     </script>
 </body>
