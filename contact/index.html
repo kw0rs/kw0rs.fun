@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Связь | Академия Кворса</title>
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
+<link rel="manifest" href="/icon/site.webmanifest">
+<link rel="shortcut icon" href="/icon/favicon.ico">
+
+<!-- Redirect WWW to NON-WWW -->
+<script>
+if (location.hostname === 'www.kw0rs.fun') {
+    window.location.href = 'https://kw0rs.fun' + location.pathname;
+}
+</script>
+
+<style>
+  body {
+    background-color: #1a1a1a;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .form-container {
+    background: #222;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    width: 90%;
+    max-width: 500px;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  input, textarea {
+    padding: 10px;
+    background: #333;
+    border: 1px solid #444;
+    color: #eee;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  button {
+    padding: 12px;
+    background: #4285F4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background: #3367d6;
+  }
+  .success-message {
+    display: none;
+    text-align: center;
+    margin-top: 15px;
+    color: #4CAF50;
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+
+<div class="form-container">
+  <h1>Send Your Suggestion</h1>
+
+  <form id="contact-form" action="https://formspree.io/f/xaneprpw" method="POST">
+    <input type="text" name="name" placeholder="Your nickname" required>
+    <input type="text" name="game" placeholder="Game you want to see">
+    <textarea name="message" placeholder="Your message..." required></textarea>
+    <button type="submit">Submit</button>
+  </form>
+
+  <div class="success-message" id="success-message">
+    Thank you! Your suggestion has been sent.
+  </div>
+</div>
+
+<script>
+// Обработка отправки формы без перезагрузки
+const form = document.getElementById('contact-form');
+const successMessage = document.getElementById('success-message');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const formData = new FormData(form);
+  
+  const response = await fetch(form.action, {
+    method: form.method,
+    body: formData,
+    headers: {
+      'Accept': 'application/json'
+    }
+  });
+
+  if (response.ok) {
+    form.style.display = 'none';
+    successMessage.style.display = 'block';
+  } else {
+    alert('Something went wrong. Please try again.');
+  }
+});
+</script>
+
+</body>
+</html>
