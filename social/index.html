@@ -1,103 +1,130 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Социальные сети | Академия Кворса</title>
+
+<!-- Favicon -->
 <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
 <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
 <link rel="manifest" href="/icon/site.webmanifest">
 <link rel="shortcut icon" href="/icon/favicon.ico">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social | Академия Кворса</title>
-    <script>
-        // Редирект с www на без www
-        if (location.hostname === 'www.kw0rs.fun') {
-            window.location.href = 'https://kw0rs.fun' + location.pathname;
-        }
 
-        // Редирект с больших на маленькие буквы
-        var path = window.location.pathname;
-        if (path !== path.toLowerCase()) {
-            window.location.pathname = path.toLowerCase();
-        }
-    </script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background-color: #1a1a1a;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-        }
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: 100%;
-            max-width: 600px;
-            padding-top: 20px;
-        }
-        .social-button {
-            display: block;
-            padding: 20px;
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 24px;
-            border: 3px solid #ffffff;
-            border-radius: 40px;
-            transition: all 0.3s ease;
-            text-align: center;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-        }
-        .social-button:hover {
-            transform: translateY(-3px);
-        }
-        .social-button:active {
-            transform: translateY(1px);
-        }
-        .telegram-streams {
-            background-color: #ff0000;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
-        }
-        .telegram-academy {
-            background-color: #0088cc;
-            box-shadow: 0 0 15px rgba(0, 136, 204, 0.5);
-        }
-        .twitch {
-            background-color: #6441a5;
-            box-shadow: 0 0 15px rgba(100, 65, 165, 0.5);
-        }
-        .youtube {
-            background-color: #cc0000;
-            box-shadow: 0 0 15px rgba(204, 0, 0, 0.5);
-        }
-        .steam {
-            background-color: #2a475e;
-            box-shadow: 0 0 15px rgba(42, 71, 94, 0.5);
-        }
-        .telegram-streams:hover { background-color: #cc0000; }
-        .telegram-academy:hover { background-color: #006699; }
-        .twitch:hover { background-color: #4b367c; }
-        .youtube:hover { background-color: #990000; }
-        .steam:hover { background-color: #1f3545; }
-        @media (max-width: 768px) {
-            .social-button {
-                font-size: 20px;
-                padding: 16px;
-            }
-        }
-    </style>
+<!-- Перегонка www на без www -->
+<script>
+if (location.hostname === 'www.kw0rs.fun') {
+    window.location.href = 'https://kw0rs.fun' + location.pathname;
+}
+</script>
+
+<!-- Редирект с больших букв на маленькие -->
+<script>
+var path = window.location.pathname;
+if (path !== path.toLowerCase()) {
+    window.location.pathname = path.toLowerCase();
+}
+</script>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: #1a1a1a;
+    color: white;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .menu-button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    text-decoration: none;
+    font-size: 16px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .menu-button:hover {
+    background-color: #555;
+  }
+
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .social-button {
+    display: block;
+    padding: 20px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 24px;
+    border-radius: 10px;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .social-button:hover {
+    transform: translateY(-3px);
+  }
+  
+  .telegram-streams {
+    background-color: #ff0000;
+  }
+  
+  .telegram-academy {
+    background-color: #0088cc;
+  }
+  
+  .twitch {
+    background-color: #6441a5;
+  }
+  
+  .youtube {
+    background-color: #cc0000;
+  }
+  
+  .steam {
+    background-color: #2a475e;
+  }
+
+  .telegram-streams:hover { background-color: #cc0000; }
+  .telegram-academy:hover { background-color: #006699; }
+  .twitch:hover { background-color: #4b367c; }
+  .youtube:hover { background-color: #990000; }
+  .steam:hover { background-color: #1f3545; }
+
+  @media (max-width: 768px) {
+    .social-button {
+      font-size: 20px;
+      padding: 16px;
+    }
+  }
+</style>
 </head>
+
 <body>
-    <div class="button-container">
-        <a href="https://t.me/kw0rs" class="social-button telegram-streams" target="_blank">Telegram Стримов</a>
-        <a href="https://t.me/kw0rs_edu" class="social-button telegram-academy" target="_blank">Telegram Академии</a>
-        <a href="https://www.twitch.tv/kw0rs" class="social-button twitch" target="_blank">Twitch</a>
-        <a href="https://www.youtube.com/@kw0rs" class="social-button youtube" target="_blank">YouTube</a>
-        <a href="https://store.steampowered.com/curator/45513934-академия-имени-вильяма/" class="social-button steam" target="_blank">Steam Академии</a>
-    </div>
+
+<a href="/menu" class="menu-button">В меню</a>
+
+<div class="button-container">
+  <a href="https://t.me/kw0rs" class="social-button telegram-streams" target="_blank">Telegram Стримов</a>
+  <a href="https://t.me/kw0rs_edu" class="social-button telegram-academy" target="_blank">Telegram Академии</a>
+  <a href="https://www.twitch.tv/kw0rs" class="social-button twitch" target="_blank">Twitch</a>
+  <a href="https://www.youtube.com/@kw0rs" class="social-button youtube" target="_blank">YouTube</a>
+  <a href="https://store.steampowered.com/curator/45513934-академия-имени-вильяма/" class="social-button steam" target="_blank">Steam Академии</a>
+</div>
+
 </body>
 </html>
