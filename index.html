@@ -18,6 +18,7 @@ if (location.hostname === 'www.kw0rs.fun') {
     window.location.href = 'https://kw0rs.fun' + location.pathname;
 }
 </script>
+
 <style>
   body {
     background-color: #1a1a1a;
@@ -25,11 +26,13 @@ if (location.hostname === 'www.kw0rs.fun') {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
+
   .about-container {
     background: #222;
     padding: 40px;
@@ -39,31 +42,34 @@ if (location.hostname === 'www.kw0rs.fun') {
     max-width: 700px;
     text-align: center;
   }
+
   h1 {
     font-size: 32px;
     margin-bottom: 20px;
     color: #ffffff;
   }
+
   p {
     font-size: 18px;
     line-height: 1.6;
     color: #ccc;
   }
-  .button {
-    margin-top: 20px;
+
+  .button-link {
+    display: inline-block;
+    margin-top: 30px;
     padding: 12px 24px;
     background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
+    color: #eee;
     text-decoration: none;
-    display: inline-block;
-    transition: background-color 0.3s;
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 16px;
   }
-  .button:hover {
-    background-color: #c0392b; /* Красный при наведении */
+
+  .button-link:hover {
+    background-color: #c0392b;
+    color: #fff;
   }
 </style>
 </head>
@@ -78,7 +84,7 @@ if (location.hostname === 'www.kw0rs.fun') {
     Либо оставайся, либо проваливай — всё честно.
   </p>
 
-  <a href="/menu/" class="go-button">Идти дальше</a>
+  <a href="/menu" class="button-link">Идти дальше</a>
 </div>
 
 </body>
