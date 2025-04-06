@@ -3,147 +3,327 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Мини Doom 64 | Академия Кворса</title>
-
+  <title>Угадай, что я загадал</title>
+  
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
   <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
   <link rel="manifest" href="/icon/site.webmanifest">
   <link rel="shortcut icon" href="/icon/favicon.ico">
-
-  <!-- Перегонка www на без www и перевод пути в нижний регистр -->
+  
+  <!-- Перегонка www на без www -->
   <script>
     if (location.hostname === 'www.kw0rs.fun') {
       window.location.href = 'https://kw0rs.fun' + location.pathname;
     }
-    var path = window.location.pathname;
-    if (path !== path.toLowerCase()) {
-      window.location.pathname = path.toLowerCase();
-    }
   </script>
-
+  
   <style>
-    /* Убираем прокрутку и задаём фон */
     body {
-      margin: 0;
-      overflow: hidden;
-      background: #000;
+      font-family: Arial, sans-serif;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 10px;
+      background-color: #1a1a1a;
+      color: #e0e0e0;
     }
-    canvas {
+    h1 {
+      color: #e0e0e0;
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .game-container {
+      background-color: #1a1a1a;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      border: 1px solid #333;
+      width: 95%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .hint-container {
+      margin-bottom: 15px;
+    }
+    .hint {
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #2a2a2a;
+      border-left: 4px solid #4285F4;
+      display: none;
+      color: #e0e0e0;
+      word-wrap: break-word;
+      font-size: 14px;
+    }
+    .visible {
       display: block;
-      background: #222;
+    }
+    .hint-number {
+      font-weight: bold;
+      margin-right: 5px;
+      color: #4285F4;
+    }
+    .guess-container {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 90%;
+      background-color: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 4px;
+      font-size: 16px;
+      color: #e0e0e0;
+      margin-bottom: 10px;
+    }
+    input[type="text"]::placeholder {
+      color: #888;
+    }
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      background-color: #4285F4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.2s;
+      width: auto;
+    }
+    button:hover {
+      background-color: #3367d6;
+    }
+    button:disabled {
+      background-color: #555555;
+      cursor: not-allowed;
+    }
+    .result {
+      margin-top: 15px;
+      padding: 12px;
+      text-align: center;
+      border-radius: 4px;
+      display: none;
+      font-size: 14px;
+      width: 90%;
+    }
+    .correct {
+      background-color: #1e3a1e;
+      color: #a3e6a3;
+      border: 1px solid #2d5a2d;
+    }
+    .incorrect {
+      background-color: #3a1e1e;
+      color: #e6a3a3;
+      border: 1px solid #5a2d2d;
+    }
+    .timer {
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: #e0e0e0;
+    }
+    .hints-left {
+      text-align: center;
+      margin-bottom: 12px;
+      color: #e0e0e0;
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      .game-container {
+        padding: 10px;
+        width: 95%;
+      }
+      .hint {
+        padding: 8px;
+        font-size: 14px;
+      }
+      button {
+        width: 100%;
+        margin: 5px 0;
+        padding: 12px 10px;
+        font-size: 16px;
+      }
+      input[type="text"] {
+        width: 100%;
+        font-size: 16px;
+        padding: 12px 10px;
+      }
+      .timer, .hints-left {
+        font-size: 14px;
+      }
+    }
+    @media (max-width: 320px) {
+      h1 {
+        font-size: 18px;
+      }
+      .hint {
+        font-size: 13px;
+        padding: 6px;
+      }
+      .game-container {
+        padding: 8px;
+      }
+      button, input[type="text"] {
+        font-size: 14px;
+        padding: 10px 8px;
+      }
     }
   </style>
 </head>
 <body>
-  <canvas id="gameCanvas"></canvas>
+  <h1>Угадай, что я загадал</h1>
+  
+  <div class="game-container">
+    <div class="timer">Следующая загадка через: <span id="countdown">00:00:00</span></div>
+    <div class="hints-left">Осталось подсказок: <span id="hints-count">10</span></div>
+    
+    <div class="hint-container" id="hints">
+      <!-- Подсказки будут добавлены через JavaScript -->
+    </div>
+    
+    <div class="guess-container">
+      <input type="text" id="guess-input" placeholder="Введите ваш ответ...">
+      <button id="guess-button">Угадать</button>
+    </div>
+    
+    <div class="result" id="result"></div>
+  </div>
+
   <script>
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-
-    // Функция для установки размеров canvas под окно
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    // Простая карта: 1 – стена, 0 – пустота
-    const map = [
-      [1,1,1,1,1,1,1,1,1,1],
-      [1,0,0,0,0,0,0,0,0,1],
-      [1,0,1,0,1,0,1,0,0,1],
-      [1,0,1,0,1,0,1,0,0,1],
-      [1,0,0,0,0,0,1,0,0,1],
-      [1,0,1,0,1,0,1,0,0,1],
-      [1,0,1,0,1,0,1,0,0,1],
-      [1,0,0,0,0,0,0,0,0,1],
-      [1,1,1,1,1,1,1,1,1,1]
+    // Массив загадок
+    const items = [
+      {
+        name: "яблоко",
+        hints: [
+          "Это фрукт.",
+          "Оно бывает красное, зелёное или желтое.",
+          "Его растут на дереве.",
+          "Из него делают сок.",
+          "От него падают семечки."
+        ]
+      },
+      {
+        name: "автомобиль",
+        hints: [
+          "Это средство передвижения.",
+          "У него четыре колеса.",
+          "Он может быть спортивным или семейным.",
+          "На нём можно ехать по дорогам.",
+          "Его заводят ключом или кнопкой."
+        ]
+      },
+      {
+        name: "книга",
+        hints: [
+          "Это источник знаний.",
+          "Состоит из страниц.",
+          "Её читают в тишине.",
+          "Можно найти много историй внутри.",
+          "Она может быть бумажной или электронной."
+        ]
+      }
+      // Добавьте другие варианты, если нужно.
     ];
-    const mapWidth = map[0].length;
-    const mapHeight = map.length;
-    const tileSize = 64; // размер клетки
 
-    // Игрок
-    let player = {
-      x: tileSize * 1.5,
-      y: tileSize * 1.5,
-      angle: 0
-    };
-
-    const fov = Math.PI / 3; // 60° поле зрения
-    const numRays = canvas.width; // по одному лучу на пиксель ширины
-    const maxDepth = 1000;
-
-    function castRays() {
-      for (let i = 0; i < numRays; i++) {
-        // Угол луча
-        const rayAngle = player.angle - fov / 2 + (i / numRays) * fov;
-        let distance = 0;
-        let hit = false;
-        // Вектор направления
-        const eyeX = Math.cos(rayAngle);
-        const eyeY = Math.sin(rayAngle);
-
-        while (!hit && distance < maxDepth) {
-          distance += 1;
-          const testX = Math.floor((player.x + eyeX * distance) / tileSize);
-          const testY = Math.floor((player.y + eyeY * distance) / tileSize);
-          if (testX < 0 || testX >= mapWidth || testY < 0 || testY >= mapHeight) {
-            hit = true;
-            distance = maxDepth;
-          } else {
-            if (map[testY][testX] > 0) {
-              hit = true;
-            }
-          }
-        }
-
-        // Коррекция "рыбьего глаза"
-        const correctedDistance = distance * Math.cos(rayAngle - player.angle);
-        // Вычисление высоты стены
-        const lineHeight = (tileSize / correctedDistance) * (canvas.width / 2) / Math.tan(fov / 2);
-
-        // Рисуем вертикальную линию (стену)
-        ctx.fillStyle = correctedDistance < maxDepth ? "#888" : "#000";
-        ctx.fillRect(i, (canvas.height / 2) - lineHeight / 2, 1, lineHeight);
-        
-        // (Опционально) можно добавить заливку потолка и пола
-        ctx.fillStyle = "#111";
-        ctx.fillRect(i, 0, 1, (canvas.height / 2) - lineHeight / 2);
-        ctx.fillStyle = "#333";
-        ctx.fillRect(i, (canvas.height / 2) + lineHeight / 2, 1, canvas.height / 2 - lineHeight / 2);
-      }
+    // Функция получения количества дней от заданной даты (например, 27 февраля 2025)
+    function getDaysSinceStart() {
+      const startDate = new Date(2025, 1, 27);
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+      const diffTime = now - startDate;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays;
     }
 
-    function gameLoop() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      castRays();
-      requestAnimationFrame(gameLoop);
+    // Выбор загадки на основе дней с начала
+    function getItemForToday() {
+      const daysSinceStart = getDaysSinceStart();
+      const index = daysSinceStart < 0 ? 0 : daysSinceStart % items.length;
+      return items[index];
     }
-    gameLoop();
 
-    // Управление стрелками
-    document.addEventListener("keydown", function(e) {
-      const moveSpeed = 5;
-      const rotSpeed = 0.05;
-      if (e.key === "ArrowUp") {
-        player.x += Math.cos(player.angle) * moveSpeed;
-        player.y += Math.sin(player.angle) * moveSpeed;
-      }
-      if (e.key === "ArrowDown") {
-        player.x -= Math.cos(player.angle) * moveSpeed;
-        player.y -= Math.sin(player.angle) * moveSpeed;
-      }
-      if (e.key === "ArrowLeft") {
-        player.angle -= rotSpeed;
-      }
-      if (e.key === "ArrowRight") {
-        player.angle += rotSpeed;
+    let currentItem = getItemForToday();
+    let revealedHints = 0;
+    let gameWon = false;
+
+    // Создание элементов подсказок
+    const hintsContainer = document.getElementById('hints');
+    currentItem.hints.forEach((hint, i) => {
+      const hintElement = document.createElement('div');
+      hintElement.className = 'hint';
+      hintElement.innerHTML = `<span class="hint-number">${i + 1}:</span> ${hint}`;
+      hintsContainer.appendChild(hintElement);
+    });
+
+    document.getElementById('hints-count').textContent = currentItem.hints.length - revealedHints;
+
+    // Обработчики для кнопки "Угадать" и поля ввода
+    document.getElementById('guess-button').addEventListener('click', checkGuess);
+    document.getElementById('guess-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        checkGuess();
       }
     });
+
+    // Таймер до следующей загадки (обновляется каждую секунду)
+    function updateCountdown() {
+      const now = new Date();
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      const diff = tomorrow - now;
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      document.getElementById('countdown').textContent = 
+          `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // Функция проверки ответа
+    function checkGuess() {
+      if (gameWon) return;
+      
+      const guessInput = document.getElementById('guess-input');
+      const guess = guessInput.value.trim().toLowerCase();
+      const answer = currentItem.name.toLowerCase();
+      const resultElement = document.getElementById('result');
+      
+      if (guess === answer) {
+        resultElement.textContent = `Правильно! Это ${currentItem.name}!`;
+        resultElement.className = 'result correct';
+        resultElement.style.display = 'block';
+        gameWon = true;
+        
+        // Показываем все подсказки при победе
+        document.querySelectorAll('.hint').forEach(hint => hint.classList.add('visible'));
+      } else {
+        resultElement.textContent = 'Неверно! Открываю следующую подсказку...';
+        resultElement.className = 'result incorrect';
+        resultElement.style.display = 'block';
+        
+        if (revealedHints < currentItem.hints.length) {
+          document.querySelectorAll('.hint')[revealedHints].classList.add('visible');
+          revealedHints++;
+          document.getElementById('hints-count').textContent = currentItem.hints.length - revealedHints;
+        }
+        
+        setTimeout(() => guessInput.focus(), 100);
+      }
+      
+      guessInput.value = '';
+    }
   </script>
 </body>
 </html>
