@@ -1,7 +1,7 @@
 [
   {
     "title": "ЗАГЛУШКА3",
-    "type": "cartoon",
+    "type": "game",
     "rating": "?",
     "year": 999,
     "genres": ["Action", "Sci-Fi"],
@@ -11,7 +11,7 @@
   },
   {
     "title": "ЗАГЛУШКА4",
-    "type": "cartoon",
+    "type": "game",
     "rating": "?",
     "year": 999,
     "genres": ["Action", "Thriller", "Sci-Fi"],
