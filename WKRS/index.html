@@ -62,7 +62,7 @@
     </div>
 
     <div x-show="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <template x-for="(item, index) in filteredItems()" :key="index">
+      <template x-for="(item, index) in filteredAndSortedItems" :key="index">
         <div class="bg-neutral-900 rounded-xl p-4 shadow hover:shadow-xl transition cursor-pointer" @click="openModal(item)">
           <template x-if="item && item.image">
             <img :src="item.image" alt="Poster" class="card-img rounded mb-4" @error="handleImageError($event, item)">
@@ -203,7 +203,7 @@
           return 'text-red-500';
         },
         
-        filteredItems() {
+        get filteredItems() {
           if (!this.items || !Array.isArray(this.items) || this.items.length === 0) {
             return [];
           }
@@ -222,24 +222,39 @@
                 return item.type === this.categoryFilter;
               }
               return !this.categoryFilter;
-            })
-            .sort((a, b) => {
-              // Безопасная сортировка с учетом неоцененных элементов
-              const rA = a.rating !== null && a.rating !== undefined ? parseFloat(a.rating) : -1;
-              const rB = b.rating !== null && b.rating !== undefined ? parseFloat(b.rating) : -1;
-              
-              const yearA = parseInt(a.year) || 0;
-              const yearB = parseInt(b.year) || 0;
-              
-              switch (this.sortKey) {
-                case 'rating-asc': return rA - rB;
-                case 'rating-desc': return rB - rA;
-                case 'year-asc': return yearA - yearB;
-                case 'year-desc': return yearB - yearA;
-                case 'title': return (a.title || '').localeCompare(b.title || '');
-                default: return 0;
-              }
             });
+        },
+        
+        get filteredAndSortedItems() {
+          return [...this.filteredItems].sort((a, b) => {
+            switch (this.sortKey) {
+              case 'rating-asc': {
+                const rA = a.rating !== null && a.rating !== undefined ? parseFloat(a.rating) : -1;
+                const rB = b.rating !== null && b.rating !== undefined ? parseFloat(b.rating) : -1;
+                return rA - rB;
+              }
+              case 'rating-desc': {
+                const rA = a.rating !== null && a.rating !== undefined ? parseFloat(a.rating) : -1;
+                const rB = b.rating !== null && b.rating !== undefined ? parseFloat(b.rating) : -1;
+                return rB - rA;
+              }
+              case 'year-asc': {
+                const yearA = parseInt(a.year) || 0;
+                const yearB = parseInt(b.year) || 0;
+                return yearA - yearB;
+              }
+              case 'year-desc': {
+                const yearA = parseInt(a.year) || 0;
+                const yearB = parseInt(b.year) || 0;
+                return yearB - yearA;
+              }
+              case 'title': {
+                return (a.title || '').localeCompare(b.title || '');
+              }
+              default:
+                return 0;
+            }
+          });
         }
       }
     }
