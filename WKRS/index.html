@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Media Ratings</title>
+    <!-- Open Graph -->
+<meta property="og:title" content="Академия имени Вильяма Кворса">
+<meta property="og:description" content="Блин, а прикольный сайтик так-то.">
+<meta property="og:image" content="https://kw0rs.fun/icon/williamkw0rs.jpg">
+<meta property="og:url" content="https://kw0rs.fun">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Академия Кворса">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Академия имени Вильяма Кворса">
+<meta name="twitter:description" content="Блин, а прикольный сайтик так-то.">
+<meta name="twitter:image" content="https://kw0rs.fun/icon/williamkw0rs.jpg">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Академия</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
     .modal-bg { background-color: rgba(0, 0, 0, 0.8); }
     body { background-color: #1c1c1c; }
-    .full-img { width: 100%; height: auto; object-fit: contain; }
-    .card-img { width: 100%; aspect-ratio: 2/3; object-fit: cover; object-position: center; }
-    @media (max-width: 768px) {
-      .modal-content { max-height: 80vh; overflow-y: auto; }
-    }
+    .full-img { width:100%; height:auto; object-fit:contain; }
+    .card-img { width:100%; aspect-ratio:2/3; object-fit:cover; object-position:center; }
   </style>
 </head>
 <body class="text-white font-sans" x-data="mediaApp()" x-init="loadItems()">
@@ -187,7 +199,7 @@
           return this.items
             .filter(i => !this.search || i.title.toLowerCase().includes(this.search.toLowerCase()))
             .filter(i => !this.categoryFilter || i.type === this.categoryFilter)
-            .filter(i => this.minRating == null || (i.rating != null && i.rating >= this.minRating))
+            .filter(i => this.minRating == null || (i.rating != null하고 i.rating >= this.minRating))
             .filter(i => this.minYear == null || (i.year !== 'Н/Д' && parseInt(i.year) >= this.minYear))
             .filter(i => this.maxYear == null || (i.year !== 'Н/Д' && parseInt(i.year) <= this.maxYear));
         },
