@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Media Ratings</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script defer src="https://unpkg.com/alpinejs"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
     .modal-bg {
       background-color: rgba(0, 0, 0, 0.8);
@@ -26,7 +26,7 @@
     }
   </style>
 </head>
-<body class="text-white font-sans" x-data="mediaApp()" x-init="loadItems">
+<body class="text-white font-sans" x-data="mediaApp()" x-init="loadItems()">
   <div class="max-w-7xl mx-auto p-4">
     <h1 class="text-3xl font-bold mb-6">My Media Library</h1>
 
@@ -52,21 +52,30 @@
       </select>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <template x-for="item in filteredItems()" :key="item.title">
+    <div x-show="loading" class="text-center py-10">
+      <p class="text-xl">Загрузка данных...</p>
+    </div>
+    
+    <div x-show="error" class="text-center py-10 text-red-400">
+      <p class="text-xl" x-text="error"></p>
+      <button @click="loadItems()" class="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Попробовать снова</button>
+    </div>
+
+    <div x-show="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <template x-for="(item, index) in filteredItems()" :key="index">
         <div class="bg-neutral-900 rounded-xl p-4 shadow hover:shadow-xl transition cursor-pointer" @click="openModal(item)">
-          <template x-if="item.image">
-            <img :src="item.image" alt="Poster" class="card-img rounded mb-4" @error="item.image = null">
+          <template x-if="item && item.image">
+            <img :src="item.image" alt="Poster" class="card-img rounded mb-4" @error="handleImageError($event, item)">
           </template>
-          <template x-if="!item.image">
+          <template x-if="!item || !item.image">
             <div class="w-full aspect-[2/3] flex items-center justify-center bg-neutral-800 text-sm text-gray-400 rounded mb-4 text-center p-2">
               Картинку съели,<br> скоро принесём новую
             </div>
           </template>
-          <h2 class="text-xl font-semibold mb-1" x-text="item.title"></h2>
-          <p class="text-sm text-gray-400 mb-2" x-text="`${item.type} • ${item.year}`"></p>
-          <p :class="ratingColor(item.rating) + ' font-bold'">★ <span x-text="item.rating"></span>/10</p>
-          <template x-if="item.genres && item.genres.length">
+          <h2 class="text-xl font-semibold mb-1" x-text="item ? item.title : ''"></h2>
+          <p class="text-sm text-gray-400 mb-2" x-text="item ? `${item.type || 'N/A'} • ${item.year || 'N/A'}` : ''"></p>
+          <p :class="ratingColor(item ? item.rating : 0) + ' font-bold'">★ <span x-text="item ? item.rating : 0"></span>/10</p>
+          <template x-if="item && item.genres && item.genres.length">
             <p class="text-sm text-gray-400 mt-1" x-text="item.genres.join(', ')"></p>
           </template>
         </div>
@@ -75,28 +84,30 @@
 
     <!-- Modal -->
     <div x-show="modalItem !== null" class="fixed inset-0 z-50 flex items-center justify-center modal-bg" @click.self="modalItem = null">
-      <div class="bg-neutral-900 p-6 rounded-lg w-[90%] max-w-5xl shadow-2xl">
+      <div class="bg-neutral-900 p-6 rounded-lg w-[90%] max-w-5xl shadow-2xl" @click.stop>
         <template x-if="modalItem !== null">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
             <div class="flex justify-center">
-              <template x-if="modalItem.image">
+              <template x-if="modalItem && modalItem.image">
                 <img :src="modalItem.image" alt="Poster" class="full-img rounded" @error="modalItem.image = null">
               </template>
-              <template x-if="!modalItem.image">
+              <template x-if="!modalItem || !modalItem.image">
                 <div class="w-full h-80 flex items-center justify-center bg-neutral-800 text-sm text-gray-400 rounded text-center p-2">
                   Картинку съели,<br> скоро принесём новую
                 </div>
               </template>
             </div>
             <div>
-              <h2 class="text-2xl font-bold mb-2" x-text="modalItem.title"></h2>
-              <p class="text-sm text-gray-400 mb-1" x-text="`${modalItem.type} • ${modalItem.year}`"></p>
-              <p :class="ratingColor(modalItem.rating) + ' font-bold mb-1'">★ <span x-text="modalItem.rating"></span>/10</p>
-              <template x-if="modalItem.genres && modalItem.genres.length">
+              <h2 class="text-2xl font-bold mb-2" x-text="modalItem ? modalItem.title : ''"></h2>
+              <p class="text-sm text-gray-400 mb-1" x-text="modalItem ? `${modalItem.type || 'N/A'} • ${modalItem.year || 'N/A'}` : ''"></p>
+              <p :class="ratingColor(modalItem ? modalItem.rating : 0) + ' font-bold mb-1'">★ <span x-text="modalItem ? modalItem.rating : 0"></span>/10</p>
+              <template x-if="modalItem && modalItem.genres && modalItem.genres.length">
                 <p class="text-sm text-gray-400 mb-1" x-text="modalItem.genres.join(', ')"></p>
               </template>
-              <p class="mb-3 text-gray-300" x-text="modalItem.description"></p>
-              <p class="italic text-gray-400" x-show="modalItem.review">Review: <span x-text="modalItem.review"></span></p>
+              <p class="mb-3 text-gray-300" x-text="modalItem && modalItem.description ? modalItem.description : ''"></p>
+              <p class="italic text-gray-400" x-show="modalItem && modalItem.review">Review: <span x-text="modalItem.review"></span></p>
+              
+              <button @click="modalItem = null" class="mt-4 bg-neutral-700 hover:bg-neutral-600 px-4 py-2 rounded">Закрыть</button>
             </div>
           </div>
         </template>
@@ -112,35 +123,104 @@
         sortKey: 'rating-desc',
         modalItem: null,
         items: [],
+        loading: true,
+        error: null,
+        
         async loadItems() {
+          this.loading = true;
+          this.error = null;
+          
           try {
             const res = await fetch('data.json');
-            this.items = await res.json();
+            if (!res.ok) {
+              throw new Error(`Ошибка загрузки (${res.status}): ${res.statusText}`);
+            }
+            
+            const data = await res.json();
+            
+            // Проверяем что данные - массив
+            if (!Array.isArray(data)) {
+              throw new Error('Некорректный формат данных: ожидался массив');
+            }
+            
+            // Проверяем и обрабатываем каждый элемент
+            this.items = data.map(item => {
+              // Убедимся, что обязательные поля существуют
+              return {
+                title: item.title || 'Без названия',
+                type: item.type || 'Неизвестно',
+                year: item.year || 'Н/Д',
+                rating: parseFloat(item.rating) || 0,
+                genres: Array.isArray(item.genres) ? item.genres : [],
+                description: item.description || 'Описание отсутствует',
+                review: item.review || '',
+                image: item.image || null
+              };
+            });
+            
+            console.log('Данные успешно загружены:', this.items);
           } catch (e) {
             console.error('Ошибка загрузки data.json:', e);
+            this.error = `Не удалось загрузить базу данных: ${e.message}`;
+            this.items = [];
+          } finally {
+            this.loading = false;
           }
         },
+        
         openModal(item) {
-          this.modalItem = { ...item };
+          if (item) {
+            this.modalItem = { ...item };
+          }
         },
+        
+        handleImageError(event, item) {
+          if (item) {
+            item.image = null;
+          }
+        },
+        
         ratingColor(rating) {
+          rating = parseFloat(rating) || 0;
           if (rating >= 7) return 'text-green-400';
           if (rating >= 4) return 'text-yellow-400';
           return 'text-red-500';
         },
+        
         filteredItems() {
+          if (!this.items || !Array.isArray(this.items) || this.items.length === 0) {
+            return [];
+          }
+          
           return this.items
-            .filter(i => (!this.search || i.title.toLowerCase().includes(this.search.toLowerCase())))
-            .filter(i => (!this.categoryFilter || i.type === this.categoryFilter))
+            .filter(item => {
+              // Безопасная фильтрация по поиску
+              if (this.search && item.title) {
+                return item.title.toLowerCase().includes(this.search.toLowerCase());
+              }
+              return !this.search;
+            })
+            .filter(item => {
+              // Безопасная фильтрация по категории
+              if (this.categoryFilter && item.type) {
+                return item.type === this.categoryFilter;
+              }
+              return !this.categoryFilter;
+            })
             .sort((a, b) => {
-              const rA = isNaN(a.rating) ? -1 : a.rating;
-              const rB = isNaN(b.rating) ? -1 : b.rating;
+              // Безопасная сортировка
+              const rA = parseFloat(a.rating) || 0;
+              const rB = parseFloat(b.rating) || 0;
+              
+              const yearA = parseInt(a.year) || 0;
+              const yearB = parseInt(b.year) || 0;
+              
               switch (this.sortKey) {
                 case 'rating-asc': return rA - rB;
                 case 'rating-desc': return rB - rA;
-                case 'year-asc': return (a.year ?? 0) - (b.year ?? 0);
-                case 'year-desc': return (b.year ?? 0) - (a.year ?? 0);
-                case 'title': return a.title.localeCompare(b.title);
+                case 'year-asc': return yearA - yearB;
+                case 'year-desc': return yearB - yearA;
+                case 'title': return (a.title || '').localeCompare(b.title || '');
                 default: return 0;
               }
             });
