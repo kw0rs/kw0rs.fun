@@ -74,7 +74,10 @@
           </template>
           <h2 class="text-xl font-semibold mb-1" x-text="item ? item.title : ''"></h2>
           <p class="text-sm text-gray-400 mb-2" x-text="item ? `${item.type || 'N/A'} • ${item.year || 'N/A'}` : ''"></p>
-          <p :class="ratingColor(item ? item.rating : 0) + ' font-bold'">★ <span x-text="item ? item.rating : 0"></span>/10</p>
+          
+          <!-- Рейтинг с поддержкой неоцененных элементов -->
+          <p :class="getRatingClass(item)">★ <span x-text="getRatingText(item)"></span>/10</p>
+          
           <template x-if="item && item.genres && item.genres.length">
             <p class="text-sm text-gray-400 mt-1" x-text="item.genres.join(', ')"></p>
           </template>
@@ -100,7 +103,10 @@
             <div>
               <h2 class="text-2xl font-bold mb-2" x-text="modalItem ? modalItem.title : ''"></h2>
               <p class="text-sm text-gray-400 mb-1" x-text="modalItem ? `${modalItem.type || 'N/A'} • ${modalItem.year || 'N/A'}` : ''"></p>
-              <p :class="ratingColor(modalItem ? modalItem.rating : 0) + ' font-bold mb-1'">★ <span x-text="modalItem ? modalItem.rating : 0"></span>/10</p>
+              
+              <!-- Рейтинг с поддержкой неоцененных элементов в модальном окне -->
+              <p :class="getRatingClass(modalItem) + ' font-bold mb-1'">★ <span x-text="getRatingText(modalItem)"></span>/10</p>
+              
               <template x-if="modalItem && modalItem.genres && modalItem.genres.length">
                 <p class="text-sm text-gray-400 mb-1" x-text="modalItem.genres.join(', ')"></p>
               </template>
@@ -150,7 +156,7 @@
                 title: item.title || 'Без названия',
                 type: item.type || 'Неизвестно',
                 year: item.year || 'Н/Д',
-                rating: parseFloat(item.rating) || 0,
+                rating: item.rating !== undefined && item.rating !== null ? parseFloat(item.rating) : null,
                 genres: Array.isArray(item.genres) ? item.genres : [],
                 description: item.description || 'Описание отсутствует',
                 review: item.review || '',
@@ -180,8 +186,18 @@
           }
         },
         
-        ratingColor(rating) {
-          rating = parseFloat(rating) || 0;
+        // Новые функции для работы с рейтингом
+        getRatingText(item) {
+          if (!item) return '?';
+          return item.rating !== null && item.rating !== undefined ? item.rating : '?';
+        },
+        
+        getRatingClass(item) {
+          if (!item || item.rating === null || item.rating === undefined) return 'text-gray-400';
+          
+          const rating = parseFloat(item.rating);
+          if (isNaN(rating)) return 'text-gray-400';
+          
           if (rating >= 7) return 'text-green-400';
           if (rating >= 4) return 'text-yellow-400';
           return 'text-red-500';
@@ -208,9 +224,9 @@
               return !this.categoryFilter;
             })
             .sort((a, b) => {
-              // Безопасная сортировка
-              const rA = parseFloat(a.rating) || 0;
-              const rB = parseFloat(b.rating) || 0;
+              // Безопасная сортировка с учетом неоцененных элементов
+              const rA = a.rating !== null && a.rating !== undefined ? parseFloat(a.rating) : -1;
+              const rB = b.rating !== null && b.rating !== undefined ? parseFloat(b.rating) : -1;
               
               const yearA = parseInt(a.year) || 0;
               const yearB = parseInt(b.year) || 0;
