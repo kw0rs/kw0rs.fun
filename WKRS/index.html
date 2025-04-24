@@ -7,23 +7,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
-    .modal-bg {
-      background-color: rgba(0, 0, 0, 0.8);
-    }
-    body {
-      background-color: #1c1c1c;
-    }
-    .full-img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-    }
-    .card-img {
-      width: 100%;
-      aspect-ratio: 2/3;
-      object-fit: cover;
-      object-position: center;
-    }
+    .modal-bg { background-color: rgba(0, 0, 0, 0.8); }
+    body { background-color: #1c1c1c; }
+    .full-img { width:100%; height:auto; object-fit:contain; }
+    .card-img { width:100%; aspect-ratio:2/3; object-fit:cover; object-position:center; }
   </style>
 </head>
 <body class="text-white font-sans" x-data="mediaApp()" x-init="loadItems()">
@@ -31,12 +18,7 @@
     <h1 class="text-3xl font-bold mb-6">My Media Library</h1>
 
     <div class="flex flex-wrap gap-4 mb-6">
-      <input
-        type="text"
-        x-model="search"
-        placeholder="Search..."
-        class="p-2 rounded bg-neutral-800 border border-neutral-700 w-full sm:w-auto"
-      />
+      <input type="text" x-model="search" placeholder="Search..." class="p-2 rounded bg-neutral-800 border border-neutral-700 w-full sm:w-auto"/>
 
       <select x-model="categoryFilter" class="p-2 rounded bg-neutral-800 border border-neutral-700">
         <option value="">All Categories</option>
@@ -49,11 +31,11 @@
       </select>
 
       <select x-model="sortKey" class="p-2 rounded bg-neutral-800 border border-neutral-700">
-        <option value="rating-desc">Rating (High to Low)</option>
-        <option value="rating-asc">Rating (Low to High)</option>
-        <option value="year-desc">Year (Newest First)</option>
-        <option value="year-asc">Year (Oldest First)</option>
-        <option value="title">Title (A-Z)</option>
+        <option value="rating-desc">Рейтинг (↑)</option>
+        <option value="rating-asc">Рейтинг (↓)</option>
+        <option value="year-desc">Год (новые)</option>
+        <option value="year-asc">Год (старые)</option>
+        <option value="title">Название (A-Z)</option>
       </select>
     </div>
 
@@ -63,33 +45,18 @@
 
     <div x-show="error" class="text-center py-10 text-red-400">
       <p class="text-xl" x-text="error"></p>
-      <button @click="loadItems()" class="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">
-        Попробовать снова
-      </button>
+      <button @click="loadItems()" class="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Попробовать снова</button>
     </div>
 
     <div x-show="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <template
-        x-for="item in filteredAndSortedItems"
-        :key="item.title + '-' + item.year"
-      >
-        <div
-          class="bg-neutral-900 rounded-xl p-4 shadow hover:shadow-xl transition cursor-pointer"
-          @click="openModal(item)"
-        >
-          <template x-if="item && item.image">
-            <img
-              :src="item.image"
-              alt="Poster"
-              class="card-img rounded mb-4"
-              @error="handleImageError($event, item)"
-            />
+      <template x-for="item in filteredAndSortedItems" :key="item.title + '-' + item.year + '-' + (item.rating ?? '')">
+        <div class="bg-neutral-900 rounded-xl p-4 shadow hover:shadow-xl transition cursor-pointer" @click="openModal(item)">
+          <template x-if="item.image">
+            <img :src="item.image" alt="Poster" class="card-img rounded mb-4" @error="handleImageError($event, item)"/>
           </template>
-          <template x-if="!item || !item.image">
-            <div
-              class="w-full aspect-[2/3] flex items-center justify-center bg-neutral-800 text-sm text-gray-400 rounded mb-4 text-center p-2"
-            >
-              Картинку съели,<br />скоро принесём новую
+          <template x-if="!item.image">
+            <div class="w-full aspect-[2/3] flex items-center justify-center bg-neutral-800 text-sm text-gray-400 rounded mb-4 text-center p-2">
+              Картинку съели,<br>скоро принесём новую
             </div>
           </template>
           <h2 class="text-xl font-semibold mb-1" x-text="item.title"></h2>
@@ -97,7 +64,7 @@
           <p :class="getRatingClass(item)">
             ★ <span x-text="getRatingText(item)"></span>/10
           </p>
-          <template x-if="item.genres && item.genres.length">
+          <template x-if="item.genres.length">
             <p class="text-sm text-gray-400 mt-1" x-text="item.genres.join(', ')"></p>
           </template>
         </div>
@@ -105,27 +72,16 @@
     </div>
 
     <!-- Modal -->
-    <div
-      x-show="modalItem !== null"
-      class="fixed inset-0 z-50 flex items-center justify-center modal-bg"
-      @click.self="modalItem = null"
-    >
+    <div x-show="modalItem !== null" class="fixed inset-0 z-50 flex items-center justify-center modal-bg" @click.self="modalItem = null">
       <div class="bg-neutral-900 p-6 rounded-lg w-[90%] max-w-5xl shadow-2xl" @click.stop>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center" x-show="modalItem">
           <div class="flex justify-center">
             <template x-if="modalItem.image">
-              <img
-                :src="modalItem.image"
-                alt="Poster"
-                class="full-img rounded"
-                @error="modalItem.image = null"
-              />
+              <img :src="modalItem.image" alt="Poster" class="full-img rounded" @error="modalItem.image = null"/>
             </template>
             <template x-if="!modalItem.image">
-              <div
-                class="w-full h-80 flex items-center justify-center bg-neutral-800 text-sm text-gray-400 rounded text-center p-2"
-              >
-                Картинку съели,<br />скоро принесём новую
+              <div class="w-full h-80 flex items-center justify-center bg-neutral-800 text-sm text-gray-400 rounded text-center p-2">
+                Картинку съели,<br>скоро принесём новую
               </div>
             </template>
           </div>
@@ -135,19 +91,14 @@
             <p :class="getRatingClass(modalItem) + ' font-bold mb-1'">
               ★ <span x-text="getRatingText(modalItem)"></span>/10
             </p>
-            <template x-if="modalItem.genres && modalItem.genres.length">
+            <template x-if="modalItem.genres.length">
               <p class="text-sm text-gray-400 mb-1" x-text="modalItem.genres.join(', ')"></p>
             </template>
             <p class="mb-3 text-gray-300" x-text="modalItem.description"></p>
             <p class="italic text-gray-400" x-show="modalItem.review">
               Review: <span x-text="modalItem.review"></span>
             </p>
-            <button
-              @click="modalItem = null"
-              class="mt-4 bg-neutral-700 hover:bg-neutral-600 px-4 py-2 rounded"
-            >
-              Закрыть
-            </button>
+            <button @click="modalItem = null" class="mt-4 bg-neutral-700 hover:bg-neutral-600 px-4 py-2 rounded">Закрыть</button>
           </div>
         </div>
       </div>
@@ -170,44 +121,35 @@
           this.error = null;
           try {
             const res = await fetch('data.json');
-            if (!res.ok) throw new Error(`Ошибка загрузки (${res.status})`);
+            if (!res.ok) throw new Error(`Ошибка ${res.status}`);
             const data = await res.json();
             if (!Array.isArray(data)) throw new Error('Ожидался массив');
-            this.items = data.map(item => ({
-              title: item.title || 'Без названия',
-              type: item.type || 'Неизвестно',
-              year: item.year || 'Н/Д',
-              rating:
-                item.rating !== undefined && item.rating !== null
-                  ? parseFloat(item.rating)
-                  : null,
-              genres: Array.isArray(item.genres) ? item.genres : [],
-              description: item.description || 'Описание отсутствует',
-              review: item.review || '',
-              image: item.image || null
+            this.items = data.map(i => ({
+              title: i.title || 'Без названия',
+              type: i.type || 'Неизвестно',
+              year: i.year || 'Н/Д',
+              rating: i.rating != null ? +i.rating : null,
+              genres: Array.isArray(i.genres) ? i.genres : [],
+              description: i.description || 'Описание отсутствует',
+              review: i.review || '',
+              image: i.image || null
             }));
           } catch (e) {
-            this.error = `Не удалось загрузить базу: ${e.message}`;
+            this.error = `Не удалось загрузить: ${e.message}`;
             this.items = [];
           } finally {
             this.loading = false;
           }
         },
 
-        openModal(item) {
-          this.modalItem = { ...item };
-        },
-
-        handleImageError(event, item) {
-          item.image = null;
-        },
+        openModal(item) { this.modalItem = { ...item }; },
+        handleImageError(e, item) { item.image = null; },
 
         getRatingText(item) {
-          return item.rating != null ? item.rating : '?';
+          return item.rating != null && !isNaN(item.rating) ? item.rating : '?';
         },
-
         getRatingClass(item) {
-          if (item.rating == null) return 'text-gray-400';
+          if (item.rating == null || isNaN(item.rating)) return 'text-gray-400';
           if (item.rating >= 7) return 'text-green-400';
           if (item.rating >= 4) return 'text-yellow-400';
           return 'text-red-500';
@@ -215,35 +157,23 @@
 
         get filteredItems() {
           return this.items
-            .filter(item =>
-              this.search
-                ? item.title.toLowerCase().includes(this.search.toLowerCase())
-                : true
-            )
-            .filter(item =>
-              this.categoryFilter ? item.type === this.categoryFilter : true
-            );
+            .filter(i => !this.search || i.title.toLowerCase().includes(this.search.toLowerCase()))
+            .filter(i => !this.categoryFilter || i.type === this.categoryFilter);
         },
 
         get filteredAndSortedItems() {
           return [...this.filteredItems].sort((a, b) => {
             switch (this.sortKey) {
-              case 'rating-asc':
-                return (a.rating ?? -1) - (b.rating ?? -1);
-              case 'rating-desc':
-                return (b.rating ?? -1) - (a.rating ?? -1);
-              case 'year-asc':
-                return parseInt(a.year) - parseInt(b.year);
-              case 'year-desc':
-                return parseInt(b.year) - parseInt(a.year);
-              case 'title':
-                return a.title.localeCompare(b.title);
-              default:
-                return 0;
+              case 'rating-asc':   return (a.rating ?? -1) - (b.rating ?? -1);
+              case 'rating-desc':  return (b.rating ?? -1) - (a.rating ?? -1);
+              case 'year-asc':     return (parseInt(a.year) || 0) - (parseInt(b.year) || 0);
+              case 'year-desc':    return (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
+              case 'title':        return a.title.localeCompare(b.title);
+              default:             return 0;
             }
           });
         }
-      };
+      }
     }
   </script>
 </body>
