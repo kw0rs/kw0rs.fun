@@ -117,18 +117,22 @@
         async loadItems() {
           this.loading = true;
           this.error = null;
+          const urls = ['anime_data.json', 'movies_data.json', 'games_data.json', 'books_data.json', 'cartoons_data.json'];
+          let allItems = [];
           try {
-            const res = await fetch('data.json');
-            if (!res.ok) throw new Error(`Ошибка ${res.status}`);
-            const data = await res.json();
-            if (!Array.isArray(data)) throw new Error('Ожидался массив');
-            this.items = data.map(i => {
+            for (const url of urls) {
+              const res = await fetch(url);
+              if (!res.ok) throw new Error(`Ошибка загрузки ${url}`);
+              const data = await res.json();
+              if (!Array.isArray(data)) throw new Error(`Ожидался массив в ${url}`);
+              allItems = allItems.concat(data);
+            }
+            this.items = allItems.map(i => {
               const r = parseFloat(i.rating);
               return {
                 title: i.title || 'Без названия',
                 type: i.type || 'Неизвестно',
                 year: i.year || 'Н/Д',
-                // если rating не число — поставим null
                 rating: !isNaN(r) ? r : null,
                 genres: Array.isArray(i.genres) ? i.genres : [],
                 description: i.description || 'Описание отсутствует',
@@ -137,7 +141,7 @@
               };
             });
           } catch (e) {
-            this.error = `Не удалось загрузить: ${e.message}`;
+            this.error = `Не удалось загрузить данные: ${e.message}`;
             this.items = [];
           } finally {
             this.loading = false;
@@ -165,7 +169,6 @@
 
         get filteredAndSortedItems() {
           return [...this.filteredItems].sort((a, b) => {
-            // пушим null/NaN в конец
             const ra = (a.rating == null) ? -1 : a.rating;
             const rb = (b.rating == null) ? -1 : b.rating;
             switch (this.sortKey) {
