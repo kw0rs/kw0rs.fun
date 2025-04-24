@@ -45,11 +45,12 @@
         <option value="year-asc">Год (Старее)</option>
         <option value="title">Название (A-Z)</option>
       </select>
-      <!-- New Filters -->
       <input type="number" x-model.number="minRating" placeholder="Min Rating" min="0" max="10" class="p-2 rounded bg-neutral-800 border border-neutral-700 w-24"/>
       <input type="number" x-model.number="maxRating" placeholder="Max Rating" min="0" max="10" class="p-2 rounded bg-neutral-800 border border-neutral-700 w-24"/>
       <input type="number" x-model.number="minYear" placeholder="From Year" class="p-2 rounded bg-neutral-800 border border-neutral-700 w-24"/>
       <input type="number" x-model.number="maxYear" placeholder="To Year" class="p-2 rounded bg-neutral-800 border border-neutral-700 w-24"/>
+      <!-- New "I'm Feeling Lucky" Button -->
+      <button @click="pickRandomItem()" class="p-2 rounded bg-blue-600 hover:bg-blue-700 text-white">Мне повезёт</button>
     </div>
 
     <div x-show="loading" class="text-center py-10">
@@ -83,7 +84,7 @@
 
     <!-- Modal -->
     <div x-show="modalItem" class="fixed inset-0 z-50 flex items-center justify-center modal-bg" @click.self="modalItem = null">
-      <div class="bg-neutral-900 p-6 rounded-lg w-[90%] max-w- Adulting-5xl shadow-2xl modal-content" @click.stop>
+      <div class="bg-neutral-900 p-6 rounded-lg w-[90%] max-w-5xl shadow-2xl modal-content" @click.stop>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           <div class="flex justify-center">
             <template x-if="modalItem.image">
@@ -162,6 +163,17 @@
 
         openModal(item) { this.modalItem = {...item}; },
         handleImageError(e, item) { item.image = null; },
+
+        pickRandomItem() {
+          let availableItems = this.items.filter(i => !this.categoryFilter || i.type === this.categoryFilter);
+          if (availableItems.length === 0) {
+            this.error = 'Нет элементов в выбранной категории';
+            setTimeout(() => this.error = null, 3000);
+            return;
+          }
+          const randomIndex = Math.floor(Math.random() * availableItems.length);
+          this.openModal(availableItems[randomIndex]);
+        },
 
         getRatingText(item) {
           return (item.rating != null) ? item.rating : '?';
