@@ -45,11 +45,9 @@
         <option value="year-asc">Год (Старее)</option>
         <option value="title">Название (A-Z)</option>
       </select>
-      <input type="number" x-model.number="minRating" placeholder="Min Rating" min="0" max="10" class="p-2 rounded bg-neutral-800 border border-neutral-700 w-24"/>
-      <input type="number" x-model.number="maxRating" placeholder="Max Rating" min="0" max="10" class="p-2 rounded bg-neutral-800 border border-neutral-700 w-24"/>
+      <input type="number" x-model.number="minRating" placeholder="Min Rating" min="0" class="p-2 rounded bg-neutral-800 border border-neutral-700 w-24"/>
       <input type="number" x-model.number="minYear" placeholder="From Year" class="p-2 rounded bg-neutral-800 border border-neutral-700 w-24"/>
       <input type="number" x-model.number="maxYear" placeholder="To Year" class="p-2 rounded bg-neutral-800 border border-neutral-700 w-24"/>
-      <!-- New "I'm Feeling Lucky" Button -->
       <button @click="pickRandomItem()" class="p-2 rounded bg-blue-600 hover:bg-blue-700 text-white">Мне повезёт</button>
     </div>
 
@@ -123,7 +121,6 @@
         loading: true,
         error: null,
         minRating: null,
-        maxRating: null,
         minYear: null,
         maxYear: null,
 
@@ -190,7 +187,6 @@
             .filter(i => !this.search || i.title.toLowerCase().includes(this.search.toLowerCase()))
             .filter(i => !this.categoryFilter || i.type === this.categoryFilter)
             .filter(i => this.minRating == null || (i.rating != null && i.rating >= this.minRating))
-            .filter(i => this.maxRating == null || (i.rating != null && i.rating <= this.maxRating))
             .filter(i => this.minYear == null || (i.year !== 'Н/Д' && parseInt(i.year) >= this.minYear))
             .filter(i => this.maxYear == null || (i.year !== 'Н/Д' && parseInt(i.year) <= this.maxYear));
         },
