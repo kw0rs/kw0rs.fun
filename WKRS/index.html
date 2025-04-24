@@ -9,21 +9,24 @@
   <style>
     .modal-bg { background-color: rgba(0, 0, 0, 0.8); }
     body { background-color: #1c1c1c; }
-    .full-img { width:100%; height:auto; object-fit:contain; }
-    .card-img { width:100%; aspect-ratio:2/3; object-fit:cover; object-position:center; }
+    .full-img { width: 100%; height: auto; object-fit: contain; }
+    .card-img { width: 100%; aspect-ratio: 2/3; object-fit: cover; object-position: center; }
+    @media (max-width: 768px) {
+      .modal-content { max-height: 80vh; overflow-y: auto; }
+    }
   </style>
 </head>
 <body class="text-white font-sans" x-data="mediaApp()" x-init="loadItems()">
   <div class="max-w-7xl mx-auto p-4">
-     <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold">My Media Library</h1>
-    <a
-      href="https://kw0rs.fun/menu"
-      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-    >
-      в меню
-    </a>
-  </div>
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold">My Media Library</h1>
+      <a
+        href="https://kw0rs.fun/menu"
+        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+      >
+        в меню
+      </a>
+    </div>
     <div class="flex flex-wrap gap-4 mb-6">
       <input type="text" x-model="search" placeholder="Search..." class="p-2 rounded bg-neutral-800 border border-neutral-700 w-full sm:w-auto"/>
       <select x-model="categoryFilter" class="p-2 rounded bg-neutral-800 border border-neutral-700">
@@ -75,8 +78,8 @@
 
     <!-- Modal -->
     <div x-show="modalItem" class="fixed inset-0 z-50 flex items-center justify-center modal-bg" @click.self="modalItem = null">
-      <div class="bg-neutral-900 p-6 rounded-lg w-[90%] max-w-5xl shadow-2xl" @click.stop>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+      <div class="bg-neutral-900 p-6 rounded-lg w-[90%] max-w-5xl shadow-2xl modal-content" @click.stop>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           <div class="flex justify-center">
             <template x-if="modalItem.image">
               <img :src="modalItem.image" class="full-img rounded" @error="modalItem.image = null"/>
