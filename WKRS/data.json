@@ -40,41 +40,41 @@
     "image": "https://rukminim2.flixcart.com/image/850/1000/xif0q/poster/m/t/s/medium-na-highschool-dxd-matte-finish-poster-pop0347-original-imagzfxgbtfqxbhq.jpeg"
   },
   {
-    "title": "Атака титанов(2013)(не понравилось",
+    "title": "Атака титанов",
     "type": "anime",
-    "rating": "?",
-    "year": null,
-    "genres": [],
+    "rating": "8",
+    "year": 2013,
+    "genres": ["Экшн", "Драма", "Фэнтези", "Военное"],
     "description": "",
     "review": "",
     "image": "https://via.placeholder.com/300x400?text=Атака+титанов(2013)(не+понравилось"
   },
   {
-    "title": "Лог горизонт(2013",
+    "title": "Лог горизонт",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2013,
+    "genres": ["Приключения", "Фэнтези", "Игра"],
     "description": "",
     "review": "",
     "image": "https://via.placeholder.com/300x400?text=Лог+горизонт(2013"
   },
   {
-    "title": "Бездомный бог(2014",
+    "title": "Бездомный бог",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2014,
+    "genres": ["Экшн", "Фэнтези", "Комедия", "Сверхъестественное"],
     "description": "",
     "review": "",
     "image": "https://via.placeholder.com/300x400?text=Бездомный+бог(2014"
   },
   {
-    "title": "Тринити(2014",
+    "title": "Тринити", 
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2014,
+    "genres": ["Фэнтези", "Экшн", "Школа", "Этти"],
     "description": "",
     "review": "",
     "image": "https://via.placeholder.com/300x400?text=Тринити(2014"
@@ -83,8 +83,8 @@
     "title": "Токийский гуль",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2014,
+    "genres": ["Ужасы", "Драма", "Сверхъестественное"],
     "description": "",
     "review": "",
     "image": "https://via.placeholder.com/300x400?text=Токийский+гуль"
@@ -93,8 +93,8 @@
     "title": "Паразит",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2014,
+    "genres": ["Фантастика", "Ужасы", "Психология", "Драма"],
     "description": "",
     "review": "",
     "image": "https://via.placeholder.com/300x400?text=Паразит"
@@ -103,8 +103,8 @@
     "title": "Убийца Акаме",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2014,
+    "genres": ["Экшн", "Драма", "Сёнэн", "Фэнтези"],
     "description": "",
     "review": "",
     "image": "https://via.placeholder.com/300x400?text=Убийца+Акаме"
@@ -113,8 +113,8 @@
     "title": "Тетрадь смерти",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2006,
+    "genres": ["Психология", "Триллер", "Мистика", "Сверхъестественное"],
     "description": "",
     "review": "",
     "image": "https://via.placeholder.com/300x400?text=Тетрадь+смерти"
@@ -123,8 +123,8 @@
     "title": "Последний серафим",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2015,
+    "genres": ["Экшн", "Драма", "Фэнтези", "Сверхъестественное", "Вампиры"],
     "description": "",
     "review": "",
     "image": "https://via.placeholder.com/300x400?text=Последний+серафим"
@@ -133,1131 +133,1131 @@
     "title": "Оверлорд",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2015,
+    "genres": ["Фэнтези", "Игра", "Экшн", "Сверхъестественное"],
     "description": "",
     "review": "",
     "image": "https://via.placeholder.com/300x400?text=Оверлорд"
   },
-  {
+    {
     "title": "Семь смертных грехов",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2014,
+    "genres": ["Приключения", "Фэнтези", "Экшн", "Сёнэн"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Семь+смертных+грехов"
+    "image": ""
   },
   {
     "title": "Может, я встречу тебя в подземелье",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2015,
+    "genres": ["Фэнтези", "Приключения", "Экшн", "Комедия"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Может,+я+встречу+тебя+в+подземелье"
+    "image": ""
   },
   {
     "title": "Как и ожидалось, моя школьная романтичная жизнь не удалась. Дважды",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2015,
+    "genres": ["Комедия", "Драма", "Романтика", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Как+и+ожидалось,+моя+школьная+романтичная+жизнь+не+удалась.+Дважды"
+    "image": ""
   },
   {
     "title": "Чёрный клевер",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2017,
+    "genres": ["Экшн", "Фэнтези", "Приключения", "Сёнэн"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Чёрный+клевер"
+    "image": ""
   },
   {
     "title": "Твоё имя",
     "type": "anime",
     "rating": 11.0,
-    "year": null,
-    "genres": [],
+    "year": 2016,
+    "genres": ["Драма", "Фэнтези", "Романтика"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Твоё+имя"
+    "image": ""
   },
   {
     "title": "Моя геройская академия",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2016,
+    "genres": ["Экшн", "Супергерои", "Сёнэн"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Моя+геройская+академия"
+    "image": ""
   },
   {
     "title": "Город в котором меня нет",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2016,
+    "genres": ["Детектив", "Психология", "Сайнен", "Сверхъестественное"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Город+в+котором+меня+нет"
+    "image": ""
   },
   {
     "title": "Моя первая гяру",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2017,
+    "genres": ["Комедия", "Романтика", "Этти", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Моя+первая+гяру"
+    "image": ""
   },
   {
     "title": "Да просто так",
     "type": "anime",
     "rating": "?",
-    "year": null,
+    "year": 2017, 
     "genres": [],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Да+просто+так"
+    "image": ""
   },
   {
     "title": "Геймеры",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2017,
+    "genres": ["Комедия", "Романтика", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Геймеры"
+    "image": ""
   },
   {
     "title": "В другом мире со смартфоном",
     "type": "anime",
     "rating": 4.0,
-    "year": null,
-    "genres": [],
+    "year": 2017,
+    "genres": ["Фэнтези", "Приключения", "Комедия", "Исекай", "Гарем"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=В+другом+мире+со+смартфоном"
+    "image": ""
   },
   {
     "title": "Аватар короля",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2017,
+    "genres": ["Экшн", "Игра", "Фэнтези"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Аватар+короля"
+    "image": ""
   },
   {
-    "title": "Хроники Акаши",
+    "title": "Хроники Акаши — худшего магического преподавателя",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2017,
+    "genres": ["Фэнтези", "Школа", "Экшн", "Комедия"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Хроники+Акаши"
+    "image": ""
   },
   {
     "title": "Синий экзорцист",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2011,
+    "genres": ["Экшн", "Сверхъестественное", "Фэнтези", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Синий+экзорцист"
+    "image": ""
   },
   {
     "title": "Марш смерти под рапсодию паралельного мира",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Фэнтези", "Приключения", "Исекай", "Гарем"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Марш+смерти+под+рапсодию+паралельного+мира"
+    "image": ""
   },
   {
     "title": "Слизь",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Фэнтези", "Приключения", "Исекай"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Слизь"
+    "image": ""
   },
   {
     "title": "Принц дракон",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Фэнтези", "Приключения", "Семейный"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Принц+дракон"
+    "image": ""
   },
   {
     "title": "Из завтрашнего дня разноцветного мира",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Драма", "Фэнтези", "Романтика"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Из+завтрашнего+дня+разноцветного+мира"
+    "image": ""
   },
   {
     "title": "Убийца гоблинов",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Фэнтези", "Экшн", "Тёмное фэнтези"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Убийца+гоблинов"
+    "image": ""
   },
   {
     "title": "Девочка зайка",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Драма", "Романтика", "Сверхъестественное"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Девочка+зайка"
+    "image": ""
   },
   {
     "title": "Повелитель Рагнарёка и покровитель эйнхерий",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Фэнтези", "Исекай", "Экшн", "Гарем"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Повелитель+Рагнарёка+и+покровитель+эйнхерий"
+    "image": ""
   },
   {
     "title": "Плеяда семи звёзд",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2015,
+    "genres": ["Фантастика", "Магия", "Сёдзё"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Плеяда+семи+звёзд"
+    "image": ""
   },
   {
-    "title": "Повелитель тьмы: Другая история мира - магия полчинения",
+    "title": "Повелитель тьмы: Другая история мира - магия подчинения",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Исекай", "Фэнтези", "Комедия", "Этти"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Повелитель+тьмы:+Другая+история+мира+-+магия+полчинения"
+    "image": ""
   },
   {
     "title": "Виолетта Эвергарден",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Драма", "Фэнтези", "Повседневность"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Виолетта+Эвергарден"
+    "image": ""
   },
   {
-    "title": "Легенда о гранкресте(ужс",
+    "title": "Легенда о гранкресте",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Фэнтези", "Экшн", "Романтика"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Легенда+о+гранкресте(ужс"
+    "image": ""
   },
   {
     "title": "Гордость убийцы",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Фэнтези", "Экшн", "Романтика"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Гордость+убийцы"
+    "image": ""
   },
   {
     "title": "Усредни мои способности",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Фэнтези", "Комедия", "Исекай"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Усредни+мои+способности"
+    "image": ""
   },
   {
     "title": "Путь зверя",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Комедия", "Фэнтези", "Исекай", "Реслинг"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Путь+зверя"
+    "image": ""
   },
   {
     "title": "Доктор стоун",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Фантастика", "Приключения", "Комедия"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Доктор+стоун"
+    "image": ""
   },
   {
-    "title": "Городская демонесса",
-    "type": "anime",
-    "rating": "?",
-    "year": null,
-    "genres": [],
-    "description": "",
-    "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Городская+демонесса"
+  "title": "Городская демонесса (Machikado Mazoku)",
+  "type": "anime",
+  "rating": "?",
+  "year": 2019,
+  "genres": ["Комедия", "Сверхъестественное", "Повседневность", "Магия"],
+  "description": "",
+  "review": "",
+  "image": ""
   },
   {
     "title": "Юно",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Фантастика", "Драма", "Романтика", "Этти"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Юно"
+    "image": ""
   },
   {
     "title": "Арифурэта",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Фэнтези", "Экшн", "Исекай", "Гарем"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Арифурэта"
+    "image": ""
   },
   {
     "title": "Астра затерянная в космосе",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Фантастика", "Приключения", "Триллер"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Астра+затерянная+в+космосе"
+    "image": ""
   },
   {
-    "title": "Маг-обманщик",
-    "type": "anime",
-    "rating": "?",
-    "year": null,
-    "genres": [],
-    "description": "",
-    "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Маг-обманщик"
+  "title": "Маг-обманщик (Isekai Cheat Magician)",
+  "type": "anime",
+  "rating": "?",
+  "year": 2019,
+  "genres": ["Фэнтези", "Исекай", "Приключения", "Экшн"],
+  "description": "",
+  "review": "",
+  "image": ""
   },
   {
-    "title": "Корзинка с фруктами(недосмотрел",
+    "title": "Корзинка с фруктами",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Драма", "Романтика", "Сёдзё", "Сверхъестественное"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Корзинка+с+фруктами(недосмотрел"
+    "image": ""
   },
   {
     "title": "Мы не можем учиться",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Комедия", "Романтика", "Школа", "Гарем"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Мы+не+можем+учиться"
+    "image": ""
   },
   {
     "title": "Восхождение героя щита",
     "type": "anime",
     "rating": 8.0,
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Фэнтези", "Исекай", "Экшн", "Драма"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Восхождение+героя+щита"
+    "image": ""
   },
   {
     "title": "Внук мудреца",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Фэнтези", "Исекай", "Экшн", "Комедия"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Внук+мудреца"
+    "image": ""
   },
   {
     "title": "Лисица сэнко",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Фэнтези", "Комедия", "Повседневность"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Лисица+сэнко"
+    "image": ""
   },
   {
     "title": "Квартет из другого мира",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Комедия", "Пародия", "Исекай"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Квартет+из+другого+мира"
+    "image": ""
   },
-  {
+    {
     "title": "Сарадзамай(фу бля",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Фэнтези", "Сверхъестественное", "Драма", "Комедия"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Сарадзамай(фу+бля"
+    "image": ""
   },
   {
     "title": "Домекано",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Драма", "Романтика", "Этти", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Домекано"
+    "image": ""
   },
   {
     "title": "Пять невест",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Комедия", "Романтика", "Гарем", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Пять+невест"
+    "image": ""
   },
   {
     "title": "Коносуба",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2016,
+    "genres": ["Комедия", "Приключения", "Фэнтези", "Исекай"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Коносуба"
+    "image": ""
   },
   {
     "title": "Герой осторожник",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Комедия", "Фэнтези", "Исекай", "Экшн"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Герой+осторожник"
+    "image": ""
   },
   {
     "title": "Стальной алхимик",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2009,
+    "genres": ["Приключения", "Фэнтези", "Драма", "Экшн"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Стальной+алхимик"
+    "image": ""
   },
   {
     "title": "Ходячий замок",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2004,
+    "genres": ["Фэнтези", "Романтика", "Приключения"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Ходячий+замок"
+    "image": ""
   },
   {
     "title": "Пять сантиметров в секунду",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2007,
+    "genres": ["Драма", "Романтика"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Пять+сантиметров+в+секунду"
+    "image": ""
   },
   {
     "title": "Добро пожаловать в класс превосходства",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2017,
+    "genres": ["Драма", "Психология", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Добро+пожаловать+в+класс+превосходства"
+    "image": ""
   },
   {
     "title": "Ловцы забытых голосов",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2011,
+    "genres": ["Приключения", "Фэнтези", "Драма"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Ловцы+забытых+голосов"
+    "image": ""
   },
   {
     "title": "Сайт волшебниц",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Ужасы", "Психология", "Магия", "Драма"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Сайт+волшебниц"
+    "image": ""
   },
   {
     "title": "Любовь тирана",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2017,
+    "genres": ["Комедия", "Романтика", "Сверхъестественное"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Любовь+тирана"
+    "image": ""
   },
   {
     "title": "А ты думал твоя жена в онлайн игре на самом деле не девушка?",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2016,
+    "genres": ["Комедия", "Романтика", "Школа", "Игра"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=А+ты+думал+твоя+жена+в+онлайн+игре+на+самом+деле+не+девушка?"
+    "image": ""
   },
   {
     "title": "У меня мало друзей",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2011,
+    "genres": ["Комедия", "Романтика", "Школа", "Гарем"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=У+меня+мало+друзей"
+    "image": ""
   },
   {
     "title": "Революция книжного червя",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Фэнтези", "Исекай", "Драма"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Революция+книжного+червя"
+    "image": ""
   },
   {
     "title": "Кабанэри железной крепости",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2016,
+    "genres": ["Экшн", "Фэнтези", "Ужасы", "Паропанк"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Кабанэри+железной+крепости"
+    "image": ""
   },
   {
     "title": "Без игры нет жизни",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2014,
+    "genres": ["Приключения", "Фэнтези", "Комедия", "Игра"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Без+игры+нет+жизни"
+    "image": ""
   },
   {
     "title": "Этот замечательный мир(коносуба",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2016,
+    "genres": ["Комедия", "Приключения", "Фэнтези", "Исекай"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Этот+замечательный+мир(коносуба"
+    "image": ""
   },
   {
     "title": "Обещанный неверленд",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Триллер", "Ужасы", "Драма", "Фэнтези"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Обещанный+неверленд"
+    "image": ""
   },
   {
     "title": "Чёрная пуля(9.2/10",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2014,
+    "genres": ["Экшн", "Научная фантастика", "Драма"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Чёрная+пуля(9.2/10"
+    "image": ""
   },
   {
-    "title": "Клёст",
-    "type": "anime",
-    "rating": "?",
-    "year": null,
-    "genres": [],
-    "description": "",
-    "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Клёст"
+  "title": "Клёст (Isuca)",
+  "type": "anime",
+  "rating": "?",
+  "year": 2015,
+  "genres": ["Экшн", "Ужасы", "Этти", "Сверхъестественное"],
+  "description": "",
+  "review": "",
+  "image": ""
   },
   {
     "title": "Корона греха",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2011,
+    "genres": ["Экшн", "Драма", "Научная фантастика"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Корона+греха"
+    "image": ""
   },
   {
-    "title": "Сверхстаршеклассники запросто могут вижить в ином мире",
+    "title": "Сверхстаршеклассники запросто могут выжить в ином мире",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Фэнтези", "Исекай", "Приключения"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Сверхстаршеклассники+запросто+могут+вижить+в+ином+мире"
+    "image": ""
   },
   {
     "title": "Да я Сакамото, и что с того?",
     "type": "anime",
     "rating": 9.9,
-    "year": null,
-    "genres": [],
+    "year": 2016,
+    "genres": ["Комедия", "Школа", "Повседневность"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Да+я+Сакамото,+и+что+с+того?"
+    "image": ""
   },
   {
     "title": "Только ты любишь великого меня",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Комедия", "Романтика", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Только+ты+любишь+великого+меня"
+    "image": ""
   },
   {
     "title": "Ведьма за работой",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2017,
+    "genres": ["Комедия", "Фэнтези", "Повседневность"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Ведьма+за+работой"
+    "image": ""
   },
   {
     "title": "Доблесть рыцаря-неудачника",
     "type": "anime",
     "rating": 10.0,
-    "year": null,
-    "genres": [],
+    "year": 2015,
+    "genres": ["Экшн", "Фэнтези", "Романтика", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Доблесть+рыцаря-неудачника"
+    "image": ""
   },
   {
     "title": "Королевский репетитор",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2017,
+    "genres": ["Комедия", "Историческое", "Фэнтези"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Королевский+репетитор"
+    "image": ""
   },
   {
     "title": "Врата: там бьются наши воины",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2015,
+    "genres": ["Экшн", "Фэнтези", "Военное"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Врата:+там+бьются+наши+воины"
+    "image": ""
   },
   {
     "title": "Проблемные дети из другого мира",
     "type": "anime",
     "rating": 6.0,
-    "year": null,
-    "genres": [],
+    "year": 2013,
+    "genres": ["Фэнтези", "Приключения", "Исекай"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Проблемные+дети+из+другого+мира"
+    "image": ""
   },
   {
     "title": "Дитя чудовища",
     "type": "anime",
     "rating": 10.0,
-    "year": null,
-    "genres": [],
+    "year": 2015,
+    "genres": ["Приключения", "Фэнтези", "Семейный"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Дитя+чудовища"
+    "image": ""
   },
   {
-    "title": "Реальная девушка(Начало 10/10, конец",
+    "title": "Реальная девушка",
     "type": "anime",
     "rating": 7.0,
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Романтика", "Школа", "Комедия"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Реальная+девушка(Начало+10/10,+конец"
+    "image": ""
   },
   {
     "title": "Книга магии для начинающих с нуля",
     "type": "anime",
     "rating": 9.5,
-    "year": null,
-    "genres": [],
+    "year": 2017,
+    "genres": ["Фэнтези", "Приключения", "Экшн"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Книга+магии+для+начинающих+с+нуля"
+    "image": ""
   },
   {
     "title": "Повар-боец Сома",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2015,
+    "genres": ["Комедия", "Школа", "Этти", "Кулинария"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Повар-боец+Сома"
+    "image": ""
   },
   {
-    "title": "Фантазия гранблю",
+    "title": "Фантазия Гранблю",
     "type": "anime",
     "rating": 7.0,
-    "year": null,
-    "genres": [],
+    "year": 2017,
+    "genres": ["Фэнтези", "Приключения", "Экшн"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Фантазия+гранблю"
+    "image": ""
   },
   {
     "title": "Ванпанчмен",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2015,
+    "genres": ["Экшн", "Комедия", "Супергерои"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Ванпанчмен"
+    "image": ""
   },
   {
     "title": "Игра Дарвина",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Триллер", "Экшн", "Сверхъестественное"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Игра+Дарвина"
+    "image": ""
   },
   {
-    "title": "ID: вторжение",
+    "title": "ID: Вторжение",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Триллер", "Детектив", "Научная фантастика"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=ID:+вторжение"
+    "image": ""
   },
   {
     "title": "Не люблю боль, поэтому вкачаю всё в защиту",
     "type": "anime",
     "rating": 10.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Комедия", "Игра", "Фэнтези"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Не+люблю+боль,+поэтому+вкачаю+всё+в+защиту"
+    "image": ""
   },
   {
     "title": "Боевая академия города Астериск",
     "type": "anime",
     "rating": 7.5,
-    "year": null,
-    "genres": [],
+    "year": 2015,
+    "genres": ["Фэнтези", "Экшн", "Школа", "Романтика"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Боевая+академия+города+Астериск"
+    "image": ""
   },
   {
     "title": "Собираемся все в академии Сэтон!",
     "type": "anime",
     "rating": 6.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Комедия", "Школа", "Повседневность"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Собираемся+все+в+академии+Сэтон!"
+    "image": ""
   },
   {
     "title": "Страна чудес смертников",
     "type": "anime",
     "rating": 5.5,
-    "year": null,
-    "genres": [],
+    "year": 2011,
+    "genres": ["Экшн", "Ужасы", "Психология", "Триллер"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Страна+чудес+смертников"
+    "image": ""
   },
   {
     "title": "Зачатие",
     "type": "anime",
     "rating": 6.0,
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Фэнтези", "Игра", "Приключения", "Гарем"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Зачатие"
+    "image": ""
   },
   {
     "title": "Повторная жизнь",
     "type": "anime",
     "rating": 9.5,
-    "year": null,
-    "genres": [],
+    "year": 2016,
+    "genres": ["Драма", "Романтика", "Школа", "Повседневность"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Повторная+жизнь"
+    "image": ""
   },
   {
     "title": "Иллюзия Хатэны",
     "type": "anime",
     "rating": 5.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Фэнтези", "Комедия", "Мистика"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Иллюзия+Хатэны"
+    "image": ""
   },
   {
-    "title": "Ангельские ритмы!(11/10",
+    "title": "Ангельские ритмы!",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2010,
+    "genres": ["Драма", "Сверхъестественное", "Комедия"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Ангельские+ритмы!(11/10"
+    "image": ""
   },
   {
     "title": "Бесконечный дендрограм",
     "type": "anime",
     "rating": 8.5,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Фэнтези", "Игра", "Приключения"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Бесконечный+дендрограм"
+    "image": ""
   },
   {
     "title": "Заметки Гримм",
     "type": "anime",
     "rating": 9.0,
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Фэнтези", "Приключения"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Заметки+Гримм"
+    "image": ""
   },
   {
     "title": "Герои шести цветов",
     "type": "anime",
     "rating": 9.5,
-    "year": null,
-    "genres": [],
+    "year": 2015,
+    "genres": ["Фэнтези", "Приключения", "Экшн"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Герои+шести+цветов"
+    "image": ""
   },
   {
-    "title": "Кагуя хочет чтобы ей признались(7/10)(+2 за чику и эндинг",
+    "title": "Кагуя хочет чтобы ей признались",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Комедия", "Романтика", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Кагуя+хочет+чтобы+ей+признались(7/10)(+2+за+чику+и+эндинг"
+    "image": ""
   },
   {
     "title": "Ложные выводы",
     "type": "anime",
     "rating": 6.5,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Мистика", "Детектив", "Романтика", "Сверхъестественное"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Ложные+выводы"
+    "image": ""
   },
   {
     "title": "Гримгал пепла и иллюзий",
     "type": "anime",
     "rating": 5.0,
-    "year": null,
-    "genres": [],
+    "year": 2016,
+    "genres": ["Фэнтези", "Драма", "Приключения", "Исекай"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Гримгал+пепла+и+иллюзий"
+    "image": ""
   },
   {
     "title": "Волшебник-Воин Орфен",
     "type": "anime",
     "rating": 6.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Фэнтези", "Приключения", "Экшн"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Волшебник-Воин+Орфен"
+    "image": ""
   },
   {
     "title": "Эроманга-сенсей",
     "type": "anime",
     "rating": 8.0,
-    "year": null,
-    "genres": [],
+    "year": 2017,
+    "genres": ["Комедия", "Романтика", "Этти", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Эроманга-сенсей"
+    "image": ""
   },
   {
     "title": "Посредственность из школы магии",
     "type": "anime",
     "rating": 7.0,
-    "year": null,
-    "genres": [],
+    "year": 2014,
+    "genres": ["Научная фантастика", "Экшн", "Школа", "Магия"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Посредственность+из+школы+магии"
+    "image": ""
   },
   {
     "title": "Потерявшийся герой забрал девушку домой",
     "type": "anime",
     "rating": 7.0,
-    "year": null,
-    "genres": [],
+    "year": 2021,
+    "genres": ["Фэнтези", "Романтика", "Приключения"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Потерявшийся+герой+забрал+девушку+домой"
+    "image": ""
   },
   {
     "title": "Я люблю свою младшую сестрёнку хотя он вовсе не сестрёнка",
     "type": "anime",
     "rating": 6.0,
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Комедия", "Романтика", "Этти", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Я+люблю+свою+младшую+сестрёнку+хотя+он+вовсе+не+сестрёнка"
+    "image": ""
   },
   {
     "title": "Безумный азарт",
     "type": "anime",
     "rating": 6.5,
-    "year": null,
-    "genres": [],
+    "year": 2017,
+    "genres": ["Психология", "Драма", "Игры"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Безумный+азарт"
+    "image": ""
   },
   {
     "title": "Волейбол",
     "type": "anime",
     "rating": 8.0,
-    "year": null,
-    "genres": [],
+    "year": 2014,
+    "genres": ["Спорт", "Школа", "Комедия"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Волейбол"
+    "image": ""
   },
   {
     "title": "Совершенно новый зверь",
     "type": "anime",
     "rating": 9.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Фэнтези", "Экшн", "Драма"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Совершенно+новый+зверь"
+    "image": ""
   },
   {
     "title": "Межвидовые рецензенты",
     "type": "anime",
     "rating": 7.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Фэнтези", "Комедия", "Этти"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Межвидовые+рецензенты"
+    "image": ""
   },
   {
-    "title": "Скучный мир в котором не существует самой концепции похабных шуток(8/10",
+    "title": "Скучный мир в котором не существует самой концепции похабных шуток",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2015,
+    "genres": ["Комедия", "Этти"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Скучный+мир+в+котором+не+существует+самой+концепции+похабных+шуток(8/10"
+    "image": ""
   },
   {
     "title": "Ускоренный мир",
     "type": "anime",
     "rating": 9.0,
-    "year": null,
-    "genres": [],
+    "year": 2012,
+    "genres": ["Научная фантастика", "Экшн", "Игра", "Романтика"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Ускоренный+мир"
+    "image": ""
   },
   {
     "title": "Супербитвы в повседневности",
     "type": "anime",
     "rating": 9.0,
-    "year": null,
-    "genres": [],
+    "year": 2014,
+    "genres": ["Комедия", "Школа", "Сверхъестественное"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Супербитвы+в+повседневности"
+    "image": ""
   },
   {
     "title": "Восьмой сын",
     "type": "anime",
     "rating": 8.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Фэнтези", "Исекай", "Экшн", "Комедия"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Восьмой+сын"
+    "image": ""
   },
   {
     "title": "Моя реинкарнация в отомэ-игру в качестве главной злодейки",
     "type": "anime",
     "rating": 9.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Комедия", "Романтика", "Фэнтези", "Исекай"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Моя+реинкарнация+в+отомэ-игру+в+качестве+главной+злодейки"
+    "image": ""
   },
   {
     "title": "Князь тьмы с задней парты",
     "type": "anime",
     "rating": 5.0,
-    "year": null,
-    "genres": [],
+    "year": 2010,
+    "genres": ["Фэнтези", "Экшн", "Этти", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Князь+тьмы+с+задней+парты"
+    "image": ""
   },
   {
     "title": "Скрытые вещи",
     "type": "anime",
     "rating": 10.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Комедия", "Драма", "Повседневность"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Скрытые+вещи"
+    "image": ""
   },
   {
     "title": "Арте",
     "type": "anime",
     "rating": 9.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Историческое", "Драма", "Сэйнэн"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Арте"
+    "image": ""
   },
   {
     "title": "Башня бога",
     "type": "anime",
     "rating": 9.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Фэнтези", "Приключения", "Экшн"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Башня+бога"
+    "image": ""
   },
   {
     "title": "Президент, настало время битвы",
     "type": "anime",
     "rating": 6.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Комедия", "Фэнтези", "Игра"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Президент,+настало+время+битвы"
+    "image": ""
   },
   {
     "title": "Владыка демонов по новой!",
     "type": "anime",
     "rating": 5.0,
-    "year": null,
-    "genres": [],
+    "year": 2019,
+    "genres": ["Фэнтези", "Исекай", "Комедия"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Владыка+демонов+по+новой!"
+    "image": ""
   },
   {
     "title": "Необъятный океан",
