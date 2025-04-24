@@ -1259,285 +1259,205 @@
     "review": "",
     "image": ""
   },
-  {
-    "title": "Необъятный океан",
+    {
+    "title": "Необъятный океан (Grand Blue)",
     "type": "anime",
     "rating": 9.5,
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Комедия", "Повседневность", "Сэйнэн"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Необъятный+океан"
+    "image": ""
   },
   {
     "title": "Сатана на подработке",
     "type": "anime",
     "rating": 9.5,
-    "year": null,
-    "genres": [],
+    "year": 2013,
+    "genres": ["Комедия", "Фэнтези", "Повседневность"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Сатана+на+подработке"
+    "image": ""
   },
   {
     "title": "Наруто",
     "type": "anime",
     "rating": 8.5,
-    "year": null,
-    "genres": [],
+    "year": 2002,
+    "genres": ["Экшн", "Приключения", "Ниндзя", "Сёнэн"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Наруто"
+    "image": ""
   },
   {
     "title": "Re: Zero",
     "type": "anime",
     "rating": 7.0,
-    "year": null,
-    "genres": [],
+    "year": 2016,
+    "genres": ["Исекай", "Драма", "Психология", "Фэнтези"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Re:+Zero"
+    "image": ""
   },
   {
     "title": "Девушка на час",
     "type": "anime",
     "rating": 9.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Комедия", "Романтика", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Девушка+на+час"
+    "image": ""
   },
   {
     "title": "Непризнанный школой владыка демонов",
     "type": "anime",
     "rating": 10.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Фэнтези", "Экшн", "Магия", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Непризнанный+школой+владыка+демонов"
+    "image": ""
   },
   {
     "title": "Дека-данс",
     "type": "anime",
     "rating": 9.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Научная фантастика", "Экшн", "Приключения"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Дека-данс"
+    "image": ""
   },
   {
     "title": "Доктор для девушек монстров",
     "type": "anime",
     "rating": 8.5,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Фэнтези", "Этти", "Романтика"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Доктор+для+девушек+монстров"
+    "image": ""
   },
   {
-    "title": "Царь горы",
+    "title": "Царь горы (The God of High School)",
     "type": "anime",
     "rating": 10.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Экшн", "Боевые искусства", "Фэнтези", "Сёнэн"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Царь+горы"
+    "image": ""
   },
   {
     "title": "Детектив миллионер",
     "type": "anime",
     "rating": 6.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Детектив", "Комедия", "Мистика"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Детектив+миллионер"
+    "image": ""
   },
   {
     "title": "Узаки хочет тусоваться",
     "type": "anime",
     "rating": 6.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Комедия", "Романтика", "Повседневность"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Узаки+хочет+тусоваться"
+    "image": ""
   },
   {
     "title": "Маг на полную ставку",
     "type": "anime",
     "rating": 9.0,
-    "year": null,
-    "genres": [],
+    "year": 2016,
+    "genres": ["Фэнтези", "Экшн", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Маг+на+полную+ставку"
+    "image": ""
   },
   {
-    "title": "Связанные",
+    "title": "Связанные (Link Click)",
     "type": "anime",
     "rating": 10.0,
-    "year": null,
-    "genres": [],
+    "year": 2021,
+    "genres": ["Драма", "Сверхъестественное", "Мистика"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Связанные"
+    "image": ""
   },
   {
-    "title": "Подручный Луизы-нулизы",
-    "type": "anime",
-    "rating": 7.0,
-    "year": null,
-    "genres": [],
-    "description": "",
-    "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Подручный+Луизы-нулизы"
-  },
-  {
-    "title": "Повседневная жизнь бессмертного короля",
-    "type": "anime",
-    "rating": 8.0,
-    "year": null,
-    "genres": [],
-    "description": "",
-    "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Повседневная+жизнь+бессмертного+короля"
-  },
-  {
-    "title": "Война зодиака",
-    "type": "anime",
-    "rating": 9.0,
-    "year": null,
-    "genres": [],
-    "description": "",
-    "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Война+зодиака"
-  },
-  {
-    "title": "Врата Штейна",
-    "type": "anime",
-    "rating": 10.0,
-    "year": null,
-    "genres": [],
-    "description": "",
-    "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Врата+Штейна"
-  },
-  {
-    "title": "Я стою на миллионах трупов",
-    "type": "anime",
-    "rating": 8.0,
-    "year": null,
-    "genres": [],
-    "description": "",
-    "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Я+стою+на+миллионах+трупов"
-  },
-  {
-    "title": "Ресторан из другого мира",
-    "type": "anime",
-    "rating": 7.0,
-    "year": null,
-    "genres": [],
-    "description": "",
-    "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Ресторан+из+другого+мира"
-  },
-  {
-    "title": "Человек выбранный богами",
-    "type": "anime",
-    "rating": 8.5,
-    "year": null,
-    "genres": [],
-    "description": "",
-    "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Человек+выбранный+богами"
-  },
-  {
-    "title": "Путешествия Элейны",
-    "type": "anime",
-    "rating": 8.0,
-    "year": null,
-    "genres": [],
-    "description": "",
-    "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Путешествия+Элейны"
-  },
-  {
-    "title": "Ми-ми-ми-мишка",
-    "type": "anime",
-    "rating": 6.0,
-    "year": null,
-    "genres": [],
-    "description": "",
-    "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Ми-ми-ми-мишка"
+  "title": "Ми-ми-ми-мишка (Kuma Kuma Kuma Bear)",
+  "type": "anime",
+  "rating": 6.0,
+  "year": 2020,
+  "genres": ["Фэнтези", "Исекай", "Комедия", "Повседневность"],
+  "description": "",
+  "review": "",
+  "image": ""
   },
   {
     "title": "Наше поле брани или священная война зарождения мира",
     "type": "anime",
     "rating": 5.0,
-    "year": null,
-    "genres": [],
+    "year": 2021,
+    "genres": ["Фэнтези", "Военное", "Исекай"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Наше+поле+брани+или+священная+война+зарождения+мира"
+    "image": ""
   },
   {
-    "title": "Возрождающие",
-    "type": "anime",
-    "rating": 9.0,
-    "year": null,
-    "genres": [],
-    "description": "",
-    "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Возрождающие"
+  "title": "Возрождающие (Re:Creators)",
+  "type": "anime",
+  "rating": 9.0,
+  "year": 2017,
+  "genres": ["Экшн", "Фэнтези", "Меха", "Научная фантастика"],
+  "description": "",
+  "review": "",
+  "image": ""
   },
   {
     "title": "Великий притворщик",
     "type": "anime",
     "rating": 9.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Приключения", "Комедия", "Драма"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Великий+притворщик"
+    "image": ""
   },
   {
-    "title": "Я хочу съесть твою поджелудочную(🔥11/10",
+    "title": "Я хочу съесть твою поджелудочную",
     "type": "anime",
     "rating": "?",
-    "year": null,
-    "genres": [],
+    "year": 2018,
+    "genres": ["Драма", "Романтика"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Я+хочу+съесть+твою+поджелудочную(🔥11/10"
+    "image": ""
   },
   {
-    "title": "Торадора",
+    "title": "Торадора!",
     "type": "anime",
     "rating": 8.0,
-    "year": null,
-    "genres": [],
+    "year": 2008,
+    "genres": ["Комедия", "Романтика", "Школа"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Торадора"
+    "image": ""
   },
   {
     "title": "Бездарная Нана",
     "type": "anime",
     "rating": 8.0,
-    "year": null,
-    "genres": [],
+    "year": 2020,
+    "genres": ["Психология", "Триллер", "Сверхъестественное"],
     "description": "",
     "review": "",
-    "image": "https://via.placeholder.com/300x400?text=Бездарная+Нана"
+    "image": ""
   },
   {
     "title": "Дневник будущего (8/10)(+1 за OVA",
