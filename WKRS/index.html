@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>William Kwors Watch List</title>
+  <title>My Media Ratings</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/alpinejs"></script>
   <style>
@@ -17,6 +17,12 @@
       width: 100%;
       height: auto;
       object-fit: contain;
+    }
+    .card-img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      object-position: center;
     }
   </style>
 </head>
@@ -50,10 +56,10 @@
       <template x-for="item in filteredItems()" :key="item.title">
         <div class="bg-neutral-900 rounded-xl p-4 shadow hover:shadow-xl transition cursor-pointer" @click="openModal(item)">
           <template x-if="item.image">
-            <img :src="item.image" alt="Poster" class="w-full h-60 object-cover rounded mb-4" @error="item.image = null">
+            <img :src="item.image" alt="Poster" class="card-img rounded mb-4" @error="item.image = null">
           </template>
           <template x-if="!item.image">
-            <div class="w-full h-60 flex items-center justify-center bg-neutral-800 text-sm text-gray-400 rounded mb-4 text-center p-2">
+            <div class="w-full aspect-[2/3] flex items-center justify-center bg-neutral-800 text-sm text-gray-400 rounded mb-4 text-center p-2">
               Картинку съели,<br> скоро принесём новую
             </div>
           </template>
