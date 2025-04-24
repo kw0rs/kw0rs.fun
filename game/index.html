@@ -1,470 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
-  <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
-  <link rel="manifest" href="/icon/site.webmanifest">
-  <link rel="shortcut icon" href="/icon/favicon.ico">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City Runner</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-            background-color: #333;
-        }
-        
-        #game-container {
-            position: relative;
-            width: 600px;
-            height: 500px;
-            margin: 20px auto;
-            background-color: #87CEEB;
-            overflow: hidden;
-            border: 3px solid #000;
-        }
-        
-        #player {
-            position: absolute;
-            width: 50px;
-            height: 80px;
-            background-color: #FF5733;
-            bottom: 50px;
-            border-radius: 5px;
-            z-index: 100;
-            transition: left 0.1s ease-out;
-        }
-        
-        .obstacle {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: #333;
-            bottom: 50px;
-            border-radius: 5px;
-        }
-        
-        .coin {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background-color: gold;
-            border-radius: 50%;
-            bottom: 70px;
-        }
-        
-        #ground {
-            position: absolute;
-            width: 100%;
-            height: 50px;
-            background-color: #8B4513;
-            bottom: 0;
-        }
-        
-        #score-container {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            font-size: 24px;
-            z-index: 200;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 5px;
-        }
-        
-        #game-over {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            display: none;
-            z-index: 300;
-        }
-        
-        #game-over button {
-            background-color: #FF5733;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            margin-top: 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        
-        #start-screen {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            z-index: 300;
-        }
-        
-        #start-screen button {
-            background-color: #FF5733;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            margin-top: 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        
-        .lane {
-            position: absolute;
-            bottom: 50px;
-            height: 10px;
-            width: 100%;
-            background-color: white;
-            opacity: 0.3;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Media Ratings</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs"></script>
+  <style>
+    .modal-bg {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+  </style>
 </head>
-<body>
-    <div id="game-container">
-        <div id="ground"></div>
-        <div id="lane1" class="lane" style="bottom: 50px;"></div>
-        <div id="player"></div>
-        <div id="score-container">Score: <span id="score">0</span></div>
-        
-        <div id="start-screen">
-            <h1>City Runner</h1>
-            <p>Используйте клавиши влево/вправо для движения</p>
-            <p>Пробел для прыжка</p>
-            <button id="start-button">Начать игру</button>
-        </div>
-        
-        <div id="game-over">
-            <h1>Игра окончена!</h1>
-            <p>Ваш счет: <span id="final-score">0</span></p>
-            <button id="restart-button">Играть снова</button>
-        </div>
+<body class="bg-black text-white font-sans" x-data="mediaApp()">
+  <div class="max-w-7xl mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-6">My Media Library</h1>
+
+    <div class="flex flex-wrap gap-4 mb-6">
+      <input type="text" x-model="search" placeholder="Search..." class="p-2 rounded bg-gray-900 border border-gray-700 w-full sm:w-auto" />
+
+      <select x-model="categoryFilter" class="p-2 rounded bg-gray-900 border border-gray-700">
+        <option value="">All Categories</option>
+        <option value="movie">Movies</option>
+        <option value="show">TV Shows</option>
+        <option value="anime">Anime</option>
+        <option value="game">Games</option>
+        <option value="book">Books</option>
+        <option value="cartoon">Cartoons</option>
+      </select>
+
+      <select x-model="sortKey" class="p-2 rounded bg-gray-900 border border-gray-700">
+        <option value="rating">Rating</option>
+        <option value="year">Year</option>
+        <option value="title">Title</option>
+      </select>
     </div>
 
-    <script>
-        const player = document.getElementById('player');
-        const gameContainer = document.getElementById('game-container');
-        const scoreElement = document.getElementById('score');
-        const finalScoreElement = document.getElementById('final-score');
-        const gameOverScreen = document.getElementById('game-over');
-        const startScreen = document.getElementById('start-screen');
-        const startButton = document.getElementById('start-button');
-        const restartButton = document.getElementById('restart-button');
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <template x-for="(item, index) in filteredItems()" :key="item.title">
+        <div class="bg-gray-900 rounded-xl p-4 shadow hover:shadow-lg transition cursor-pointer" @click="openModal(index)">
+          <img :src="item.image" alt="Poster" class="w-full h-60 object-cover rounded mb-4">
+          <h2 class="text-xl font-semibold mb-1" x-text="item.title"></h2>
+          <p class="text-sm text-gray-400 mb-2" x-text="`${item.type} • ${item.year}`"></p>
+          <p class="text-yellow-400 font-bold">Rating: <span x-text="item.rating"></span>/10</p>
+        </div>
+      </template>
+    </div>
 
-        // Game variables
-        let playerPosition = 1; // 0: left, 1: center, 2: right
-        let playerY = 50;
-        let isJumping = false;
-        let jumpVelocity = 0;
-        let gravity = 0.6;
-        let score = 0;
-        let gameSpeed = 3;
-        let gameRunning = false;
-        let obstacles = [];
-        let coins = [];
-        let animationFrameId;
-        let obstacleFrequency = 0.02;
-        let lastObstacleTime = 0;
-        let obstacleMinDistance = 40; // Minimum vertical distance between obstacle groups
-        
-        // Track obstacle lanes to avoid blocking all lanes
-        let obstacleLanes = [false, false, false];
-        let obstacleGroupMinDistance = 200; // Minimum distance between obstacle groups in px
+    <!-- Modal -->
+    <div x-show="modalItem !== null" class="fixed inset-0 z-50 flex items-center justify-center modal-bg" @click.self="modalItem = null">
+      <div class="bg-gray-950 p-6 rounded-lg max-w-lg w-full shadow-xl">
+        <template x-if="modalItem !== null">
+          <div>
+            <img :src="items[modalItem].image" alt="Poster" class="w-full h-80 object-cover rounded mb-4">
+            <h2 class="text-2xl font-bold mb-2" x-text="items[modalItem].title"></h2>
+            <p class="text-sm text-gray-400 mb-1" x-text="`${items[modalItem].type} • ${items[modalItem].year}`"></p>
+            <p class="text-yellow-400 font-bold mb-4">Rating: <span x-text="items[modalItem].rating"></span>/10</p>
+            <p class="mb-3 text-gray-300" x-text="items[modalItem].description"></p>
+            <p class="italic text-gray-400" x-show="items[modalItem].review">Review: <span x-text="items[modalItem].review"></span></p>
+          </div>
+        </template>
+      </div>
+    </div>
 
-        // Define game dimensions and lanes
-        const gameWidth = 600;
-        const laneWidth = gameWidth / 3;
-        const lanes = [laneWidth / 2, laneWidth + laneWidth / 2, 2 * laneWidth + laneWidth / 2];
+  </div>
 
-        // Handle player movement
-        document.addEventListener('keydown', (e) => {
-            if (!gameRunning) return;
-            
-            if (e.code === 'ArrowLeft' && playerPosition > 0) {
-                playerPosition--;
-                updatePlayerPosition();
-            } else if (e.code === 'ArrowRight' && playerPosition < 2) {
-                playerPosition++;
-                updatePlayerPosition();
-            } else if (e.code === 'Space' && !isJumping) {
-                jump();
-            }
-        });
-
-        function jump() {
-            if (!isJumping) {
-                isJumping = true;
-                jumpVelocity = 15;
-            }
-        }
-
-        // Update player horizontal position
-        function updatePlayerPosition() {
-            player.style.left = `${lanes[playerPosition] - 25}px`; // 25 is half the player width
-        }
-
-        // Initialize the player position
-        function initializeGame() {
-            playerPosition = 1;
-            updatePlayerPosition();
-            player.style.bottom = `${playerY}px`;
-        }
-
-        // Create obstacle
-        function createObstacle(lane) {
-            const obstacle = document.createElement('div');
-            obstacle.className = 'obstacle';
-            obstacle.style.left = `${lanes[lane] - 25}px`; // 25 is half the obstacle width
-            obstacle.style.bottom = '50px';
-            gameContainer.appendChild(obstacle);
-            
-            return {
-                element: obstacle,
-                lane: lane,
-                posY: -50, // start above the screen
-                height: 50,
-                width: 50
-            };
-        }
-
-        // Generate fair obstacle pattern - make sure at least one lane is clear
-        function generateObstaclePattern() {
-            // Generate a random sequence of 1 or 2 obstacles that ensures at least one lane is clear
-            const possiblePatterns = [
-                [0], [1], [2],              // Single obstacles
-                [0, 1], [0, 2], [1, 2]      // Double obstacles (leaving one lane clear)
-            ];
-            
-            const pattern = possiblePatterns[Math.floor(Math.random() * possiblePatterns.length)];
-            
-            // Create obstacles based on the pattern
-            for (const lane of pattern) {
-                obstacles.push(createObstacle(lane));
-            }
-        }
-
-        // Create coin
-        function createCoin() {
-            const coin = document.createElement('div');
-            coin.className = 'coin';
-            const lane = Math.floor(Math.random() * 3);
-            coin.style.left = `${lanes[lane] - 15}px`; // 15 is half the coin width
-            coin.style.bottom = '70px'; // slightly above ground
-            gameContainer.appendChild(coin);
-            
-            return {
-                element: coin,
-                lane: lane,
-                posY: -30, // start above the screen
-                height: 30,
-                width: 30
-            };
-        }
-
-        // Check if there's enough space for a new obstacle group
-        function canAddObstacles() {
-            if (obstacles.length === 0) return true;
-            
-            // Find the obstacle closest to the top of the screen
-            let minPosY = gameContainer.offsetHeight;
-            for (const obstacle of obstacles) {
-                if (obstacle.posY < minPosY) {
-                    minPosY = obstacle.posY;
-                }
-            }
-            
-            // Check if there's enough space before the top obstacle
-            return minPosY > obstacleGroupMinDistance;
-        }
-
-        // Check collision between two rectangles
-        function checkCollision(rect1, rect2) {
-            return (
-                rect1.x < rect2.x + rect2.width &&
-                rect1.x + rect1.width > rect2.x &&
-                rect1.y < rect2.y + rect2.height &&
-                rect1.y + rect1.height > rect2.y
-            );
-        }
-
-        // Update game objects and check collisions
-        function update() {
-            // Handle jumping physics
-            if (isJumping) {
-                playerY += jumpVelocity;
-                jumpVelocity -= gravity;
-                
-                if (playerY <= 50) { // ground level
-                    playerY = 50;
-                    isJumping = false;
-                    jumpVelocity = 0;
-                }
-                
-                player.style.bottom = `${playerY}px`;
-            }
-            
-            // Move and update obstacles
-            for (let i = 0; i < obstacles.length; i++) {
-                obstacles[i].posY += gameSpeed;
-                obstacles[i].element.style.top = `${obstacles[i].posY}px`;
-                
-                // Remove obstacles that are off-screen
-                if (obstacles[i].posY > gameContainer.offsetHeight) {
-                    gameContainer.removeChild(obstacles[i].element);
-                    obstacles.splice(i, 1);
-                    i--;
-                    continue;
-                }
-                
-                // Check for collision with player
-                const playerRect = {
-                    x: lanes[playerPosition] - 25,
-                    y: gameContainer.offsetHeight - playerY - 80, // player is 80px tall
-                    width: 50,
-                    height: 80
-                };
-                
-                const obstacleRect = {
-                    x: lanes[obstacles[i].lane] - 25,
-                    y: obstacles[i].posY,
-                    width: obstacles[i].width,
-                    height: obstacles[i].height
-                };
-                
-                if (checkCollision(playerRect, obstacleRect)) {
-                    gameOver();
-                    return;
-                }
-            }
-            
-            // Move and update coins
-            for (let i = 0; i < coins.length; i++) {
-                coins[i].posY += gameSpeed;
-                coins[i].element.style.top = `${coins[i].posY}px`;
-                
-                // Remove coins that are off-screen
-                if (coins[i].posY > gameContainer.offsetHeight) {
-                    gameContainer.removeChild(coins[i].element);
-                    coins.splice(i, 1);
-                    i--;
-                    continue;
-                }
-                
-                // Check for collision with player (coin collection)
-                const playerRect = {
-                    x: lanes[playerPosition] - 25,
-                    y: gameContainer.offsetHeight - playerY - 80,
-                    width: 50,
-                    height: 80
-                };
-                
-                const coinRect = {
-                    x: lanes[coins[i].lane] - 15,
-                    y: coins[i].posY,
-                    width: coins[i].width,
-                    height: coins[i].height
-                };
-                
-                if (checkCollision(playerRect, coinRect)) {
-                    score += 10;
-                    scoreElement.textContent = score;
-                    gameContainer.removeChild(coins[i].element);
-                    coins.splice(i, 1);
-                    i--;
-                }
-            }
-            
-            // Increase score over time
-            score++;
-            if (score % 500 === 0) {
-                gameSpeed += 0.5;
-                obstacleFrequency = Math.min(obstacleFrequency + 0.005, 0.05); // Increase obstacle frequency but cap it
-            }
-            scoreElement.textContent = score;
-        }
-
-        // Game loop
-        function gameLoop() {
-            if (!gameRunning) return;
-            
-            // Add new obstacles with fair patterns
-            if (Math.random() < obstacleFrequency && canAddObstacles()) {
-                generateObstaclePattern();
-            }
-            
-            // Add new coins randomly
-            if (Math.random() < 0.03) {
-                coins.push(createCoin());
-            }
-            
-            update();
-            animationFrameId = requestAnimationFrame(gameLoop);
-        }
-
-        // Start the game
-        function startGame() {
-            startScreen.style.display = 'none';
-            
-            // Clear any existing objects
-            obstacles.forEach(obstacle => {
-                if (obstacle.element.parentNode) {
-                    gameContainer.removeChild(obstacle.element);
-                }
+  <script>
+    function mediaApp() {
+      return {
+        search: '',
+        categoryFilter: '',
+        sortKey: 'rating',
+        modalItem: null,
+        openModal(index) {
+          this.modalItem = index;
+        },
+        items: [
+          { title: 'Blade Runner 2049', year: 2017, type: 'movie', rating: 7.5, genres: ['sci-fi'], description: 'Neo-noir sci-fi masterpiece.', review: 'Visual masterpiece with deep atmosphere.', image: 'https://via.placeholder.com/300x400?text=Blade+Runner+2049' },
+          { title: 'Anora', year: 2024, type: 'movie', rating: 6.0, genres: ['drama'], description: 'Intimate drama with raw storytelling.', review: '', image: 'https://via.placeholder.com/300x400?text=Anora' },
+          { title: 'Your Highness', year: 2011, type: 'movie', rating: 8.5, genres: ['comedy', 'fantasy'], description: 'Dumb humor done right.', review: 'So dumb it loops back to genius.', image: 'https://via.placeholder.com/300x400?text=Your+Highness' },
+          { title: 'Black Widow', year: 2021, type: 'movie', rating: 3.0, genres: ['action'], description: 'Pointless side quest of a Marvel hero.', review: 'Forgettable cashgrab.', image: 'https://via.placeholder.com/300x400?text=Black+Widow' },
+          { title: 'The Intern', year: 2015, type: 'movie', rating: 9.0, genres: ['comedy', 'drama'], description: 'Wholesome and surprisingly good.', review: 'Pure good vibes.', image: 'https://via.placeholder.com/300x400?text=The+Intern' },
+          { title: 'Monster', year: 2004, type: 'anime', rating: 10.0, genres: ['thriller', 'psychological'], description: 'Dark and brilliant.', review: 'Top-tier psychological thriller.', image: 'https://via.placeholder.com/300x400?text=Monster' }
+        ],
+        filteredItems() {
+          return this.items
+            .filter(i => (!this.search || i.title.toLowerCase().includes(this.search.toLowerCase())))
+            .filter(i => (!this.categoryFilter || i.type === this.categoryFilter))
+            .sort((a, b) => {
+              if (this.sortKey === 'title') return a.title.localeCompare(b.title);
+              if (this.sortKey === 'year') return b.year - a.year;
+              return b.rating - a.rating;
             });
-            
-            coins.forEach(coin => {
-                if (coin.element.parentNode) {
-                    gameContainer.removeChild(coin.element);
-                }
-            });
-            
-            obstacles = [];
-            coins = [];
-            
-            score = 0;
-            gameSpeed = 3;
-            obstacleFrequency = 0.02;
-            scoreElement.textContent = score;
-            
-            initializeGame();
-            gameRunning = true;
-            
-            animationFrameId = requestAnimationFrame(gameLoop);
         }
-
-        // Game over
-        function gameOver() {
-            gameRunning = false;
-            cancelAnimationFrame(animationFrameId);
-            finalScoreElement.textContent = score;
-            gameOverScreen.style.display = 'block';
-        }
-
-        // Event listeners for buttons
-        startButton.addEventListener('click', startGame);
-        restartButton.addEventListener('click', () => {
-            gameOverScreen.style.display = 'none';
-            startGame();
-        });
-
-        // Initialize game
-        initializeGame();
-    </script>
+      }
+    }
+  </script>
 </body>
 </html>
