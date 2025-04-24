@@ -13,6 +13,11 @@
     body {
       background-color: #1c1c1c;
     }
+    .full-img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+    }
   </style>
 </head>
 <body class="text-white font-sans" x-data="mediaApp()" x-init="loadItems">
@@ -55,18 +60,21 @@
           <h2 class="text-xl font-semibold mb-1" x-text="item.title"></h2>
           <p class="text-sm text-gray-400 mb-2" x-text="`${item.type} • ${item.year}`"></p>
           <p :class="ratingColor(item.rating) + ' font-bold'">★ <span x-text="item.rating"></span>/10</p>
+          <template x-if="item.genres && item.genres.length">
+            <p class="text-sm text-gray-400 mt-1" x-text="item.genres.join(', ')"></p>
+          </template>
         </div>
       </template>
     </div>
 
     <!-- Modal -->
     <div x-show="modalItem !== null" class="fixed inset-0 z-50 flex items-center justify-center modal-bg" @click.self="modalItem = null">
-      <div class="bg-neutral-900 p-6 rounded-lg w-[90%] max-w-3xl shadow-2xl">
+      <div class="bg-neutral-900 p-6 rounded-lg w-[90%] max-w-5xl shadow-2xl">
         <template x-if="modalItem !== null">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <template x-if="modalItem.image">
-                <img :src="modalItem.image" alt="Poster" class="w-full h-80 object-cover rounded" @error="modalItem.image = null">
+                <img :src="modalItem.image" alt="Poster" class="full-img rounded" @error="modalItem.image = null">
               </template>
               <template x-if="!modalItem.image">
                 <div class="w-full h-80 flex items-center justify-center bg-neutral-800 text-sm text-gray-400 rounded text-center p-2">
@@ -77,7 +85,10 @@
             <div>
               <h2 class="text-2xl font-bold mb-2" x-text="modalItem.title"></h2>
               <p class="text-sm text-gray-400 mb-1" x-text="`${modalItem.type} • ${modalItem.year}`"></p>
-              <p :class="ratingColor(modalItem.rating) + ' font-bold mb-4'">★ <span x-text="modalItem.rating"></span>/10</p>
+              <p :class="ratingColor(modalItem.rating) + ' font-bold mb-1'">★ <span x-text="modalItem.rating"></span>/10</p>
+              <template x-if="modalItem.genres && modalItem.genres.length">
+                <p class="text-sm text-gray-400 mb-1" x-text="modalItem.genres.join(', ')"></p>
+              </template>
               <p class="mb-3 text-gray-300" x-text="modalItem.description"></p>
               <p class="italic text-gray-400" x-show="modalItem.review">Review: <span x-text="modalItem.review"></span></p>
             </div>
