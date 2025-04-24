@@ -10,16 +10,19 @@
     .modal-bg {
       background-color: rgba(0, 0, 0, 0.8);
     }
+    body {
+      background-color: #1c1c1c;
+    }
   </style>
 </head>
-<body class="bg-black text-white font-sans" x-data="mediaApp()">
+<body class="text-white font-sans" x-data="mediaApp()">
   <div class="max-w-7xl mx-auto p-4">
     <h1 class="text-3xl font-bold mb-6">My Media Library</h1>
 
     <div class="flex flex-wrap gap-4 mb-6">
-      <input type="text" x-model="search" placeholder="Search..." class="p-2 rounded bg-gray-900 border border-gray-700 w-full sm:w-auto" />
+      <input type="text" x-model="search" placeholder="Search..." class="p-2 rounded bg-neutral-800 border border-neutral-700 w-full sm:w-auto" />
 
-      <select x-model="categoryFilter" class="p-2 rounded bg-gray-900 border border-gray-700">
+      <select x-model="categoryFilter" class="p-2 rounded bg-neutral-800 border border-neutral-700">
         <option value="">All Categories</option>
         <option value="movie">Movies</option>
         <option value="show">TV Shows</option>
@@ -29,40 +32,59 @@
         <option value="cartoon">Cartoons</option>
       </select>
 
-      <select x-model="sortKey" class="p-2 rounded bg-gray-900 border border-gray-700">
-        <option value="rating">Rating</option>
-        <option value="year">Year</option>
-        <option value="title">Title</option>
+      <select x-model="sortKey" class="p-2 rounded bg-neutral-800 border border-neutral-700">
+        <option value="rating-desc">Rating (High to Low)</option>
+        <option value="rating-asc">Rating (Low to High)</option>
+        <option value="year-desc">Year (Newest First)</option>
+        <option value="year-asc">Year (Oldest First)</option>
+        <option value="title">Title (A-Z)</option>
       </select>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <template x-for="(item, index) in filteredItems()" :key="item.title">
-        <div class="bg-gray-900 rounded-xl p-4 shadow hover:shadow-lg transition cursor-pointer" @click="openModal(index)">
-          <img :src="item.image" alt="Poster" class="w-full h-60 object-cover rounded mb-4">
+      <template x-for="item in filteredItems()" :key="item.title">
+        <div class="bg-neutral-900 rounded-xl p-4 shadow hover:shadow-xl transition cursor-pointer" @click="openModal(item)">
+          <template x-if="item.image">
+            <img :src="item.image" alt="Poster" class="w-full h-60 object-cover rounded mb-4" @error="item.image = null">
+          </template>
+          <template x-if="!item.image">
+            <div class="w-full h-60 flex items-center justify-center bg-neutral-800 text-sm text-gray-400 rounded mb-4 text-center p-2">
+              Картинку съели,<br> скоро принесём новую
+            </div>
+          </template>
           <h2 class="text-xl font-semibold mb-1" x-text="item.title"></h2>
           <p class="text-sm text-gray-400 mb-2" x-text="`${item.type} • ${item.year}`"></p>
-          <p class="text-yellow-400 font-bold">Rating: <span x-text="item.rating"></span>/10</p>
+          <p :class="ratingColor(item.rating) + ' font-bold'">★ <span x-text="item.rating"></span>/10</p>
         </div>
       </template>
     </div>
 
     <!-- Modal -->
     <div x-show="modalItem !== null" class="fixed inset-0 z-50 flex items-center justify-center modal-bg" @click.self="modalItem = null">
-      <div class="bg-gray-950 p-6 rounded-lg max-w-lg w-full shadow-xl">
+      <div class="bg-neutral-900 p-6 rounded-lg w-[90%] max-w-3xl shadow-2xl">
         <template x-if="modalItem !== null">
-          <div>
-            <img :src="items[modalItem].image" alt="Poster" class="w-full h-80 object-cover rounded mb-4">
-            <h2 class="text-2xl font-bold mb-2" x-text="items[modalItem].title"></h2>
-            <p class="text-sm text-gray-400 mb-1" x-text="`${items[modalItem].type} • ${items[modalItem].year}`"></p>
-            <p class="text-yellow-400 font-bold mb-4">Rating: <span x-text="items[modalItem].rating"></span>/10</p>
-            <p class="mb-3 text-gray-300" x-text="items[modalItem].description"></p>
-            <p class="italic text-gray-400" x-show="items[modalItem].review">Review: <span x-text="items[modalItem].review"></span></p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <template x-if="modalItem.image">
+                <img :src="modalItem.image" alt="Poster" class="w-full h-80 object-cover rounded" @error="modalItem.image = null">
+              </template>
+              <template x-if="!modalItem.image">
+                <div class="w-full h-80 flex items-center justify-center bg-neutral-800 text-sm text-gray-400 rounded text-center p-2">
+                  Картинку съели,<br> скоро принесём новую
+                </div>
+              </template>
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold mb-2" x-text="modalItem.title"></h2>
+              <p class="text-sm text-gray-400 mb-1" x-text="`${modalItem.type} • ${modalItem.year}`"></p>
+              <p :class="ratingColor(modalItem.rating) + ' font-bold mb-4'">★ <span x-text="modalItem.rating"></span>/10</p>
+              <p class="mb-3 text-gray-300" x-text="modalItem.description"></p>
+              <p class="italic text-gray-400" x-show="modalItem.review">Review: <span x-text="modalItem.review"></span></p>
+            </div>
           </div>
         </template>
       </div>
     </div>
-
   </div>
 
   <script>
@@ -70,10 +92,15 @@
       return {
         search: '',
         categoryFilter: '',
-        sortKey: 'rating',
+        sortKey: 'rating-desc',
         modalItem: null,
-        openModal(index) {
-          this.modalItem = index;
+        openModal(item) {
+          this.modalItem = { ...item }; // clone чтобы реактивно менять image при ошибке
+        },
+        ratingColor(rating) {
+          if (rating >= 7) return 'text-green-400';
+          if (rating >= 4) return 'text-yellow-400';
+          return 'text-red-500';
         },
         items: [
           { title: 'Blade Runner 2049', year: 2017, type: 'movie', rating: 7.5, genres: ['sci-fi'], description: 'Neo-noir sci-fi masterpiece.', review: 'Visual masterpiece with deep atmosphere.', image: 'https://via.placeholder.com/300x400?text=Blade+Runner+2049' },
@@ -88,9 +115,14 @@
             .filter(i => (!this.search || i.title.toLowerCase().includes(this.search.toLowerCase())))
             .filter(i => (!this.categoryFilter || i.type === this.categoryFilter))
             .sort((a, b) => {
-              if (this.sortKey === 'title') return a.title.localeCompare(b.title);
-              if (this.sortKey === 'year') return b.year - a.year;
-              return b.rating - a.rating;
+              switch (this.sortKey) {
+                case 'rating-asc': return a.rating - b.rating;
+                case 'rating-desc': return b.rating - a.rating;
+                case 'year-asc': return a.year - b.year;
+                case 'year-desc': return b.year - a.year;
+                case 'title': return a.title.localeCompare(b.title);
+                default: return 0;
+              }
             });
         }
       }
