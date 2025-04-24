@@ -116,11 +116,13 @@
             .filter(i => (!this.search || i.title.toLowerCase().includes(this.search.toLowerCase())))
             .filter(i => (!this.categoryFilter || i.type === this.categoryFilter))
             .sort((a, b) => {
+              const rA = isNaN(a.rating) ? -1 : a.rating;
+              const rB = isNaN(b.rating) ? -1 : b.rating;
               switch (this.sortKey) {
-                case 'rating-asc': return a.rating - b.rating;
-                case 'rating-desc': return b.rating - a.rating;
-                case 'year-asc': return a.year - b.year;
-                case 'year-desc': return b.year - a.year;
+                case 'rating-asc': return rA - rB;
+                case 'rating-desc': return rB - rA;
+                case 'year-asc': return (a.year ?? 0) - (b.year ?? 0);
+                case 'year-desc': return (b.year ?? 0) - (a.year ?? 0);
                 case 'title': return a.title.localeCompare(b.title);
                 default: return 0;
               }
