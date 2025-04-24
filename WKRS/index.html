@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Media Ratings</title>
+  <title>William Kwors Watch List</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/alpinejs"></script>
   <style>
@@ -14,8 +14,8 @@
       background-color: #1c1c1c;
     }
     .full-img {
-      max-height: 100%;
-      max-width: 100%;
+      width: 100%;
+      height: auto;
       object-fit: contain;
     }
   </style>
@@ -71,8 +71,8 @@
     <div x-show="modalItem !== null" class="fixed inset-0 z-50 flex items-center justify-center modal-bg" @click.self="modalItem = null">
       <div class="bg-neutral-900 p-6 rounded-lg w-[90%] max-w-5xl shadow-2xl">
         <template x-if="modalItem !== null">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+            <div class="flex justify-center">
               <template x-if="modalItem.image">
                 <img :src="modalItem.image" alt="Poster" class="full-img rounded" @error="modalItem.image = null">
               </template>
