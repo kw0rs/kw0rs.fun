@@ -2,7 +2,7 @@
   {
     "title": "ЗАГЛУШКА3",
     "type": "cartoon",
-    "rating": NaN,
+    "rating": ?,
     "year": 999,
     "genres": ["Action", "Sci-Fi"],
     "description": "Незабвенная классика жанра.",
@@ -12,7 +12,7 @@
   {
     "title": "ЗАГЛУШКА4",
     "type": "cartoon",
-    "rating": NaN,
+    "rating": ?,
     "year": 999,
     "genres": ["Action", "Thriller", "Sci-Fi"],
     "description": "Сны во снах, мозг в шоке.",
