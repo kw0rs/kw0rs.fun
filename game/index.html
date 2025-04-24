@@ -1,100 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Media Ratings</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script defer src="https://unpkg.com/alpinejs"></script>
-  <style>
-    .modal-bg {
-      background-color: rgba(0, 0, 0, 0.8);
-    }
-  </style>
-</head>
-<body class="bg-black text-white font-sans" x-data="mediaApp()">
-  <div class="max-w-7xl mx-auto p-4">
-    <h1 class="text-3xl font-bold mb-6">My Media Library</h1>
-
-    <div class="flex flex-wrap gap-4 mb-6">
-      <input type="text" x-model="search" placeholder="Search..." class="p-2 rounded bg-gray-900 border border-gray-700 w-full sm:w-auto" />
-
-      <select x-model="categoryFilter" class="p-2 rounded bg-gray-900 border border-gray-700">
-        <option value="">All Categories</option>
-        <option value="movie">Movies</option>
-        <option value="show">TV Shows</option>
-        <option value="anime">Anime</option>
-        <option value="game">Games</option>
-        <option value="book">Books</option>
-        <option value="cartoon">Cartoons</option>
-      </select>
-
-      <select x-model="sortKey" class="p-2 rounded bg-gray-900 border border-gray-700">
-        <option value="rating">Rating</option>
-        <option value="year">Year</option>
-        <option value="title">Title</option>
-      </select>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <template x-for="(item, index) in filteredItems()" :key="item.title">
-        <div class="bg-gray-900 rounded-xl p-4 shadow hover:shadow-lg transition cursor-pointer" @click="openModal(index)">
-          <img :src="item.image" alt="Poster" class="w-full h-60 object-cover rounded mb-4">
-          <h2 class="text-xl font-semibold mb-1" x-text="item.title"></h2>
-          <p class="text-sm text-gray-400 mb-2" x-text="`${item.type} • ${item.year}`"></p>
-          <p class="text-yellow-400 font-bold">Rating: <span x-text="item.rating"></span>/10</p>
-        </div>
-      </template>
-    </div>
-
-    <!-- Modal -->
-    <div x-show="modalItem !== null" class="fixed inset-0 z-50 flex items-center justify-center modal-bg" @click.self="modalItem = null">
-      <div class="bg-gray-950 p-6 rounded-lg max-w-lg w-full shadow-xl">
-        <template x-if="modalItem !== null">
-          <div>
-            <img :src="items[modalItem].image" alt="Poster" class="w-full h-80 object-cover rounded mb-4">
-            <h2 class="text-2xl font-bold mb-2" x-text="items[modalItem].title"></h2>
-            <p class="text-sm text-gray-400 mb-1" x-text="`${items[modalItem].type} • ${items[modalItem].year}`"></p>
-            <p class="text-yellow-400 font-bold mb-4">Rating: <span x-text="items[modalItem].rating"></span>/10</p>
-            <p class="mb-3 text-gray-300" x-text="items[modalItem].description"></p>
-            <p class="italic text-gray-400" x-show="items[modalItem].review">Review: <span x-text="items[modalItem].review"></span></p>
-          </div>
-        </template>
-      </div>
-    </div>
-
-  </div>
-
-  <script>
-    function mediaApp() {
-      return {
-        search: '',
-        categoryFilter: '',
-        sortKey: 'rating',
-        modalItem: null,
-        openModal(index) {
-          this.modalItem = index;
-        },
-        items: [
-          { title: 'Blade Runner 2049', year: 2017, type: 'movie', rating: 7.5, genres: ['sci-fi'], description: 'Neo-noir sci-fi masterpiece.', review: 'Visual masterpiece with deep atmosphere.', image: 'https://via.placeholder.com/300x400?text=Blade+Runner+2049' },
-          { title: 'Anora', year: 2024, type: 'movie', rating: 6.0, genres: ['drama'], description: 'Intimate drama with raw storytelling.', review: '', image: 'https://via.placeholder.com/300x400?text=Anora' },
-          { title: 'Your Highness', year: 2011, type: 'movie', rating: 8.5, genres: ['comedy', 'fantasy'], description: 'Dumb humor done right.', review: 'So dumb it loops back to genius.', image: 'https://via.placeholder.com/300x400?text=Your+Highness' },
-          { title: 'Black Widow', year: 2021, type: 'movie', rating: 3.0, genres: ['action'], description: 'Pointless side quest of a Marvel hero.', review: 'Forgettable cashgrab.', image: 'https://via.placeholder.com/300x400?text=Black+Widow' },
-          { title: 'The Intern', year: 2015, type: 'movie', rating: 9.0, genres: ['comedy', 'drama'], description: 'Wholesome and surprisingly good.', review: 'Pure good vibes.', image: 'https://via.placeholder.com/300x400?text=The+Intern' },
-          { title: 'Monster', year: 2004, type: 'anime', rating: 10.0, genres: ['thriller', 'psychological'], description: 'Dark and brilliant.', review: 'Top-tier psychological thriller.', image: 'https://via.placeholder.com/300x400?text=Monster' }
-        ],
-        filteredItems() {
-          return this.items
-            .filter(i => (!this.search || i.title.toLowerCase().includes(this.search.toLowerCase())))
-            .filter(i => (!this.categoryFilter || i.type === this.categoryFilter))
-            .sort((a, b) => {
-              if (this.sortKey === 'title') return a.title.localeCompare(b.title);
-              if (this.sortKey === 'year') return b.year - a.year;
-              return b.rating - a.rating;
-            });
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ничего нет</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            padding: 0 20px;
         }
-      }
-    }
-  </script>
+        .container {
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #f0f6fc;
+        }
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .blink {
+            animation: blink 1.5s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .code {
+            background-color: #161b22;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #30363d;
+        }
+        .button {
+            display: inline-block;
+            background-color: #238636;
+            color: #ffffff;
+            padding: 12px 24px;
+            margin-top: 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #2ea043;
+            text-decoration: none;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Нахуй ты сюда зашёл?</h1>
+        <div class="code">
+            <p>Тут пока нихуя нету.</p>
+            <p class="blink">_</p>
+        </div>
+        <p>Загляни позже, возможно что-то появится.</p>
+        <a href="https://Kw0rs.fun/menu" class="button">Вернуться в меню</a>
+    </div>
 </body>
 </html>
