@@ -1,1 +1,22 @@
-
+[
+  {
+    "title": "ЗАГЛУШКА3",
+    "type": "cartoon",
+    "rating": NaN,
+    "year": 999,
+    "genres": ["Action", "Sci-Fi"],
+    "description": "Незабвенная классика жанра.",
+    "review": "",
+    "image": "https://example.com/matrix.jpg"
+  },
+  {
+    "title": "ЗАГЛУШКА4",
+    "type": "cartoon",
+    "rating": NaN,
+    "year": 999,
+    "genres": ["Action", "Thriller", "Sci-Fi"],
+    "description": "Сны во снах, мозг в шоке.",
+    "review": "",
+    "image": "https://example.com/inception.jpg"
+  }
+]
