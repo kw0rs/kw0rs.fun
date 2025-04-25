@@ -91,31 +91,62 @@
       }
     }
     
-    /* Стили для переключателя рецензии/описания */
+    /* Улучшенные стили для переключателя */
+    .toggle-container {
+      display: flex;
+      margin-bottom: 1rem;
+      border-radius: 0.375rem;
+      overflow: hidden;
+      border: 1px solid rgba(75, 85, 99, 0.4);
+      width: fit-content;
+    }
+    
     .toggle-btn {
       transition: all 0.2s ease;
-      border-radius: 0.375rem;
       padding: 0.5rem 1rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 0.5rem;
+      font-weight: 500;
+      position: relative;
     }
     
     .toggle-btn-active {
-      background-color: rgb(239, 68, 68);
+      background-color: #ef4444;
       color: white;
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+    }
+    
+    .toggle-btn-active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: white;
     }
     
     .toggle-btn-inactive {
-      background-color: rgba(75, 85, 99, 0.5);
+      background-color: rgba(31, 41, 55, 0.4);
       color: rgb(209, 213, 219);
     }
     
+    .toggle-btn-inactive:hover:not(:disabled) {
+      background-color: rgba(55, 65, 81, 0.5);
+    }
+    
     .toggle-btn-disabled {
-      background-color: rgba(75, 85, 99, 0.2);
+      background-color: rgba(31, 41, 55, 0.2);
       color: rgb(156, 163, 175);
       cursor: not-allowed;
+      opacity: 0.7;
+      text-decoration: line-through;
+    }
+    
+    .content-section {
+      min-height: 100px;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      background-color: rgba(23, 23, 23, 0.3);
+      margin-bottom: 1rem;
     }
   </style>
 </head>
@@ -259,19 +290,20 @@
           <div>
             <h2 class="text-2xl font-bold mb-2" x-text="modalItem.title"></h2>
             <p class="text-sm text-gray-400 mb-1" x-text="`${modalItem.type} • ${modalItem.year}`"></p>
-            <p :class="getRatingClass(modalItem) + ' font-bold mb-1'">★ <span x-text="getRatingText(modalItem)"></span>/10</p>
+            <p :class="getRatingClass(modalItem) + ' font-bold mb-3'">★ <span x-text="getRatingText(modalItem)"></span>/10</p>
             <template x-if="modalItem.genres.length">
-              <p class="text-sm text-gray-400 mb-1" x-text="modalItem.genres.join(', ')"></p>
+              <p class="text-sm text-gray-400 mb-3" x-text="modalItem.genres.join(', ')"></p>
             </template>
             
-            <!-- Кнопки переключения между рецензией и описанием -->
-            <div class="flex mb-3">
+            <!-- Улучшенные кнопки переключения -->
+            <div class="toggle-container" x-show="hasAnyContent">
               <!-- Кнопка "Рецензия" -->
               <button 
                 @click="showReview = true" 
                 :class="getToggleButtonClass('review')"
                 :disabled="!modalItem.review">
-                Рецензия
+                <span x-show="!modalItem.review">Рецензии нет</span>
+                <span x-show="modalItem.review">Рецензия</span>
               </button>
               
               <!-- Кнопка "Описание" -->
@@ -279,23 +311,35 @@
                 @click="showReview = false" 
                 :class="getToggleButtonClass('description')"
                 :disabled="!modalItem.description">
-                Описание
+                <span x-show="!modalItem.description">Описания нет</span>
+                <span x-show="modalItem.description">Описание</span>
               </button>
             </div>
             
             <!-- Контент (рецензия или описание) -->
-            <div x-show="hasContent">
+            <div class="content-section" x-show="hasAnyContent">
               <!-- Рецензия -->
-              <p class="mb-3 text-gray-300" x-show="showReview && modalItem.review" x-text="modalItem.review"></p>
+              <div x-show="showReview && modalItem.review">
+                <p class="text-gray-300" x-text="modalItem.review"></p>
+              </div>
               
               <!-- Описание -->
-              <p class="mb-3 text-gray-300" x-show="!showReview && modalItem.description" x-text="modalItem.description"></p>
+              <div x-show="!showReview && modalItem.description">
+                <p class="text-gray-300" x-text="modalItem.description"></p>
+              </div>
+              
+              <!-- Если выбран таб без контента -->
+              <div x-show="(showReview && !modalItem.review) || (!showReview && !modalItem.description)" class="text-center py-3">
+                <p class="text-gray-400 italic">Этот раздел пуст</p>
+              </div>
             </div>
             
             <!-- Сообщение, если нет ни рецензии, ни описания -->
-            <p class="mb-3 text-gray-400 italic" x-show="!hasContent">
-              Информация отсутствует
-            </p>
+            <div class="py-4 text-center" x-show="!hasAnyContent">
+              <p class="text-gray-400 italic">
+                Информация отсутствует
+              </p>
+            </div>
             
             <button @click="modalItem = null" class="mt-4 bg-neutral-700 hover:bg-neutral-600 px-4 py-2 rounded">Закрыть</button>
           </div>
@@ -392,8 +436,8 @@
 
         openModal(item) { 
           this.modalItem = {...item};
-          // По умолчанию показываем рецензию, если она есть
-          this.showReview = !!item.review;
+          // По умолчанию показываем рецензию, если она есть, иначе показываем описание
+          this.showReview = item.review ? true : false;
         },
         
         handleImageError(e, item) { 
@@ -425,11 +469,6 @@
         },
         
         getToggleButtonClass(type) {
-          // Если контента нет вообще
-          if (!this.modalItem.review && !this.modalItem.description) {
-            return 'toggle-btn toggle-btn-disabled';
-          }
-          
           // Для кнопки "Рецензия"
           if (type === 'review') {
             if (!this.modalItem.review) {
@@ -449,8 +488,8 @@
           return 'toggle-btn toggle-btn-inactive';
         },
         
-        get hasContent() {
-          return (this.showReview && this.modalItem.review) || (!this.showReview && this.modalItem.description);
+        get hasAnyContent() {
+          return this.modalItem && (this.modalItem.review || this.modalItem.description);
         },
 
         get filteredItems() {
