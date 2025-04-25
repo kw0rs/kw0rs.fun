@@ -1,22 +1,52 @@
 [
   {
-    "title": "ЗАГЛУШКА5",
-    "type": "movie",
-    "rating": "?",
-    "year": 999,
-    "genres": ["Action", "Sci-Fi"],
-    "description": "Незабвенная классика жанра.",
+    "title": "The Boys",
+    "type": "show",
+    "rating": "7.0",
+    "year": 2019,
+    "genres": ["Комедия", "Драма", "Чернуха"],
+    "description": "Группа мстителей отправляется на борьбу с коррумпированными супергероями, злоупотребляющими своими сверхспособностями.",
     "review": "",
-    "image": "https://example.com/matrix.jpg"
+    "image": "https://cdna.artstation.com/p/assets/images/images/058/706/524/large/george-designes-the-boys-poster.jpg?1674770691"
   },
   {
-    "title": "ЗАГЛУШКА6",
-    "type": "movie",
-    "rating": "?",
-    "year": 999,
-    "genres": ["Action", "Thriller", "Sci-Fi"],
-    "description": "Сны во снах, мозг в шоке.",
+    "title": "Wednesday",
+    "type": "show",
+    "rating": "9.5",
+    "year": 2022,
+    "genres": ["Дарк Фэнтези", "Комедия", "Мистика"],
+    "description": "Среда Аддамс учится в школе, пытаясь овладеть своими открывшимися экстрасенсорными способностями, предотвратить серию убийств и разгадать тайну, в которой оказались замешаны ее родители.",
     "review": "",
-    "image": "https://example.com/inception.jpg"
+    "image": "https://static1.srcdn.com/wordpress/wp-content/uploads/2022/09/Wednesday-Official-Poster.jpg"
+  },
+  {
+    "title": "Sex Education",
+    "type": "show",
+    "rating": "7.0",
+    "year": 2019,
+    "genres": ["Романтика", "Комедия", "Драма"],
+    "description": "Подросток с матерью-сексотерапевтом объединяется с одноклассником, чтобы организовать в школе подпольную клинику сексотерапии.",
+    "review": "",
+    "image": "https://fr.web.img2.acsta.net/pictures/19/11/26/09/04/1827610.jpg"
+  },
+  {
+    "title": "Avatar: The Last Airbender",
+    "type": "show",
+    "rating": "4.0",
+    "year": 2024,
+    "genres": ["Экшен", "Фэнтези"],
+    "description": "Юноша, известный как Аватар, должен овладеть четырьмя стихийными силами, чтобы спасти мир, и сразиться с врагом, стремящимся остановить его.",
+    "review": "Очень посредственная адаптация оригинального шедеврального произведения, даже Аватар:Легенда о Коре был более удачным",
+    "image": "https://s-cdn-sj.eu-central-1.linodeobjects.com/avatar-the-last-airbender/poster/hq/avatar-the-last-airbender-serienposter-staffel-14.webp"
+  },
+  {
+    "title": "Wild Tales",
+    "type": "movie",
+    "rating": "6.0",
+    "year": 2014,
+    "genres": ["Чёрнуха", "Комедия", "Триллер"],
+    "description": "Шесть рассказов, в которых исследуются крайности человеческого поведения, связанные с людьми, попавшими в беду.",
+    "review": "",
+    "image": "https://www.themoviedb.org/t/p/original/bXXYKkIiRDOmI5PQWPgKHT8r6Mg.jpg"
   }
 ]
