@@ -90,6 +90,33 @@
         flex: 1 1 100%;
       }
     }
+    
+    /* Стили для переключателя рецензии/описания */
+    .toggle-btn {
+      transition: all 0.2s ease;
+      border-radius: 0.375rem;
+      padding: 0.5rem 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 0.5rem;
+    }
+    
+    .toggle-btn-active {
+      background-color: rgb(239, 68, 68);
+      color: white;
+    }
+    
+    .toggle-btn-inactive {
+      background-color: rgba(75, 85, 99, 0.5);
+      color: rgb(209, 213, 219);
+    }
+    
+    .toggle-btn-disabled {
+      background-color: rgba(75, 85, 99, 0.2);
+      color: rgb(156, 163, 175);
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body class="text-white font-sans" x-data="mediaApp()" x-init="loadItems()">
@@ -236,8 +263,40 @@
             <template x-if="modalItem.genres.length">
               <p class="text-sm text-gray-400 mb-1" x-text="modalItem.genres.join(', ')"></p>
             </template>
-            <p class="mb-3 text-gray-300" x-text="modalItem.description"></p>
-            <p class="italic text-gray-400" x-show="modalItem.review">Review: <span x-text="modalItem.review"></span></p>
+            
+            <!-- Кнопки переключения между рецензией и описанием -->
+            <div class="flex mb-3">
+              <!-- Кнопка "Рецензия" -->
+              <button 
+                @click="showReview = true" 
+                :class="getToggleButtonClass('review')"
+                :disabled="!modalItem.review">
+                Рецензия
+              </button>
+              
+              <!-- Кнопка "Описание" -->
+              <button 
+                @click="showReview = false" 
+                :class="getToggleButtonClass('description')"
+                :disabled="!modalItem.description">
+                Описание
+              </button>
+            </div>
+            
+            <!-- Контент (рецензия или описание) -->
+            <div x-show="hasContent">
+              <!-- Рецензия -->
+              <p class="mb-3 text-gray-300" x-show="showReview && modalItem.review" x-text="modalItem.review"></p>
+              
+              <!-- Описание -->
+              <p class="mb-3 text-gray-300" x-show="!showReview && modalItem.description" x-text="modalItem.description"></p>
+            </div>
+            
+            <!-- Сообщение, если нет ни рецензии, ни описания -->
+            <p class="mb-3 text-gray-400 italic" x-show="!hasContent">
+              Информация отсутствует
+            </p>
+            
             <button @click="modalItem = null" class="mt-4 bg-neutral-700 hover:bg-neutral-600 px-4 py-2 rounded">Закрыть</button>
           </div>
         </div>
@@ -259,6 +318,7 @@
         minYear: null,
         maxYear: null,
         imageObserver: null,
+        showReview: true, // По умолчанию показываем рецензию, если она есть
 
         async loadItems() {
           this.loading = true;
@@ -281,7 +341,7 @@
                 year: i.year || 'Н/Д',
                 rating: !isNaN(r) ? r : null,
                 genres: Array.isArray(i.genres) ? i.genres : [],
-                description: i.description || 'Описание отсутствует',
+                description: i.description || '',
                 review: i.review || '',
                 image: i.image || null,
                 imageLoaded: false // Флаг для отслеживания загрузки картинки
@@ -331,7 +391,9 @@
         },
 
         openModal(item) { 
-          this.modalItem = {...item}; 
+          this.modalItem = {...item};
+          // По умолчанию показываем рецензию, если она есть
+          this.showReview = !!item.review;
         },
         
         handleImageError(e, item) { 
@@ -353,12 +415,42 @@
         getRatingText(item) {
           return (item.rating != null) ? item.rating : '?';
         },
+        
         getRatingClass(item) {
           if (item.rating == null) return 'text-gray-400';
           if (item.rating >= 10) return 'text-purple-500 [text-shadow:0_0_8px_rgba(168,85,247,0.8),0_0_16px_rgba(168,85,247,0.6)]';
           if (item.rating >= 7) return 'text-green-400';
           if (item.rating >= 4) return 'text-yellow-400';
           return 'text-red-500';
+        },
+        
+        getToggleButtonClass(type) {
+          // Если контента нет вообще
+          if (!this.modalItem.review && !this.modalItem.description) {
+            return 'toggle-btn toggle-btn-disabled';
+          }
+          
+          // Для кнопки "Рецензия"
+          if (type === 'review') {
+            if (!this.modalItem.review) {
+              return 'toggle-btn toggle-btn-disabled';
+            }
+            return this.showReview ? 'toggle-btn toggle-btn-active' : 'toggle-btn toggle-btn-inactive';
+          }
+          
+          // Для кнопки "Описание"
+          if (type === 'description') {
+            if (!this.modalItem.description) {
+              return 'toggle-btn toggle-btn-disabled';
+            }
+            return !this.showReview ? 'toggle-btn toggle-btn-active' : 'toggle-btn toggle-btn-inactive';
+          }
+          
+          return 'toggle-btn toggle-btn-inactive';
+        },
+        
+        get hasContent() {
+          return (this.showReview && this.modalItem.review) || (!this.showReview && this.modalItem.description);
         },
 
         get filteredItems() {
