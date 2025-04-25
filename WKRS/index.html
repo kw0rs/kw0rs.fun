@@ -64,6 +64,32 @@
         background-position-x: -200%;
       }
     }
+    
+    /* Фиксим переполнение текста */
+    .truncate-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    /* Стили для полей фильтрации */
+    .filter-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .filter-item {
+      flex: 1 1 auto;
+      min-width: 120px;
+    }
+    
+    @media (max-width: 640px) {
+      .filter-item {
+        flex: 1 1 100%;
+      }
+    }
   </style>
 </head>
 <body class="text-white font-sans" x-data="mediaApp()" x-init="loadItems()">
@@ -77,28 +103,78 @@
         в меню
       </a>
     </div>
-    <div class="flex flex-wrap gap-4 mb-6">
-      <input type="text" x-model="search" placeholder="Search..." class="p-2 rounded bg-neutral-800 border border-neutral-700 w-full sm:w-auto"/>
-      <select x-model="categoryFilter" class="p-2 rounded bg-neutral-800 border border-neutral-700">
-        <option value="">All Categories</option>
-        <option value="movie">Movies</option>
-        <option value="show">TV Shows</option>
-        <option value="anime">Anime</option>
-        <option value="game">Games</option>
-        <option value="book">Books</option>
-        <option value="cartoon">Cartoons</option>
-      </select>
-      <select x-model="sortKey" class="p-2 rounded bg-neutral-800 border border-neutral-700">
-        <option value="rating-desc">Рейтинг (Высокие→Низкие)</option>
-        <option value="rating-asc">Рейтинг (Низкие→Высокие)</option>
-        <option value="year-desc">Год (Новее)</option>
-        <option value="year-asc">Год (Старее)</option>
-        <option value="title">Название (A-Z)</option>
-      </select>
-      <input type="number" x-model.number="minRating" placeholder="Min Rating" min="0" class="p-2 rounded bg-neutral-800 border border-neutral-700 w-24"/>
-      <input type="number" x-model.number="minYear" placeholder="From Year" class="p-2 rounded bg-neutral-800 border border-neutral-700 w-24"/>
-      <input type="number" x-model.number="maxYear" placeholder="To Year" class="p-2 rounded bg-neutral-800 border border-neutral-700 w-24"/>
-      <button @click="pickRandomItem()" class="p-2 rounded bg-red-600 hover:bg-red-700 text-white">Мне повезёт</button>
+    
+    <!-- Переработанные фильтры -->
+    <div class="grid grid-cols-1 gap-4 mb-6">
+      <div class="flex flex-wrap gap-2">
+        <input 
+          type="text" 
+          x-model="search" 
+          placeholder="Search..." 
+          class="p-2 rounded bg-neutral-800 border border-neutral-700 flex-1 min-w-[200px]"/>
+          
+        <select 
+          x-model="categoryFilter" 
+          class="p-2 rounded bg-neutral-800 border border-neutral-700 w-full sm:w-auto">
+          <option value="">All Categories</option>
+          <option value="movie">Movies</option>
+          <option value="show">TV Shows</option>
+          <option value="anime">Anime</option>
+          <option value="game">Games</option>
+          <option value="book">Books</option>
+          <option value="cartoon">Cartoons</option>
+        </select>
+        
+        <select 
+          x-model="sortKey" 
+          class="p-2 rounded bg-neutral-800 border border-neutral-700 w-full sm:w-auto">
+          <option value="rating-desc">Рейтинг (Высокие→Низкие)</option>
+          <option value="rating-asc">Рейтинг (Низкие→Высокие)</option>
+          <option value="year-desc">Год (Новее)</option>
+          <option value="year-asc">Год (Старее)</option>
+          <option value="title">Название (A-Z)</option>
+        </select>
+      </div>
+      
+      <div class="flex flex-wrap gap-2">
+        <div class="flex items-center bg-neutral-800 border border-neutral-700 rounded p-2 flex-1">
+          <span class="mr-2 text-sm text-gray-400">Рейтинг от:</span>
+          <input 
+            type="number" 
+            x-model.number="minRating" 
+            placeholder="0" 
+            min="0" 
+            max="10" 
+            class="bg-transparent w-14 focus:outline-none"
+          />
+        </div>
+        
+        <div class="flex items-center bg-neutral-800 border border-neutral-700 rounded p-2 flex-1">
+          <span class="mr-2 text-sm text-gray-400">Год от:</span>
+          <input 
+            type="number" 
+            x-model.number="minYear" 
+            placeholder="1900" 
+            class="bg-transparent w-20 focus:outline-none"
+          />
+        </div>
+        
+        <div class="flex items-center bg-neutral-800 border border-neutral-700 rounded p-2 flex-1">
+          <span class="mr-2 text-sm text-gray-400">Год до:</span>
+          <input 
+            type="number" 
+            x-model.number="maxYear" 
+            placeholder="2025" 
+            class="bg-transparent w-20 focus:outline-none"
+          />
+        </div>
+        
+        <button 
+          @click="pickRandomItem()" 
+          class="p-2 rounded bg-red-600 hover:bg-red-700 text-white sm:flex-grow-0 flex-1">
+          Мне повезёт
+        </button>
+      </div>
     </div>
 
     <div x-show="loading" class="text-center py-10">
@@ -114,11 +190,12 @@
         <div @click="openModal(item)" class="bg-neutral-900 rounded-xl p-4 shadow hover:shadow-xl transition cursor-pointer">
           <template x-if="item.image">
             <div class="relative w-full aspect-[2/3] rounded mb-4 overflow-hidden">
-              <div class="card-img lazy-placeholder absolute inset-0"></div>
+              <div class="card-img lazy-placeholder absolute inset-0" x-show="!item.imageLoaded"></div>
               <img 
                 class="lazy-image card-img rounded" 
-                :data-src="item.image" 
-                @load="(e) => e.target.classList.add('loaded')" 
+                :src="item.imageLoaded ? item.image : null"
+                :data-src="!item.imageLoaded ? item.image : null" 
+                @load="(e) => { e.target.classList.add('loaded'); item.imageLoaded = true; }" 
                 @error="handleImageError($event,item)" 
               />
             </div>
@@ -128,11 +205,11 @@
               Картинку съели,<br>скоро принесём новую
             </div>
           </template>
-          <h2 class="text-xl font-semibold mb-1" x-text="item.title"></h2>
+          <h2 class="text-xl font-semibold mb-1 truncate-text" x-text="item.title"></h2>
           <p class="text-sm text-gray-400 mb-2" x-text="`${item.type} • ${item.year}`"></p>
           <p :class="getRatingClass(item)">★ <span x-text="getRatingText(item)"></span>/10</p>
           <template x-if="item.genres.length">
-            <p class="text-sm text-gray-400 mt-1" x-text="item.genres.join(', ')"></p>
+            <p class="text-sm text-gray-400 mt-1 truncate-text" x-text="item.genres.join(', ')"></p>
           </template>
         </div>
       </template>
@@ -206,7 +283,8 @@
                 genres: Array.isArray(i.genres) ? i.genres : [],
                 description: i.description || 'Описание отсутствует',
                 review: i.review || '',
-                image: i.image || null
+                image: i.image || null,
+                imageLoaded: false // Флаг для отслеживания загрузки картинки
               };
             });
             
@@ -223,6 +301,11 @@
         },
 
         initLazyLoading() {
+          // Уничтожить предыдущий Observer если он существует
+          if (this.imageObserver) {
+            this.imageObserver.disconnect();
+          }
+          
           // Создаем новый Intersection Observer
           this.imageObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -241,8 +324,8 @@
             threshold: 0.01 // Триггер при появлении хотя бы 1% изображения
           });
           
-          // Наблюдаем за всеми изображениями с классом lazy-image
-          document.querySelectorAll('.lazy-image').forEach(img => {
+          // Наблюдаем за всеми изображениями с атрибутом data-src
+          document.querySelectorAll('img[data-src]').forEach(img => {
             this.imageObserver.observe(img);
           });
         },
@@ -253,6 +336,7 @@
         
         handleImageError(e, item) { 
           item.image = null; 
+          item.imageLoaded = false;
         },
 
         pickRandomItem() {
@@ -302,13 +386,7 @@
           
           // Повторно инициализируем Lazy Loading после обновления отфильтрованных элементов
           this.$nextTick(() => {
-            if (this.imageObserver) {
-              document.querySelectorAll('.lazy-image').forEach(img => {
-                if (!img.hasAttribute('src')) {
-                  this.imageObserver.observe(img);
-                }
-              });
-            }
+            this.initLazyLoading();
           });
           
           return items;
