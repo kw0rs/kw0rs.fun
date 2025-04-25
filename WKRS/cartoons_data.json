@@ -1,23 +1,33 @@
 [
   {
-    "title": "ЗАГЛУШКА1",
+    "title": "Puss in Boots: The Last Wish",
     "type": "cartoon",
-    "rating": "?",
-    "year": 999,
-    "genres": ["Action", "Sci-Fi"],
-    "description": "Незабвенная классика жанра.",
+    "rating": "7.0",
+    "year": 2022,
+    "genres": ["Экшен", "Приключение"],
+    "description": "Когда Кот в сапогах обнаруживает, что страсть к приключениям взяла свое и он прожил восемь из девяти своих жизней, он отправляется в эпическое путешествие, чтобы восстановить их, найдя мифическое Последнее желание.",
     "review": "",
-    "image": "https://example.com/matrix.jpg"
+    "image": "https://m.media-amazon.com/images/I/61f0y511coL.jpg"
+  },
+    {
+    "title": "Inside Job",
+    "type": "cartoon",
+    "rating": "7.0",
+    "year": 2021,
+    "genres": ["Научная фантастика", "Ситком", "Взрослый мульт"],
+    "description": "Для сотрудников «Глубинного государства» заговоры - это не просто теории, а факты. И держать их в секрете - это работа на полную ставку.",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/uCUY8biU85KNfkDoqTkzlrLq1jx.jpg"
   },
   {
-    "title": "ЗАГЛУШКА2",
+    "title": "Moana 2",
     "type": "cartoon",
-    "rating": "?",
-    "year": 999,
-    "genres": ["Action", "Thriller", "Sci-Fi"],
-    "description": "Сны во снах, мозг в шоке.",
+    "rating": "6.5",
+    "year": 2024,
+    "genres": ["Морское приключение", "Музыкальный", "Семейный"],
+    "description": "Получив неожиданный вызов от своих предков-путешественников, Моана должна отправиться в далекие моря Океании, в опасные, давно забытые воды, чтобы принять участие в приключении, подобного которому она еще не встречала.",
     "review": "",
-    "image": "https://example.com/inception.jpg"
+    "image": "https://image.tmdb.org/t/p/original/1meRzfWs2jiSlNcDgpCd2dcOXi7.jpg"
   }
 ]
 
