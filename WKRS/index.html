@@ -45,6 +45,25 @@
     @media (max-width: 768px) {
       .modal-content { max-height: 80vh; overflow-y: auto; }
     }
+    
+    /* Стили для lazy loading */
+    .lazy-image {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .lazy-image.loaded {
+      opacity: 1;
+    }
+    .lazy-placeholder {
+      background: linear-gradient(110deg, #2a2a2a 8%, #3a3a3a 18%, #2a2a2a 33%);
+      background-size: 200% 100%;
+      animation: shine 1.5s linear infinite;
+    }
+    @keyframes shine {
+      to {
+        background-position-x: -200%;
+      }
+    }
   </style>
 </head>
 <body class="text-white font-sans" x-data="mediaApp()" x-init="loadItems()">
@@ -94,7 +113,15 @@
       <template x-for="item in filteredAndSortedItems" :key="item.title + '-' + item.year + '-' + (item.rating ?? '')">
         <div @click="openModal(item)" class="bg-neutral-900 rounded-xl p-4 shadow hover:shadow-xl transition cursor-pointer">
           <template x-if="item.image">
-            <img :src="item.image" class="card-img rounded mb-4" @error="handleImageError($event,item)" />
+            <div class="relative w-full aspect-[2/3] rounded mb-4 overflow-hidden">
+              <div class="card-img lazy-placeholder absolute inset-0"></div>
+              <img 
+                class="lazy-image card-img rounded" 
+                :data-src="item.image" 
+                @load="(e) => e.target.classList.add('loaded')" 
+                @error="handleImageError($event,item)" 
+              />
+            </div>
           </template>
           <template x-if="!item.image">
             <div class="w-full aspect-[2/3] flex items-center justify-center bg-neutral-800 text-gray-400 rounded mb-4 text-center p-2">
@@ -154,6 +181,7 @@
         minRating: null,
         minYear: null,
         maxYear: null,
+        imageObserver: null,
 
         async loadItems() {
           this.loading = true;
@@ -181,6 +209,11 @@
                 image: i.image || null
               };
             });
+            
+            // Инициализация Intersection Observer после загрузки данных
+            this.$nextTick(() => {
+              this.initLazyLoading();
+            });
           } catch (e) {
             this.error = `Не удалось загрузить данные: ${e.message}`;
             this.items = [];
@@ -189,8 +222,38 @@
           }
         },
 
-        openModal(item) { this.modalItem = {...item}; },
-        handleImageError(e, item) { item.image = null; },
+        initLazyLoading() {
+          // Создаем новый Intersection Observer
+          this.imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const img = entry.target;
+                const src = img.getAttribute('data-src');
+                if (src) {
+                  img.setAttribute('src', src);
+                  // Отключаем наблюдение после загрузки
+                  this.imageObserver.unobserve(img);
+                }
+              }
+            });
+          }, {
+            rootMargin: '200px 0px', // Загружаем изображения за 200px до их появления в видимой области
+            threshold: 0.01 // Триггер при появлении хотя бы 1% изображения
+          });
+          
+          // Наблюдаем за всеми изображениями с классом lazy-image
+          document.querySelectorAll('.lazy-image').forEach(img => {
+            this.imageObserver.observe(img);
+          });
+        },
+
+        openModal(item) { 
+          this.modalItem = {...item}; 
+        },
+        
+        handleImageError(e, item) { 
+          item.image = null; 
+        },
 
         pickRandomItem() {
           let availableItems = this.filteredItems;
@@ -224,7 +287,7 @@
         },
 
         get filteredAndSortedItems() {
-          return [...this.filteredItems].sort((a, b) => {
+          const items = [...this.filteredItems].sort((a, b) => {
             const ra = (a.rating == null) ? -1 : a.rating;
             const rb = (b.rating == null) ? -1 : b.rating;
             switch (this.sortKey) {
@@ -236,6 +299,19 @@
               default:             return 0;
             }
           });
+          
+          // Повторно инициализируем Lazy Loading после обновления отфильтрованных элементов
+          this.$nextTick(() => {
+            if (this.imageObserver) {
+              document.querySelectorAll('.lazy-image').forEach(img => {
+                if (!img.hasAttribute('src')) {
+                  this.imageObserver.observe(img);
+                }
+              });
+            }
+          });
+          
+          return items;
         }
       }
     }
