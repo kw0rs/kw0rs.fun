@@ -48,5 +48,175 @@
     "description": "Шесть рассказов, в которых исследуются крайности человеческого поведения, связанные с людьми, попавшими в беду.",
     "review": "",
     "image": "https://www.themoviedb.org/t/p/original/bXXYKkIiRDOmI5PQWPgKHT8r6Mg.jpg"
+  },
+    {
+    "title": "Going in Style",
+    "type": "movie",
+    "rating": "9.0",
+    "year": ,
+    "genres": ["Комедия", "Криминал"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/qjfOyFndPnG1RNE7arvmHvNaiZb.jpg"
+  },
+      {
+    "title": "The Bucket List",
+    "type": "movie",
+    "rating": "10.0",
+    "year": ,
+    "genres": ["Путешествие", "Драма", "Комедия"],
+    "description": "",
+    "review": "",
+    "image": "https://m.media-amazon.com/images/M/MV5BMTY2NTUyMjIyNF5BMl5BanBnXkFtZTYwNzYwMDM4._V1_FMjpg_UX1000_.jpg"
+  },
+      {
+    "title": "Million Dollar Baby",
+    "type": "movie",
+    "rating": "5.0",
+    "year": ,
+    "genres": ["Бокс", "Трагедия"],
+    "description": "",
+    "review": "",
+    "image": "https://m.media-amazon.com/images/M/MV5BMTkxNzA1NDQxOV5BMl5BanBnXkFtZTcwNTkyMTIzMw@@._V1_.jpg"
+  },
+      {
+    "title": "Red",
+    "type": "movie",
+    "rating": "7.0",
+    "year": 2010,
+    "genres": ["Триллер", "Экшн"],
+    "description": "",
+    "review": "",
+    "image": "https://m.media-amazon.com/images/M/MV5BMzg2Mjg1OTk0NF5BMl5BanBnXkFtZTcwMjQ4MTA3Mw@@._V1_.jpg"
+  },
+      {
+    "title": "The Magic of Belle Isle",
+    "type": "movie",
+    "rating": "8.0",
+    "year": 2012,
+    "genres": ["Экшен", "Фэнтези"],
+    "description": "",
+    "review": "",
+    "image": "https://m.media-amazon.com/images/M/MV5BMTg4NTAwODIxM15BMl5BanBnXkFtZTcwNzg5MTY2Nw@@._V1_.jpg"
+  },
+      {
+    "title": "The Great Gatsby",
+    "type": "movie",
+    "rating": "9.0",
+    "year": ,
+    "genres": ["Экшен", "Фэнтези"],
+    "description": "",
+    "review": "",
+    "image": ""
+  },
+      {
+    "title": "The Basketball Diaries",
+    "type": "movie",
+    "rating": "7.0",
+    "year": ,
+    "genres": ["Экшен", "Фэнтези"],
+    "description": "",
+    "review": "",
+    "image": ""
+  },
+      {
+    "title": "The Departed",
+    "type": "movie",
+    "rating": "6.0",
+    "year": ,
+    "genres": ["Экшен", "Фэнтези"],
+    "description": "",
+    "review": "",
+    "image": ""
+  },
+      {
+    "title": "Oppenheimer",
+    "type": "movie",
+    "rating": "7.5",
+    "year": ,
+    "genres": ["Экшен", "Фэнтези"],
+    "description": "",
+    "review": "",
+    "image": ""
+  },
+      {
+    "title": "Don't Be a Menace to South Central While Drinking Your Juice in the Hood",
+    "type": "movie",
+    "rating": "4.0",
+    "year": ,
+    "genres": ["Экшен", "Фэнтези"],
+    "description": "",
+    "review": "",
+    "image": ""
+  },
+      {
+    "title": "Baby Driver",
+    "type": "movie",
+    "rating": "8.0",
+    "year": ,
+    "genres": ["Экшен", "Фэнтези"],
+    "description": "",
+    "review": "",
+    "image": ""
+  },
+      {
+    "title": "Tag",
+    "type": "movie",
+    "rating": "8.0",
+    "year": ,
+    "genres": ["Экшен", "Фэнтези"],
+    "description": "",
+    "review": "",
+    "image": ""
+  },
+      {
+    "title": "Killers of the Flower Moon",
+    "type": "movie",
+    "rating": "9.0",
+    "year": ,
+    "genres": ["Экшен", "Фэнтези"],
+    "description": "",
+    "review": "",
+    "image": ""
+  },
+      {
+    "title": "Dungeons & Dragons: Honor Among Thieves",
+    "type": "movie",
+    "rating": "7.5",
+    "year": ,
+    "genres": ["Экшен", "Фэнтези"],
+    "description": "",
+    "review": "",
+    "image": ""
+  },
+      {
+    "title": "Joker",
+    "type": "movie",
+    "rating": "9.5",
+    "year": ,
+    "genres": ["Экшен", "Фэнтези"],
+    "description": "",
+    "review": "",
+    "image": ""
+  },
+      {
+    "title": "Ford v Ferrari",
+    "type": "movie",
+    "rating": "6.0",
+    "year": ,
+    "genres": ["Экшен", "Фэнтези"],
+    "description": "",
+    "review": "",
+    "image": ""
+  },
+      {
+    "title": "Napoleon",
+    "type": "movie",
+    "rating": "4.0",
+    "year": ,
+    "genres": ["Экшен", "Фэнтези"],
+    "description": "",
+    "review": "",
+    "image": ""
   }
 ]
