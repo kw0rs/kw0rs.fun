@@ -19,6 +19,7 @@
             background-color: #1a1a1a;
             color: #fff;
             min-height: 100vh;
+            padding-bottom: 100px; /* Додаємо відступ внизу сторінки */
         }
         
         header {
@@ -194,29 +195,40 @@
         
         .delivery-progress {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
             background-color: #333;
-            padding: 15px;
-            border-top: 2px solid #4CAF50;
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             z-index: 90;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .delivery-progress.minimized {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            bottom: 20px;
+            right: 20px;
+            overflow: hidden;
         }
         
         .progress-container {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-            border: 2px solid #4CAF50;
-            border-radius: 12px;
             padding: 15px;
+            text-align: center;
             background-color: #2a2a2a;
+            position: relative;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            border: 2px solid #4CAF50;
+            border-bottom: none;
         }
         
         .progress-title {
             margin-bottom: 10px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #fff;
             font-weight: 500;
         }
@@ -239,6 +251,77 @@
         .progress-text {
             font-weight: bold;
             color: #fff;
+        }
+        
+        .success-text {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        .toggle-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+        
+        .progress-circle {
+            display: none;
+            width: 60px;
+            height: 60px;
+            position: relative;
+            background-color: #2a2a2a;
+            border-radius: 50%;
+            border: 2px solid #4CAF50;
+        }
+        
+        .circle-progress {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: conic-gradient(#4CAF50 0% 0%, transparent 0% 100%);
+            transition: background 0.5s ease;
+        }
+        
+        .circle-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 38px;
+            height: 38px;
+            background-color: #2a2a2a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            color: #fff;
+        }
+        
+        .minimized .progress-container {
+            display: none;
+        }
+        
+        .minimized .progress-circle {
+            display: block;
+        }
+        
+        .minimized .toggle-button {
+            top: 50%;
+            right: 50%;
+            transform: translate(50%, -50%) rotate(180deg);
+            color: transparent;
         }
         
         @media (max-width: 768px) {
@@ -274,6 +357,10 @@
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
                 gap: 1.2rem;
             }
+            
+            .delivery-progress {
+                width: 300px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -284,6 +371,38 @@
             .products-container {
                 grid-template-columns: 1fr;
             }
+            
+            .delivery-progress {
+                width: 280px;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+        
+        /* Стилі для toast повідомлень */
+        .toast_container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 1000;
+        }
+        
+        .toast_shown {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast_body {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-weight: 500;
+            max-width: 300px;
         }
     </style>
 </head>
@@ -364,12 +483,17 @@
     </div>
     
     <div class="delivery-progress">
+        <button class="toggle-button">−</button>
         <div class="progress-container">
             <h3 class="progress-title">Прогрес до безкоштовної доставки</h3>
             <div class="progress-bar">
                 <div class="progress-fill" id="progress-fill"></div>
             </div>
-            <p class="progress-text">0 грн / 500 грн</p>
+            <p class="progress-text" id="progress-text">0 грн / 500 грн</p>
+        </div>
+        <div class="progress-circle">
+            <div class="circle-progress" id="circle-progress"></div>
+            <div class="circle-inner" id="circle-inner">0%</div>
         </div>
     </div>
     
@@ -385,17 +509,33 @@
         // Кошик та прогрес доставки
         const cart = [];
         let cartTotal = 0;
+        const targetAmount = 500;
         
+        // Функція для оновлення прогресу доставки
         function updateDeliveryProgress() {
             const progressFill = document.getElementById('progress-fill');
-            const progressText = document.querySelector('.progress-text');
-            const targetAmount = 500;
+            const progressText = document.getElementById('progress-text');
+            const circleProgress = document.getElementById('circle-progress');
+            const circleInner = document.getElementById('circle-inner');
             
             // Обмежуємо прогрес до 100%
             const progressPercentage = Math.min((cartTotal / targetAmount) * 100, 100);
             
+            // Оновлюємо індикатор прогресу
             progressFill.style.width = progressPercentage + '%';
-            progressText.textContent = `${cartTotal.toFixed(2)} грн / ${targetAmount} грн`;
+            
+            // Оновлюємо текст прогресу
+            if (progressPercentage >= 100) {
+                progressText.className = 'success-text';
+                progressText.textContent = 'Вітаю, доставка безкоштовна!';
+            } else {
+                progressText.className = 'progress-text';
+                progressText.textContent = `${cartTotal.toFixed(2)} грн / ${targetAmount} грн`;
+            }
+            
+            // Оновлюємо круговий індикатор
+            circleProgress.style.background = `conic-gradient(#4CAF50 0% ${progressPercentage}%, transparent ${progressPercentage}% 100%)`;
+            circleInner.textContent = Math.round(progressPercentage) + '%';
         }
         
         // Додавання товару до кошика
@@ -425,52 +565,36 @@
         
         // Функція для показу повідомлення
         function ShowToast(text) {
-            var container = document.createElement("div");
+            const container = document.createElement("div");
             container.className = "toast_container";
-            var inner = container.appendChild(document.createElement("div"));
+            const inner = container.appendChild(document.createElement("div"));
             inner.className = "toast_body";
             inner.appendChild(document.createTextNode(text));
-            var appended = document.body.appendChild(container);
+            const appended = document.body.appendChild(container);
             setTimeout(function () {
                 container.classList.add("toast_shown");
                 setTimeout(function () {
                     container.classList.remove("toast_shown");
                     setTimeout(function () {
                         document.body.removeChild(appended);
-                    }, 3000);
+                    }, 300);
                 }, 3000);
             }, 0);
         }
         
-        // Стилі для toast повідомлень
-        const style = document.createElement('style');
-        style.textContent = `
-            .toast_container {
-                position: fixed;
-                bottom: 30px;
-                right: 30px;
-                transform: translateY(100px);
-                opacity: 0;
-                transition: all 0.4s ease;
-                z-index: 1000;
-            }
+        // Керування мінімізацією панелі прогресу
+        const toggleButton = document.querySelector('.toggle-button');
+        const deliveryProgress = document.querySelector('.delivery-progress');
+        
+        toggleButton.addEventListener('click', () => {
+            deliveryProgress.classList.toggle('minimized');
             
-            .toast_shown {
-                transform: translateY(0);
-                opacity: 1;
+            if (deliveryProgress.classList.contains('minimized')) {
+                toggleButton.textContent = '+';
+            } else {
+                toggleButton.textContent = '−';
             }
-            
-            .toast_body {
-                background-color: #4CAF50;
-                color: white;
-                padding: 1rem 1.5rem;
-                border-radius: 8px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-                font-weight: 500;
-                max-width: 300px;
-            }
-        `;
-        document.head.appendChild(style);
+        });
         
         // Ініціалізація прогресу
         updateDeliveryProgress();
