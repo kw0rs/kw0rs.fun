@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Онлайн супермаркет - Замовлення та доставка</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Rubik', sans-serif;
         }
         
         body {
@@ -22,6 +25,9 @@
             color: white;
             padding: 1rem;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
         nav {
@@ -33,6 +39,8 @@
         .logo {
             font-size: 1.5rem;
             font-weight: bold;
+            color: #4CAF50;
+            letter-spacing: 0.5px;
         }
         
         .nav-links {
@@ -47,6 +55,37 @@
         .nav-links a {
             color: white;
             text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: #4CAF50;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #4CAF50;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
         }
         
         .container {
@@ -57,34 +96,75 @@
         
         .hero {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
+            padding: 3rem 1rem;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
         }
         
         .hero h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin-bottom: 1rem;
             color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         
         .hero p {
-            font-size: 1.2rem;
-            color: #ccc;
-            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            color: #eee;
+            margin-bottom: 1.8rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .btn {
             display: inline-block;
             background-color: #4CAF50;
             color: white;
-            padding: 0.8rem 1.5rem;
-            border-radius: 4px;
+            padding: 0.9rem 1.8rem;
+            border-radius: 50px;
             text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+            border: none;
+            cursor: pointer;
         }
         
         .btn:hover {
             background-color: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        section {
+            margin-bottom: 3rem;
+        }
+        
+        section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        
+        section h2::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background-color: #4CAF50;
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
         }
         
         .categories {
@@ -96,82 +176,227 @@
         
         .category {
             background-color: #2a2a2a;
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 1.5rem;
             flex: 1 1 200px;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            transition: transform 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
             cursor: pointer;
+            overflow: hidden;
+            position: relative;
         }
         
         .category:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
         
         .category img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             object-fit: cover;
             margin-bottom: 1rem;
+            border-radius: 50%;
+            transition: transform 0.5s ease;
+            border: 3px solid #4CAF50;
+        }
+        
+        .category:hover img {
+            transform: scale(1.1);
+        }
+        
+        .category h3 {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-top: 0.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .category:hover h3 {
+            color: #4CAF50;
         }
         
         .products {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
+            gap: 1.8rem;
         }
         
         .product {
             background-color: #2a2a2a;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .product:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
         
         .product img {
             width: 100%;
-            height: 180px;
+            height: 200px;
             object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .product:hover img {
+            transform: scale(1.05);
         }
         
         .product-info {
-            padding: 1rem;
+            padding: 1.2rem;
         }
         
         .product-title {
             font-size: 1.1rem;
             margin-bottom: 0.5rem;
             color: #fff;
+            font-weight: 500;
         }
         
         .product-price {
             font-weight: bold;
             color: #4CAF50;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
         }
         
         .add-to-cart {
             width: 100%;
-            padding: 0.5rem;
+            padding: 0.8rem;
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
         }
         
         .add-to-cart:hover {
             background-color: #45a049;
+            box-shadow: 0 6px 12px rgba(76, 175, 80, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .add-to-cart:active {
+            transform: translateY(0);
         }
         
         footer {
             background-color: #333;
             color: white;
             text-align: center;
-            padding: 1.5rem;
-            margin-top: 2rem;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid #444;
+        }
+        
+        /* Toast styling */
+        .toast_container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 1000;
+        }
+        
+        .toast_shown {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast_body {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-weight: 500;
+            max-width: 300px;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background-color: #333;
+                flex-direction: column;
+                align-items: center;
+                padding: 1rem 0;
+                height: 0;
+                overflow: hidden;
+                transition: height 0.3s ease;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            }
+            
+            .nav-links.active {
+                height: auto;
+                padding: 1rem 0;
+            }
+            
+            .nav-links li {
+                margin: 1rem 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .categories {
+                gap: 1rem;
+            }
+            
+            .category {
+                flex: 1 1 150px;
+            }
+            
+            .products {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .hero {
+                padding: 2rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .products {
+                grid-template-columns: 1fr;
+            }
+            
+            .category {
+                flex: 1 1 100%;
+            }
         }
     </style>
 </head>
@@ -179,6 +404,7 @@
     <header>
         <nav>
             <div class="logo">ЕкоМаркет</div>
+            <button class="hamburger">☰</button>
             <ul class="nav-links">
                 <li><a href="#">Головна</a></li>
                 <li><a href="#">Каталог</a></li>
@@ -296,25 +522,31 @@
             cartLink.textContent = `Кошик (${cart.length})`;
         }
         
+        // Мобільне меню
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
         // Використання функції ShowToast з існуючого коду
-        if (typeof ShowToast !== 'function') {
-            function ShowToast(text) {
-                var container = document.createElement("div");
-                container.className = "toast_container";
-                var inner = container.appendChild(document.createElement("div"));
-                inner.className = "toast_body";
-                inner.appendChild(document.createTextNode(text));
-                var appended = document.body.appendChild(container);
+        function ShowToast(text) {
+            var container = document.createElement("div");
+            container.className = "toast_container";
+            var inner = container.appendChild(document.createElement("div"));
+            inner.className = "toast_body";
+            inner.appendChild(document.createTextNode(text));
+            var appended = document.body.appendChild(container);
+            setTimeout(function () {
+                container.classList.add("toast_shown");
                 setTimeout(function () {
-                    container.classList.add("toast_shown");
+                    container.classList.remove("toast_shown");
                     setTimeout(function () {
-                        container.classList.remove("toast_shown");
-                        setTimeout(function () {
-                            document.body.removeChild(appended);
-                        }, 3000);
+                        document.body.removeChild(appended);
                     }, 3000);
-                }, 0);
-            }
+                }, 3000);
+            }, 0);
         }
     </script>
 </body>
