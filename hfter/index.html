@@ -1,973 +1,160 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Угадай героя из Dota 2</title>
-    <style>
-        @font-face {
-            font-family: 'Reaver';
-            src: url('https://cdn.jsdelivr.net/gh/ApproxHack/Reaver-Font/Reaver-Bold.ttf') format('truetype');
-            font-weight: bold;
-            font-style: normal;
-        }
-        
-        body {
-            font-family: 'Reaver', Arial, sans-serif;
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 10px;
-            background-color: transparent;
-            color: #e0e0e0;
-        }
-        
-        h1 {
-            color: #CF3F3F; /* Красный Dota */
-            text-align: center;
-            font-size: 28px;
-            text-shadow: 0 0 5px rgba(207, 63, 63, 0.5);
-        }
-        
-        .game-container {
-            background-color: #1a1a1a;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
-            width: 95%;
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hint-container {
-            margin-bottom: 15px;
-        }
-        
-        .hint {
-            padding: 10px;
-            margin: 5px 0;
-            background-color: #2a2a2a;
-            border-left: 4px solid #CF3F3F; /* Красный Dota */
-            display: none;
-            color: #e0e0e0;
-            word-wrap: break-word;
-            font-size: 14px;
-            transform: translateY(20px);
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-        
-        .visible {
-            display: block;
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .hint-number {
-            font-weight: bold;
-            margin-right: 5px;
-            color: #CF3F3F; /* Красный Dota */
-        }
-        
-        .guess-container {
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .input-wrapper {
-            position: relative;
-            width: 90%;
-            margin-bottom: 10px;
-        }
-        
-        input[type="text"] {
-            padding: 10px;
-            width: 100%;
-            background-color: #2a2a2a;
-            border: 1px solid #444;
-            border-radius: 4px;
-            font-size: 16px;
-            color: #e0e0e0;
-        }
-        
-        input[type="text"]::placeholder {
-            color: #888;
-        }
-        
-        .autocomplete-items {
-            position: absolute;
-            border: 1px solid #444;
-            border-top: none;
-            z-index: 99;
-            top: 100%;
-            left: 0;
-            right: 0;
-            border-radius: 0 0 4px 4px;
-            max-height: 150px;
-            overflow-y: auto;
-            background-color: #2a2a2a;
-        }
-        
-        .autocomplete-items div {
-            padding: 10px;
-            cursor: pointer;
-        }
-        
-        .autocomplete-items div:hover {
-            background-color: #3a3a3a;
-        }
-        
-        .autocomplete-active {
-            background-color: #3a3a3a;
-        }
-        
-        .buttons-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 90%;
-            gap: 5px;
-        }
-        
-        button {
-            padding: 10px 15px;
-            margin: 0;
-            background-color: #CF3F3F; /* Красный Dota */
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.2s, transform 0.1s;
-            flex: 1;
-            min-width: 90px;
-        }
-        
-        button:hover {
-            background-color: #A83030; /* Темнее красный Dota */
-            transform: translateY(-2px);
-        }
-        
-        button:active {
-            transform: translateY(1px);
-        }
-        
-        button:disabled {
-            background-color: #555555;
-            transform: none;
-            cursor: not-allowed;
-        }
-        
-        .result {
-            margin-top: 15px;
-            padding: 12px;
-            text-align: center;
-            border-radius: 4px;
-            display: none;
-            font-size: 14px;
-            width: 90%;
-        }
-        
-        .correct {
-            background-color: #1e3a1e;
-            color: #a3e6a3;
-            border: 1px solid #2d5a2d;
-        }
-        
-        .incorrect {
-            background-color: #3a1e1e;
-            color: #e6a3a3;
-            border: 1px solid #5a2d2d;
-        }
-        
-        .timer {
-            text-align: center;
-            font-size: 16px;
-            margin-bottom: 12px;
-            color: #e0e0e0;
-        }
-        
-        .hints-left {
-            text-align: center;
-            margin-bottom: 12px;
-            color: #e0e0e0;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background-color: #2a2a2a;
-            border-radius: 5px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-        
-        .progress {
-            height: 100%;
-            background-color: #CF3F3F; /* Красный Dota */
-            border-radius: 5px;
-            transition: width 0.3s ease;
-        }
-        
-        .top-players {
-            margin-top: 20px;
-            background-color: #2a2a2a;
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
-        }
-        
-        .top-players h3 {
-            text-align: center;
-            color: #FFD700; /* Золотой цвет Dota */
-            margin-top: 0;
-        }
-        
-        .player-list {
-            list-style-type: none;
-            padding: 0;
-        }
-        
-        .player-list li {
-            padding: 5px 0;
-            border-bottom: 1px solid #444;
-        }
-        
-        .player-list li:last-child {
-            border-bottom: none;
-        }
-        
-        .easter-egg {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(207, 63, 63, 0.8);
-            z-index: 1000;
-            text-align: center;
-            display: none;
-        }
-        
-        .easter-egg img {
-            max-width: 200px;
-            margin-bottom: 10px;
-        }
-        
-        .meme-container {
-            display: none;
-            background-color: #2a2a2a;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 20px;
-            text-align: center;
-        }
-        
-        .meme-container img {
-            max-width: 100%;
-            max-height: 300px;
-            margin-bottom: 10px;
-        }
-        
-        .hero-reveal {
-            text-align: center;
-            margin-top: 20px;
-            display: none;
-        }
-        
-        .hero-reveal img {
-            max-width: 200px;
-            border-radius: 5px;
-            box-shadow: 0 0 15px rgba(207, 63, 63, 0.5);
-        }
-        
-        /* Медиа-запросы для адаптивности */
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 20px;
-                margin-top: 10px;
-                margin-bottom: 10px;
-            }
-            .game-container {
-                padding: 10px;
-                width: 95%;
-            }
-            .hint {
-                padding: 8px;
-                font-size: 14px;
-            }
-            button {
-                width: 100%;
-                margin: 5px 0;
-                padding: 12px 10px;
-                font-size: 16px;
-            }
-            input[type="text"] {
-                width: 100%;
-                font-size: 16px;
-                padding: 12px 10px;
-            }
-            .timer, .hints-left {
-                font-size: 14px;
-            }
-        }
-        
-        @media (max-width: 320px) {
-            h1 {
-                font-size: 18px;
-            }
-            .hint {
-                font-size: 13px;
-                padding: 6px;
-            }
-            .game-container {
-                padding: 8px;
-            }
-            button, input[type="text"] {
-                font-size: 14px;
-                padding: 10px 8px;
-            }
-        }
-    </style>
+    <title>Онлайн супермаркет - Замовлення та доставка</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Угадай героя из Dota 2</h1>
-    
-    <div class="game-container">
-        <div class="timer">Следующий герой через: <span id="countdown">00:00:00</span></div>
-        <div class="hints-left">Осталось подсказок: <span id="hints-count">10</span></div>
-        
-        <div class="progress-bar">
-            <div class="progress" id="hint-progress" style="width: 0%"></div>
-        </div>
-        
-        <div class="hint-container" id="hints">
-            <!-- Подсказки будут добавлены через JavaScript -->
-        </div>
-        
-        <div class="guess-container">
-            <div class="input-wrapper">
-                <input type="text" id="guess-input" placeholder="Введите имя героя...">
-                <div id="autocomplete-list" class="autocomplete-items"></div>
+    <header>
+        <nav class="main-nav">
+            <div class="logo">
+                <h1>Супермаркет Онлайн</h1>
             </div>
-            <div class="buttons-container">
-                <button id="guess-button">Угадать</button>
-                <button id="surrender-button">Сдаться</button>
+            <ul class="nav-links">
+                <li><a href="#home">Головна</a></li>
+                <li><a href="#categories">Категорії</a></li>
+                <li><a href="#cart">Кошик</a></li>
+                <li><a href="#account">Особистий кабінет</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="categories" id="categories">
+            <h2>Категорії товарів</h2>
+            <div class="category-grid">
+                <div class="category-card">
+                    <img src="images/fruits.jpg" alt="Фрукти та овочі">
+                    <h3>Фрукти та овочі</h3>
+                </div>
+                <div class="category-card">
+                    <img src="images/dairy.jpg" alt="Молочні продукти">
+                    <h3>Молочні продукти</h3>
+                </div>
+                <div class="category-card">
+                    <img src="images/meat.jpg" alt="М'ясні вироби">
+                    <h3>М'ясні вироби</h3>
+                </div>
+                <!-- Додаткові категорії -->
+            </div>
+        </section>
+
+        <section class="products">
+            <div id="productList" class="product-grid">
+                <!-- Продукти будуть додані через JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="contact-info">
+                <h3>Контакти</h3>
+                <p>Телефон: +380 XX XXX XX XX</p>
+                <p>Email: info@supermarket.ua</p>
+            </div>
+            <div class="delivery-info">
+                <h3>Доставка</h3>
+                <p>Доставка по місту: від 60 грн</p>
+                <p>Безкоштовна доставка від 1000 грн</p>
             </div>
         </div>
-        
-        <div class="result" id="result"></div>
-        
-        <div class="hero-reveal" id="hero-reveal">
-            <h3>Это был:</h3>
-            <div id="hero-name"></div>
-            <img id="hero-image" src="" alt="Герой Dota 2">
-        </div>
-        
-        <div class="top-players" id="top-players">
-            <h3>Лучшие игроки сегодня</h3>
-            <ol class="player-list" id="player-list"></ol>
-        </div>
-    </div>
-    
-    <div class="easter-egg" id="easter-egg">
-        <img id="easter-egg-img" src="" alt="Пасхалка">
-        <div id="easter-egg-text"></div>
-        <button id="close-easter-egg">Закрыть</button>
-    </div>
+    </footer>
 
     <script>
-        // База данных героев и подсказок
-        const heroes = [
-            {
-                name: "Anti Mage",
-                hints: [
-                    "Начнём с того что это герой",
-                    "У него есть как минимум 1 пассивный скилл",
-                    "На линии его работа - жрать дерьмо",
-                    "Это не интовик",
-                    "Трансгендер",
-                    "Моя сигна, 55.5% винрейта",
-                    "Герой - очевидный контрпик для другого героя",
-                    "В начале игры от него в большинстве случаев сомнительный импакт",
-                    "У него есть эскейп",
-                    "Крип мечник"
-                ],
-                image: "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/antimage.png",
-                attribute: "agility"
-            },
-            {
-                name: "Axe",
-                hints: [
-                    "Играть на нём классно",
-                    "Особенно после смены на заводе",
-                    "Ну нет блять, это не баратрум",
-                    "Не, ну он похож конечно на баратрума чем-то",
-                    "Ну вот мб атрибутом похож",
-                    "На него есть известный коссплей",
-                    "Он умеет атаковать",
-                    "Оглоди",
-                    "Ну красный блять",
-                    "Для долбоёбов линк https://www.youtube.com/watch?v=YPjv8kKLYxw"
-                ],
-                image: "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/axe.png",
-                attribute: "strength"
-            },
-            {
-                name: "Snapfire",
-                hints: [
-                    "Вот какой долбоёб придумал этого героя?",
-                    "А сэты на этого чара кто делат?",
-                    "Вот реально, сделали сэт по песне",
-                    "Ну, чё на подсказку реальную, у героя длинные уши",
-                    "Дава, вспомнай эльфов, не врка, не тракса",
-                    "Да и не керри так-то",
-                    "Стреляет, +-моего возраста",
-                    "Катается на какой-то хуйне",
-                    "Печеньки любит",
-                    "БАБУШКА, БАБУЛЕНЦИЯ, БАБУЛЬКА"
-                ],
-                image: "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/snapfire.png",
-                attribute: "strength"
-            },
-            {
-                name: "Kunkka",
-                hints: [
-                    "Некоторые игроки не прочь трахнуть этого персонажа",
-                    "У этого персонажа весьма стандартная причёска(много у кого такая IRL)",
-                    "Имеет сочную попку",
-                    "Вроде был в первой доте(не новый герой)",
-                    "Не универсал",
-                    "Один из его скиллов можно выключить сильвером",
-                    "Есть супер редкие шмотки",
-                    "Есть гемы которые что-то у перса меняют",
-                    "У перса есть главный лорный враг",
-                    "Я на него косплей делал"
-                ],
-                image: "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/shadowshaman.png",
-                attribute: "strength"
-            },
-            {
-                name: "Shadow Shaman",
-                hints: [
-                    "Приятно видеть за себя, ",
-                    "Не приятно против себя",
-                    "Рэндж герой",
-                    "Может тычкой дэбафф накинуть",
-                    "Есть скилл который мешает двигатся",
-                    "Хорошо пушит",
-                    "Аганим улучшает один из скилов",
-                    "Есть скилл контроля",
-                    "Есть иморталки на голову и на оружие",
-                    "Наверное самый блядский контроль в игре, длится просто дохуя"
-                ],
-                image: "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/shadow_shaman.png",
-                attribute: "intelligence"
-            }
-            // Добавьте сюда остальных героев и их подсказки
-        ];
-        
-        // Полный список героев Dota 2 для автодополнения
-        const allHeroes = ["Abaddon", "Alchemist", "Ancient Apparition", "Anti Mage", "Arc Warden", "Axe", "Bane", "Batrider", "Beastmaster", "Bloodseeker", "Bounty Hunter", "Brewmaster", "Bristleback", "Broodmother", "Centaur Warrunner", "Chaos Knight", "Chen", "Clinkz", "Clockwerk", "Crystal Maiden", "Dark Seer", "Dark Willow", "Dazzle", "Death Prophet", "Disruptor", "Doom", "Dragon Knight", "Drow Ranger", "Earth Spirit", "Earthshaker", "Elder Titan", "Ember Spirit", "Enchantress", "Enigma", "Faceless Void", "Grimstroke", "Gyrocopter", "Hoodwink", "Huskar", "Invoker", "Io", "Jakiro", "Juggernaut", "Keeper of the Light", "Kunkka", "Legion Commander", "Leshrac", "Lich", "Lifestealer", "Lina", "Lion", "Lone Druid", "Luna", "Lycan", "Magnus", "Mars", "Medusa", "Meepo", "Mirana", "Monkey King", "Morphling", "Naga Siren", "Nature's Prophet", "Necrophos", "Night Stalker", "Nyx Assassin", "Ogre Magi", "Omniknight", "Oracle", "Outworld Destroyer", "Pangolier", "Phantom Assassin", "Phantom Lancer", "Phoenix", "Puck", "Pudge", "Pugna", "Queen of Pain", "Razor", "Riki", "Rubick", "Sand King", "Shadow Demon", "Shadow Fiend", "Shadow Shaman", "Silencer", "Skywrath Mage", "Slardar", "Slark", "Snapfire", "Sniper", "Spectre", "Spirit Breaker", "Storm Spirit", "Sven", "Techies", "Templar Assassin", "Terrorblade", "Tidehunter", "Timbersaw", "Tinker", "Tiny", "Treant Protector", "Troll Warlord", "Tusk", "Underlord", "Undying", "Ursa", "Vengeful Spirit", "Venomancer", "Viper", "Visage", "Void Spirit", "Warlock", "Weaver", "Windranger", "Winter Wyvern", "Witch Doctor", "Wraith King", "Zeus"];
-        
-        // Пасхалки
-        const easterEggs = {
-            "gaben": {
-                image: "https://th.bing.com/th/id/OIP.CYYbNy-JNRk_OXs5ah7ilAHaFJ?rs=1&pid=ImgDetMain",
-                text: "Ваша подсказка: Мы все знаем, кто самый настоящий пидор в доте!"
-            },
-            "xd": {
-                image: "https://th.bing.com/th/id/OIP.eWTWt6joV1HMlezROSVTGAHaHa?rs=1&pid=ImgDetMain",
-                text: "Чё, смешно сука"
-            },
-            "пидор": {
-                image: "https://www.meme-arsenal.com/memes/a2ce8e7e426584aea95409c0b870e85c.jpg",
-                text: "Ты чё долбоёб? Нахуй ты это пишешь? ОСУЖДАЮ И НЕ ОДОБРЯЮ!!!!!!"
-            }
+        // Підключення до бази даних (приклад структури)
+        const products = {
+            fruits: [
+                { id: 1, name: 'Яблука', price: 25.50, unit: 'кг', image: 'images/apple.jpg' },
+                { id: 2, name: 'Банани', price: 45.00, unit: 'кг', image: 'images/banana.jpg' }
+            ],
+            dairy: [
+                { id: 3, name: 'Молоко', price: 32.00, unit: 'л', image: 'images/milk.jpg' },
+                { id: 4, name: 'Сир', price: 185.00, unit: 'кг', image: 'images/cheese.jpg' }
+            ]
         };
 
-        // Функция для получения дня от фиксированной даты начала
-        function getDaysSinceStart() {
-            // Фиксированная дата начала - 27 февраля 2025
-            const startDate = new Date(2025, 1, 27); // Месяцы в JavaScript начинаются с 0, поэтому февраль = 1
-            const now = new Date();
-            
-            // Устанавливаем дату "сейчас" в начало дня для правильного расчёта
-            now.setHours(0, 0, 0, 0);
-            
-            // Разница в миллисекундах
-            const diffTime = now - startDate;
-            
-            // Преобразуем миллисекунды в дни
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            
-            return diffDays;
-        }
+        // Функція для відображення продуктів
+        function displayProducts(category) {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = '';
 
-        // Выбор героя на основе дней с начала отсчёта
-        function getHeroForToday() {
-            const daysSinceStart = getDaysSinceStart();
-            
-            // Если daysSinceStart отрицательный, значит текущая дата раньше даты начала
-            // В этом случае используем 0 (первый герой)
-            const index = daysSinceStart < 0 ? 0 : daysSinceStart % heroes.length;
-            
-            return heroes[index];
-        }
-
-        // Функция для обновления localStorage
-        function updatePlayerStats(win, hintsUsed) {
-            const today = new Date().toISOString().split('T')[0]; // Формат YYYY-MM-DD
-            const playerName = localStorage.getItem('playerName') || generatePlayerName();
-            
-            // Получаем существующую статистику или создаем новую
-            let stats = JSON.parse(localStorage.getItem('playerStats')) || {};
-            
-            // Создаем объект для текущего дня, если его нет
-            if (!stats[today]) {
-                stats[today] = {
-                    wins: 0,
-                    losses: 0,
-                    totalHintsUsed: 0,
-                    bestScore: 0,
-                    playerName: playerName
-                };
-            }
-            
-            // Обновляем статистику
-            if (win) {
-                stats[today].wins += 1;
-                const score = 100 - (hintsUsed * 10); // Базовые 100 очков, минус 10 за каждую использованную подсказку
-                if (score > stats[today].bestScore) {
-                    stats[today].bestScore = score;
-                }
-            } else {
-                stats[today].losses += 1;
-            }
-            
-            stats[today].totalHintsUsed += hintsUsed;
-            
-            // Сохраняем обновленную статистику
-            localStorage.setItem('playerStats', JSON.stringify(stats));
-            localStorage.setItem('playerName', playerName);
-        }
-
-        // Функция для генерации случайного имени игрока, если не установлено
-        function generatePlayerName() {
-            const names = ["Dendiface", "PlayerToxic", "MidOrFeed", "SupportBrain", "JunglerWannabe", "CarryGod", "RoshPitter", "DivineRapier", "MegaCreeps", "AncientFarmer"];
-            return names[Math.floor(Math.random() * names.length)] + Math.floor(Math.random() * 1000);
-        }
-
-        // Функция для отображения списка лучших игроков
-        function showTopPlayers() {
-            const today = new Date().toISOString().split('T')[0];
-            const stats = JSON.parse(localStorage.getItem('playerStats')) || {};
-            
-            if (!stats[today]) return;
-            
-            // Получаем данные всех игроков для текущего дня
-            const allPlayersToday = Object.values(stats).filter(player => player.bestScore > 0);
-            
-            // Сортируем игроков по лучшему результату
-            allPlayersToday.sort((a, b) => b.bestScore - a.bestScore);
-            
-            // Отображаем топ-5 игроков
-            const playerList = document.getElementById('player-list');
-            playerList.innerHTML = '';
-            
-            const topPlayers = allPlayersToday.slice(0, 5);
-            
-            topPlayers.forEach((player, index) => {
-                const li = document.createElement('li');
-                li.textContent = `${index + 1}. ${player.playerName} - ${player.bestScore} очков`;
-                playerList.appendChild(li);
-            });
-            
-            document.getElementById('top-players').style.display = 'block';
-        }
-
-        // Инициализация игры
-        let currentHero = getHeroForToday();
-        let revealedHints = 0;
-        let gameWon = false;
-        let gameSurrendered = false;
-        let extraHintsUsed = 0;
-
-        // Создаем элементы для подсказок
-        const hintsContainer = document.getElementById('hints');
-        for (let i = 0; i < currentHero.hints.length; i++) {
-            const hintElement = document.createElement('div');
-            hintElement.className = 'hint';
-            hintElement.innerHTML = `<span class="hint-number">${i + 1}:</span> ${currentHero.hints[i]}`;
-            hintsContainer.appendChild(hintElement);
-        }
-
-        // Обновляем счетчик оставшихся подсказок
-        document.getElementById('hints-count').textContent = currentHero.hints.length - revealedHints;
-
-        // Обработчик кнопки проверки ответа
-        document.getElementById('guess-button').addEventListener('click', checkGuess);
-        document.getElementById('guess-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkGuess();
-            }
-        });
-        
-        // Обработчик кнопки "Сдаться"
-        document.getElementById('surrender-button').addEventListener('click', surrender);
-        
-        
-        // Обработчик закрытия пасхалки
-        document.getElementById('close-easter-egg').addEventListener('click', function() {
-            document.getElementById('easter-egg').style.display = 'none';
-        });
-
-        // Автодополнение для поля ввода
-        function setupAutocomplete() {
-            const input = document.getElementById('guess-input');
-            const autocompleteList = document.getElementById('autocomplete-list');
-            
-            input.addEventListener('input', function() {
-                const value = this.value.toLowerCase();
-                autocompleteList.innerHTML = '';
-                
-                if (!value) {
-                    autocompleteList.style.display = 'none';
-                    return;
-                }
-                
-                // Фильтруем героев, которые содержат введенный текст
-                const matches = allHeroes.filter(hero => hero.toLowerCase().includes(value));
-                
-                if (matches.length > 0) {
-                    autocompleteList.style.display = 'block';
-                    matches.forEach(hero => {
-                        const div = document.createElement('div');
-                        div.textContent = hero;
-                        div.addEventListener('click', function() {
-                            input.value = hero;
-                            autocompleteList.innerHTML = '';
-                            autocompleteList.style.display = 'none';
-                            input.focus();
-                        });
-                        autocompleteList.appendChild(div);
-                    });
-                } else {
-                    autocompleteList.style.display = 'none';
-                }
-            });
-            
-            // Скрываем список при клике вне поля ввода
-            document.addEventListener('click', function(e) {
-                if (e.target !== input && e.target !== autocompleteList) {
-                    autocompleteList.style.display = 'none';
-                }
-            });
-            
-            // Управление с клавиатуры
-            input.addEventListener('keydown', function(e) {
-                const items = autocompleteList.getElementsByTagName('div');
-                if (items.length === 0) return;
-                
-                let activeItem = autocompleteList.querySelector('.autocomplete-active');
-                const itemIndex = Array.from(items).indexOf(activeItem);
-                
-                if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    if (activeItem) {
-                        activeItem.classList.remove('autocomplete-active');
-                        const nextItem = items[itemIndex + 1] || items[0];
-                        nextItem.classList.add('autocomplete-active');
-                    } else {
-                        items[0].classList.add('autocomplete-active');
-                    }
-                } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    if (activeItem) {
-                        activeItem.classList.remove('autocomplete-active');
-                        const prevItem = items[itemIndex - 1] || items[items.length - 1];
-                        prevItem.classList.add('autocomplete-active');
-                    } else {items[items.length - 1].classList.add('autocomplete-active');
-                    }
-                } else if (e.key === 'Enter') {
-                    if (activeItem) {
-                        input.value = activeItem.textContent;
-                        autocompleteList.innerHTML = '';
-                        autocompleteList.style.display = 'none';
-                    }
-                }
+            products[category].forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h4>${product.name}</h4>
+                    <p>${product.price} грн/${product.unit}</p>
+                    <button onclick="addToCart(${product.id})">Додати до кошика</button>
+                `;
+                productList.appendChild(productCard);
             });
         }
 
-        // Функция проверки ответа
-        function checkGuess() {
-            if (gameWon || gameSurrendered) return;
-            
-            const input = document.getElementById('guess-input');
-            const result = document.getElementById('result');
-            const guessValue = input.value.trim();
-            
-            if (!guessValue) return;
-            
-            if (guessValue.toLowerCase() === currentHero.name.toLowerCase()) {
-                gameWon = true;
-                result.textContent = 'Правильно! Вы угадали героя!';
-                result.className = 'result correct';
-                result.style.display = 'block';
-                
-                // Показываем картинку героя
-                document.getElementById('hero-name').textContent = currentHero.name;
-                document.getElementById('hero-image').src = currentHero.image;
-                document.getElementById('hero-reveal').style.display = 'block';
-                
-                // Обновляем статистику игрока
-                updatePlayerStats(true, revealedHints + extraHintsUsed);
-                showTopPlayers();
-                
-                // Блокируем кнопки
-                document.getElementById('guess-button').disabled = true;
-                document.getElementById('surrender-button').disabled = true;
-                document.getElementById('hint-button').disabled = true;
-            } else {
-                result.textContent = 'Неправильно. Попробуйте еще раз или воспользуйтесь подсказкой.';
-                result.className = 'result incorrect';
-                result.style.display = 'block';
-                
-                // Открываем следующую подсказку, если есть
-                revealNextHint();
-            }
-            
-            input.value = '';
+        // Функція додавання до кошика
+        function addToCart(productId) {
+            // Логіка додавання до кошика
+            alert('Товар додано до кошика!');
         }
-        
-        // Функция "Сдаться"
-        function surrender() {
-            if (gameWon || gameSurrendered) return;
-            
-            gameSurrendered = true;
-            const result = document.getElementById('result');
-            result.textContent = `Вы сдались. Это был: ${currentHero.name}`;
-            result.className = 'result incorrect';
-            result.style.display = 'block';
-            
-            // Показываем все подсказки
-            const hints = document.querySelectorAll('.hint');
-            hints.forEach(hint => hint.classList.add('visible'));
-            
-            // Показываем картинку героя
-            document.getElementById('hero-name').textContent = currentHero.name;
-            document.getElementById('hero-image').src = currentHero.image;
-            document.getElementById('hero-reveal').style.display = 'block';
-            
-            // Обновляем статистику игрока
-            updatePlayerStats(false, revealedHints + extraHintsUsed);
-            showTopPlayers();
-            
-            // Блокируем кнопки
-            document.getElementById('guess-button').disabled = true;
-            document.getElementById('surrender-button').disabled = true;
-            document.getElementById('hint-button').disabled = true;
-            
-            // Обновляем прогресс-бар
-            document.getElementById('hint-progress').style.width = '100%';
-        }
-        
-        // Функция показа следующей подсказки
-        function revealNextHint() {
-            if (revealedHints >= currentHero.hints.length) return;
-            
-            const hints = document.querySelectorAll('.hint');
-            hints[revealedHints].classList.add('visible');
-            revealedHints++;
-            
-            // Обновляем счетчик оставшихся подсказок
-            document.getElementById('hints-count').textContent = currentHero.hints.length - revealedHints;
-            
-            // Обновляем прогресс-бар
-            const progressPercentage = (revealedHints / currentHero.hints.length) * 100;
-            document.getElementById('hint-progress').style.width = `${progressPercentage}%`;
-        }
-        
-        // Функция для обработки ввода секретных кодов
-        function checkForEasterEgg(input) {
-            const text = input.toLowerCase();
-            
-            if (easterEggs[text]) {
-                const egg = easterEggs[text];
-                document.getElementById('easter-egg-img').src = egg.image;
-                document.getElementById('easter-egg-text').textContent = egg.text;
-                document.getElementById('easter-egg').style.display = 'block';
-                
-                // Дополнительные действия в зависимости от пасхалки
-                if (text === "gaben") {
-                    // Открываем 3 подсказки
-                    for (let i = 0; i < 3; i++) {
-                        revealNextHint();
-                    }
-                }
-                
-                return true;
-            }
-            
-            return false;
-        }
-        
-        // Добавляем проверку секретных кодов при вводе
-        document.getElementById('guess-input').addEventListener('input', function() {
-            checkForEasterEgg(this.value);
-        });
-        
-        // Обратный отсчет до следующего героя
-        function updateCountdown() {
-            const now = new Date();
-            const tomorrow = new Date(now);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            tomorrow.setHours(0, 0, 0, 0);
-            
-            const difference = tomorrow - now;
-            
-            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-            
-            document.getElementById('countdown').textContent = 
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-        
-        // Обновляем отсчет каждую секунду
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-        
-        // Открываем первую подсказку
-        revealNextHint();
-        
-        // Инициализируем автодополнение
-        setupAutocomplete();
-
-// Функция для обновления отображения имени игрока
-function updatePlayerDisplay() {
-    const playerName = localStorage.getItem('playerName');
-    
-    // Добавляем секцию с именем игрока, если её еще нет
-    if (!document.getElementById('player-info')) {
-        const playerInfo = document.createElement('div');
-        playerInfo.id = 'player-info';
-        playerInfo.style.textAlign = 'center';
-        playerInfo.style.marginBottom = '10px';
-        playerInfo.style.color = '#e0e0e0';
-        
-        const nameSpan = document.createElement('span');
-        nameSpan.id = 'player-name-display';
-        nameSpan.textContent = playerName;
-        
-        const changeButton = document.createElement('button');
-        changeButton.textContent = 'Изменить';
-        changeButton.style.marginLeft = '10px';
-        changeButton.style.padding = '2px 8px';
-        changeButton.style.backgroundColor = '#555';
-        changeButton.style.color = 'white';
-        changeButton.style.border = 'none';
-        changeButton.style.borderRadius = '4px';
-        changeButton.style.fontSize = '12px';
-        
-        playerInfo.appendChild(document.createTextNode('Игрок: '));
-        playerInfo.appendChild(nameSpan);
-        playerInfo.appendChild(changeButton);
-        
-        // Вставляем перед таймером
-        const timer = document.querySelector('.timer');
-        timer.parentNode.insertBefore(playerInfo, timer);
-        
-        // Обработчик для изменения имени
-        changeButton.addEventListener('click', function() {
-            const newName = prompt('Введите новый никнейм', playerName);
-            if (newName && newName.trim()) {
-                localStorage.setItem('playerName', newName.trim());
-                document.getElementById('player-name-display').textContent = newName.trim();
-            }
-        });
-    } else {
-        document.getElementById('player-name-display').textContent = playerName;
-    }
-}
-
-// Модифицируем функцию updatePlayerStats, чтобы использовать правильный формат
-function updatePlayerStats(win, hintsUsed) {
-    const today = new Date().toISOString().split('T')[0]; // Формат YYYY-MM-DD
-    const playerName = localStorage.getItem('playerName') || generatePlayerName();
-    
-    // Получаем существующую статистику или создаем новую
-    let stats = JSON.parse(localStorage.getItem('playerStats')) || {};
-    
-    // Создаем ключ для текущего игрока и дня, если его нет
-    const playerKey = `${playerName}_${today}`;
-    if (!stats[playerKey]) {
-        stats[playerKey] = {
-            wins: 0,
-            losses: 0,
-            totalHintsUsed: 0,
-            bestScore: 0,
-            playerName: playerName,
-            date: today
-        };
-    }
-    
-    // Обновляем статистику
-    if (win) {
-        stats[playerKey].wins += 1;
-        const score = 100 - (hintsUsed * 10); // Базовые 100 очков, минус 10 за каждую использованную подсказку
-        if (score > stats[playerKey].bestScore) {
-            stats[playerKey].bestScore = score;
-        }
-    } else {
-        stats[playerKey].losses += 1;
-    }
-    
-    stats[playerKey].totalHintsUsed += hintsUsed;
-    
-    // Сохраняем обновленную статистику
-    localStorage.setItem('playerStats', JSON.stringify(stats));
-}
-
-// Модифицируем функцию showTopPlayers для учета новой структуры данных
-function showTopPlayers() {
-    const today = new Date().toISOString().split('T')[0];
-    const stats = JSON.parse(localStorage.getItem('playerStats')) || {};
-    
-    // Фильтруем только записи для сегодняшнего дня
-    const todayPlayers = Object.values(stats).filter(player => player.date === today && player.bestScore > 0);
-    
-    if (todayPlayers.length === 0) {
-        document.getElementById('top-players').style.display = 'none';
-        return;
-    }
-    
-    // Сортируем игроков по лучшему результату
-    todayPlayers.sort((a, b) => b.bestScore - a.bestScore);
-    
-    // Отображаем топ-5 игроков
-    const playerList = document.getElementById('player-list');
-    playerList.innerHTML = '';
-    
-    const topPlayers = todayPlayers.slice(0, 5);
-    
-    topPlayers.forEach((player, index) => {
-        const li = document.createElement('li');
-        li.textContent = `${index + 1}. ${player.playerName} - ${player.bestScore} очков`;
-        playerList.appendChild(li);
-    });
-    
-    document.getElementById('top-players').style.display = 'block';
-}
-
-// Добавляем инициализацию имени игрока при загрузке страницы
-window.addEventListener('load', requestPlayerName);
     </script>
+
+    <style>
+        /* Базові стилі */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .main-nav {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .category-grid, .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .category-card, .product-card {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .category-card img, .product-card img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+    </style>
 </body>
 </html>
