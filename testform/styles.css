@@ -1,5 +1,17 @@
 /* Global Resets and Font Import */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;700;800&display=swap');
+
+:root {
+  --glow-color-telegram: #00AEEF;
+  --glow-color-twitch: #9146FF;
+  --glow-color-youtube: #FF0000;
+  --glow-color-steam: #171a21;
+  --button-base-color: #2a2a3a;
+  --button-surface-color: #3c3c4c;
+  --button-edge-height: 6px;
+  --text-color: #e0e0e0;
+  --neon-text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--glow-color-telegram), 0 0 20px var(--glow-color-telegram), 0 0 25px var(--glow-color-telegram), 0 0 30px var(--glow-color-telegram), 0 0 35px var(--glow-color-telegram);
+}
 
 * {
   margin: 0;
@@ -8,179 +20,246 @@
 }
 
 body {
-  background-color: #1a1a1a; /* Fallback */
-  background-image: linear-gradient(180deg, #2c2c2c 0%, #1a1a1a 100%);
-  color: white;
-  font-family: 'Roboto', Arial, sans-serif;
+  background-color: #0f0f1a; /* Dark base */
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(58, 0, 163, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(0, 174, 239, 0.3) 0%, transparent 50%),
+    linear-gradient(160deg, #0a0a10 0%, #1a1a2a 40%, #2a2a40 70%, #0a0a10 100%);
+  color: var(--text-color);
+  font-family: 'Exo 2', sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  overflow-x: hidden; /* Prevent horizontal scroll from animations */
+  padding: 30px 20px;
+  overflow-x: hidden;
+  perspective: 1000px; /* For 3D effects on children */
 }
 
-/* Menu Button Styling */
+@keyframes backgroundShine {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 10px #00AEEF, 0 0 20px #00AEEF, 0 0 30px #9146FF, 0 0 40px #9146FF;
+  margin-bottom: 40px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Menu Button Styling - Neon Future */
 .menu-button {
-  padding: 12px 25px;
-  background-color: #444; /* Slightly lighter for differentiation */
-  color: white;
-  border: 2px solid #555;
+  padding: 12px 28px;
+  background-color: transparent;
+  color: var(--text-color);
+  border: 2px solid var(--glow-color-telegram);
   text-decoration: none;
   font-size: 18px;
-  font-weight: 500;
-  margin-bottom: 30px;
+  font-weight: 600;
+  margin-bottom: 40px;
   border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  text-shadow: 0 0 5px var(--glow-color-telegram), 0 0 8px var(--glow-color-telegram);
+  box-shadow: 0 0 10px var(--glow-color-telegram), inset 0 0 8px rgba(0, 174, 239, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-button::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.4s ease;
+}
+
+.menu-button:hover::before, .menu-button:focus::before {
+  left: 100%;
 }
 
 .menu-button:hover, .menu-button:focus {
-  background-color: #5a5a5a;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  color: #fff;
+  background-color: rgba(0, 174, 239, 0.1);
+  border-color: #fff;
+  box-shadow: 0 0 15px var(--glow-color-telegram), 0 0 25px var(--glow-color-telegram), inset 0 0 10px rgba(0, 174, 239, 0.7);
+  transform: translateY(-2px) scale(1.02);
   outline: none;
 }
 
 .menu-button:active {
-  transform: translateY(0px);
-  background-color: #333;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transform: translateY(0px) scale(0.98);
+  box-shadow: 0 0 5px var(--glow-color-telegram), inset 0 0 5px rgba(0, 174, 239, 0.4);
 }
 
-/* Button Container and Load Animation */
+/* Button Container - Styled as a Panel */
 .button-container {
   display: flex;
   flex-direction: column;
-  gap: 25px; /* Increased gap */
+  gap: 30px;
   width: 100%;
-  max-width: 600px;
+  max-width: 500px;
+  padding: 30px;
+  background-color: rgba(10, 10, 20, 0.6); /* Semi-transparent dark panel */
+  border: 1px solid rgba(0, 174, 239, 0.3);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 20px rgba(0, 174, 239, 0.2);
+  transform-style: preserve-3d;
+  animation: floatIn 0.8s ease-out forwards;
 }
 
-/* Social Button Base Styling */
-.social-button {
-  display: flex; /* For icon and text alignment */
-  align-items: center;
-  justify-content: center; /* Center content */
-  padding: 20px;
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 22px; /* Slightly adjusted */
-  font-weight: 500;
-  border-radius: 12px; /* More rounded */
-  text-align: center;
-  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.5s ease-out forwards;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.social-button .icon {
-  margin-right: 15px; /* Space between icon and text */
-  font-size: 1.2em; /* Relative icon size */
-  transition: transform 0.3s ease;
-}
-
-/* Staggered Load Animation for Buttons */
-.social-button:nth-child(1) { animation-delay: 0.1s; }
-.social-button:nth-child(2) { animation-delay: 0.2s; }
-.social-button:nth-child(3) { animation-delay: 0.3s; }
-.social-button:nth-child(4) { animation-delay: 0.4s; }
-.social-button:nth-child(5) { animation-delay: 0.5s; }
-
-@keyframes fadeInUp {
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px) rotateX(-10deg);
+  }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) rotateX(0deg);
   }
 }
 
-/* Social Button Hover and Active States */
+/* Social Button - Pseudo 3D Effect */
+.social-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 15px;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: 10px;
+  position: relative;
+  background-color: var(--button-surface-color);
+  border-top: 1px solid rgba(255,255,255,0.2);
+  border-left: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 
+    0 var(--button-edge-height) 0 var(--button-base-color), /* Bottom edge */
+    0 calc(var(--button-edge-height) + 2px) 5px rgba(0,0,0,0.3), /* Shadow under edge */
+    inset 0 1px 1px rgba(255,255,255,0.1); /* Inner highlight on surface */
+  transition: all 0.15s ease-out;
+  transform-style: preserve-3d;
+  transform: translateY(0) rotateX(0deg);
+  opacity: 0;
+  animation: popIn 0.5s ease-out forwards;
+}
+
+/* Staggered Load Animation for Buttons */
+.social-button:nth-child(1) { animation-delay: 0.4s; }
+.social-button:nth-child(2) { animation-delay: 0.5s; }
+.social-button:nth-child(3) { animation-delay: 0.6s; }
+.social-button:nth-child(4) { animation-delay: 0.7s; }
+.social-button:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.social-button .icon {
+  margin-right: 12px;
+  font-size: 1.3em;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
 .social-button:hover, .social-button:focus {
-  transform: translateY(-5px) scale(1.03); /* Enhanced hover effect */
-  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+  transform: translateY(calc(-1 * var(--button-edge-height) / 2)) scale(1.02) rotateX(5deg);
+  box-shadow: 
+    0 calc(var(--button-edge-height) * 1.5) 0 var(--button-base-color), /* Deeper edge */
+    0 calc(var(--button-edge-height) * 1.5 + 4px) 15px rgba(0,0,0,0.4), /* Enhanced shadow */
+    inset 0 1px 1px rgba(255,255,255,0.1);
+  color: #fff;
   outline: none;
 }
 
 .social-button:hover .icon {
-  transform: scale(1.1) rotate(-5deg);
+  transform: scale(1.15) rotate(-8deg) translateY(-2px);
 }
 
 .social-button:active {
-  transform: translateY(-2px) scale(0.98);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transform: translateY(calc(var(--button-edge-height) / 2)) scale(0.98) rotateX(0deg);
+  box-shadow: 
+    0 calc(var(--button-edge-height) / 2) 0 var(--button-base-color), /* Compressed edge */
+    0 calc(var(--button-edge-height) / 2 + 2px) 5px rgba(0,0,0,0.3), /* Reduced shadow */
+    inset 0 2px 3px rgba(0,0,0,0.2); /* Inner press shadow */
+  color: #c0c0c0;
+  transition-duration: 0.05s;
 }
 
-/* Specific Social Button Colors (Official/Branded) */
-.telegram-streams {
-  background: linear-gradient(45deg, #0088cc, #00a0e9);
+/* Specific Social Button Neon Glows (using CSS variables for glow color) */
+.social-button.telegram-streams, .social-button.telegram-academy {
+  --glow-color-current: var(--glow-color-telegram);
 }
-.telegram-streams:hover, .telegram-streams:focus {
-  background: linear-gradient(45deg, #00a0e9, #00bfff);
+.social-button.twitch {
+  --glow-color-current: var(--glow-color-twitch);
 }
-
-.telegram-academy {
-  background: linear-gradient(45deg, #2AABEE, #1E88E5);
+.social-button.youtube {
+  --glow-color-current: var(--glow-color-youtube);
 }
-.telegram-academy:hover, .telegram-academy:focus {
-  background: linear-gradient(45deg, #1E88E5, #0077C9);
-}
-
-.twitch {
-  background: linear-gradient(45deg, #6441A5, #9146FF);
-}
-.twitch:hover, .twitch:focus {
-  background: linear-gradient(45deg, #9146FF, #A050FF);
+.social-button.steam {
+  --glow-color-current: var(--glow-color-steam);
 }
 
-.youtube {
-  background: linear-gradient(45deg, #FF0000, #cc0000);
-}
-.youtube:hover, .youtube:focus {
-  background: linear-gradient(45deg, #cc0000, #E62117);
+.social-button:hover, .social-button:focus {
+  text-shadow: 0 0 3px var(--glow-color-current), 0 0 6px var(--glow-color-current);
+  border-top: 1px solid var(--glow-color-current);
+  border-left: 1px solid var(--glow-color-current);
 }
 
-.steam {
-  background: linear-gradient(45deg, #1b2838, #2a475e);
+.social-button.telegram-streams:hover .icon, .social-button.telegram-academy:hover .icon {
+  color: var(--glow-color-telegram);
 }
-.steam:hover, .steam:focus {
-  background: linear-gradient(45deg, #2a475e, #3a5f7e);
+.social-button.twitch:hover .icon {
+  color: var(--glow-color-twitch);
+}
+.social-button.youtube:hover .icon {
+  color: var(--glow-color-youtube);
+}
+.social-button.steam:hover .icon {
+  color: #66c0f4; /* Steam's specific blue for icon glow */
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  body { padding: 20px 15px; }
+  .page-title { font-size: 2rem; margin-bottom: 30px; }
+  .button-container { padding: 20px; gap: 20px; }
   .social-button {
     font-size: 18px;
-    padding: 18px;
+    padding: 15px 12px;
+    --button-edge-height: 5px;
   }
   .social-button .icon {
+    font-size: 1.2em;
     margin-right: 10px;
   }
   .menu-button {
     font-size: 16px;
     padding: 10px 20px;
+    margin-bottom: 30px;
   }
 }
 
 /* Accessibility: Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  .social-button,
-  .menu-button,
-  .social-button .icon {
-    transition: none;
-    animation: none;
+  body, .button-container, .social-button, .menu-button, .social-button .icon {
+    animation: none !important;
+    transition: none !important;
   }
-
-  .social-button:hover,
-  .social-button:focus,
-  .menu-button:hover,
-  .menu-button:focus {
-    transform: none;
+  .social-button:hover, .social-button:focus, .menu-button:hover, .menu-button:focus {
+    transform: none !important;
   }
-  .social-button:active,
-  .menu-button:active {
-    transform: none;
+  .social-button:active, .menu-button:active {
+    transform: none !important;
   }
+  .menu-button::before { display: none; }
 }
 
