@@ -4,157 +4,318 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Онлайн супермаркет - Замовлення та доставка</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <nav class="main-nav">
-            <div class="logo">
-                <h1>Супермаркет Онлайн</h1>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#home">Головна</a></li>
-                <li><a href="#categories">Категорії</a></li>
-                <li><a href="#cart">Кошик</a></li>
-                <li><a href="#account">Особистий кабінет</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <section class="categories" id="categories">
-            <h2>Категорії товарів</h2>
-            <div class="category-grid">
-                <div class="category-card">
-                    <img src="images/fruits.jpg" alt="Фрукти та овочі">
-                    <h3>Фрукти та овочі</h3>
-                </div>
-                <div class="category-card">
-                    <img src="images/dairy.jpg" alt="Молочні продукти">
-                    <h3>Молочні продукти</h3>
-                </div>
-                <div class="category-card">
-                    <img src="images/meat.jpg" alt="М'ясні вироби">
-                    <h3>М'ясні вироби</h3>
-                </div>
-                <!-- Додаткові категорії -->
-            </div>
-        </section>
-
-        <section class="products">
-            <div id="productList" class="product-grid">
-                <!-- Продукти будуть додані через JavaScript -->
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <div class="contact-info">
-                <h3>Контакти</h3>
-                <p>Телефон: +380 XX XXX XX XX</p>
-                <p>Email: info@supermarket.ua</p>
-            </div>
-            <div class="delivery-info">
-                <h3>Доставка</h3>
-                <p>Доставка по місту: від 60 грн</p>
-                <p>Безкоштовна доставка від 1000 грн</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Підключення до бази даних (приклад структури)
-        const products = {
-            fruits: [
-                { id: 1, name: 'Яблука', price: 25.50, unit: 'кг', image: 'images/apple.jpg' },
-                { id: 2, name: 'Банани', price: 45.00, unit: 'кг', image: 'images/banana.jpg' }
-            ],
-            dairy: [
-                { id: 3, name: 'Молоко', price: 32.00, unit: 'л', image: 'images/milk.jpg' },
-                { id: 4, name: 'Сир', price: 185.00, unit: 'кг', image: 'images/cheese.jpg' }
-            ]
-        };
-
-        // Функція для відображення продуктів
-        function displayProducts(category) {
-            const productList = document.getElementById('productList');
-            productList.innerHTML = '';
-
-            products[category].forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.className = 'product-card';
-                productCard.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}">
-                    <h4>${product.name}</h4>
-                    <p>${product.price} грн/${product.unit}</p>
-                    <button onclick="addToCart(${product.id})">Додати до кошика</button>
-                `;
-                productList.appendChild(productCard);
-            });
-        }
-
-        // Функція додавання до кошика
-        function addToCart(productId) {
-            // Логіка додавання до кошика
-            alert('Товар додано до кошика!');
-        }
-    </script>
-
     <style>
-        /* Базові стилі */
-        body {
+        * {
             margin: 0;
-            font-family: Arial, sans-serif;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
-
-        .main-nav {
-            background: #2c3e50;
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        header {
+            background-color: #4CAF50;
             color: white;
             padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-
-        .nav-links {
-            list-style: none;
+        
+        nav {
             display: flex;
-            gap: 2rem;
+            justify-content: space-between;
+            align-items: center;
         }
-
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
         .nav-links a {
             color: white;
             text-decoration: none;
         }
-
-        .category-grid, .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 2rem;
         }
-
-        .category-card, .product-card {
-            border: 1px solid #ddd;
-            padding: 1rem;
+        
+        .hero {
             text-align: center;
+            margin-bottom: 2rem;
         }
-
-        .category-card img, .product-card img {
-            max-width: 100%;
-            height: auto;
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
         }
-
-        footer {
-            background: #2c3e50;
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #4CAF50;
             color: white;
-            padding: 2rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #45a049;
+        }
+        
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .category {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            flex: 1 1 200px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .category:hover {
+            transform: translateY(-5px);
+        }
+        
+        .category img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+        
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .product {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .product img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 1rem;
+        }
+        
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .product-price {
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .add-to-cart {
+            width: 100%;
+            padding: 0.5rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #45a049;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
             margin-top: 2rem;
         }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-        }
     </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">ЕкоМаркет</div>
+            <ul class="nav-links">
+                <li><a href="#">Головна</a></li>
+                <li><a href="#">Каталог</a></li>
+                <li><a href="#">Акції</a></li>
+                <li><a href="#">Доставка</a></li>
+                <li><a href="#">Контакти</a></li>
+                <li><a href="#">Кошик (0)</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <section class="hero">
+            <h1>Свіжі продукти з доставкою додому</h1>
+            <p>Замовляйте продукти онлайн та отримуйте їх протягом 2 годин</p>
+            <a href="#" class="btn">Почати покупки</a>
+        </section>
+        
+        <section>
+            <h2>Категорії товарів</h2>
+            <div class="categories">
+                <div class="category">
+                    <img src="https://via.placeholder.com/80" alt="Фрукти та овочі">
+                    <h3>Фрукти та овочі</h3>
+                </div>
+                <div class="category">
+                    <img src="https://via.placeholder.com/80" alt="М'ясо та риба">
+                    <h3>М'ясо та риба</h3>
+                </div>
+                <div class="category">
+                    <img src="https://via.placeholder.com/80" alt="Молочні продукти">
+                    <h3>Молочні продукти</h3>
+                </div>
+                <div class="category">
+                    <img src="https://via.placeholder.com/80" alt="Бакалія">
+                    <h3>Бакалія</h3>
+                </div>
+                <div class="category">
+                    <img src="https://via.placeholder.com/80" alt="Напої">
+                    <h3>Напої</h3>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Популярні товари</h2>
+            <div class="products">
+                <div class="product">
+                    <img src="https://via.placeholder.com/250" alt="Яблука">
+                    <div class="product-info">
+                        <h3 class="product-title">Яблука Голден</h3>
+                        <p class="product-price">39.90 грн/кг</p>
+                        <button class="add-to-cart">Додати до кошика</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/250" alt="Молоко">
+                    <div class="product-info">
+                        <h3 class="product-title">Молоко 2.5%</h3>
+                        <p class="product-price">32.50 грн</p>
+                        <button class="add-to-cart">Додати до кошика</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/250" alt="Хліб">
+                    <div class="product-info">
+                        <h3 class="product-title">Хліб пшеничний</h3>
+                        <p class="product-price">22.90 грн</p>
+                        <button class="add-to-cart">Додати до кошика</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/250" alt="Курятина">
+                    <div class="product-info">
+                        <h3 class="product-title">Філе куряче</h3>
+                        <p class="product-price">159.90 грн/кг</p>
+                        <button class="add-to-cart">Додати до кошика</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 ЕкоМаркет. Всі права захищені.</p>
+    </footer>
+    
+    <script>
+        // Імітація підключення до бази даних
+        const products = [
+            { id: 1, name: "Яблука Голден", price: 39.90, category: "Фрукти та овочі", image: "https://via.placeholder.com/250" },
+            { id: 2, name: "Молоко 2.5%", price: 32.50, category: "Молочні продукти", image: "https://via.placeholder.com/250" },
+            { id: 3, name: "Хліб пшеничний", price: 22.90, category: "Бакалія", image: "https://via.placeholder.com/250" },
+            { id: 4, name: "Філе куряче", price: 159.90, category: "М'ясо та риба", image: "https://via.placeholder.com/250" },
+            { id: 5, name: "Банани", price: 49.90, category: "Фрукти та овочі", image: "https://via.placeholder.com/250" },
+            { id: 6, name: "Сир Голландський", price: 219.90, category: "Молочні продукти", image: "https://via.placeholder.com/250" },
+            { id: 7, name: "Вода мінеральна", price: 15.90, category: "Напої", image: "https://via.placeholder.com/250" },
+            { id: 8, name: "Макарони", price: 29.90, category: "Бакалія", image: "https://via.placeholder.com/250" }
+        ];
+        
+        const cart = [];
+        
+        // Додавання товару до кошика
+        document.querySelectorAll('.add-to-cart').forEach((button, index) => {
+            button.addEventListener('click', () => {
+                cart.push(products[index]);
+                updateCartCount();
+                ShowToast(`Товар "${products[index].name}" додано до кошика`);
+            });
+        });
+        
+        // Оновлення кількості товарів у кошику
+        function updateCartCount() {
+            const cartLink = document.querySelector('.nav-links li:last-child a');
+            cartLink.textContent = `Кошик (${cart.length})`;
+        }
+        
+        // Використання функції ShowToast з існуючого коду
+        if (typeof ShowToast !== 'function') {
+            function ShowToast(text) {
+                var container = document.createElement("div");
+                container.className = "toast_container";
+                var inner = container.appendChild(document.createElement("div"));
+                inner.className = "toast_body";
+                inner.appendChild(document.createTextNode(text));
+                var appended = document.body.appendChild(container);
+                setTimeout(function () {
+                    container.classList.add("toast_shown");
+                    setTimeout(function () {
+                        container.classList.remove("toast_shown");
+                        setTimeout(function () {
+                            document.body.removeChild(appended);
+                        }, 3000);
+                    }, 3000);
+                }, 0);
+            }
+        }
+    </script>
 </body>
 </html>
+
