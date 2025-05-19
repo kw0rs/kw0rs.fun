@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ціна тижня - ЕкоМаркет</title>
+    <title>Ціна тижня - NNMarket</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -174,31 +174,8 @@
         
         .product-price {
             font-weight: bold;
-            margin-bottom: 1rem;
             color: #4CAF50;
             font-size: 1.1rem;
-        }
-        
-        .add-to-cart {
-            display: inline-block;
-            background-color: #808080;
-            color: white;
-            padding: 0.7rem 1rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(128, 128, 128, 0.3);
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            text-align: center;
-        }
-        
-        .add-to-cart:hover {
-            background-color: #666666;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(128, 128, 128, 0.4);
         }
         
         @media (max-width: 768px) {
@@ -258,7 +235,6 @@
                 <li><a href="sale">Акції</a></li>
                 <li><a href="delivery">Ціна тижня</a></li>
                 <li><a href="contact">Контакти</a></li>
-                <li><a href="cheap">Кошик (0)</a></li>
             </ul>
         </nav>
     </header>
@@ -273,7 +249,6 @@
                     <h3 class="product-title">Яблука Голден</h3>
                     <p class="product-price-old">79.90 грн/кг</p>
                     <p class="product-price">59.90 грн/кг</p>
-                    <button class="add-to-cart">Додати до кошика</button>
                 </div>
             </div>
             
@@ -283,7 +258,6 @@
                     <h3 class="product-title">Молоко пастеризоване Простонаше 1% пл, 870г</h3>
                     <p class="product-price-old">65.40 грн</p>
                     <p class="product-price">50.40 грн</p>
-                    <button class="add-to-cart">Додати до кошика</button>
                 </div>
             </div>
             
@@ -293,7 +267,6 @@
                     <h3 class="product-title">Хліб пшеничний половинка нарізаний 400г</h3>
                     <p class="product-price-old">42.90 грн</p>
                     <p class="product-price">32.90 грн</p>
-                    <button class="add-to-cart">Додати до кошика</button>
                 </div>
             </div>
             
@@ -303,7 +276,6 @@
                     <h3 class="product-title">Філе куряче</h3>
                     <p class="product-price-old">259.00 грн/кг</p>
                     <p class="product-price">219.00 грн/кг</p>
-                    <button class="add-to-cart">Додати до кошика</button>
                 </div>
             </div>
             
@@ -313,7 +285,6 @@
                     <h3 class="product-title">Банани</h3>
                     <p class="product-price-old">89.80 грн/кг</p>
                     <p class="product-price">71.80 грн/кг</p>
-                    <button class="add-to-cart">Додати до кошика</button>
                 </div>
             </div>
             
@@ -323,7 +294,6 @@
                     <h3 class="product-title">Сир Голландський</h3>
                     <p class="product-price-old">719.90 грн/кг</p>
                     <p class="product-price">619.90 грн/кг</p>
-                    <button class="add-to-cart">Додати до кошика</button>
                 </div>
             </div>
         </div>
@@ -337,27 +307,6 @@
         hamburger.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
-        
-        // Додавання товару до кошика
-        let cartCount = 0;
-        
-        document.querySelectorAll('.add-to-cart').forEach((button) => {
-            button.addEventListener('click', (e) => {
-                const product = e.target.closest('.product');
-                const title = product.querySelector('.product-title').textContent;
-                cartCount++;
-                updateCartCount();
-                
-                // Показуємо повідомлення
-                alert(`Товар "${title}" додано до кошика`);
-            });
-        });
-        
-        // Оновлення кількості товарів у кошику
-        function updateCartCount() {
-            const cartLink = document.querySelector('.nav-links li:last-child a');
-            cartLink.textContent = `Кошик (${cartCount})`;
-        }
     </script>
 </body>
 </html>
