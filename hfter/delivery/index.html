@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Доставка - ЕкоМаркет</title>
+    <title>Ціна тижня - ЕкоМаркет</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
             background-color: #1a1a1a;
             color: #fff;
             min-height: 100vh;
-            padding-bottom: 100px; /* Додаємо відступ внизу сторінки */
+            padding-bottom: 100px;
         }
         
         header {
@@ -43,7 +43,7 @@
         .logo {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #4CAF50;
+            color: #808080;
             letter-spacing: 0.5px;
         }
         
@@ -74,7 +74,7 @@
         }
         
         .nav-links a:hover {
-            color: #4CAF50;
+            color: #808080;
         }
         
         .nav-links a::after {
@@ -84,7 +84,7 @@
             height: 2px;
             bottom: -5px;
             left: 0;
-            background-color: #4CAF50;
+            background-color: #808080;
             transition: width 0.3s ease;
         }
         
@@ -115,7 +115,7 @@
             position: absolute;
             width: 50%;
             height: 3px;
-            background-color: #4CAF50;
+            background-color: #808080;
             bottom: 0;
             left: 25%;
             border-radius: 2px;
@@ -164,6 +164,14 @@
             font-weight: 500;
         }
         
+        .product-price-old {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #ff0000;
+            font-size: 1rem;
+            text-decoration: line-through;
+        }
+        
         .product-price {
             font-weight: bold;
             margin-bottom: 1rem;
@@ -173,14 +181,14 @@
         
         .add-to-cart {
             display: inline-block;
-            background-color: #4CAF50;
+            background-color: #808080;
             color: white;
             padding: 0.7rem 1rem;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+            box-shadow: 0 4px 10px rgba(128, 128, 128, 0.3);
             border: none;
             cursor: pointer;
             width: 100%;
@@ -188,140 +196,9 @@
         }
         
         .add-to-cart:hover {
-            background-color: #45a049;
+            background-color: #666666;
             transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
-        }
-        
-        .delivery-progress {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 350px;
-            background-color: #333;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            z-index: 90;
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-        
-        .delivery-progress.minimized {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            bottom: 20px;
-            right: 20px;
-            overflow: hidden;
-        }
-        
-        .progress-container {
-            padding: 15px;
-            text-align: center;
-            background-color: #2a2a2a;
-            position: relative;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            border: 2px solid #4CAF50;
-            border-bottom: none;
-        }
-        
-        .progress-title {
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-            color: #fff;
-            font-weight: 500;
-        }
-        
-        .progress-bar {
-            height: 20px;
-            background-color: #1a1a1a;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background-color: #4CAF50;
-            transition: width 0.5s ease;
-        }
-        
-        .progress-text {
-            font-weight: bold;
-            color: #fff;
-        }
-        
-        .success-text {
-            font-weight: bold;
-            color: #4CAF50;
-        }
-        
-        .toggle-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.2rem;
-            cursor: pointer;
-            z-index: 10;
-            transition: transform 0.3s ease;
-        }
-        
-        .progress-circle {
-            display: none;
-            width: 60px;
-            height: 60px;
-            position: relative;
-            background-color: #2a2a2a;
-            border-radius: 50%;
-            border: 2px solid #4CAF50;
-        }
-        
-        .circle-progress {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            background: conic-gradient(#4CAF50 0% 0%, transparent 0% 100%);
-            transition: background 0.5s ease;
-        }
-        
-        .circle-inner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 38px;
-            height: 38px;
-            background-color: #2a2a2a;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.8rem;
-            color: #fff;
-        }
-        
-        .minimized .progress-container {
-            display: none;
-        }
-        
-        .minimized .progress-circle {
-            display: block;
-        }
-        
-        .minimized .toggle-button {
-            top: 50%;
-            right: 50%;
-            transform: translate(50%, -50%) rotate(180deg);
-            color: transparent;
+            box-shadow: 0 6px 15px rgba(128, 128, 128, 0.4);
         }
         
         @media (max-width: 768px) {
@@ -357,10 +234,6 @@
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
                 gap: 1.2rem;
             }
-            
-            .delivery-progress {
-                width: 300px;
-            }
         }
         
         @media (max-width: 480px) {
@@ -371,38 +244,6 @@
             .products-container {
                 grid-template-columns: 1fr;
             }
-            
-            .delivery-progress {
-                width: 280px;
-                bottom: 15px;
-                right: 15px;
-            }
-        }
-        
-        /* Стилі для toast повідомлень */
-        .toast_container {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.4s ease;
-            z-index: 1000;
-        }
-        
-        .toast_shown {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .toast_body {
-            background-color: #4CAF50;
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            font-weight: 500;
-            max-width: 300px;
         }
     </style>
 </head>
@@ -415,7 +256,7 @@
                 <li><a href="/hfter">Головна</a></li>
                 <li><a href="product">Каталог</a></li>
                 <li><a href="sale">Акції</a></li>
-                <li><a href="delivery">Доставка</a></li>
+                <li><a href="delivery">Ціна тижня</a></li>
                 <li><a href="contact">Контакти</a></li>
                 <li><a href="cheap">Кошик (0)</a></li>
             </ul>
@@ -423,13 +264,14 @@
     </header>
 
     <div class="container">
-        <h1 class="delivery-title">Доставка товарів</h1>
+        <h1 class="delivery-title">Ціна тижня</h1>
         
         <div class="products-container">
             <div class="product">
                 <img src="https://img.fozzyshop.com.ua/252922-thickbox_default/yabloko-golden.jpg" alt="Яблука">
                 <div class="product-info">
                     <h3 class="product-title">Яблука Голден</h3>
+                    <p class="product-price-old">79.90 грн/кг</p>
                     <p class="product-price">59.90 грн/кг</p>
                     <button class="add-to-cart">Додати до кошика</button>
                 </div>
@@ -439,6 +281,7 @@
                 <img src="https://img.fozzyshop.com.ua/242227-thickbox_default/moloko-pasterizovannoe-prostonashe-1-pl.jpg" alt="Молоко">
                 <div class="product-info">
                     <h3 class="product-title">Молоко пастеризоване Простонаше 1% пл, 870г</h3>
+                    <p class="product-price-old">65.40 грн</p>
                     <p class="product-price">50.40 грн</p>
                     <button class="add-to-cart">Додати до кошика</button>
                 </div>
@@ -448,6 +291,7 @@
                 <img src="https://img.fozzyshop.com.ua/242185-thickbox_default/khleb-car-khleb-panskij-pshenichnyj-polovinka-narezanyj.jpg" alt="Хліб">
                 <div class="product-info">
                     <h3 class="product-title">Хліб пшеничний половинка нарізаний 400г</h3>
+                    <p class="product-price-old">42.90 грн</p>
                     <p class="product-price">32.90 грн</p>
                     <button class="add-to-cart">Додати до кошика</button>
                 </div>
@@ -457,6 +301,7 @@
                 <img src="https://img.fozzyshop.com.ua/171773-thickbox_default/kurinoe-file.jpg" alt="Курятина">
                 <div class="product-info">
                     <h3 class="product-title">Філе куряче</h3>
+                    <p class="product-price-old">259.00 грн/кг</p>
                     <p class="product-price">219.00 грн/кг</p>
                     <button class="add-to-cart">Додати до кошика</button>
                 </div>
@@ -466,6 +311,7 @@
                 <img src="https://img.fozzyshop.com.ua/228783-thickbox_default/banan.jpg" alt="Банани">
                 <div class="product-info">
                     <h3 class="product-title">Банани</h3>
+                    <p class="product-price-old">89.80 грн/кг</p>
                     <p class="product-price">71.80 грн/кг</p>
                     <button class="add-to-cart">Додати до кошика</button>
                 </div>
@@ -475,25 +321,11 @@
                 <img src="https://img.fozzyshop.com.ua/196212-thickbox_default/syr-komo-gollandskij-45.jpg" alt="Сир">
                 <div class="product-info">
                     <h3 class="product-title">Сир Голландський</h3>
+                    <p class="product-price-old">719.90 грн/кг</p>
                     <p class="product-price">619.90 грн/кг</p>
                     <button class="add-to-cart">Додати до кошика</button>
                 </div>
             </div>
-        </div>
-    </div>
-    
-    <div class="delivery-progress">
-        <button class="toggle-button">−</button>
-        <div class="progress-container">
-            <h3 class="progress-title">Прогрес до безкоштовної доставки</h3>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
-            </div>
-            <p class="progress-text" id="progress-text">0 грн / 500 грн</p>
-        </div>
-        <div class="progress-circle">
-            <div class="circle-progress" id="circle-progress"></div>
-            <div class="circle-inner" id="circle-inner">0%</div>
         </div>
     </div>
     
@@ -506,98 +338,26 @@
             navLinks.classList.toggle('active');
         });
         
-        // Кошик та прогрес доставки
-        const cart = [];
-        let cartTotal = 0;
-        const targetAmount = 500;
-        
-        // Функція для оновлення прогресу доставки
-        function updateDeliveryProgress() {
-            const progressFill = document.getElementById('progress-fill');
-            const progressText = document.getElementById('progress-text');
-            const circleProgress = document.getElementById('circle-progress');
-            const circleInner = document.getElementById('circle-inner');
-            
-            // Обмежуємо прогрес до 100%
-            const progressPercentage = Math.min((cartTotal / targetAmount) * 100, 100);
-            
-            // Оновлюємо індикатор прогресу
-            progressFill.style.width = progressPercentage + '%';
-            
-            // Оновлюємо текст прогресу
-            if (progressPercentage >= 100) {
-                progressText.className = 'success-text';
-                progressText.textContent = 'Вітаю, доставка безкоштовна!';
-            } else {
-                progressText.className = 'progress-text';
-                progressText.textContent = `${cartTotal.toFixed(2)} грн / ${targetAmount} грн`;
-            }
-            
-            // Оновлюємо круговий індикатор
-            circleProgress.style.background = `conic-gradient(#4CAF50 0% ${progressPercentage}%, transparent ${progressPercentage}% 100%)`;
-            circleInner.textContent = Math.round(progressPercentage) + '%';
-        }
-        
         // Додавання товару до кошика
+        let cartCount = 0;
+        
         document.querySelectorAll('.add-to-cart').forEach((button) => {
             button.addEventListener('click', (e) => {
                 const product = e.target.closest('.product');
                 const title = product.querySelector('.product-title').textContent;
-                const priceText = product.querySelector('.product-price').textContent;
-                const price = parseFloat(priceText.replace(/[^\d.]/g, ''));
-                
-                cart.push({ title, price });
-                cartTotal += price;
-                
+                cartCount++;
                 updateCartCount();
-                updateDeliveryProgress();
                 
                 // Показуємо повідомлення
-                ShowToast(`Товар "${title}" додано до кошика`);
+                alert(`Товар "${title}" додано до кошика`);
             });
         });
         
         // Оновлення кількості товарів у кошику
         function updateCartCount() {
             const cartLink = document.querySelector('.nav-links li:last-child a');
-            cartLink.textContent = `Кошик (${cart.length})`;
+            cartLink.textContent = `Кошик (${cartCount})`;
         }
-        
-        // Функція для показу повідомлення
-        function ShowToast(text) {
-            const container = document.createElement("div");
-            container.className = "toast_container";
-            const inner = container.appendChild(document.createElement("div"));
-            inner.className = "toast_body";
-            inner.appendChild(document.createTextNode(text));
-            const appended = document.body.appendChild(container);
-            setTimeout(function () {
-                container.classList.add("toast_shown");
-                setTimeout(function () {
-                    container.classList.remove("toast_shown");
-                    setTimeout(function () {
-                        document.body.removeChild(appended);
-                    }, 300);
-                }, 3000);
-            }, 0);
-        }
-        
-        // Керування мінімізацією панелі прогресу
-        const toggleButton = document.querySelector('.toggle-button');
-        const deliveryProgress = document.querySelector('.delivery-progress');
-        
-        toggleButton.addEventListener('click', () => {
-            deliveryProgress.classList.toggle('minimized');
-            
-            if (deliveryProgress.classList.contains('minimized')) {
-                toggleButton.textContent = '+';
-            } else {
-                toggleButton.textContent = '−';
-            }
-        });
-        
-        // Ініціалізація прогресу
-        updateDeliveryProgress();
     </script>
 </body>
 </html>
