@@ -1,77 +1,100 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ничего нет</title>
-    <style>
-        body {
-            font-family: 'Courier New', monospace;
-            background-color: #0d1117;
-            color: #c9d1d9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
-            padding: 0 20px;
-        }
-        .container {
-            max-width: 600px;
-        }
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            color: #f0f6fc;
-        }
-        p {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-        .blink {
-            animation: blink 1.5s infinite;
-        }
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-        .code {
-            background-color: #161b22;
-            border-radius: 6px;
-            padding: 20px;
-            margin: 20px 0;
-            border: 1px solid #30363d;
-        }
-        .button {
-            display: inline-block;
-            background-color: #238636;
-            color: #ffffff;
-            padding: 12px 24px;
-            margin-top: 20px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        .button:hover {
-            background-color: #2ea043;
-            text-decoration: none;
-            color: #ffffff;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Роадмап Видео</title>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #1a1a1a;
+      color: #eee;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      overflow-x: hidden;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Нахуй ты сюда зашёл?</h1>
-        <div class="code">
-            <p>Тут пока нихуя нету.</p>
-            <p class="blink">_</p>
+  <div x-data="roadmapComponent()" class="space-y-6 max-w-4xl mx-auto">
+
+    <h1 class="text-3xl font-bold mb-4">📽 Роадмап Видео</h1>
+
+    <template x-for="video in sortedRoadmap" :key="video.title">
+      <div class="bg-gray-800 rounded-xl p-4 shadow-lg space-y-3">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-bold" x-text="video.title"></h2>
+            <p class="text-sm text-gray-400" x-text="'Дата выхода: ' + video.date"></p>
+          </div>
+          <img :src="video.image" alt="preview" class="w-32 h-20 object-cover mt-3 md:mt-0 rounded-md border border-gray-700" />
         </div>
-        <p>Загляни позже, возможно что-то появится.</p>
-        <a href="https://Kw0rs.fun/menu" class="button">Вернуться в меню</a>
-    </div>
+
+        <div class="space-y-2">
+          <template x-for="step in steps" :key="step">
+            <div class="flex items-center justify-between">
+              <span x-text="step" class="text-sm"></span>
+              <div class="w-2/3 bg-gray-700 rounded-full h-2">
+                <div class="h-2 rounded-full bg-green-500" :style="'width: ' + (video.progress[step] || 0) + '%'"></div>
+              </div>
+              <span class="text-xs text-gray-400 ml-2" x-text="(video.progress[step] || 0) + '%'"></span>
+            </div>
+          </template>
+        </div>
+
+        <div class="text-right text-xs text-gray-500" x-text="'Обновлено: ' + video.updated"></div>
+      </div>
+    </template>
+
+  </div>
+
+  <script>
+    function roadmapComponent() {
+      return {
+        steps: ['Идея', 'Сценарий', 'Запись видео', 'Озвучка', 'Монтаж', 'Оформление', 'Загрузка'],
+        roadmap: [
+          {
+            title: 'О чём был StarCraft',
+            date: '2025-06-01',
+            image: 'https://placehold.co/300x200?text=StarCraft',
+            updated: '2025-05-20',
+            progress: {
+              'Идея': 100,
+              'Сценарий': 100,
+              'Запись видео': 100,
+              'Озвучка': 100,
+              'Монтаж': 90,
+              'Оформление': 50,
+              'Загрузка': 0
+            }
+          },
+          {
+            title: 'Разбор энергетиков',
+            date: '2025-06-10',
+            image: 'https://placehold.co/300x200?text=Energy+Drinks',
+            updated: '2025-05-20',
+            progress: {
+              'Идея': 100,
+              'Сценарий': 60,
+              'Запись видео': 0,
+              'Озвучка': 0,
+              'Монтаж': 0,
+              'Оформление': 0,
+              'Загрузка': 0
+            }
+          }
+        ],
+        get sortedRoadmap() {
+          return this.roadmap.sort((a, b) => {
+            const aDone = Object.values(a.progress).every(p => p === 100);
+            const bDone = Object.values(b.progress).every(p => p === 100);
+            return aDone - bDone; // готовые в конец
+          });
+        }
+      }
+    }
+  </script>
 </body>
 </html>
