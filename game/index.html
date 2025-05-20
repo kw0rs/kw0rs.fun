@@ -1,100 +1,612 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Роадмап Видео</title>
-  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-  <style>
-    body {
-      background-color: #1a1a1a;
-      color: #eee;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 2rem;
-      overflow-x: hidden;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Роадмап выхода видео</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #eee;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+        
+        .video-card {
+            position: relative;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(3px) brightness(0.4);
+            z-index: 0;
+            transition: filter 0.3s ease;
+        }
+        
+        .card-content.active ~ .card-bg {
+            filter: blur(30px) brightness(0.05);
+        }
+        
+        .card-header {
+            position: relative;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            z-index: 1;
+        }
+        
+        .card-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .card-title-container {
+            flex: 1;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            margin: 0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+        
+        .release-date {
+            color: #ddd;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        
+        .card-toggle {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            margin-left: 10px;
+        }
+        
+        .card-toggle.active {
+            transform: rotate(180deg);
+        }
+        
+        .progress-summary {
+            margin-top: 10px;
+            position: relative;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+        
+        .progress-bar-summary {
+            height: 8px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            background-color: #4caf50;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-fill-low {
+            background-color: #f44336;
+        }
+        
+        .progress-fill-medium {
+            background-color: #ff9800;
+        }
+        
+        .progress-fill-high {
+            background-color: #8bc34a;
+        }
+        
+        .card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-content.active {
+            max-height: 1000px;
+        }
+        
+        .card-body {
+            padding: 0 20px 20px;
+        }
+        
+        .status-container {
+            margin-top: 20px;
+        }
+        
+        .status-item {
+            margin-bottom: 15px;
+        }
+        
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .status-name {
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        
+        .status-date {
+            font-size: 0.8rem;
+            color: #ddd;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: rgba(68, 68, 68, 0.7);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .progress {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-0 {
+            width: 0%;
+            background-color: #555;
+        }
+        
+        .progress-20 {
+            width: 20%;
+            background-color: #f44336;
+        }
+        
+        .progress-40 {
+            width: 40%;
+            background-color: #ff9800;
+        }
+        
+        .progress-60 {
+            width: 60%;
+            background-color: #ffc107;
+        }
+        
+        .progress-80 {
+            width: 80%;
+            background-color: #8bc34a;
+        }
+        
+        .progress-100 {
+            width: 100%;
+            background-color: #4caf50;
+        }
+        
+        .completed {
+            opacity: 0.7;
+        }
+        
+        .menu-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            text-decoration: none;
+            box-shadow: 0 2px 10px rgba(33, 150, 243, 0.3);
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .menu-button:hover {
+            background: linear-gradient(135deg, #1976D2, #1565C0);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .card-header-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .card-toggle {
+                position: absolute;
+                right: 20px;
+                top: 20px;
+            }
+            
+            .menu-button {
+                top: 10px;
+                right: 10px;
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div x-data="roadmapComponent()" class="space-y-6 max-w-4xl mx-auto">
-
-    <h1 class="text-3xl font-bold mb-4">📽 Роадмап Видео</h1>
-
-    <template x-for="video in sortedRoadmap" :key="video.title">
-      <div class="bg-gray-800 rounded-xl p-4 shadow-lg space-y-3">
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between">
-          <div>
-            <h2 class="text-2xl font-bold" x-text="video.title"></h2>
-            <p class="text-sm text-gray-400" x-text="'Дата выхода: ' + video.date"></p>
-          </div>
-          <img :src="video.image" alt="preview" class="w-32 h-20 object-cover mt-3 md:mt-0 rounded-md border border-gray-700" />
+    <div class="container">
+        <h1>Роадмап выхода видео</h1>
+        
+        <a href="https://kw0rs.fun/menu/" class="menu-button">В меню</a>
+        
+        <div id="videoContainer">
+            <!-- Видео будут добавлены через JavaScript -->
         </div>
+    </div>
 
-        <div class="space-y-2">
-          <template x-for="step in steps" :key="step">
-            <div class="flex items-center justify-between">
-              <span x-text="step" class="text-sm"></span>
-              <div class="w-2/3 bg-gray-700 rounded-full h-2">
-                <div class="h-2 rounded-full bg-green-500" :style="'width: ' + (video.progress[step] || 0) + '%'"></div>
-              </div>
-              <span class="text-xs text-gray-400 ml-2" x-text="(video.progress[step] || 0) + '%'"></span>
-            </div>
-          </template>
-        </div>
-
-        <div class="text-right text-xs text-gray-500" x-text="'Обновлено: ' + video.updated"></div>
-      </div>
-    </template>
-
-  </div>
-
-  <script>
-    function roadmapComponent() {
-      return {
-        steps: ['Идея', 'Сценарий', 'Запись видео', 'Озвучка', 'Монтаж', 'Оформление', 'Загрузка'],
-        roadmap: [
-          {
-            title: 'О чём был StarCraft',
-            date: '2025-06-01',
-            image: 'https://placehold.co/300x200?text=StarCraft',
-            updated: '2025-05-20',
-            progress: {
-              'Идея': 100,
-              'Сценарий': 100,
-              'Запись видео': 100,
-              'Озвучка': 100,
-              'Монтаж': 90,
-              'Оформление': 50,
-              'Загрузка': 0
+    <script>
+        // Структура данных для хранения информации о видео
+        let videos = [
+            {
+                id: 1,
+                title: "О чём был StarCraft",
+                releaseDate: "15 июня 2025",
+                image: "https://i0.wp.com/xboxera.com/wp-content/uploads/2024/11/starcraft-2-collection.jpeg",
+                statuses: [
+                    {
+                        name: "Идея",
+                        progress: 100,
+                        lastUpdate: "10 мая 2025, 14:30"
+                    },
+                    {
+                        name: "Сценарий",
+                        progress: 80,
+                        lastUpdate: "15 мая 2025, 10:15"
+                    },
+                    {
+                        name: "Запись видео",
+                        progress: 40,
+                        lastUpdate: "18 мая 2025, 16:45"
+                    },
+                    {
+                        name: "Озвучка",
+                        progress: 20,
+                        lastUpdate: "19 мая 2025, 09:30"
+                    },
+                    {
+                        name: "Монтаж",
+                        progress: 0,
+                        lastUpdate: ""
+                    },
+                    {
+                        name: "Оформление",
+                        progress: 0,
+                        lastUpdate: ""
+                    },
+                    {
+                        name: "Загрузка",
+                        progress: 0,
+                        lastUpdate: ""
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "История серии Warcraft",
+                releaseDate: "10 июля 2025",
+                image: "https://via.placeholder.com/800x450?text=Warcraft",
+                statuses: [
+                    {
+                        name: "Идея",
+                        progress: 100,
+                        lastUpdate: "5 мая 2025, 11:20"
+                    },
+                    {
+                        name: "Сценарий",
+                        progress: 60,
+                        lastUpdate: "12 мая 2025, 15:40"
+                    },
+                    {
+                        name: "Запись видео",
+                        progress: 0,
+                        lastUpdate: ""
+                    },
+                    {
+                        name: "Озвучка",
+                        progress: 0,
+                        lastUpdate: ""
+                    },
+                    {
+                        name: "Монтаж",
+                        progress: 0,
+                        lastUpdate: ""
+                    },
+                    {
+                        name: "Оформление",
+                        progress: 0,
+                        lastUpdate: ""
+                    },
+                    {
+                        name: "Загрузка",
+                        progress: 0,
+                        lastUpdate: ""
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "Эволюция жанра RTS",
+                releaseDate: "5 августа 2025",
+                image: "https://via.placeholder.com/800x450?text=RTS+Evolution",
+                statuses: [
+                    {
+                        name: "Идея",
+                        progress: 100,
+                        lastUpdate: "1 мая 2025, 09:00"
+                    },
+                    {
+                        name: "Сценарий",
+                        progress: 20,
+                        lastUpdate: "8 мая 2025, 17:30"
+                    },
+                    {
+                        name: "Запись видео",
+                        progress: 0,
+                        lastUpdate: ""
+                    },
+                    {
+                        name: "Озвучка",
+                        progress: 0,
+                        lastUpdate: ""
+                    },
+                    {
+                        name: "Монтаж",
+                        progress: 0,
+                        lastUpdate: ""
+                    },
+                    {
+                        name: "Оформление",
+                        progress: 0,
+                        lastUpdate: ""
+                    },
+                    {
+                        name: "Загрузка",
+                        progress: 0,
+                        lastUpdate: ""
+                    }
+                ]
             }
-          },
-          {
-            title: 'Разбор энергетиков',
-            date: '2025-06-10',
-            image: 'https://placehold.co/300x200?text=Energy+Drinks',
-            updated: '2025-05-20',
-            progress: {
-              'Идея': 100,
-              'Сценарий': 60,
-              'Запись видео': 0,
-              'Озвучка': 0,
-              'Монтаж': 0,
-              'Оформление': 0,
-              'Загрузка': 0
-            }
-          }
-        ],
-        get sortedRoadmap() {
-          return this.roadmap.sort((a, b) => {
-            const aDone = Object.values(a.progress).every(p => p === 100);
-            const bDone = Object.values(b.progress).every(p => p === 100);
-            return aDone - bDone; // готовые в конец
-          });
+        ];
+
+        // Функция для определения, завершено ли видео
+        function isVideoCompleted(video) {
+            return video.statuses.every(status => status.progress === 100);
         }
-      }
-    }
-  </script>
+
+        // Функция для сортировки видео (завершенные внизу)
+        function sortVideos(videos) {
+            return [...videos].sort((a, b) => {
+                const aCompleted = isVideoCompleted(a);
+                const bCompleted = isVideoCompleted(b);
+                
+                if (aCompleted && !bCompleted) return 1;
+                if (!aCompleted && bCompleted) return -1;
+                return 0;
+            });
+        }
+
+        // Функция для расчета общего прогресса видео
+        function calculateTotalProgress(video) {
+            const totalStatuses = video.statuses.length;
+            const totalProgress = video.statuses.reduce((sum, status) => sum + status.progress, 0);
+            return Math.round(totalProgress / totalStatuses);
+        }
+
+        // Функция для определения класса прогресса
+        function getProgressClass(progress) {
+            if (progress < 30) return 'progress-fill-low';
+            if (progress < 70) return 'progress-fill-medium';
+            return 'progress-fill-high';
+        }
+
+        // Функция для отображения видео
+        function renderVideos() {
+            const videoContainer = document.getElementById('videoContainer');
+            videoContainer.innerHTML = '';
+            
+            const sortedVideos = sortVideos(videos);
+            
+            sortedVideos.forEach(video => {
+                const isCompleted = isVideoCompleted(video);
+                const totalProgress = calculateTotalProgress(video);
+                
+                const videoCard = document.createElement('div');
+                videoCard.className = `video-card ${isCompleted ? 'completed' : ''}`;
+                videoCard.dataset.id = video.id;
+                
+                // Создаем фон карточки
+                const cardBg = document.createElement('div');
+                cardBg.className = 'card-bg';
+                cardBg.style.backgroundImage = `url(${video.image})`;
+                
+                // Создаем заголовок карточки
+                const cardHeader = document.createElement('div');
+                cardHeader.className = 'card-header';
+                
+                const cardHeaderTop = document.createElement('div');
+                cardHeaderTop.className = 'card-header-top';
+                
+                const cardTitleContainer = document.createElement('div');
+                cardTitleContainer.className = 'card-title-container';
+                cardTitleContainer.innerHTML = `
+                    <h2 class="card-title">${video.title}</h2>
+                    <p class="release-date">Предполагаемая дата выхода: ${video.releaseDate}</p>
+                `;
+                
+                const cardToggle = document.createElement('button');
+                cardToggle.className = 'card-toggle';
+                cardToggle.textContent = '▼';
+                
+                cardHeaderTop.appendChild(cardTitleContainer);
+                cardHeaderTop.appendChild(cardToggle);
+                cardHeader.appendChild(cardHeaderTop);
+                
+                // Добавляем прогресс-бар
+                const progressSummary = document.createElement('div');
+                progressSummary.className = 'progress-summary';
+                
+                const progressText = document.createElement('div');
+                progressText.className = 'progress-text';
+                progressText.innerHTML = `
+                    <span>Общий прогресс</span>
+                    <span>${totalProgress}%</span>
+                `;
+                
+                const progressBarSummary = document.createElement('div');
+                progressBarSummary.className = 'progress-bar-summary';
+                
+                const progressFill = document.createElement('div');
+                progressFill.className = `progress-fill ${getProgressClass(totalProgress)}`;
+                progressFill.style.width = `${totalProgress}%`;
+                
+                progressBarSummary.appendChild(progressFill);
+                progressSummary.appendChild(progressText);
+                progressSummary.appendChild(progressBarSummary);
+                
+                cardHeader.appendChild(progressSummary);
+                
+                // Создаем содержимое карточки
+                const cardContent = document.createElement('div');
+                cardContent.className = 'card-content';
+                
+                const cardBody = document.createElement('div');
+                cardBody.className = 'card-body';
+                
+                // Добавляем статусы
+                const statusContainer = document.createElement('div');
+                statusContainer.className = 'status-container';
+                
+                video.statuses.forEach(status => {
+                    const statusItem = document.createElement('div');
+                    statusItem.className = 'status-item';
+                    
+                    const statusHeader = document.createElement('div');
+                    statusHeader.className = 'status-header';
+                    statusHeader.innerHTML = `
+                        <span class="status-name">${status.name}</span>
+                        <span class="status-date">${status.lastUpdate || 'Не начато'}</span>
+                    `;
+                    
+                    const progressBar = document.createElement('div');
+                    progressBar.className = 'progress-bar';
+                    
+                    const progress = document.createElement('div');
+                    progress.className = `progress progress-${status.progress}`;
+                    
+                    progressBar.appendChild(progress);
+                    statusItem.appendChild(statusHeader);
+                    statusItem.appendChild(progressBar);
+                    statusContainer.appendChild(statusItem);
+                });
+                
+                cardBody.appendChild(statusContainer);
+                cardContent.appendChild(cardBody);
+                
+                // Добавляем элементы в карточку
+                videoCard.appendChild(cardHeader);
+                videoCard.appendChild(cardContent);
+                videoCard.appendChild(cardBg);
+                
+                // Добавляем карточку в контейнер
+                videoContainer.appendChild(videoCard);
+                
+                // Добавляем обработчик события для раскрытия/скрытия карточки
+                cardHeader.addEventListener('click', function() {
+                    cardToggle.classList.toggle('active');
+                    cardContent.classList.toggle('active');
+                });
+            });
+        }
+
+        // Функция для обновления статуса видео
+        function updateVideoStatus(videoId, statusName, progress, date = null) {
+            const video = videos.find(v => v.id === videoId);
+            if (!video) return;
+            
+            const status = video.statuses.find(s => s.name === statusName);
+            if (!status) return;
+            
+            status.progress = progress;
+            if (date) {
+                status.lastUpdate = date;
+            } else {
+                const now = new Date();
+                const day = now.getDate();
+                const month = now.toLocaleString('ru', { month: 'long' });
+                const year = now.getFullYear();
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                status.lastUpdate = `${day} ${month} ${year}, ${hours}:${minutes}`;
+            }
+            
+            renderVideos();
+        }
+
+        // Инициализация страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            renderVideos();
+        });
+    </script>
 </body>
 </html>
