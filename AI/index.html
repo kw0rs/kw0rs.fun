@@ -3,76 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Покупка акций kw0rsAI</title>
+    <title>Кубическая игра</title>
     <style>
         body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
         }
-        .container {
-            background-color: #f5f5f5;
-            padding: 20px;
-            border-radius: 8px;
+
+        .game-container {
+            text-align: center;
+            color: white;
         }
-        .slider-container {
-            margin: 20px 0;
+
+        .game-area {
+            width: 400px;
+            height: 400px;
+            border: 3px solid white;
+            position: relative;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
         }
-        .slider {
-            width: 100%;
-            height: 25px;
+
+        .cube {
+            width: 40px;
+            height: 40px;
+            background: #ff6b6b;
+            position: absolute;
+            border-radius: 5px;
+            transition: all 0.1s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
-        .value-display {
+
+        .obstacle {
+            width: 60px;
+            height: 60px;
+            background: #4ecdc4;
+            position: absolute;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .score {
             font-size: 24px;
             margin: 10px 0;
         }
-        .buy-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 32px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+
+        .controls {
+            margin: 20px 0;
             font-size: 16px;
         }
-        .buy-button:hover {
-            background-color: #45a049;
+
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .restart-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .restart-btn:hover {
+            background: #ff5252;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Покупка акций компании по разработке ИИ - kw0rsAI</h1>
-        
-        <div class="slider-container">
-            <label for="shares">Количество акций:</label>
-            <input type="range" id="shares" class="slider" min="1" max="100" value="10">
-            <div class="value-display">
-                Количество: <span id="shareValue">10</span> акций
-                <br>
-                Сумма: $<span id="totalPrice">1000</span>
+    <div class="game-container">
+        <h1>Кубическая игра</h1>
+        <div class="score">Счёт: <span id="score">0</span></div>
+        <div class="game-area" id="gameArea">
+            <div class="cube" id="cube"></div>
+            <div class="game-over" id="gameOver">
+                <h2>Игра окончена!</h2>
+                <p>Ваш счёт: <span id="finalScore">0</span></p>
+                <button class="restart-btn" onclick="restartGame()">Играть снова</button>
             </div>
         </div>
-
-        <button class="buy-button" onclick="redirectToPayment()">Купить акции</button>
+        <div class="controls">
+            Используйте стрелки или WASD для управления
+        </div>
     </div>
 
     <script>
-        const shareSlider = document.getElementById('shares');
-        const shareValue = document.getElementById('shareValue');
-        const totalPrice = document.getElementById('totalPrice');
-        const pricePerShare = 100; // Цена за одну акцию
+        const gameArea = document.getElementById('gameArea');
+        const cube = document.getElementById('cube');
+        const scoreElement = document.getElementById('score');
+        const gameOverElement = document.getElementById('gameOver');
+        const finalScoreElement = document.getElementById('finalScore');
 
-        shareSlider.oninput = function() {
-            shareValue.textContent = this.value;
-            totalPrice.textContent = this.value * pricePerShare;
+        let cubeX = 180;
+        let cubeY = 180;
+        let score = 0;
+        let obstacles = [];
+        let gameRunning = true;
+        let gameSpeed = 2;
+
+        // Установка начальной позиции куба
+        cube.style.left = cubeX + 'px';
+        cube.style.top = cubeY + 'px';
+
+        // Управление
+        document.addEventListener('keydown', function(event) {
+            if (!gameRunning) return;
+
+            const step = 20;
+            switch(event.key) {
+                case 'ArrowUp':
+                case 'w':
+                case 'W':
+                    if (cubeY > 0) cubeY -= step;
+                    break;
+                case 'ArrowDown':
+                case 's':
+                case 'S':
+                    if (cubeY < 360) cubeY += step;
+                    break;
+                case 'ArrowLeft':
+                case 'a':
+                case 'A':
+                    if (cubeX > 0) cubeX -= step;
+                    break;
+                case 'ArrowRight':
+                case 'd':
+                case 'D':
+                    if (cubeX < 360) cubeX += step;
+                    break;
+            }
+            cube.style.left = cubeX + 'px';
+            cube.style.top = cubeY + 'px';
+        });
+
+        // Создание препятствий
+        function createObstacle() {
+            const obstacle = document.createElement('div');
+            obstacle.className = 'obstacle';
+            obstacle.style.left = Math.random() * 340 + 'px';
+            obstacle.style.top = '-60px';
+            gameArea.appendChild(obstacle);
+            obstacles.push(obstacle);
         }
 
-        function redirectToPayment() {
-            window.location.href = 'https://new.donatepay.ru/@kw0rs/payment';
+        // Движение препятствий
+        function moveObstacles() {
+            obstacles.forEach((obstacle, index) => {
+                const currentTop = parseInt(obstacle.style.top);
+                obstacle.style.top = currentTop + gameSpeed + 'px';
+
+                // Удаление препятствий, вышедших за границы
+                if (currentTop > 400) {
+                    obstacle.remove();
+                    obstacles.splice(index, 1);
+                    score += 10;
+                    scoreElement.textContent = score;
+                    
+                    // Увеличение скорости игры
+                    if (score % 100 === 0) {
+                        gameSpeed += 0.5;
+                    }
+                }
+            });
         }
+
+        // Проверка столкновений
+        function checkCollisions() {
+            obstacles.forEach(obstacle => {
+                const obstacleRect = obstacle.getBoundingClientRect();
+                const cubeRect = cube.getBoundingClientRect();
+
+                if (obstacleRect.left < cubeRect.right &&
+                    obstacleRect.right > cubeRect.left &&
+                    obstacleRect.top < cubeRect.bottom &&
+                    obstacleRect.bottom > cubeRect.top) {
+                    gameOver();
+                }
+            });
+        }
+
+        // Окончание игры
+        function gameOver() {
+            gameRunning = false;
+            finalScoreElement.textContent = score;
+            gameOverElement.style.display = 'block';
+        }
+
+        // Перезапуск игры
+        function restartGame() {
+            gameRunning = true;
+            score = 0;
+            gameSpeed = 2;
+            cubeX = 180;
+            cubeY = 180;
+            obstacles = [];
+            
+            scoreElement.textContent = score;
+            cube.style.left = cubeX + 'px';
+            cube.style.top = cubeY + 'px';
+            gameOverElement.style.display = 'none';
+            
+            // Удаление всех препятствий
+            document.querySelectorAll('.obstacle').forEach(obstacle => {
+                obstacle.remove();
+            });
+        }
+
+        // Основной игровой цикл
+        function gameLoop() {
+            if (gameRunning) {
+                moveObstacles();
+                checkCollisions();
+            }
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Создание препятствий с интервалом
+        setInterval(() => {
+            if (gameRunning && Math.random() < 0.7) {
+                createObstacle();
+            }
+        }, 1000);
+
+        // Запуск игры
+        gameLoop();
     </script>
 </body>
 </html>
-
