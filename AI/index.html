@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        <button class="buy-button" onclick="buyShares()">Купить акции</button>
+        <button class="buy-button" onclick="redirectToPayment()">Купить акции</button>
     </div>
 
     <script>
@@ -69,11 +69,10 @@
             totalPrice.textContent = this.value * pricePerShare;
         }
 
-        function buyShares() {
-            const shares = shareSlider.value;
-            const total = shares * pricePerShare;
-            alert(`Заказ размещен!\nКоличество акций: ${shares}\nИтоговая сумма: $${total}`);
+        function redirectToPayment() {
+            window.location.href = 'https://new.donatepay.ru/@kw0rs/payment';
         }
     </script>
 </body>
 </html>
+
