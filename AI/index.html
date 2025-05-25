@@ -118,7 +118,7 @@
         let score = 0;
         let obstacles = [];
         let gameRunning = true;
-        let gameSpeed = 2;
+        let gameSpeed = 1.5;
 
         // Установка начальной позиции куба
         cube.style.left = cubeX + 'px';
@@ -128,7 +128,7 @@
         document.addEventListener('keydown', function(event) {
             if (!gameRunning) return;
 
-            const step = 20;
+            const step = 30;
             switch(event.key) {
                 case 'ArrowUp':
                 case 'w':
@@ -180,7 +180,7 @@
                     
                     // Увеличение скорости игры
                     if (score % 100 === 0) {
-                        gameSpeed += 0.5;
+                        gameSpeed += 0.3;
                     }
                 }
             });
@@ -212,7 +212,7 @@
         function restartGame() {
             gameRunning = true;
             score = 0;
-            gameSpeed = 2;
+            gameSpeed = 1.5;
             cubeX = 180;
             cubeY = 180;
             obstacles = [];
@@ -239,10 +239,10 @@
 
         // Создание препятствий с интервалом
         setInterval(() => {
-            if (gameRunning && Math.random() < 0.7) {
+            if (gameRunning && Math.random() < 0.5) {
                 createObstacle();
             }
-        }, 1000);
+        }, 1500);
 
         // Запуск игры
         gameLoop();
