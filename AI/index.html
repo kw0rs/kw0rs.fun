@@ -2,1387 +2,167 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Майнкрафт 3D - Полная версия</title>
+    <title>Кастомный Wordle</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        body { font-family: Arial, sans-serif; background: #222; color: #eee; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none; }
+        .row { display: flex; margin: 5px 0; }
+        .cell {
+            width: 40px; height: 40px; border: 2px solid #444; margin: 2px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5em; background: #333; color: #fff; font-weight: bold;
         }
-
-        body {
-            background: #000;
-            font-family: 'Courier New', monospace;
-            overflow: hidden;
-            user-select: none;
-        }
-
-        #gameCanvas {
-            display: block;
-            cursor: none;
-        }
-
-        .ui-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 1000;
-        }
-
-        .crosshair {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 20px;
-            height: 20px;
-            pointer-events: none;
-        }
-
-        .crosshair::before,
-        .crosshair::after {
-            content: '';
-            position: absolute;
-            background: white;
-            box-shadow: 0 0 2px black;
-        }
-
-        .crosshair::before {
-            width: 2px;
-            height: 20px;
-            left: 9px;
-            top: 0;
-        }
-
-        .crosshair::after {
-            width: 20px;
-            height: 2px;
-            left: 0;
-            top: 9px;
-        }
-
-        .top-bar {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            pointer-events: auto;
-        }
-
-        .stats {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .health-bar, .hunger-bar, .xp-bar {
-            width: 100px;
-            height: 10px;
-            background: #333;
-            border: 1px solid #fff;
-            position: relative;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .health-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ff4444, #ff6666);
-            transition: width 0.3s;
-        }
-
-        .hunger-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ff8800, #ffaa00);
-            transition: width 0.3s;
-        }
-
-        .xp-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00ff00, #44ff44);
-            transition: width 0.3s;
-        }
-
-        .hotbar {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 2px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 5px;
-            border-radius: 5px;
-            pointer-events: auto;
-        }
-
-        .hotbar-slot {
-            width: 50px;
-            height: 50px;
-            border: 2px solid #666;
-            background: rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.2s ease;
-            border-radius: 3px;
-        }
-
-        .hotbar-slot.selected {
-            border-color: #fff;
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-
-        .hotbar-slot:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .slot-icon {
-            font-size: 20px;
-        }
-
-        .slot-count {
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            color: white;
-            font-size: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 1px 3px;
-            border-radius: 2px;
-        }
-
-        .inventory-panel {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            display: none;
-            pointer-events: auto;
-            border: 2px solid #666;
-        }
-
-        .inventory-grid {
-            display: grid;
-            grid-template-columns: repeat(9, 50px);
-            gap: 2px;
-            margin: 10px 0;
-        }
-
-        .inventory-slot {
-            width: 50px;
-            height: 50px;
-            border: 2px solid #666;
-            background: rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border-radius: 3px;
-            position: relative;
-        }
-
-        .inventory-slot:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .crafting-panel {
-            position: absolute;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            display: none;
-            pointer-events: auto;
-            border: 2px solid #666;
-        }
-
-        .crafting-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 50px);
-            gap: 2px;
-            margin: 10px 0;
-        }
-
-        .craft-slot {
-            width: 50px;
-            height: 50px;
-            border: 2px solid #666;
-            background: rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-
-        .minimap {
-            position: absolute;
-            top: 80px;
-            right: 20px;
-            width: 150px;
-            height: 150px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #fff;
-            border-radius: 10px;
-            pointer-events: auto;
-        }
-
-        .minimap-canvas {
-            width: 100%;
-            height: 100%;
-            border-radius: 8px;
-        }
-
-        .controls-help {
-            position: absolute;
-            bottom: 80px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            pointer-events: auto;
-            border: 1px solid #666;
-        }
-
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-
-        .loading-bar {
-            width: 300px;
-            height: 20px;
-            background: #333;
-            border: 2px solid #666;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 20px;
-        }
-
-        .loading-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00ff00, #44ff44);
-            width: 0%;
-            transition: width 0.3s;
-        }
-
-        .chat-panel {
-            position: absolute;
-            bottom: 80px;
-            left: 20px;
-            width: 300px;
-            height: 150px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 5px;
-            padding: 10px;
-            color: white;
-            font-size: 12px;
-            overflow-y: auto;
-            pointer-events: auto;
-            display: none;
-        }
-
-        .debug-info {
-            position: absolute;
-            top: 80px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            pointer-events: auto;
-            font-family: monospace;
-        }
-
-        .pause-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1500;
-            pointer-events: auto;
-        }
-
-        .pause-content {
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 40px;
-            border-radius: 10px;
-            text-align: center;
-            border: 2px solid #666;
-        }
-
-        .menu-button {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s;
-        }
-
-        .menu-button:hover {
-            background: #45a049;
-        }
-
-        .menu-button.danger {
-            background: #f44336;
-        }
-
-        .menu-button.danger:hover {
-            background: #da190b;
-        }
+        .cell.correct { background: #6aaa64; }
+        .cell.present { background: #c9b458; }
+        .cell.absent { background: #444; }
+        #message { margin: 10px; min-height: 24px; }
+        input[type="text"] { font-size: 1.2em; padding: 4px; }
+        button { font-size: 1em; padding: 6px 12px; margin-left: 6px; }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
-    
-    <div class="ui-overlay">
-        <div class="crosshair"></div>
-        
-        <div class="top-bar">
-            <div class="stats">
-                <div style="display: flex; align-items: center; gap: 5px;">
-                    ❤️ <div class="health-bar"><div class="health-fill" id="healthFill"></div></div>
-                    <span id="healthText">100</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 5px;">
-                    🍖 <div class="hunger-bar"><div class="hunger-fill" id="hungerFill"></div></div>
-                    <span id="hungerText">100</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 5px;">
-                    ⭐ <div class="xp-bar"><div class="xp-fill" id="xpFill"></div></div>
-                    <span id="xpText">0</span>
-                </div>
-            </div>
-            <div class="game-info">
-                <div>День: <span id="dayCounter">1</span></div>
-                <div>Время: <span id="timeDisplay">06:00</span></div>
-                <div>Координаты: <span id="coordinates">0, 64, 0</span></div>
-                <div>FPS: <span id="fpsCounter">60</span></div>
-                <div>Чанки: <span id="chunkCounter">0</span></div>
-            </div>
-        </div>
-
-        <div class="hotbar" id="hotbar">
-            <div class="hotbar-slot selected" data-item="dirt">
-                <span class="slot-icon">🟫</span>
-                <span class="slot-count">64</span>
-            </div>
-            <div class="hotbar-slot" data-item="stone">
-                <span class="slot-icon">🗿</span>
-                <span class="slot-count">32</span>
-            </div>
-            <div class="hotbar-slot" data-item="wood">
-                <span class="slot-icon">🪵</span>
-                <span class="slot-count">16</span>
-            </div>
-            <div class="hotbar-slot" data-item="pickaxe">
-                <span class="slot-icon">⛏️</span>
-                <span class="slot-count">1</span>
-            </div>
-            <div class="hotbar-slot" data-item="sword">
-                <span class="slot-icon">⚔️</span>
-                <span class="slot-count">1</span>
-            </div>
-            <div class="hotbar-slot" data-item="torch">
-                <span class="slot-icon">🕯️</span>
-                <span class="slot-count">12</span>
-            </div>
-            <div class="hotbar-slot" data-item="water">
-                <span class="slot-icon">💧</span>
-                <span class="slot-count">∞</span>
-            </div>
-            <div class="hotbar-slot" data-item="tnt">
-                <span class="slot-icon">💣</span>
-                <span class="slot-count">3</span>
-            </div>
-            <div class="hotbar-slot" data-item="diamond">
-                <span class="slot-icon">💎</span>
-                <span class="slot-count">5</span>
-            </div>
-        </div>
-
-        <div class="inventory-panel" id="inventoryPanel">
-            <h3>Инвентарь</h3>
-            <div class="inventory-grid" id="inventoryGrid"></div>
-            <button class="menu-button" onclick="closeInventory()">Закрыть</button>
-        </div>
-
-        <div class="crafting-panel" id="craftingPanel">
-            <h3>Крафт</h3>
-            <div class="crafting-grid" id="craftingGrid">
-                <div class="craft-slot"></div>
-                <div class="craft-slot"></div>
-                <div class="craft-slot"></div>
-                <div class="craft-slot"></div>
-                <div class="craft-slot"></div>
-                <div class="craft-slot"></div>
-                <div class="craft-slot"></div>
-                <div class="craft-slot"></div>
-                <div class="craft-slot"></div>
-            </div>
-            <div style="margin: 10px 0;">Результат:</div>
-            <div class="craft-slot" id="craftResult"></div>
-            <button class="menu-button" onclick="closeCrafting()">Закрыть</button>
-        </div>
-
-        <div class="minimap">
-            <canvas class="minimap-canvas" id="minimapCanvas" width="146" height="146"></canvas>
-        </div>
-
-        <div class="debug-info" id="debugInfo">
-            <div>Позиция: <span id="debugPos">0, 64, 0</span></div>
-            <div>Поворот: <span id="debugRot">0°, 0°</span></div>
-            <div>Биом: <span id="debugBiome">Равнины</span></div>
-            <div>Блок: <span id="debugBlock">Воздух</span></div>
-            <div>Освещение: <span id="debugLight">15</span></div>
-            <div>Скорость: <span id="debugSpeed">0.0</span></div>
-        </div>
-
-        <div class="controls-help">
-            <div><strong>Управление:</strong></div>
-            <div>WASD - Движение</div>
-            <div>Мышь - Поворот камеры</div>
-            <div>ЛКМ - Разрушить блок</div>
-            <div>ПКМ - Поставить блок</div>
-            <div>Space - Прыжок</div>
-            <div>Shift - Приседание/Бег</div>
-            <div>E - Инвентарь</div>
-            <div>C - Крафт</div>
-            <div>T - Чат</div>
-            <div>F3 - Отладка</div>
-            <div>ESC - Пауза</div>
-            <div>1-9 - Выбор предмета</div>
-        </div>
-
-        <div class="chat-panel" id="chatPanel">
-            <div id="chatMessages"></div>
-            <input type="text" id="chatInput" style="width: 100%; margin-top: 5px; background: rgba(0,0,0,0.5); border: 1px solid #666; color: white; padding: 5px;">
-        </div>
+    <h2>Wordle с кастомным словом</h2>
+    <div id="setup">
+        <label>Введите загаданное слово: <input type="text" id="secretWord" maxlength="12" autocomplete="off"></label>
+        <button id="setSecretBtn">Подтвердить</button>
     </div>
-
-    <div class="loading-screen" id="loadingScreen">
-        <h1>Майнкрафт 3D</h1>
-        <p>Загрузка мира...</p>
-        <div class="loading-bar">
-            <div class="loading-fill" id="loadingFill"></div>
-        </div>
-        <p id="loadingText">Инициализация...</p>
+    <div id="game" class="hidden">
+        <div id="board"></div>
+        <form id="guessForm" autocomplete="off">
+            <input type="text" id="guessInput" maxlength="12" autocomplete="off" placeholder="Ваш вариант">
+            <button type="submit">Проверить</button>
+        </form>
+        <div id="message"></div>
+        <button id="restartBtn" class="hidden">Начать заново</button>
     </div>
-
-    <div class="pause-menu" id="pauseMenu">
-        <div class="pause-content">
-            <h2>Игра приостановлена</h2>
-            <button class="menu-button" onclick="resumeGame()">Продолжить</button>
-            <button class="menu-button" onclick="showSettings()">Настройки</button>
-            <button class="menu-button" onclick="saveGame()">Сохранить</button>
-            <button class="menu-button danger" onclick="exitGame()">Выйти</button>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Основные переменные Three.js
-        let scene, camera, renderer, controls;
-        let world = {};
-        let chunks = new Map();
-        let player = {
-            position: { x: 0, y: 64, z: 0 },
-            rotation: { x: 0, y: 0 },
-            velocity: { x: 0, y: 0, z: 0 },
-            onGround: false,
-            health: 100,
-            hunger: 100,
-            xp: 0,
-            inventory: {},
-            selectedSlot: 0,
-            gameMode: 'survival' // survival, creative
+        let secret = '';
+        let maxTries = 6;
+        let currentTry = 0;
+        let wordLength = 0;
+        let finished = false;
+
+        const setupDiv = document.getElementById('setup');
+        const secretInput = document.getElementById('secretWord');
+        const setSecretBtn = document.getElementById('setSecretBtn');
+        const gameDiv = document.getElementById('game');
+        const boardDiv = document.getElementById('board');
+        const guessForm = document.getElementById('guessForm');
+        const guessInput = document.getElementById('guessInput');
+        const messageDiv = document.getElementById('message');
+        const restartBtn = document.getElementById('restartBtn');
+
+        setSecretBtn.onclick = function() {
+            let val = secretInput.value.trim().toLowerCase();
+            if (!val.match(/^[а-яa-zё]+$/i)) {
+                messageDiv.textContent = 'Слово должно содержать только буквы!';
+                return;
+            }
+            if (val.length < 3 || val.length > 12) {
+                messageDiv.textContent = 'Длина слова от 3 до 12 букв!';
+                return;
+            }
+            secret = val;
+            wordLength = secret.length;
+            setupDiv.classList.add('hidden');
+            gameDiv.classList.remove('hidden');
+            guessInput.setAttribute('maxlength', wordLength);
+            startGame();
         };
 
-        // Игровые константы
-        const CHUNK_SIZE = 16;
-        const WORLD_HEIGHT = 256;
-        const RENDER_DISTANCE = 8;
-        const GRAVITY = -0.02;
-        const JUMP_FORCE = 0.3;
-        const MOVE_SPEED = 0.1;
-        const MOUSE_SENSITIVITY = 0.002;
+        function startGame() {
+            boardDiv.innerHTML = '';
+            messageDiv.textContent = '';
+            currentTry = 0;
+            finished = false;
+            guessInput.value = '';
+            guessInput.disabled = false;
+            guessInput.focus();
+            restartBtn.classList.add('hidden');
+            // Создать пустые строки
+            for (let i = 0; i < maxTries; i++) {
+                let row = document.createElement('div');
+                row.className = 'row';
+                for (let j = 0; j < wordLength; j++) {
+                    let cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.textContent = '';
+                    row.appendChild(cell);
+                }
+                boardDiv.appendChild(row);
+            }
+        }
 
-        // Типы блоков
-        const BLOCK_TYPES = {
-            AIR: 0,
-            GRASS: 1,
-            DIRT: 2,
-            STONE: 3,
-            WOOD: 4,
-            LEAVES: 5,
-            WATER: 6,
-            SAND: 7,
-            COAL: 8,
-            IRON: 9,
-            GOLD: 10,
-            DIAMOND: 11,
-            BEDROCK: 12,
-            TORCH: 13,
-            TNT: 14
+        guessForm.onsubmit = function(e) {
+            e.preventDefault();
+            if (finished) return;
+            let guess = guessInput.value.trim().toLowerCase();
+            if (guess.length !== wordLength) {
+                messageDiv.textContent = `Слово должно быть из ${wordLength} букв!`;
+                return;
+            }
+            if (!guess.match(/^[а-яa-zё]+$/i)) {
+                messageDiv.textContent = 'Только буквы!';
+                return;
+            }
+            showGuess(guess);
+            guessInput.value = '';
         };
 
-        // Материалы блоков
-        const blockMaterials = {};
-        const blockGeometry = new THREE.BoxGeometry(1, 1, 1);
+        function showGuess(guess) {
+            let row = boardDiv.children[currentTry];
+            let secretArr = secret.split('');
+            let guessArr = guess.split('');
+            let result = Array(wordLength).fill('absent');
+            let used = Array(wordLength).fill(false);
 
-        // Игровое состояние
-        let gameState = {
-            paused: false,
-            loading: true,
-            day: 1,
-            time: 360, // минуты с начала дня
-            weather: 'clear',
-            difficulty: 'normal'
-        };
-
-        // Управление
-        const keys = {};
-        let mouseX = 0, mouseY = 0;
-        let isPointerLocked = false;
-
-        // Инициализация игры
-        async function initGame() {
-            showLoadingProgress(10, "Инициализация рендера...");
-            await initRenderer();
-            
-            showLoadingProgress(20, "Создание материалов...");
-            await createBlockMaterials();
-            
-            showLoadingProgress(40, "Генерация мира...");
-            await generateWorld();
-            
-            showLoadingProgress(60, "Загрузка чанков...");
-            await loadInitialChunks();
-            
-            showLoadingProgress(80, "Настройка управления...");
-            await setupControls();
-            
-            showLoadingProgress(90, "Инициализация UI...");
-            await initUI();
-            
-            showLoadingProgress(100, "Готово!");
-            
-            setTimeout(() => {
-                document.getElementById('loadingScreen').style.display = 'none';
-                gameState.loading = false;
-                requestPointerLock();
-                gameLoop();
-            }, 500);
-        }
-
-        // Инициализация рендера
-        async function initRenderer() {
-            const canvas = document.getElementById('gameCanvas');
-            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setClearColor(0x87CEEB);
-            renderer.shadowMap.enabled = true;
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-            scene = new THREE.Scene();
-            scene.fog = new THREE.Fog(0x87CEEB, 50, 200);
-
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 66, 0);
-
-            // Освещение
-            const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
-            scene.add(ambientLight);
-
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(50, 100, 50);
-            directionalLight.castShadow = true;
-            directionalLight.shadow.mapSize.width = 2048;
-            directionalLight.shadow.mapSize.height = 2048;
-            directionalLight.shadow.camera.near = 0.5;
-            directionalLight.shadow.camera.far = 500;
-            directionalLight.shadow.camera.left = -100;
-            directionalLight.shadow.camera.right = 100;
-            directionalLight.shadow.camera.top = 100;
-            directionalLight.shadow.camera.bottom = -100;
-            scene.add(directionalLight);
-        }
-
-        // Создание материалов блоков
-        async function createBlockMaterials() {
-            const textureLoader = new THREE.TextureLoader();
-            
-            // Создаем простые цветные материалы
-            blockMaterials[BLOCK_TYPES.GRASS] = new THREE.MeshLambertMaterial({ color: 0x228B22 });
-            blockMaterials[BLOCK_TYPES.DIRT] = new THREE.MeshLambertMaterial({ color: 0x8B4513 });
-            blockMaterials[BLOCK_TYPES.STONE] = new THREE.MeshLambertMaterial({ color: 0x696969 });
-            blockMaterials[BLOCK_TYPES.WOOD] = new THREE.MeshLambertMaterial({ color: 0xDEB887 });
-            blockMaterials[BLOCK_TYPES.LEAVES] = new THREE.MeshLambertMaterial({ color: 0x32CD32, transparent: true, opacity: 0.8 });
-            blockMaterials[BLOCK_TYPES.WATER] = new THREE.MeshLambertMaterial({ color: 0x4169E1, transparent: true, opacity: 0.7 });
-            blockMaterials[BLOCK_TYPES.SAND] = new THREE.MeshLambertMaterial({ color: 0xF4A460 });
-            blockMaterials[BLOCK_TYPES.COAL] = new THREE.MeshLambertMaterial({ color: 0x2F4F4F });
-            blockMaterials[BLOCK_TYPES.IRON] = new THREE.MeshLambertMaterial({ color: 0xC0C0C0 });
-            blockMaterials[BLOCK_TYPES.GOLD] = new THREE.MeshLambertMaterial({ color: 0xFFD700 });
-            blockMaterials[BLOCK_TYPES.DIAMOND] = new THREE.MeshLambertMaterial({ color: 0xB9F2FF });
-            blockMaterials[BLOCK_TYPES.BEDROCK] = new THREE.MeshLambertMaterial({ color: 0x1C1C1C });
-            blockMaterials[BLOCK_TYPES.TNT] = new THREE.MeshLambertMaterial({ color: 0xFF4500 });
-        }
-
-        // Генерация мира
-        async function generateWorld() {
-            // Инициализация шума для генерации ландшафта
-            world.seed = Math.random() * 1000000;
-            world.chunks = new Map();
-        }
-
-        // Генерация чанка
-        function generateChunk(chunkX, chunkZ) {
-            const chunk = {
-                x: chunkX,
-                z: chunkZ,
-                blocks: new Array(CHUNK_SIZE * WORLD_HEIGHT * CHUNK_SIZE).fill(BLOCK_TYPES.AIR),
-                mesh: null,
-                loaded: false
-            };
-
-            // Генерация ландшафта
-            for (let x = 0; x < CHUNK_SIZE; x++) {
-                for (let z = 0; z < CHUNK_SIZE; z++) {
-                    const worldX = chunkX * CHUNK_SIZE + x;
-                    const worldZ = chunkZ * CHUNK_SIZE + z;
-                    
-                    // Простая генерация высоты
-                    const height = Math.floor(64 + Math.sin(worldX * 0.01) * 10 + Math.cos(worldZ * 0.01) * 10 + Math.random() * 5);
-                    
-                    // Коренная порода
-                    for (let y = 0; y < 5; y++) {
-                        setBlockInChunk(chunk, x, y, z, BLOCK_TYPES.BEDROCK);
-                    }
-                    
-                    // Камень
-                    for (let y = 5; y < height - 5; y++) {
-                        let blockType = BLOCK_TYPES.STONE;
-                        if (Math.random() < 0.05) blockType = BLOCK_TYPES.COAL;
-                        if (Math.random() < 0.02) blockType = BLOCK_TYPES.IRON;
-                        if (Math.random() < 0.005) blockType = BLOCK_TYPES.GOLD;
-                        if (Math.random() < 0.001) blockType = BLOCK_TYPES.DIAMOND;
-                        setBlockInChunk(chunk, x, y, z, blockType);
-                    }
-                    
-                    // Земля
-                    for (let y = height - 5; y < height; y++) {
-                        setBlockInChunk(chunk, x, y, z, BLOCK_TYPES.DIRT);
-                    }
-                    
-                    // Трава или песок
-                    if (height < 62) {
-                        setBlockInChunk(chunk, x, height, z, BLOCK_TYPES.SAND);
-                        // Вода
-                        for (let y = height + 1; y <= 62; y++) {
-                            setBlockInChunk(chunk, x, y, z, BLOCK_TYPES.WATER);
-                        }
-                    } else {
-                        setBlockInChunk(chunk, x, height, z, BLOCK_TYPES.GRASS);
-                        
-                        // Деревья
-                        if (Math.random() < 0.02 && x > 2 && x < CHUNK_SIZE - 2 && z > 2 && z < CHUNK_SIZE - 2) {
-                            const treeHeight = 4 + Math.floor(Math.random() * 3);
-                            for (let i = 1; i <= treeHeight; i++) {
-                                setBlockInChunk(chunk, x, height + i, z, BLOCK_TYPES.WOOD);
-                            }
-                            // Листва
-                            for (let lx = -2; lx <= 2; lx++) {
-                                for (let lz = -2; lz <= 2; lz++) {
-                                    for (let ly = 0; ly <= 2; ly++) {
-                                        if (x + lx >= 0 && x + lx < CHUNK_SIZE && z + lz >= 0 && z + lz < CHUNK_SIZE) {
-                                            if (Math.random() < 0.7) {
-                                                setBlockInChunk(chunk, x + lx, height + treeHeight + ly, z + lz, BLOCK_TYPES.LEAVES);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+            // Сначала отмечаем правильные буквы
+            for (let i = 0; i < wordLength; i++) {
+                if (guessArr[i] === secretArr[i]) {
+                    result[i] = 'correct';
+                    used[i] = true;
+                    secretArr[i] = null; // чтобы не использовать повторно
                 }
             }
-
-            return chunk;
-        }
-
-        // Установка блока в чанке
-        function setBlockInChunk(chunk, x, y, z, blockType) {
-            if (x >= 0 && x < CHUNK_SIZE && y >= 0 && y < WORLD_HEIGHT && z >= 0 && z < CHUNK_SIZE) {
-                const index = x + y * CHUNK_SIZE + z * CHUNK_SIZE * WORLD_HEIGHT;
-                chunk.blocks[index] = blockType;
-            }
-        }
-
-        // Получение блока из чанка
-        function getBlockFromChunk(chunk, x, y, z) {
-            if (x >= 0 && x < CHUNK_SIZE && y >= 0 && y < WORLD_HEIGHT && z >= 0 && z < CHUNK_SIZE) {
-                const index = x + y * CHUNK_SIZE + z * CHUNK_SIZE * WORLD_HEIGHT;
-                return chunk.blocks[index];
-            }
-            return BLOCK_TYPES.AIR;
-        }
-
-        // Создание меша чанка
-        function createChunkMesh(chunk) {
-            const geometry = new THREE.BufferGeometry();
-            const vertices = [];
-            const normals = [];
-            const uvs = [];
-            const colors = [];
-
-            for (let x = 0; x < CHUNK_SIZE; x++) {
-                for (let y = 0; y < WORLD_HEIGHT; y++) {
-                    for (let z = 0; z < CHUNK_SIZE; z++) {
-                        const blockType = getBlockFromChunk(chunk, x, y, z);
-                        if (blockType !== BLOCK_TYPES.AIR) {
-                            addBlockToGeometry(vertices, normals, uvs, colors, x, y, z, blockType, chunk);
-                        }
-                    }
+            // Затем отмечаем присутствующие буквы
+            for (let i = 0; i < wordLength; i++) {
+                if (result[i] === 'correct') continue;
+                let idx = secretArr.indexOf(guessArr[i]);
+                if (idx !== -1 && !used[idx]) {
+                    result[i] = 'present';
+                    secretArr[idx] = null;
                 }
             }
-
-            geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-            geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
-            geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
-            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
-            const material = new THREE.MeshLambertMaterial({ vertexColors: true });
-            const mesh = new THREE.Mesh(geometry, material);
-            mesh.position.set(chunk.x * CHUNK_SIZE, 0, chunk.z * CHUNK_SIZE);
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-            return mesh;
-        }
-
-        // Добавление блока в геометрию
-        function addBlockToGeometry(vertices, normals, uvs, colors, x, y, z, blockType, chunk) {
-            const faces = [
-                // Передняя грань
-                { dir: [0, 0, 1], corners: [[0, 1, 1], [1, 1, 1], [1, 0, 1], [0, 0, 1]] },
-                // Задняя грань
-                { dir: [0, 0, -1], corners: [[1, 1, 0], [0, 1, 0], [0, 0, 0], [1, 0, 0]] },
-                // Верхняя грань
-                { dir: [0, 1, 0], corners: [[0, 1, 0], [1, 1, 0], [1, 1, 1], [0, 1, 1]] },
-                // Нижняя грань
-                { dir: [0, -1, 0], corners: [[0, 0, 1], [1, 0, 1], [1, 0, 0], [0, 0, 0]] },
-                // Правая грань
-                { dir: [1, 0, 0], corners: [[1, 1, 1], [1, 1, 0], [1, 0, 0], [1, 0, 1]] },
-                // Левая грань
-                { dir: [-1, 0, 0], corners: [[0, 1, 0], [0, 1, 1], [0, 0, 1], [0, 0, 0]] }
-            ];
-
-            const blockColor = getBlockColor(blockType);
-
-            faces.forEach(face => {
-                const [dx, dy, dz] = face.dir;
-                const neighborType = getBlockFromChunk(chunk, x + dx, y + dy, z + dz);
-                
-                if (neighborType === BLOCK_TYPES.AIR || (blockType === BLOCK_TYPES.WATER && neighborType !== BLOCK_TYPES.WATER)) {
-                    const indices = [0, 1, 2, 0, 2, 3];
-                    
-                    indices.forEach(index => {
-                        const corner = face.corners[index];
-                        vertices.push(x + corner[0], y + corner[1], z + corner[2]);
-                        normals.push(dx, dy, dz);
-                        uvs.push(corner[0], corner[1]);
-                        colors.push(blockColor.r, blockColor.g, blockColor.b);
-                    });
-                }
-            });
-        }
-
-        // Получение цвета блока
-        function getBlockColor(blockType) {
-            const colors = {
-                [BLOCK_TYPES.GRASS]: { r: 0.13, g: 0.55, b: 0.13 },
-                [BLOCK_TYPES.DIRT]: { r: 0.55, g: 0.27, b: 0.07 },
-                [BLOCK_TYPES.STONE]: { r: 0.41, g: 0.41, b: 0.41 },
-                [BLOCK_TYPES.WOOD]: { r: 0.87, g: 0.72, b: 0.53 },
-                [BLOCK_TYPES.LEAVES]: { r: 0.20, g: 0.80, b: 0.20 },
-                [BLOCK_TYPES.WATER]: { r: 0.25, g: 0.41, b: 0.88 },
-                [BLOCK_TYPES.SAND]: { r: 0.96, g: 0.64, b: 0.38 },
-                [BLOCK_TYPES.COAL]: { r: 0.18, g: 0.31, b: 0.31 },
-                [BLOCK_TYPES.IRON]: { r: 0.75, g: 0.75, b: 0.75 },
-                [BLOCK_TYPES.GOLD]: { r: 1.0, g: 0.84, b: 0.0 },
-                [BLOCK_TYPES.DIAMOND]: { r: 0.73, g: 0.95, b: 1.0 },
-                [BLOCK_TYPES.BEDROCK]: { r: 0.11, g: 0.11, b: 0.11 },
-                [BLOCK_TYPES.TNT]: { r: 1.0, g: 0.27, b: 0.0 }
-            };
-            return colors[blockType] || { r: 1, g: 1, b: 1 };
-        }
-
-        // Загрузка начальных чанков
-        async function loadInitialChunks() {
-            const playerChunkX = Math.floor(player.position.x / CHUNK_SIZE);
-            const playerChunkZ = Math.floor(player.position.z / CHUNK_SIZE);
-
-            for (let x = playerChunkX - RENDER_DISTANCE; x <= playerChunkX + RENDER_DISTANCE; x++) {
-                for (let z = playerChunkZ - RENDER_DISTANCE; z <= playerChunkZ + RENDER_DISTANCE; z++) {
-                    loadChunk(x, z);
-                }
+            // Отобразить буквы
+            for (let i = 0; i < wordLength; i++) {
+                let cell = row.children[i];
+                cell.textContent = guessArr[i].toUpperCase();
+                cell.classList.add(result[i]);
             }
-        }
-
-        // Загрузка чанка
-        function loadChunk(chunkX, chunkZ) {
-            const chunkKey = `${chunkX},${chunkZ}`;
-            if (!chunks.has(chunkKey)) {
-                const chunk = generateChunk(chunkX, chunkZ);
-                chunk.mesh = createChunkMesh(chunk);
-                scene.add(chunk.mesh);
-                chunks.set(chunkKey, chunk);
-                chunk.loaded = true;
-            }
-        }
-
-        // Выгрузка чанка
-        function unloadChunk(chunkX, chunkZ) {
-            const chunkKey = `${chunkX},${chunkZ}`;
-            const chunk = chunks.get(chunkKey);
-            if (chunk) {
-                scene.remove(chunk.mesh);
-                chunk.mesh.geometry.dispose();
-                chunks.delete(chunkKey);
-            }
-        }
-
-        // Настройка управления
-        async function setupControls() {
-            document.addEventListener('keydown', onKeyDown);
-            document.addEventListener('keyup', onKeyUp);
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('click', onClick);
-            document.addEventListener('contextmenu', onRightClick);
-            document.addEventListener('pointerlockchange', onPointerLockChange);
-            window.addEventListener('resize', onWindowResize);
-        }
-
-        // Обработчики событий
-        function onKeyDown(event) {
-            keys[event.code] = true;
-            
-            // Горячие клавиши
-            switch(event.code) {
-                case 'Escape':
-                    togglePause();
-                    break;
-                case 'KeyE':
-                    toggleInventory();
-                    break;
-                case 'KeyC':
-                    toggleCrafting();
-                    break;
-                case 'KeyT':
-                    toggleChat();
-                    break;
-                case 'F3':
-                    toggleDebug();
-                    break;
-                case 'Digit1':
-                case 'Digit2':
-                case 'Digit3':
-                case 'Digit4':
-                case 'Digit5':
-                case 'Digit6':
-                case 'Digit7':
-                case 'Digit8':
-                case 'Digit9':
-                    selectHotbarSlot(parseInt(event.code.slice(-1)) - 1);
-                    break;
-            }
-        }
-
-        function onKeyUp(event) {
-            keys[event.code] = false;
-        }
-
-        function onMouseMove(event) {
-            if (isPointerLocked && !gameState.paused) {
-                mouseX += event.movementX * MOUSE_SENSITIVITY;
-                mouseY += event.movementY * MOUSE_SENSITIVITY;
-                mouseY = Math.max(-Math.PI/2, Math.min(Math.PI/2, mouseY));
-            }
-        }
-
-        function onClick(event) {
-            if (!isPointerLocked) {
-                requestPointerLock();
-            } else if (!gameState.paused) {
-                destroyBlock();
-            }
-        }
-
-        function onRightClick(event) {
-            event.preventDefault();
-            if (isPointerLocked && !gameState.paused) {
-                placeBlock();
-            }
-        }
-
-        function onPointerLockChange() {
-            isPointerLocked = document.pointerLockElement === document.getElementById('gameCanvas');
-        }
-
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-
-        // Запрос блокировки указателя
-        function requestPointerLock() {
-            document.getElementById('gameCanvas').requestPointerLock();
-        }
-
-        // Обновление игрока
-        function updatePlayer() {
-            if (gameState.paused) return;
-
-            // Движение
-            const moveVector = new THREE.Vector3();
-            const speed = keys['ShiftLeft'] ? MOVE_SPEED * 2 : MOVE_SPEED;
-
-            if (keys['KeyW']) moveVector.z -= speed;
-            if (keys['KeyS']) moveVector.z += speed;
-            if (keys['KeyA']) moveVector.x -= speed;
-            if (keys['KeyD']) moveVector.x += speed;
-
-            // Поворот вектора движения относительно камеры
-            moveVector.applyAxisAngle(new THREE.Vector3(0, 1, 0), mouseX);
-
-            // Прыжок
-            if (keys['Space'] && player.onGround) {
-                player.velocity.y = JUMP_FORCE;
-                player.onGround = false;
-            }
-
-            // Применение гравитации
-            player.velocity.y += GRAVITY;
-
-            // Обновление позиции
-            player.position.x += moveVector.x;
-            player.position.z += moveVector.z;
-            player.position.y += player.velocity.y;
-
-            // Проверка коллизий
-            checkCollisions();
-
-            // Обновление камеры
-            camera.position.set(player.position.x, player.position.y + 1.6, player.position.z);
-            camera.rotation.set(mouseY, mouseX, 0);
-
-            // Обновление чанков
-            updateChunks();
-        }
-
-        // Проверка коллизий
-        function checkCollisions() {
-            const blockX = Math.floor(player.position.x);
-            const blockY = Math.floor(player.position.y);
-            const blockZ = Math.floor(player.position.z);
-
-            // Проверка коллизии с землей
-            const groundBlock = getBlockAt(blockX, blockY - 1, blockZ);
-            if (groundBlock !== BLOCK_TYPES.AIR && player.velocity.y <= 0) {
-                player.position.y = blockY;
-                player.velocity.y = 0;
-                player.onGround = true;
-            }
-
-            // Проверка коллизии с блоками
-            const currentBlock = getBlockAt(blockX, blockY, blockZ);
-            if (currentBlock !== BLOCK_TYPES.AIR && currentBlock !== BLOCK_TYPES.WATER) {
-                player.position.y = blockY + 1;
-            }
-
-            // Ограничение мира
-            if (player.position.y < 0) {
-                player.position.y = 65;
-                player.health -= 10;
-            }
-        }
-
-        // Получение блока по координатам
-        function getBlockAt(x, y, z) {
-            const chunkX = Math.floor(x / CHUNK_SIZE);
-            const chunkZ = Math.floor(z / CHUNK_SIZE);
-            const chunkKey = `${chunkX},${chunkZ}`;
-            const chunk = chunks.get(chunkKey);
-
-            if (chunk) {
-                const localX = x - chunkX * CHUNK_SIZE;
-                const localZ = z - chunkZ * CHUNK_SIZE;
-                return getBlockFromChunk(chunk, localX, y, localZ);
-            }
-            return BLOCK_TYPES.AIR;
-        }
-
-        // Установка блока
-        function setBlockAt(x, y, z, blockType) {
-            const chunkX = Math.floor(x / CHUNK_SIZE);
-            const chunkZ = Math.floor(z / CHUNK_SIZE);
-            const chunkKey = `${chunkX},${chunkZ}`;
-            const chunk = chunks.get(chunkKey);
-
-            if (chunk) {
-                const localX = x - chunkX * CHUNK_SIZE;
-                const localZ = z - chunkZ * CHUNK_SIZE;
-                setBlockInChunk(chunk, localX, y, localZ, blockType);
-                
-                // Обновление меша чанка
-                scene.remove(chunk.mesh);
-                chunk.mesh.geometry.dispose();
-                chunk.mesh = createChunkMesh(chunk);
-                scene.add(chunk.mesh);
-            }
-        }
-
-        // Разрушение блока
-        function destroyBlock() {
-            const raycaster = new THREE.Raycaster();
-            raycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
-
-            const intersects = [];
-            chunks.forEach(chunk => {
-                if (chunk.mesh) {
-                    const chunkIntersects = raycaster.intersectObject(chunk.mesh);
-                    intersects.push(...chunkIntersects);
-                }
-            });
-
-            if (intersects.length > 0) {
-                const intersect = intersects[0];
-                const point = intersect.point.clone().sub(intersect.face.normal.clone().multiplyScalar(0.5));
-                const blockX = Math.floor(point.x);
-                const blockY = Math.floor(point.y);
-                const blockZ = Math.floor(point.z);
-
-                const blockType = getBlockAt(blockX, blockY, blockZ);
-                if (blockType !== BLOCK_TYPES.AIR && blockType !== BLOCK_TYPES.BEDROCK) {
-                    setBlockAt(blockX, blockY, blockZ, BLOCK_TYPES.AIR);
-                    
-                    // Добавление в инвентарь
-                    const itemName = getItemNameFromBlock(blockType);
-                    player.inventory[itemName] = (player.inventory[itemName] || 0) + 1;
-                    player.xp += 1;
-                    
-                    updateHotbar();
-                }
-            }
-        }
-
-        // Размещение блока
-        function placeBlock() {
-            const selectedItem = getSelectedItem();
-            if (!selectedItem || (player.inventory[selectedItem] || 0) <= 0) return;
-
-            const raycaster = new THREE.Raycaster();
-            raycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
-
-            const intersects = [];
-            chunks.forEach(chunk => {
-                if (chunk.mesh) {
-                    const chunkIntersects = raycaster.intersectObject(chunk.mesh);
-                    intersects.push(...chunkIntersects);
-                }
-            });
-
-            if (intersects.length > 0) {
-                const intersect = intersects[0];
-                const point = intersect.point.clone().add(intersect.face.normal.clone().multiplyScalar(0.5));
-                const blockX = Math.floor(point.x);
-                const blockY = Math.floor(point.y);
-                const blockZ = Math.floor(point.z);
-
-                const currentBlock = getBlockAt(blockX, blockY, blockZ);
-                if (currentBlock === BLOCK_TYPES.AIR) {
-                    const blockType = getBlockTypeFromItem(selectedItem);
-                    setBlockAt(blockX, blockY, blockZ, blockType);
-                    
-                    player.inventory[selectedItem]--;
-                    updateHotbar();
-                }
-            }
-        }
-
-        // Обновление чанков
-        function updateChunks() {
-            const playerChunkX = Math.floor(player.position.x / CHUNK_SIZE);
-            const playerChunkZ = Math.floor(player.position.z / CHUNK_SIZE);
-
-            // Загрузка новых чанков
-            for (let x = playerChunkX - RENDER_DISTANCE; x <= playerChunkX + RENDER_DISTANCE; x++) {
-                for (let z = playerChunkZ - RENDER_DISTANCE; z <= playerChunkZ + RENDER_DISTANCE; z++) {
-                    const chunkKey = `${x},${z}`;
-                    if (!chunks.has(chunkKey)) {
-                        loadChunk(x, z);
-                    }
-                }
-            }
-
-            // Выгрузка далеких чанков
-            chunks.forEach((chunk, chunkKey) => {
-                const [x, z] = chunkKey.split(',').map(Number);
-                const distance = Math.max(Math.abs(x - playerChunkX), Math.abs(z - playerChunkZ));
-                if (distance > RENDER_DISTANCE + 2) {
-                    unloadChunk(x, z);
-                }
-            });
-        }
-
-        // Инициализация UI
-        async function initUI() {
-            player.inventory = {
-                dirt: 64, stone: 32, wood: 16, pickaxe: 1,
-                sword: 1, torch: 12, water: 999, tnt: 3, diamond: 5
-            };
-            updateHotbar();
-            updateUI();
-        }
-
-        // Обновление UI
-        function updateUI() {
-            document.getElementById('healthFill').style.width = player.health + '%';
-            document.getElementById('hungerFill').style.width = player.hunger + '%';
-            document.getElementById('xpFill').style.width = (player.xp % 100) + '%';
-            
-            document.getElementById('healthText').textContent = Math.floor(player.health);
-            document.getElementById('hungerText').textContent = Math.floor(player.hunger);
-            document.getElementById('xpText').textContent = player.xp;
-            
-            document.getElementById('coordinates').textContent = 
-                `${Math.floor(player.position.x)}, ${Math.floor(player.position.y)}, ${Math.floor(player.position.z)}`;
-            
-            document.getElementById('chunkCounter').textContent = chunks.size;
-            
-            // Обновление времени
-            gameState.time += 0.05;
-            if (gameState.time >= 1440) {
-                gameState.time = 0;
-                gameState.day++;
-            }
-            
-            const hours = Math.floor(gameState.time / 60);
-            const minutes = Math.floor(gameState.time % 60);
-            document.getElementById('timeDisplay').textContent = 
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-            document.getElementById('dayCounter').textContent = gameState.day;
-        }
-
-        // Обновление хотбара
-        function updateHotbar() {
-            document.querySelectorAll('.hotbar-slot').forEach((slot, index) => {
-                const item = slot.dataset.item;
-                const count = player.inventory[item] || 0;
-                const countElement = slot.querySelector('.slot-count');
-                if (countElement) {
-                    countElement.textContent = count === 999 ? '∞' : count;
-                }
-            });
-        }
-
-        // Выбор слота хотбара
-        function selectHotbarSlot(index) {
-            document.querySelectorAll('.hotbar-slot').forEach((slot, i) => {
-                slot.classList.toggle('selected', i === index);
-            });
-            player.selectedSlot = index;
-        }
-
-        // Получение выбранного предмета
-        function getSelectedItem() {
-            const slot = document.querySelectorAll('.hotbar-slot')[player.selectedSlot];
-            return slot ? slot.dataset.item : null;
-        }
-
-        // Вспомогательные функции
-        function getItemNameFromBlock(blockType) {
-            const mapping = {
-                [BLOCK_TYPES.GRASS]: 'dirt',
-                [BLOCK_TYPES.DIRT]: 'dirt',
-                [BLOCK_TYPES.STONE]: 'stone',
-                [BLOCK_TYPES.WOOD]: 'wood',
-                [BLOCK_TYPES.COAL]: 'coal',
-                [BLOCK_TYPES.IRON]: 'iron',
-                [BLOCK_TYPES.GOLD]: 'gold',
-                [BLOCK_TYPES.DIAMOND]: 'diamond'
-            };
-            return mapping[blockType] || 'dirt';
-        }
-
-        function getBlockTypeFromItem(itemName) {
-            const mapping = {
-                dirt: BLOCK_TYPES.DIRT,
-                stone: BLOCK_TYPES.STONE,
-                wood: BLOCK_TYPES.WOOD,
-                torch: BLOCK_TYPES.TORCH,
-                tnt: BLOCK_TYPES.TNT,
-                diamond: BLOCK_TYPES.DIAMOND
-            };
-            return mapping[itemName] || BLOCK_TYPES.DIRT;
-        }
-
-        // Функции интерфейса
-        function togglePause() {
-            gameState.paused = !gameState.paused;
-            document.getElementById('pauseMenu').style.display = gameState.paused ? 'flex' : 'none';
-            if (gameState.paused) {
-                document.exitPointerLock();
+            currentTry++;
+            if (guess === secret) {
+                messageDiv.textContent = 'Поздравляем! Вы угадали!';
+                finishGame();
+            } else if (currentTry >= maxTries) {
+                messageDiv.textContent = `Не угадали! Слово было: ${secret.toUpperCase()}`;
+                finishGame();
             } else {
-                requestPointerLock();
+                messageDiv.textContent = '';
             }
         }
 
-        function toggleInventory() {
-            const panel = document.getElementById('inventoryPanel');
-            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        function finishGame() {
+            finished = true;
+            guessInput.disabled = true;
+            restartBtn.classList.remove('hidden');
         }
 
-        function toggleCrafting() {
-            const panel = document.getElementById('craftingPanel');
-            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function toggleChat() {
-            const panel = document.getElementById('chatPanel');
-            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function toggleDebug() {
-            const info = document.getElementById('debugInfo');
-            info.style.display = info.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function closeInventory() {
-            document.getElementById('inventoryPanel').style.display = 'none';
-        }
-
-        function closeCrafting() {
-            document.getElementById('craftingPanel').style.display = 'none';
-        }
-
-        function resumeGame() {
-            togglePause();
-        }
-
-        function showSettings() {
-            alert('Настройки пока не реализованы');
-        }
-
-        function saveGame() {
-            alert('Сохранение пока не реализовано');
-        }
-
-        function exitGame() {
-            if (confirm('Вы уверены, что хотите выйти?')) {
-                window.close();
-            }
-        }
-
-        // Показ прогресса загрузки
-        function showLoadingProgress(percent, text) {
-            document.getElementById('loadingFill').style.width = percent + '%';
-            document.getElementById('loadingText').textContent = text;
-        }
-
-        // FPS счетчик
-        let fps = 0;
-        let lastTime = performance.now();
-        let frameCount = 0;
-
-        function updateFPS() {
-            frameCount++;
-            const currentTime = performance.now();
-            if (currentTime - lastTime >= 1000) {
-                fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
-                document.getElementById('fpsCounter').textContent = fps;
-                frameCount = 0;
-                lastTime = currentTime;
-            }
-        }
-
-        // Основной игровой цикл
-        function gameLoop() {
-            updatePlayer();
-            updateUI();
-            updateFPS();
-            
-            // Голод
-            if (!gameState.paused) {
-                player.hunger -= 0.001;
-                if (player.hunger <= 0) {
-                    player.health -= 0.01;
-                }
-                if (player.health <= 0) {
-                    respawnPlayer();
-                }
-            }
-
-            renderer.render(scene, camera);
-            requestAnimationFrame(gameLoop);
-        }
-
-        // Возрождение игрока
-        function respawnPlayer() {
-            player.health = 100;
-            player.hunger = 100;
-            player.position = { x: 0, y: 70, z: 0 };
-            player.velocity = { x: 0, y: 0, z: 0 };
-        }
-
-        // Запуск игры
-        initGame();
+        restartBtn.onclick = function() {
+            setupDiv.classList.remove('hidden');
+            gameDiv.classList.add('hidden');
+            secretInput.value = '';
+            messageDiv.textContent = '';
+        };
     </script>
 </body>
 </html>
