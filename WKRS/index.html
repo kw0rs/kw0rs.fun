@@ -38,278 +38,142 @@
     }
   </script>
   <style>
-    body {
-      background: linear-gradient(135deg, #18181b 0%, #23272f 100%);
-      min-height: 100vh;
-      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-      letter-spacing: 0.01em;
+    .modal-bg { background-color: rgba(0, 0, 0, 0.8); }
+    body { background-color: #1c1c1c; }
+    .full-img { width: 100%; height: auto; object-fit: contain; }
+    .card-img { width: 100%; aspect-ratio: 2/3; object-fit: cover; object-position: center; }
+    @media (max-width: 768px) {
+      .modal-content { max-height: 80vh; overflow-y: auto; }
     }
-    .glass {
-      background: rgba(30, 30, 40, 0.7);
-      backdrop-filter: blur(16px) saturate(160%);
-      border: 1.5px solid rgba(255,255,255,0.06);
-      box-shadow: 0 8px 32px 0 rgba(0,0,0,0.25);
-    }
-    .neon {
-      text-shadow: 0 0 8px #ef4444, 0 0 16px #ef4444a0;
-    }
-    .neon-green {
-      text-shadow: 0 0 8px #22d3ee, 0 0 16px #22d3eea0;
-    }
-    .neon-purple {
-      text-shadow: 0 0 8px #a855f7, 0 0 16px #a855f7a0;
-    }
-    .card-img {
-      width: 100%;
-      aspect-ratio: 2/3;
-      object-fit: cover;
-      object-position: center;
-      border-radius: 1.25rem;
-      box-shadow: 0 4px 24px 0 rgba(0,0,0,0.25);
-      transition: transform 0.25s cubic-bezier(.4,2,.6,1), box-shadow 0.2s;
-      background: #23272f;
-      /* fallback bg for loading */
-    }
-    .card-img:hover {
-      transform: scale(1.04) rotate(-1deg);
-      box-shadow: 0 8px 32px 0 #ef4444a0, 0 2px 8px 0 #000a;
-    }
+    
+    /* Стили для lazy loading */
     .lazy-image {
       opacity: 0;
       transition: opacity 0.3s ease;
-      display: block;
     }
     .lazy-image.loaded {
       opacity: 1;
     }
     .lazy-placeholder {
-      background: linear-gradient(110deg, #23272f 8%, #2a2a2a 18%, #23272f 33%);
+      background: linear-gradient(110deg, #2a2a2a 8%, #3a3a3a 18%, #2a2a2a 33%);
       background-size: 200% 100%;
       animation: shine 1.5s linear infinite;
-      border-radius: 1.25rem;
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
     }
     @keyframes shine {
       to {
         background-position-x: -200%;
       }
     }
+    
+    /* Фиксим переполнение текста */
     .truncate-text {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    
+    /* Стили для полей фильтрации */
+    .filter-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .filter-item {
+      flex: 1 1 auto;
+      min-width: 120px;
+    }
+    
+    @media (max-width: 640px) {
+      .filter-item {
+        flex: 1 1 100%;
+      }
+    }
+    
+    /* Улучшенные стили для переключателя */
     .toggle-container {
       display: flex;
       margin-bottom: 1rem;
-      border-radius: 0.5rem;
+      border-radius: 0.375rem;
       overflow: hidden;
-      border: 1.5px solid rgba(75, 85, 99, 0.4);
+      border: 1px solid rgba(75, 85, 99, 0.4);
       width: fit-content;
-      background: rgba(36, 37, 46, 0.7);
-      box-shadow: 0 2px 8px 0 #0004;
     }
+    
     .toggle-btn {
-      transition: all 0.2s cubic-bezier(.4,2,.6,1);
-      padding: 0.5rem 1.5rem;
-      font-weight: 600;
+      transition: all 0.2s ease;
+      padding: 0.5rem 1rem;
+      font-weight: 500;
       position: relative;
-      font-size: 1rem;
-      letter-spacing: 0.01em;
     }
+    
     .toggle-btn-active {
-      background: linear-gradient(90deg, #ef4444 60%, #a855f7 100%);
+      background-color: #ef4444;
       color: white;
-      box-shadow: 0 0 12px #ef4444a0;
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
     }
-    /* Убрана полоска под кнопкой */
-    /* .toggle-btn-active::after { display: none; } */
+    
+    .toggle-btn-active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: white;
+    }
+    
     .toggle-btn-inactive {
-      background: rgba(31, 41, 55, 0.4);
+      background-color: rgba(31, 41, 55, 0.4);
       color: rgb(209, 213, 219);
     }
+    
     .toggle-btn-inactive:hover:not(:disabled) {
-      background: rgba(55, 65, 81, 0.5);
+      background-color: rgba(55, 65, 81, 0.5);
     }
+    
     .toggle-btn-disabled {
-      background: rgba(31, 41, 55, 0.2);
+      background-color: rgba(31, 41, 55, 0.2);
       color: rgb(156, 163, 175);
       cursor: not-allowed;
       opacity: 0.7;
       text-decoration: line-through;
     }
+    
     .content-section {
       min-height: 100px;
-      padding: 1rem;
-      border-radius: 0.75rem;
-      background: rgba(36, 37, 46, 0.7);
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      background-color: rgba(23, 23, 23, 0.3);
       margin-bottom: 1rem;
-      box-shadow: 0 2px 8px 0 #0002;
-    }
-    .modal-bg {
-      background: rgba(20, 20, 30, 0.92);
-      backdrop-filter: blur(8px) saturate(120%);
-    }
-    .modal-content {
-      border-radius: 1.5rem;
-      box-shadow: 0 8px 32px 0 #ef4444a0, 0 2px 8px 0 #000a;
-      background: linear-gradient(120deg, #23272f 60%, #18181b 100%);
-      border: 1.5px solid rgba(255,255,255,0.08);
-    }
-    .fancy-scroll::-webkit-scrollbar {
-      width: 8px;
-      background: transparent;
-    }
-    .fancy-scroll::-webkit-scrollbar-thumb {
-      background: linear-gradient(120deg, #ef4444 0%, #a855f7 100%);
-      border-radius: 8px;
-    }
-    .fancy-scroll {
-      scrollbar-width: thin;
-      scrollbar-color: #ef4444 #23272f;
-    }
-    .chip {
-      display: inline-block;
-      background: linear-gradient(90deg, #a855f7 0%, #ef4444 100%);
-      color: #fff;
-      font-size: 0.75rem;
-      font-weight: 600;
-      border-radius: 9999px;
-      padding: 0.25rem 0.75rem;
-      margin-right: 0.5rem;
-      margin-bottom: 0.25rem;
-      box-shadow: 0 1px 4px #a855f7a0;
-      letter-spacing: 0.02em;
-    }
-    @media (max-width: 768px) {
-      .modal-content { max-height: 80vh; overflow-y: auto; }
-    }
-    @media (max-width: 640px) {
-      .modal-content { padding: 1rem !important; }
-      .content-section { padding: 0.5rem; }
-    }
-    /* Fancy animated gradient border for cards */
-    .card-border {
-      position: relative;
-      z-index: 0;
-    }
-    .card-border::before {
-      content: '';
-      position: absolute;
-      z-index: -1;
-      inset: -2px;
-      border-radius: 1.5rem;
-      background: linear-gradient(120deg, #ef4444 0%, #a855f7 100%);
-      opacity: 0.7;
-      filter: blur(4px);
-      transition: opacity 0.2s;
-    }
-    .card-border:hover::before {
-      opacity: 1;
-      filter: blur(8px);
-    }
-    .full-img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      border-radius: 1.25rem;
-    }
-    /* Оценка - неоновый бейдж на чёрном фоне */
-    .rating-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25em;
-      font-weight: 800;
-      font-size: 1.15rem;
-      padding: 0.25em 0.85em;
-      border-radius: 9999px;
-      background: #18181b;
-      color: #fff !important;
-      box-shadow: 0 0 8px #ef4444a0, 0 0 16px #a855f7a0;
-      margin-bottom: 0.5rem;
-      margin-top: 0.25rem;
-      letter-spacing: 0.03em;
-      border: 2px solid #23272f;
-      text-shadow: 0 0 8px #ef4444, 0 0 12px #a855f7a0;
-      user-select: none;
-      transition: background 0.2s, box-shadow 0.2s;
-    }
-    .rating-badge .star {
-      font-size: 1.2em;
-      margin-right: 0.15em;
-      filter: drop-shadow(0 0 6px #ef4444) drop-shadow(0 0 8px #a855f7a0);
-      color: #ef4444;
-      text-shadow: 0 0 8px #ef4444, 0 0 12px #a855f7a0;
-    }
-    .rating-badge.rating-10 { 
-      background: #18181b;
-      border-color: #a855f7;
-      color: #fff !important;
-      box-shadow: 0 0 12px #a855f7a0, 0 0 24px #ef4444a0;
-    }
-    .rating-badge.rating-7 { 
-      background: #18181b;
-      border-color: #22d3ee;
-      color: #fff !important;
-      box-shadow: 0 0 12px #22d3eea0, 0 0 24px #a855f7a0;
-    }
-    .rating-badge.rating-4 { 
-      background: #18181b;
-      border-color: #facc15;
-      color: #facc15 !important;
-      box-shadow: 0 0 12px #facc15a0, 0 0 24px #ef4444a0;
-      text-shadow: 0 0 8px #facc15, 0 0 12px #ef4444a0;
-    }
-    .rating-badge.rating-bad { 
-      background: #18181b;
-      border-color: #ef4444;
-      color: #ef4444 !important;
-      box-shadow: 0 0 12px #ef4444a0, 0 0 24px #23272fa0;
-      text-shadow: 0 0 8px #ef4444, 0 0 12px #23272fa0;
-    }
-    .rating-badge.rating-null { 
-      background: #18181b;
-      border-color: #6b7280;
-      color: #d1d5db !important;
-      box-shadow: 0 0 8px #6b7280a0, 0 0 16px #23272fa0;
-      text-shadow: 0 0 8px #6b7280, 0 0 12px #23272fa0;
     }
   </style>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
-<body class="text-white font-sans fancy-scroll" x-data="mediaApp()" x-init="loadItems()">
-  <div class="max-w-7xl mx-auto px-4 py-8">
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row justify-between items-center mb-10 gap-4">
-      <div class="flex items-center gap-4">
-        <img src="https://kw0rs.uno/icon/williamkw0rs.jpg" alt="logo" class="w-14 h-14 rounded-full shadow-lg border-2 border-[#ef4444] object-cover" />
-        <h1 class="text-4xl sm:text-5xl font-extrabold neon tracking-tight drop-shadow-lg select-none">
-          К.А.Л. <span class="neon-purple">Кворс</span> <span class="neon-green">Лист</span>
-        </h1>
-      </div>
+<body class="text-white font-sans" x-data="mediaApp()" x-init="loadItems()">
+  <div class="max-w-7xl mx-auto p-4">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold">К.А.Л. Кворс Аниме Лист</h1>
       <a
         href="https://kw0rs.uno/menu"
-        class="inline-block bg-gradient-to-r from-[#ef4444] to-[#a855f7] hover:from-[#a855f7] hover:to-[#ef4444] text-white px-6 py-3 rounded-full font-semibold shadow-lg transition-all duration-200"
+        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
       >
         В меню
       </a>
     </div>
     
-    <!-- Filters -->
-    <div class="glass rounded-2xl p-6 mb-10 shadow-lg">
-      <div class="flex flex-col md:flex-row gap-4 mb-4">
+    <!-- Переработанные фильтры -->
+    <div class="grid grid-cols-1 gap-4 mb-6">
+      <div class="flex flex-wrap gap-2">
         <input 
           type="text" 
           x-model="search" 
-          placeholder="🔍 Поиск по названию..." 
-          class="p-3 rounded-xl bg-neutral-800 border border-neutral-700 flex-1 min-w-[200px] focus:ring-2 focus:ring-[#ef4444] focus:border-[#a855f7] transition"
-        />
+          placeholder="Поиск..." 
+          class="p-2 rounded bg-neutral-800 border border-neutral-700 flex-1 min-w-[200px]"/>
+          
         <select 
           x-model="categoryFilter" 
-          class="p-3 rounded-xl bg-neutral-800 border border-neutral-700 w-full md:w-56 focus:ring-2 focus:ring-[#a855f7] focus:border-[#ef4444] transition">
+          class="p-2 rounded bg-neutral-800 border border-neutral-700 w-full sm:w-auto">
           <option value="">Все категории</option>
           <option value="movie">Фильмы</option>
           <option value="show">Сериалы</option>
@@ -318,9 +182,10 @@
           <option value="book">Чтиво</option>
           <option value="cartoon">Мультики</option>
         </select>
+        
         <select 
           x-model="sortKey" 
-          class="p-3 rounded-xl bg-neutral-800 border border-neutral-700 w-full md:w-56 focus:ring-2 focus:ring-[#ef4444] focus:border-[#a855f7] transition">
+          class="p-2 rounded bg-neutral-800 border border-neutral-700 w-full sm:w-auto">
           <option value="rating-desc">Рейтинг (Высокие→Низкие)</option>
           <option value="rating-asc">Рейтинг (Низкие→Высокие)</option>
           <option value="year-desc">Год (Новее)</option>
@@ -328,8 +193,9 @@
           <option value="title">Название (A-Z)</option>
         </select>
       </div>
-      <div class="flex flex-col sm:flex-row gap-4">
-        <div class="flex items-center bg-neutral-800 border border-neutral-700 rounded-xl p-3 flex-1">
+      
+      <div class="flex flex-wrap gap-2">
+        <div class="flex items-center bg-neutral-800 border border-neutral-700 rounded p-2 flex-1">
           <span class="mr-2 text-sm text-gray-400">Рейтинг от:</span>
           <input 
             type="number" 
@@ -337,99 +203,71 @@
             placeholder="0" 
             min="0" 
             max="10" 
-            class="bg-transparent w-14 focus:outline-none text-lg"
+            class="bg-transparent w-14 focus:outline-none"
           />
         </div>
-        <div class="flex items-center bg-neutral-800 border border-neutral-700 rounded-xl p-3 flex-1">
+        
+        <div class="flex items-center bg-neutral-800 border border-neutral-700 rounded p-2 flex-1">
           <span class="mr-2 text-sm text-gray-400">Год от:</span>
           <input 
             type="number" 
             x-model.number="minYear" 
             placeholder="1900" 
-            class="bg-transparent w-20 focus:outline-none text-lg"
+            class="bg-transparent w-20 focus:outline-none"
           />
         </div>
-        <div class="flex items-center bg-neutral-800 border border-neutral-700 rounded-xl p-3 flex-1">
+        
+        <div class="flex items-center bg-neutral-800 border border-neutral-700 rounded p-2 flex-1">
           <span class="mr-2 text-sm text-gray-400">Год до:</span>
           <input 
             type="number" 
             x-model.number="maxYear" 
             placeholder="2025" 
-            class="bg-transparent w-20 focus:outline-none text-lg"
+            class="bg-transparent w-20 focus:outline-none"
           />
         </div>
+        
         <button 
           @click="pickRandomItem()" 
-          class="p-3 rounded-xl bg-gradient-to-r from-[#ef4444] to-[#a855f7] hover:from-[#a855f7] hover:to-[#ef4444] text-white font-bold shadow-lg transition-all duration-200 sm:flex-grow-0 flex-1"
-        >
-          🎲 Мне повезёт
+          class="p-2 rounded bg-red-600 hover:bg-red-700 text-white sm:flex-grow-0 flex-1">
+          Мне повезёт
         </button>
       </div>
     </div>
 
-    <!-- Loading/Error -->
-    <div x-show="loading" class="text-center py-16">
-      <svg class="mx-auto mb-4 animate-spin" width="48" height="48" fill="none" viewBox="0 0 24 24">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="#a855f7" stroke-width="4"></circle>
-        <path class="opacity-75" fill="#ef4444" d="M4 12a8 8 0 018-8v8z"></path>
-      </svg>
-      <p class="text-2xl font-semibold text-gray-300">Загрузка данных...</p>
+    <div x-show="loading" class="text-center py-10">
+      <p class="text-xl">Загрузка данных...</p>
     </div>
-    <div x-show="error" class="text-center py-16 text-red-400">
-      <p class="text-2xl font-bold mb-2" x-text="error"></p>
-      <button @click="loadItems()" class="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-purple-600 hover:to-blue-600 px-6 py-3 rounded-full font-semibold shadow-lg transition-all duration-200">Попробовать снова</button>
+    <div x-show="error" class="text-center py-10 text-red-400">
+      <p class="text-xl" x-text="error"></p>
+      <button @click="loadItems()" class="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Попробовать снова</button>
     </div>
 
-    <!-- Cards Grid -->
-    <div x-show="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+    <div x-show="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <template x-for="item in filteredAndSortedItems" :key="item.title + '-' + item.year + '-' + (item.rating ?? '')">
-        <div @click="openModal(item)" class="card-border glass rounded-2xl p-4 shadow-lg hover:shadow-2xl transition cursor-pointer group relative overflow-hidden">
+        <div @click="openModal(item)" class="bg-neutral-900 rounded-xl p-4 shadow hover:shadow-xl transition cursor-pointer">
           <template x-if="item.image">
-            <div class="relative w-full aspect-[2/3] rounded-2xl mb-4 overflow-hidden">
-              <div class="card-img lazy-placeholder"></div>
+            <div class="relative w-full aspect-[2/3] rounded mb-4 overflow-hidden">
+              <div class="card-img lazy-placeholder absolute inset-0" x-show="!item.imageLoaded"></div>
               <img 
-                class="lazy-image card-img" 
-                :src="item.image"
-                x-init="$el.addEventListener('load', () => $el.classList.add('loaded'))"
+                class="lazy-image card-img rounded" 
+                :src="item.imageLoaded ? item.image : null"
+                :data-src="!item.imageLoaded ? item.image : null" 
+                @load="(e) => { e.target.classList.add('loaded'); item.imageLoaded = true; }" 
                 @error="handleImageError($event,item)" 
-                :alt="item.title"
-                loading="lazy"
-                style="z-index:2; position:relative;"
               />
-              <div class="absolute top-2 right-2 bg-gradient-to-r from-[#ef4444] to-[#a855f7] px-3 py-1 rounded-full text-xs font-bold shadow-lg select-none">
-                <span x-text="item.typeDisplay"></span>
-              </div>
             </div>
           </template>
           <template x-if="!item.image">
-            <div class="w-full aspect-[2/3] flex items-center justify-center bg-neutral-800 text-gray-400 rounded-2xl mb-4 text-center p-2">
+            <div class="w-full aspect-[2/3] flex items-center justify-center bg-neutral-800 text-gray-400 rounded mb-4 text-center p-2">
               Картинку съели,<br>скоро принесём новую
             </div>
           </template>
-          <h2 class="text-lg font-bold mb-1 truncate-text group-hover:neon transition" x-text="item.title"></h2>
-          <p class="text-xs text-gray-400 mb-2" x-text="item.year"></p>
-          <!-- Оценка как неоновый бейдж -->
-          <span 
-            :class="getRatingBadgeClass(item)" 
-            class="rating-badge"
-            x-show="item.rating !== null"
-          >
-            <span class="star">★</span>
-            <span x-text="getRatingText(item)"></span>
-            <span>/10</span>
-          </span>
-          <span 
-            class="rating-badge rating-null"
-            x-show="item.rating === null"
-          >
-            <span class="star">★</span>
-            ?
-            <span>/10</span>
-          </span>
-          <template x-if="item.genres && item.genres.length">
-            <div class="flex flex-wrap gap-1 mb-1">
-              <span class="chip" x-for="genre in item.genres" x-text="genre"></span>
-            </div>
+          <h2 class="text-xl font-semibold mb-1 truncate-text" x-text="item.title"></h2>
+          <p class="text-sm text-gray-400 mb-2" x-text="`${item.typeDisplay} • ${item.year}`"></p>
+          <p :class="getRatingClass(item)">★ <span x-text="getRatingText(item)"></span>/10</p>
+          <template x-if="item.genres.length">
+            <p class="text-sm text-gray-400 mt-1 truncate-text" x-text="item.genres.join(', ')"></p>
           </template>
         </div>
       </template>
@@ -437,47 +275,28 @@
 
     <!-- Modal -->
     <div x-show="modalItem" class="fixed inset-0 z-50 flex items-center justify-center modal-bg" @click.self="modalItem = null">
-      <div class="modal-content p-8 w-[95%] max-w-4xl shadow-2xl fancy-scroll" @click.stop>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-          <div class="flex flex-col items-center">
+      <div class="bg-neutral-900 p-6 rounded-lg w-[90%] max-w-5xl shadow-2xl modal-content" @click.stop>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          <div class="flex justify-center">
             <template x-if="modalItem.image">
-              <img :src="modalItem.image" class="full-img rounded-2xl shadow-lg mb-4" @error="modalItem.image = null" :alt="modalItem.title"/>
+              <img :src="modalItem.image" class="full-img rounded" @error="modalItem.image = null"/>
             </template>
             <template x-if="!modalItem.image">
-              <div class="w-full h-80 flex items-center justify-center bg-neutral-800 text-gray-400 rounded-2xl text-center p-2 mb-4">
+              <div class="w-full h-80 flex items-center justify-center bg-neutral-800 text-gray-400 rounded text-center p-2">
                 Картинку съели,<br>скоро принесём новую
-              </div>
-            </template>
-            <template x-if="modalItem.genres && modalItem.genres.length">
-              <div class="flex flex-wrap gap-2 justify-center mb-2">
-                <span class="chip" x-for="genre in modalItem.genres" x-text="genre"></span>
               </div>
             </template>
           </div>
           <div>
-            <h2 class="text-3xl font-extrabold mb-2 neon" x-text="modalItem.title"></h2>
-            <p class="text-md text-gray-400 mb-1 font-semibold" x-text="`${modalItem.typeDisplay} • ${modalItem.year}`"></p>
-            <!-- Оценка как неоновый бейдж -->
-            <span 
-              :class="getRatingBadgeClass(modalItem)" 
-              class="rating-badge mb-4"
-              x-show="modalItem.rating !== null"
-            >
-              <span class="star">★</span>
-              <span x-text="getRatingText(modalItem)"></span>
-              <span>/10</span>
-            </span>
-            <span 
-              class="rating-badge rating-null mb-4"
-              x-show="modalItem.rating === null"
-            >
-              <span class="star">★</span>
-              ?
-              <span>/10</span>
-            </span>
+            <h2 class="text-2xl font-bold mb-2" x-text="modalItem.title"></h2>
+            <p class="text-sm text-gray-400 mb-1" x-text="`${modalItem.typeDisplay} • ${modalItem.year}`"></p>
+            <p :class="getRatingClass(modalItem) + ' font-bold mb-3'">★ <span x-text="getRatingText(modalItem)"></span>/10</p>
+            <template x-if="modalItem.genres.length">
+              <p class="text-sm text-gray-400 mb-3" x-text="modalItem.genres.join(', ')"></p>
+            </template>
             
             <!-- Улучшенные кнопки переключения -->
-            <div class="toggle-container mb-4" x-show="hasAnyContent">
+            <div class="toggle-container" x-show="hasAnyContent">
               <!-- Кнопка "Рецензия" -->
               <button 
                 @click="showReview = true" 
@@ -498,15 +317,15 @@
             </div>
             
             <!-- Контент (рецензия или описание) -->
-            <div class="content-section mb-4" x-show="hasAnyContent">
+            <div class="content-section" x-show="hasAnyContent">
               <!-- Рецензия -->
               <div x-show="showReview && modalItem.review">
-                <p class="text-gray-200 text-lg leading-relaxed" x-text="modalItem.review"></p>
+                <p class="text-gray-300" x-text="modalItem.review"></p>
               </div>
               
               <!-- Описание -->
               <div x-show="!showReview && modalItem.description">
-                <p class="text-gray-200 text-lg leading-relaxed" x-text="modalItem.description"></p>
+                <p class="text-gray-300" x-text="modalItem.description"></p>
               </div>
               
               <!-- Если выбран таб без контента -->
@@ -522,9 +341,7 @@
               </p>
             </div>
             
-            <button @click="modalItem = null" class="mt-4 bg-gradient-to-r from-[#23272f] to-[#ef4444] hover:from-[#ef4444] hover:to-[#a855f7] px-6 py-3 rounded-full font-bold shadow-lg transition-all duration-200">
-              Закрыть
-            </button>
+            <button @click="modalItem = null" class="mt-4 bg-neutral-700 hover:bg-neutral-600 px-4 py-2 rounded">Закрыть</button>
           </div>
         </div>
       </div>
@@ -567,34 +384,25 @@
           let allItems = [];
           try {
             for (const url of urls) {
-              try {
-                const res = await fetch(url);
-                if (!res.ok) throw new Error(`Ошибка загрузки ${url}: ${res.status}`);
-                const data = await res.json();
-                if (!Array.isArray(data)) throw new Error(`Ожидался массив в ${url}`);
-                allItems = allItems.concat(data);
-              } catch (urlError) {
-                console.error(`Проблема с загрузкой ${url}:`, urlError);
-                // Продолжаем загрузку других файлов
-              }
+              const res = await fetch(url);
+              if (!res.ok) throw new Error(`Ошибка загрузки ${url}`);
+              const data = await res.json();
+              if (!Array.isArray(data)) throw new Error(`Ожидался массив в ${url}`);
+              allItems = allItems.concat(data);
             }
-            
-            if (allItems.length === 0) {
-              throw new Error('Не удалось загрузить ни один файл данных');
-            }
-            
             this.items = allItems.map(i => {
               const r = parseFloat(i.rating);
               return {
                 title: i.title || 'Без названия',
-                type: i.type || 'unknown',
-                typeDisplay: this.getTypeDisplay(i.type) || 'Неизвестно',
+                type: i.type || 'Неизвестно',
+                typeDisplay: this.getTypeDisplay(i.type) || 'Неизвестно', // Add the display value
                 year: i.year || 'Н/Д',
                 rating: !isNaN(r) ? r : null,
                 genres: Array.isArray(i.genres) ? i.genres : [],
                 description: i.description || '',
                 review: i.review || '',
-                image: i.image || null
+                image: i.image || null,
+                imageLoaded: false // Флаг для отслеживания загрузки картинки
               };
             });
             
@@ -616,51 +424,39 @@
             this.imageObserver.disconnect();
           }
           
-          // Проверяем поддержку Intersection Observer
-          if ('IntersectionObserver' in window) {
-            // Создаем новый Intersection Observer
-            this.imageObserver = new IntersectionObserver((entries) => {
-              entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                  const img = entry.target;
-                  if (!img.classList.contains('loaded')) {
-                    img.classList.add('loaded');
-                  }
+          // Создаем новый Intersection Observer
+          this.imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const img = entry.target;
+                const src = img.getAttribute('data-src');
+                if (src) {
+                  img.setAttribute('src', src);
+                  // Отключаем наблюдение после загрузки
+                  this.imageObserver.unobserve(img);
                 }
-              });
-            }, {
-              rootMargin: '200px 0px', // Загружаем изображения за 200px до их появления в видимой области
-              threshold: 0.01 // Триггер при появлении хотя бы 1% изображения
-            });
-            
-            // Наблюдаем за всеми изображениями с классом lazy-image
-            document.querySelectorAll('.lazy-image').forEach(img => {
-              // Не наблюдать уже загруженные
-              if (!img.classList.contains('loaded')) {
-                this.imageObserver.observe(img);
               }
             });
-          } else {
-            // Fallback для браузеров без поддержки Intersection Observer
-            document.querySelectorAll('.lazy-image').forEach(img => {
-              img.classList.add('loaded');
-            });
-          }
+          }, {
+            rootMargin: '200px 0px', // Загружаем изображения за 200px до их появления в видимой области
+            threshold: 0.01 // Триггер при появлении хотя бы 1% изображения
+          });
+          
+          // Наблюдаем за всеми изображениями с атрибутом data-src
+          document.querySelectorAll('img[data-src]').forEach(img => {
+            this.imageObserver.observe(img);
+          });
         },
 
         openModal(item) { 
           this.modalItem = {...item};
           // По умолчанию показываем рецензию, если она есть, иначе показываем описание
           this.showReview = item.review ? true : false;
-          
-          // Добавляем класс для блокировки прокрутки body
-          document.body.classList.add('overflow-hidden');
         },
         
         handleImageError(e, item) { 
           item.image = null; 
-          // Удаляем src чтобы не было попыток повторной загрузки
-          if (e && e.target) e.target.src = '';
+          item.imageLoaded = false;
         },
 
         pickRandomItem() {
@@ -678,13 +474,12 @@
           return (item.rating != null) ? item.rating : '?';
         },
         
-        // Новый метод для бейджа оценки
-        getRatingBadgeClass(item) {
-          if (item.rating == null) return 'rating-badge rating-null';
-          if (item.rating >= 10) return 'rating-badge rating-10';
-          if (item.rating >= 7) return 'rating-badge rating-7';
-          if (item.rating >= 4) return 'rating-badge rating-4';
-          return 'rating-badge rating-bad';
+        getRatingClass(item) {
+          if (item.rating == null) return 'text-gray-400';
+          if (item.rating >= 10) return 'text-purple-500 [text-shadow:0_0_8px_rgba(168,85,247,0.8),0_0_16px_rgba(168,85,247,0.6)]';
+          if (item.rating >= 7) return 'text-green-400';
+          if (item.rating >= 4) return 'text-yellow-400';
+          return 'text-red-500';
         },
         
         getToggleButtonClass(type) {
