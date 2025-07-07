@@ -329,9 +329,8 @@
               <div class="card-img lazy-placeholder absolute inset-0"></div>
               <img 
                 class="lazy-image card-img" 
-                :src="item.imageLoaded ? item.image : null"
-                :data-src="!item.imageLoaded ? item.image : null" 
-                @load="(e) => { e.target.classList.add('loaded'); item.imageLoaded = true; }" 
+                :src="item.image"
+                @load="(e) => { e.target.classList.add('loaded'); }" 
                 @error="handleImageError($event,item)" 
                 :alt="item.title"
               />
@@ -499,8 +498,7 @@
                 genres: Array.isArray(i.genres) ? i.genres : [],
                 description: i.description || '',
                 review: i.review || '',
-                image: i.image || null,
-                imageLoaded: false // Флаг для отслеживания загрузки картинки
+                image: i.image || null
               };
             });
             
@@ -529,12 +527,8 @@
               entries.forEach(entry => {
                 if (entry.isIntersecting) {
                   const img = entry.target;
-                  const src = img.getAttribute('data-src');
-                  if (src) {
-                    img.setAttribute('src', src);
-                    img.removeAttribute('data-src');
-                    // Отключаем наблюдение после загрузки
-                    this.imageObserver.unobserve(img);
+                  if (!img.classList.contains('loaded')) {
+                    img.classList.add('loaded');
                   }
                 }
               });
@@ -543,19 +537,14 @@
               threshold: 0.01 // Триггер при появлении хотя бы 1% изображения
             });
             
-            // Наблюдаем за всеми изображениями с атрибутом data-src
-            document.querySelectorAll('img[data-src]').forEach(img => {
+            // Наблюдаем за всеми изображениями с классом lazy-image
+            document.querySelectorAll('.lazy-image').forEach(img => {
               this.imageObserver.observe(img);
             });
           } else {
             // Fallback для браузеров без поддержки Intersection Observer
-            document.querySelectorAll('img[data-src]').forEach(img => {
-              const src = img.getAttribute('data-src');
-              if (src) {
-                img.setAttribute('src', src);
-                img.removeAttribute('data-src');
-                img.classList.add('loaded');
-              }
+            document.querySelectorAll('.lazy-image').forEach(img => {
+              img.classList.add('loaded');
             });
           }
         },
@@ -571,7 +560,6 @@
         
         handleImageError(e, item) { 
           item.image = null; 
-          item.imageLoaded = false;
         },
 
         pickRandomItem() {
