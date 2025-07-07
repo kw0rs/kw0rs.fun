@@ -67,6 +67,8 @@
       border-radius: 1.25rem;
       box-shadow: 0 4px 24px 0 rgba(0,0,0,0.25);
       transition: transform 0.25s cubic-bezier(.4,2,.6,1), box-shadow 0.2s;
+      background: #23272f;
+      /* fallback bg for loading */
     }
     .card-img:hover {
       transform: scale(1.04) rotate(-1deg);
@@ -75,6 +77,7 @@
     .lazy-image {
       opacity: 0;
       transition: opacity 0.3s ease;
+      display: block;
     }
     .lazy-image.loaded {
       opacity: 1;
@@ -84,6 +87,10 @@
       background-size: 200% 100%;
       animation: shine 1.5s linear infinite;
       border-radius: 1.25rem;
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
     }
     @keyframes shine {
       to {
@@ -217,6 +224,35 @@
       object-fit: contain;
       border-radius: 1.25rem;
     }
+    /* Оценка - яркий бейдж */
+    .rating-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25em;
+      font-weight: 800;
+      font-size: 1.15rem;
+      padding: 0.25em 0.85em;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, #ef4444 60%, #a855f7 100%);
+      color: #fff !important;
+      box-shadow: 0 2px 8px #ef4444a0;
+      margin-bottom: 0.5rem;
+      margin-top: 0.25rem;
+      letter-spacing: 0.03em;
+      border: 2px solid #fff2;
+      text-shadow: 0 1px 8px #a855f7a0, 0 0 2px #000a;
+      user-select: none;
+    }
+    .rating-badge .star {
+      font-size: 1.2em;
+      margin-right: 0.15em;
+      filter: drop-shadow(0 0 4px #fff8);
+    }
+    .rating-badge.rating-10 { background: linear-gradient(90deg, #a855f7 0%, #ef4444 100%); }
+    .rating-badge.rating-7 { background: linear-gradient(90deg, #22d3ee 0%, #a855f7 100%); }
+    .rating-badge.rating-4 { background: linear-gradient(90deg, #facc15 0%, #ef4444 100%); color: #23272f !important; }
+    .rating-badge.rating-bad { background: linear-gradient(90deg, #ef4444 0%, #23272f 100%); }
+    .rating-badge.rating-null { background: linear-gradient(90deg, #6b7280 0%, #23272f 100%); color: #d1d5db !important; }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
@@ -326,13 +362,15 @@
         <div @click="openModal(item)" class="card-border glass rounded-2xl p-4 shadow-lg hover:shadow-2xl transition cursor-pointer group relative overflow-hidden">
           <template x-if="item.image">
             <div class="relative w-full aspect-[2/3] rounded-2xl mb-4 overflow-hidden">
-              <div class="card-img lazy-placeholder absolute inset-0"></div>
+              <div class="card-img lazy-placeholder"></div>
               <img 
                 class="lazy-image card-img" 
                 :src="item.image"
-                @load="(e) => { e.target.classList.add('loaded'); }" 
+                x-init="$el.addEventListener('load', () => $el.classList.add('loaded'))"
                 @error="handleImageError($event,item)" 
                 :alt="item.title"
+                loading="lazy"
+                style="z-index:2; position:relative;"
               />
               <div class="absolute top-2 right-2 bg-gradient-to-r from-[#ef4444] to-[#a855f7] px-3 py-1 rounded-full text-xs font-bold shadow-lg select-none">
                 <span x-text="item.typeDisplay"></span>
@@ -346,7 +384,24 @@
           </template>
           <h2 class="text-lg font-bold mb-1 truncate-text group-hover:neon transition" x-text="item.title"></h2>
           <p class="text-xs text-gray-400 mb-2" x-text="item.year"></p>
-          <p :class="getRatingClass(item) + ' font-bold text-lg mb-2 neon'">★ <span x-text="getRatingText(item)"></span>/10</p>
+          <!-- Оценка как яркий бейдж -->
+          <span 
+            :class="getRatingBadgeClass(item)" 
+            class="rating-badge"
+            x-show="item.rating !== null"
+          >
+            <span class="star">★</span>
+            <span x-text="getRatingText(item)"></span>
+            <span>/10</span>
+          </span>
+          <span 
+            class="rating-badge rating-null"
+            x-show="item.rating === null"
+          >
+            <span class="star">★</span>
+            ?
+            <span>/10</span>
+          </span>
           <template x-if="item.genres && item.genres.length">
             <div class="flex flex-wrap gap-1 mb-1">
               <span class="chip" x-for="genre in item.genres" x-text="genre"></span>
@@ -378,7 +433,24 @@
           <div>
             <h2 class="text-3xl font-extrabold mb-2 neon" x-text="modalItem.title"></h2>
             <p class="text-md text-gray-400 mb-1 font-semibold" x-text="`${modalItem.typeDisplay} • ${modalItem.year}`"></p>
-            <p :class="getRatingClass(modalItem) + ' font-bold text-2xl mb-4 neon'">★ <span x-text="getRatingText(modalItem)"></span>/10</p>
+            <!-- Оценка как яркий бейдж -->
+            <span 
+              :class="getRatingBadgeClass(modalItem)" 
+              class="rating-badge mb-4"
+              x-show="modalItem.rating !== null"
+            >
+              <span class="star">★</span>
+              <span x-text="getRatingText(modalItem)"></span>
+              <span>/10</span>
+            </span>
+            <span 
+              class="rating-badge rating-null mb-4"
+              x-show="modalItem.rating === null"
+            >
+              <span class="star">★</span>
+              ?
+              <span>/10</span>
+            </span>
             
             <!-- Улучшенные кнопки переключения -->
             <div class="toggle-container mb-4" x-show="hasAnyContent">
@@ -539,7 +611,10 @@
             
             // Наблюдаем за всеми изображениями с классом lazy-image
             document.querySelectorAll('.lazy-image').forEach(img => {
-              this.imageObserver.observe(img);
+              // Не наблюдать уже загруженные
+              if (!img.classList.contains('loaded')) {
+                this.imageObserver.observe(img);
+              }
             });
           } else {
             // Fallback для браузеров без поддержки Intersection Observer
@@ -560,6 +635,8 @@
         
         handleImageError(e, item) { 
           item.image = null; 
+          // Удаляем src чтобы не было попыток повторной загрузки
+          if (e && e.target) e.target.src = '';
         },
 
         pickRandomItem() {
@@ -577,12 +654,13 @@
           return (item.rating != null) ? item.rating : '?';
         },
         
-        getRatingClass(item) {
-          if (item.rating == null) return 'text-gray-400';
-          if (item.rating >= 10) return 'text-purple-500 neon-purple';
-          if (item.rating >= 7) return 'text-cyan-400 neon-green';
-          if (item.rating >= 4) return 'text-yellow-400';
-          return 'text-red-500 neon';
+        // Новый метод для бейджа оценки
+        getRatingBadgeClass(item) {
+          if (item.rating == null) return 'rating-badge rating-null';
+          if (item.rating >= 10) return 'rating-badge rating-10';
+          if (item.rating >= 7) return 'rating-badge rating-7';
+          if (item.rating >= 4) return 'rating-badge rating-4';
+          return 'rating-badge rating-bad';
         },
         
         getToggleButtonClass(type) {
