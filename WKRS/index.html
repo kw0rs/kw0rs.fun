@@ -211,6 +211,12 @@
       opacity: 1;
       filter: blur(8px);
     }
+    .full-img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 1.25rem;
+    }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
@@ -327,6 +333,7 @@
                 :data-src="!item.imageLoaded ? item.image : null" 
                 @load="(e) => { e.target.classList.add('loaded'); item.imageLoaded = true; }" 
                 @error="handleImageError($event,item)" 
+                :alt="item.title"
               />
               <div class="absolute top-2 right-2 bg-gradient-to-r from-[#ef4444] to-[#a855f7] px-3 py-1 rounded-full text-xs font-bold shadow-lg select-none">
                 <span x-text="item.typeDisplay"></span>
@@ -341,7 +348,7 @@
           <h2 class="text-lg font-bold mb-1 truncate-text group-hover:neon transition" x-text="item.title"></h2>
           <p class="text-xs text-gray-400 mb-2" x-text="item.year"></p>
           <p :class="getRatingClass(item) + ' font-bold text-lg mb-2 neon'">★ <span x-text="getRatingText(item)"></span>/10</p>
-          <template x-if="item.genres.length">
+          <template x-if="item.genres && item.genres.length">
             <div class="flex flex-wrap gap-1 mb-1">
               <span class="chip" x-for="genre in item.genres" x-text="genre"></span>
             </div>
@@ -356,14 +363,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           <div class="flex flex-col items-center">
             <template x-if="modalItem.image">
-              <img :src="modalItem.image" class="full-img rounded-2xl shadow-lg mb-4" @error="modalItem.image = null"/>
+              <img :src="modalItem.image" class="full-img rounded-2xl shadow-lg mb-4" @error="modalItem.image = null" :alt="modalItem.title"/>
             </template>
             <template x-if="!modalItem.image">
               <div class="w-full h-80 flex items-center justify-center bg-neutral-800 text-gray-400 rounded-2xl text-center p-2 mb-4">
                 Картинку съели,<br>скоро принесём новую
               </div>
             </template>
-            <template x-if="modalItem.genres.length">
+            <template x-if="modalItem.genres && modalItem.genres.length">
               <div class="flex flex-wrap gap-2 justify-center mb-2">
                 <span class="chip" x-for="genre in modalItem.genres" x-text="genre"></span>
               </div>
@@ -465,18 +472,28 @@
           let allItems = [];
           try {
             for (const url of urls) {
-              const res = await fetch(url);
-              if (!res.ok) throw new Error(`Ошибка загрузки ${url}`);
-              const data = await res.json();
-              if (!Array.isArray(data)) throw new Error(`Ожидался массив в ${url}`);
-              allItems = allItems.concat(data);
+              try {
+                const res = await fetch(url);
+                if (!res.ok) throw new Error(`Ошибка загрузки ${url}: ${res.status}`);
+                const data = await res.json();
+                if (!Array.isArray(data)) throw new Error(`Ожидался массив в ${url}`);
+                allItems = allItems.concat(data);
+              } catch (urlError) {
+                console.error(`Проблема с загрузкой ${url}:`, urlError);
+                // Продолжаем загрузку других файлов
+              }
             }
+            
+            if (allItems.length === 0) {
+              throw new Error('Не удалось загрузить ни один файл данных');
+            }
+            
             this.items = allItems.map(i => {
               const r = parseFloat(i.rating);
               return {
                 title: i.title || 'Без названия',
-                type: i.type || 'Неизвестно',
-                typeDisplay: this.getTypeDisplay(i.type) || 'Неизвестно', // Add the display value
+                type: i.type || 'unknown',
+                typeDisplay: this.getTypeDisplay(i.type) || 'Неизвестно',
                 year: i.year || 'Н/Д',
                 rating: !isNaN(r) ? r : null,
                 genres: Array.isArray(i.genres) ? i.genres : [],
@@ -505,34 +522,51 @@
             this.imageObserver.disconnect();
           }
           
-          // Создаем новый Intersection Observer
-          this.imageObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                const img = entry.target;
-                const src = img.getAttribute('data-src');
-                if (src) {
-                  img.setAttribute('src', src);
-                  // Отключаем наблюдение после загрузки
-                  this.imageObserver.unobserve(img);
+          // Проверяем поддержку Intersection Observer
+          if ('IntersectionObserver' in window) {
+            // Создаем новый Intersection Observer
+            this.imageObserver = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  const img = entry.target;
+                  const src = img.getAttribute('data-src');
+                  if (src) {
+                    img.setAttribute('src', src);
+                    img.removeAttribute('data-src');
+                    // Отключаем наблюдение после загрузки
+                    this.imageObserver.unobserve(img);
+                  }
                 }
+              });
+            }, {
+              rootMargin: '200px 0px', // Загружаем изображения за 200px до их появления в видимой области
+              threshold: 0.01 // Триггер при появлении хотя бы 1% изображения
+            });
+            
+            // Наблюдаем за всеми изображениями с атрибутом data-src
+            document.querySelectorAll('img[data-src]').forEach(img => {
+              this.imageObserver.observe(img);
+            });
+          } else {
+            // Fallback для браузеров без поддержки Intersection Observer
+            document.querySelectorAll('img[data-src]').forEach(img => {
+              const src = img.getAttribute('data-src');
+              if (src) {
+                img.setAttribute('src', src);
+                img.removeAttribute('data-src');
+                img.classList.add('loaded');
               }
             });
-          }, {
-            rootMargin: '200px 0px', // Загружаем изображения за 200px до их появления в видимой области
-            threshold: 0.01 // Триггер при появлении хотя бы 1% изображения
-          });
-          
-          // Наблюдаем за всеми изображениями с атрибутом data-src
-          document.querySelectorAll('img[data-src]').forEach(img => {
-            this.imageObserver.observe(img);
-          });
+          }
         },
 
         openModal(item) { 
           this.modalItem = {...item};
           // По умолчанию показываем рецензию, если она есть, иначе показываем описание
           this.showReview = item.review ? true : false;
+          
+          // Добавляем класс для блокировки прокрутки body
+          document.body.classList.add('overflow-hidden');
         },
         
         handleImageError(e, item) { 
