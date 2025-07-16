@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Академия Кворса | Оценки</title>
+  <title>Академия Кворса | Медиа-Хаб</title>
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Академия имени Вильяма Кворса" />
-  <meta property="og:description" content="Блин, а прикольный сайтик так-то." />
+  <meta property="og:title" content="Академия Кворса: Медиа-Хаб" />
+  <meta property="og:description" content="Футуристичный каталог медиа: аниме, фильмы, игры и книги." />
   <meta property="og:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg" />
   <meta property="og:url" content="https://kw0rs.uno" />
   <meta property="og:type" content="website" />
@@ -16,8 +15,8 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Академия имени Вильяма Кворса" />
-  <meta name="twitter:description" content="Блин, а прикольный сайтик так-то." />
+  <meta name="twitter:title" content="Академия Кворса: Медиа-Хаб" />
+  <meta name="twitter:description" content="Футуристичный каталог медиа: аниме, фильмы, игры и книги." />
   <meta name="twitter:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg" />
 
   <!-- Favicon -->
@@ -27,15 +26,18 @@
   <link rel="manifest" href="/icon/site.webmanifest" />
   <link rel="shortcut icon" href="/icon/favicon.ico" />
 
-  <!-- Preconnect для улучшения производительности -->
-  <link rel="preconnect" href="https://cdn.tailwindcss.com">
-  <link rel="preconnect" href="https://unpkg.com">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" />
+
+  <!-- Preload critical resources -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" as="style" />
+  <link rel="preload" href="anime_data.json" as="fetch" crossorigin="anonymous" />
 
   <!-- Tailwind & Alpine.js -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-  <!-- Перегонка www → без www -->
+  <!-- Redirect www to non-www -->
   <script>
     if (location.hostname === 'www.kw0rs.uno') {
       window.location.href = 'https://kw0rs.uno' + location.pathname;
@@ -43,1071 +45,471 @@
   </script>
 
   <style>
-    /* Футуристические CSS Custom Properties для дизайна 2039 года */
     :root {
-      /* Основные цвета */
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #0f0f1a;
-      --bg-card: #1a1a2e;
-      --bg-modal: rgba(10, 10, 15, 0.95);
-      
-      /* Неоновые цвета */
-      --neon-cyan: #00ffff;
-      --neon-purple: #8b5cf6;
-      --neon-pink: #ff00ff;
-      --neon-green: #00ff88;
-      --neon-orange: #ff6b35;
-      
-      /* Текстовые цвета */
-      --text-primary: #ffffff;
-      --text-secondary: #b4b4c7;
-      --text-muted: #6b7280;
-      --text-glow: #e0e7ff;
-      
-      /* Акцентные цвета */
-      --accent-primary: var(--neon-cyan);
-      --accent-secondary: var(--neon-purple);
-      --accent-danger: var(--neon-pink);
-      --accent-success: var(--neon-green);
-      --accent-warning: var(--neon-orange);
-      
-      /* Градиенты */
-      --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      --gradient-neon: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
-      --gradient-holographic: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5, #ffbe0b);
-      --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-      
-      /* Тени и свечения */
-      --glow-sm: 0 0 5px currentColor;
-      --glow-md: 0 0 10px currentColor, 0 0 20px currentColor;
-      --glow-lg: 0 0 15px currentColor, 0 0 30px currentColor, 0 0 45px currentColor;
-      --glow-xl: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor, 0 0 80px currentColor;
-      
-      /* Анимации */
-      --transition-ultra-fast: 0.1s cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-bounce: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      
-      /* Размеры и отступы */
-      --border-radius-sm: 8px;
-      --border-radius-md: 12px;
-      --border-radius-lg: 16px;
-      --border-radius-xl: 24px;
-      
-      /* Стеклянный морфизм */
-      --glass-bg: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --glass-blur: blur(20px);
+      --primary: #3b82f6;
+      --secondary: #8b5cf6;
+      --bg-dark: #0f172a;
+      --bg-card: #1e293b;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
     }
-
-    /* Базовые стили */
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      background: var(--bg-primary);
-      background-image: 
-        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, var(--bg-dark), #172554);
       color: var(--text-primary);
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      line-height: 1.6;
-      scroll-behavior: smooth;
       overflow-x: hidden;
     }
-
-    /* Анимированный фон */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
+    h1, h2 {
+      font-weight: 900;
+      letter-spacing: -0.025em;
+    }
+    .modal-bg {
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+    }
+    .modal-content {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 1rem;
+      animation: slideIn 0.4s ease-out;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .full-img {
       width: 100%;
-      height: 100%;
-      background: 
-        linear-gradient(45deg, transparent 30%, rgba(0, 255, 255, 0.03) 50%, transparent 70%),
-        linear-gradient(-45deg, transparent 30%, rgba(139, 92, 246, 0.03) 50%, transparent 70%);
-      background-size: 200% 200%;
-      animation: backgroundShift 20s ease-in-out infinite;
-      pointer-events: none;
-      z-index: -1;
+      height: auto;
+      object-fit: contain;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     }
-
-    @keyframes backgroundShift {
-      0%, 100% { background-position: 0% 0%; }
-      50% { background-position: 100% 100%; }
-    }
-
-    /* Стеклянный морфизм */
-    .glass {
-      background: var(--glass-bg);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      border: 1px solid var(--glass-border);
-    }
-
-    .glass-strong {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-
-    /* Неоновые эффекты */
-    .neon-text {
-      text-shadow: var(--glow-md);
-      animation: textGlow 2s ease-in-out infinite alternate;
-    }
-
-    @keyframes textGlow {
-      from { text-shadow: var(--glow-md); }
-      to { text-shadow: var(--glow-lg); }
-    }
-
-    .neon-border {
-      border: 2px solid currentColor;
-      box-shadow: var(--glow-md), inset var(--glow-sm);
-    }
-
-    .neon-glow {
-      box-shadow: var(--glow-lg);
-    }
-
-    /* Голографические эффекты */
-    .holographic {
-      background: var(--gradient-holographic);
-      background-size: 300% 300%;
-      animation: holographicShift 3s ease-in-out infinite;
-    }
-
-    @keyframes holographicShift {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    .holographic-text {
-      background: var(--gradient-holographic);
-      background-size: 300% 300%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: holographicShift 3s ease-in-out infinite;
-    }
-
-    /* Футуристические карточки */
-    .futuristic-card {
-      background: var(--glass-bg);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--border-radius-lg);
-      padding: 1.5rem;
-      position: relative;
-      overflow: hidden;
-      transition: all var(--transition-normal);
-      cursor: pointer;
-    }
-
-    .futuristic-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
+    .card-img {
       width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
-      transition: left var(--transition-slow);
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 0.75rem;
+      transition: transform 0.3s ease, filter 0.3s ease;
     }
-
-    .futuristic-card::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: var(--gradient-neon);
-      opacity: 0;
-      transition: opacity var(--transition-normal);
-      pointer-events: none;
-      mix-blend-mode: overlay;
-    }
-
-    .futuristic-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      border-color: var(--neon-cyan);
-      box-shadow: 
-        0 20px 40px rgba(0, 255, 255, 0.2),
-        0 0 20px rgba(0, 255, 255, 0.3),
-        inset 0 0 20px rgba(0, 255, 255, 0.1);
-    }
-
-    .futuristic-card:hover::before {
-      left: 100%;
-    }
-
-    .futuristic-card:hover::after {
-      opacity: 0.05;
-    }
-
-    .futuristic-card:focus-visible {
-      outline: 2px solid var(--neon-cyan);
-      outline-offset: 4px;
-      box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
-    }
-
-    /* Футуристические кнопки */
-    .futuristic-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.75rem 1.5rem;
-      border-radius: var(--border-radius-md);
-      font-weight: 600;
-      text-decoration: none;
-      transition: all var(--transition-fast);
-      border: 2px solid transparent;
-      cursor: pointer;
-      font-size: 0.875rem;
-      position: relative;
-      overflow: hidden;
-      background: var(--glass-bg);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-    }
-
-    .futuristic-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left var(--transition-normal);
-    }
-
-    .futuristic-btn:hover::before {
-      left: 100%;
-    }
-
-    .futuristic-btn-primary {
-      border-color: var(--neon-cyan);
-      color: var(--neon-cyan);
-      text-shadow: var(--glow-sm);
-    }
-
-    .futuristic-btn-primary:hover {
-      background: rgba(0, 255, 255, 0.1);
-      box-shadow: var(--glow-md);
-      transform: translateY(-2px);
-    }
-
-    .futuristic-btn-secondary {
-      border-color: var(--neon-purple);
-      color: var(--neon-purple);
-      text-shadow: var(--glow-sm);
-    }
-
-    .futuristic-btn-secondary:hover {
-      background: rgba(139, 92, 246, 0.1);
-      box-shadow: var(--glow-md);
-      transform: translateY(-2px);
-    }
-
-    /* Футуристические формы */
-    .futuristic-input {
-      width: 100%;
+    .card {
+      background: var(--bg-card);
+      border-radius: 1rem;
       padding: 1rem;
-      border-radius: var(--border-radius-md);
-      background: var(--glass-bg);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      border: 1px solid var(--glass-border);
-      color: var(--text-primary);
-      transition: all var(--transition-fast);
-      font-size: 0.875rem;
-    }
-
-    .futuristic-input:focus {
-      outline: none;
-      border-color: var(--neon-cyan);
-      box-shadow: 
-        0 0 20px rgba(0, 255, 255, 0.3),
-        inset 0 0 10px rgba(0, 255, 255, 0.1);
-      background: rgba(0, 255, 255, 0.05);
-    }
-
-    .futuristic-input::placeholder {
-      color: var(--text-muted);
-    }
-
-    /* Модальное окно */
-    .futuristic-modal {
-      background: var(--bg-modal);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-
-    .futuristic-modal-content {
-      background: var(--glass-strong);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--border-radius-xl);
-      box-shadow: 
-        0 25px 50px rgba(0, 0, 0, 0.5),
-        0 0 50px rgba(0, 255, 255, 0.1);
-    }
-
-    /* Изображения */
-    .futuristic-img {
-      border-radius: var(--border-radius-lg);
-      transition: all var(--transition-normal);
       position: relative;
-      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
     }
-
-    .futuristic-img::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(45deg, transparent 30%, rgba(0, 255, 255, 0.1) 50%, transparent 70%);
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+    }
+    .card:hover .card-img {
+      transform: scale(1.05);
+      filter: brightness(1.1);
+    }
+    .lazy-image {
       opacity: 0;
-      transition: opacity var(--transition-normal);
-      pointer-events: none;
+      transition: opacity 0.5s ease;
     }
-
-    .futuristic-img:hover::after {
+    .lazy-image.loaded {
       opacity: 1;
     }
-
-    .futuristic-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform var(--transition-normal);
-    }
-
-    .futuristic-img:hover img {
-      transform: scale(1.05);
-    }
-
-    /* Lazy loading с футуристическим эффектом */
-    .futuristic-placeholder {
-      background: linear-gradient(
-        110deg,
-        rgba(0, 255, 255, 0.1) 8%,
-        rgba(139, 92, 246, 0.1) 18%,
-        rgba(0, 255, 255, 0.1) 33%
-      );
+    .lazy-placeholder {
+      background: linear-gradient(110deg, var(--bg-card) 8%, #2d3a4b 18%, var(--bg-card) 33%);
       background-size: 200% 100%;
-      animation: futuristicShine 2s linear infinite;
+      animation: shine 1.5s linear infinite;
+      position: absolute;
+      inset: 0;
+      border-radius: 0.75rem;
     }
-
-    @keyframes futuristicShine {
-      to {
-        background-position-x: -200%;
+    @keyframes shine {
+      to { background-position-x: -200%; }
+    }
+    .spinner {
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 0.8s ease-in-out infinite;
+      margin: auto;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .truncate-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .filter-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.75rem;
+      padding: 1rem;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(6px);
+      border-radius: 0.75rem;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      margin-bottom: 1.5rem;
+    }
+    .filter-item input, .filter-item select, .filter-item button {
+      transition: all 0.3s ease;
+      border-radius: 0.5rem;
+      background: var(--bg-card);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    .filter-item input:focus, .filter-item select:focus, .filter-item button:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+    }
+    @media (max-width: 640px) {
+      .modal-content {
+        width: 95%;
       }
     }
-
-    .futuristic-lazy-image {
-      opacity: 0;
-      transition: opacity var(--transition-slow);
-    }
-
-    .futuristic-lazy-image.loaded {
-      opacity: 1;
-    }
-
-    /* Рейтинги с неоновыми эффектами */
-    .rating-perfect {
-      color: var(--neon-purple);
-      text-shadow: var(--glow-lg);
-      font-weight: 700;
-    }
-
-    .rating-good {
-      color: var(--neon-green);
-      text-shadow: var(--glow-md);
-      font-weight: 600;
-    }
-
-    .rating-average {
-      color: var(--neon-orange);
-      text-shadow: var(--glow-md);
-      font-weight: 500;
-    }
-
-    .rating-poor {
-      color: var(--neon-pink);
-      text-shadow: var(--glow-md);
-      font-weight: 500;
-    }
-
-    .rating-unknown {
-      color: var(--text-muted);
-      font-weight: 400;
-    }
-
-    /* Переключатели */
-    .futuristic-toggle-container {
+    .toggle-container {
       display: flex;
-      border-radius: var(--border-radius-md);
+      border-radius: 0.5rem;
       overflow: hidden;
-      background: var(--glass-bg);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      border: 1px solid var(--glass-border);
-      width: fit-content;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      background: rgba(15, 23, 42, 0.5);
     }
-
-    .futuristic-toggle-btn {
-      transition: all var(--transition-fast);
+    .toggle-btn {
+      transition: all 0.3s ease;
       padding: 0.75rem 1.5rem;
       font-weight: 500;
       position: relative;
-      border: none;
-      cursor: pointer;
-      font-size: 0.875rem;
+    }
+    .toggle-btn-active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+    }
+    .toggle-btn-active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: white;
+    }
+    .toggle-btn-inactive {
       background: transparent;
       color: var(--text-secondary);
     }
-
-    .futuristic-toggle-btn-active {
-      background: rgba(0, 255, 255, 0.1);
-      color: var(--neon-cyan);
-      text-shadow: var(--glow-sm);
-      box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.2);
+    .toggle-btn-inactive:hover:not(:disabled) {
+      background: rgba(59, 130, 246, 0.1);
     }
-
-    .futuristic-toggle-btn-inactive:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text-primary);
-    }
-
-    .futuristic-toggle-btn-disabled {
-      color: var(--text-muted);
+    .toggle-btn-disabled {
+      background: rgba(15, 23, 42, 0.3);
+      color: #9ca3af;
       cursor: not-allowed;
-      opacity: 0.5;
+      opacity: 0.6;
       text-decoration: line-through;
     }
-
-    /* Контентные секции */
-    .futuristic-content-section {
-      min-height: 120px;
-      padding: 1.5rem;
-      border-radius: var(--border-radius-lg);
-      background: var(--glass-bg);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      border: 1px solid var(--glass-border);
+    .content-section {
+      padding: 1rem;
+      border-radius: 0.5rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(59, 130, 246, 0.2);
       margin-bottom: 1rem;
     }
-
-    /* Загрузочный спиннер */
-    .futuristic-spinner {
-      width: 3rem;
-      height: 3rem;
-      border: 3px solid transparent;
-      border-top: 3px solid var(--neon-cyan);
-      border-radius: 50%;
-      animation: futuristicSpin 1s linear infinite;
+    .filters-collapse {
+      transition: max-height 0.3s ease;
+      overflow: hidden;
+    }
+    .action-button {
       position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
     }
-
-    .futuristic-spinner::before {
-      content: '';
-      position: absolute;
-      top: -3px;
-      left: -3px;
-      right: -3px;
-      bottom: -3px;
-      border: 3px solid transparent;
-      border-bottom: 3px solid var(--neon-purple);
-      border-radius: 50%;
-      animation: futuristicSpin 1.5s linear infinite reverse;
+    .action-button:hover {
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+      transform: translateY(-2px);
     }
-
-    @keyframes futuristicSpin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    .favorite-btn {
+      transition: all 0.3s ease;
     }
-
-    /* Уведомления */
-    .futuristic-notification {
-      position: fixed;
-      top: 2rem;
-      right: 2rem;
-      background: var(--glass-strong);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--border-radius-lg);
-      padding: 1.5rem;
-      box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.3),
-        0 0 30px rgba(0, 255, 255, 0.2);
-      z-index: 1000;
-      max-width: 350px;
-      animation: futuristicSlideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    }
-
-    @keyframes futuristicSlideIn {
-      from {
-        transform: translateX(100%) scale(0.8);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0) scale(1);
-        opacity: 1;
-      }
-    }
-
-    .futuristic-notification-error {
-      border-color: var(--neon-pink);
-      box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.3),
-        0 0 30px rgba(255, 0, 255, 0.3);
-    }
-
-    .futuristic-notification-success {
-      border-color: var(--neon-green);
-      box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.3),
-        0 0 30px rgba(0, 255, 136, 0.3);
-    }
-
-    /* Скроллбар */
-    ::-webkit-scrollbar {
-      width: 12px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: var(--bg-secondary);
-      border-radius: 6px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
-      border-radius: 6px;
-      border: 2px solid var(--bg-secondary);
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
-    }
-
-    /* Адаптивные стили */
-    @media (max-width: 768px) {
-      .futuristic-modal-content {
-        margin: 1rem;
-        max-height: 90vh;
-        overflow-y: auto;
-      }
-
-      .futuristic-card {
-        padding: 1rem;
-      }
-
-      .futuristic-toggle-btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
-      }
-
-      .futuristic-notification {
-        top: 1rem;
-        right: 1rem;
-        left: 1rem;
-        max-width: none;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .futuristic-btn {
-        width: 100%;
-      }
-    }
-
-    /* Анимации появления */
-    .futuristic-fade-in {
-      animation: futuristicFadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    @keyframes futuristicFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    /* Фокус для доступности */
-    .futuristic-focus:focus-visible {
-      outline: 2px solid var(--neon-cyan);
-      outline-offset: 4px;
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-    }
-
-    /* Производительность */
-    .gpu-optimized {
-      transform: translateZ(0);
-      will-change: transform;
-    }
-
-    /* Заголовки с голографическим эффектом */
-    .futuristic-title {
-      background: var(--gradient-holographic);
-      background-size: 300% 300%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: holographicShift 4s ease-in-out infinite;
-      font-weight: 800;
-      text-shadow: none;
-    }
-
-    /* Дополнительные эффекты для карточек */
-    .futuristic-card-glow {
-      position: relative;
-    }
-
-    .futuristic-card-glow::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      background: var(--gradient-neon);
-      border-radius: var(--border-radius-lg);
-      opacity: 0;
-      transition: opacity var(--transition-normal);
-      z-index: -1;
-      animation: borderGlow 3s ease-in-out infinite;
-    }
-
-    .futuristic-card:hover .futuristic-card-glow::before {
-      opacity: 0.3;
-    }
-
-    @keyframes borderGlow {
-      0%, 100% { opacity: 0.1; }
-      50% { opacity: 0.3; }
+    .favorite-btn.favorited {
+      color: var(--secondary);
+      filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.5));
     }
   </style>
 </head>
-
-<body class="text-white font-sans" x-data="mediaApp()" x-init="loadItems()">
-  <!-- Основной контейнер -->
-  <div class="max-w-7xl mx-auto p-6">
-    <!-- Заголовок -->
-    <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-6">
-      <div>
-        <h1 class="text-5xl font-bold mb-4 futuristic-title neon-text">К.А.Л. Кворс Аниме Лист</h1>
-        <p class="text-lg text-cyan-300 neon-text">Коллекция медиа-контента с рейтингами и рецензиями</p>
-        <div class="mt-2 h-1 w-32 holographic rounded-full"></div>
-      </div>
-      <a
-        href="https://kw0rs.uno/"
-        class="futuristic-btn futuristic-btn-primary futuristic-focus"
-        aria-label="Перейти в главное меню"
-      >
-        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-        </svg>
+<body class="text-white font-sans" x-data="mediaApp()" x-init="init()">
+  <div class="max-w-7xl mx-auto p-4">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-4xl font-bold tracking-tight text-white">Кворс Медиа-Хаб</h1>
+      <a href="https://kw0rs.uno/" class="bg-[var(--primary)] hover:bg-[var(--secondary)] text-white px-5 py-2.5 rounded-lg action-button">
         В меню
       </a>
-    </header>
-    
-    <!-- Улучшенные фильтры -->
-    <section class="mb-12 glass-strong rounded-2xl p-6" aria-label="Фильтры и поиск">
-      <div class="grid grid-cols-1 gap-6">
-        <!-- Первая строка: поиск и основные фильтры -->
-        <div class="flex flex-wrap gap-4">
-          <div class="flex-1 min-w-[250px]">
-            <label for="search-input" class="sr-only">Поиск по названию</label>
-            <input 
-              id="search-input"
-              type="text" 
-              x-model="search" 
-              placeholder="🔍 Поиск по названию..." 
-              class="futuristic-input"
-              autocomplete="off"
-              aria-describedby="search-help"
-            />
-            <div id="search-help" class="sr-only">Введите название для поиска медиа-контента</div>
-          </div>
-          
-          <div class="w-full sm:w-auto min-w-[180px]">
-            <label for="category-filter" class="sr-only">Фильтр по категории</label>
-            <select 
-              id="category-filter"
-              x-model="categoryFilter" 
-              class="futuristic-input"
-              aria-describedby="category-help"
+    </div>
+
+    <!-- Фильтры -->
+    <div class="mb-6">
+      <button 
+        @click="filtersOpen = !filtersOpen" 
+        class="sm:hidden mb-4 bg-[var(--bg-card)] px-4 py-2 rounded-lg w-full flex justify-between items-center action-button"
+        aria-expanded="filtersOpen"
+        aria-controls="filters"
+      >
+        <span>Фильтры</span>
+        <span x-text="filtersOpen ? 'Свернуть' : 'Развернуть'"></span>
+      </button>
+      <div 
+        id="filters"
+        class="filters-collapse" 
+        x-bind:style="filtersOpen || window.innerWidth >= 640 ? 'max-height: 1000px' : 'max-height: 0px'"
+      >
+        <div class="filter-controls">
+          <input 
+            type="text" 
+            x-model="search" 
+            placeholder="Поиск..." 
+            class="p-2.5 filter-item text-white placeholder-gray-400"
+            aria-label="Поиск по названию"
+            @input="suggestTitles"
+            x-ref="searchInput"
+          />
+          <div class="relative">
+            <div 
+              x-show="suggestions.length > 0" 
+              class="absolute z-10 w-full bg-[var(--bg-card)] border border-[var(--primary)]/30 rounded-lg mt-1 max-h-48 overflow-y-auto"
             >
-              <option value="">🎭 Все категории</option>
-              <option value="movie">🎬 Фильмы</option>
-              <option value="show">📺 Сериалы</option>
-              <option value="anime">🎌 Аниме</option>
-              <option value="game">🎮 Игры</option>
-              <option value="book">📚 Чтиво</option>
-              <option value="cartoon">🎨 Мультики</option>
-            </select>
-            <div id="category-help" class="sr-only">Выберите категорию для фильтрации</div>
+              <template x-for="suggestion in suggestions" :key="suggestion">
+                <div 
+                  class="p-2 hover:bg-[var(--primary)]/20 cursor-pointer" 
+                  @click="search = suggestion; suggestions = []"
+                  x-text="suggestion"
+                ></div>
+              </template>
+            </div>
           </div>
-          
-          <div class="w-full sm:w-auto min-w-[200px]">
-            <label for="sort-select" class="sr-only">Сортировка</label>
-            <select 
-              id="sort-select"
-              x-model="sortKey" 
-              class="futuristic-input"
-              aria-describedby="sort-help"
-            >
-              <option value="rating-desc">⭐ Рейтинг (Высокие→Низкие)</option>
-              <option value="rating-asc">⭐ Рейтинг (Низкие→Высокие)</option>
-              <option value="year-desc">📅 Год (Новее)</option>
-              <option value="year-asc">📅 Год (Старее)</option>
-              <option value="title">🔤 Название (A-Z)</option>
-            </select>
-            <div id="sort-help" class="sr-only">Выберите способ сортировки результатов</div>
-          </div>
-        </div>
-        
-        <!-- Вторая строка: дополнительные фильтры -->
-        <div class="flex flex-wrap gap-4">
-          <div class="flex items-center futuristic-input flex-1 min-w-[140px]">
-            <label for="min-rating" class="mr-3 text-sm text-cyan-300 whitespace-nowrap">⭐ Рейтинг от:</label>
+          <select 
+            x-model="categoryFilter" 
+            class="p-2.5 filter-item text-white"
+            aria-label="Фильтр по категории"
+          >
+            <option value="">Все категории</option>
+            <option value="movie">Фильмы</option>
+            <option value="show">Сериалы</option>
+            <option value="anime">Аниме</option>
+            <option value="game">Игры</option>
+            <option value="book">Чтиво</option>
+            <option value="cartoon">Мультики</option>
+          </select>
+          <select 
+            x-model="sortKey" 
+            class="p-2.5 filter-item text-white"
+            aria-label="Сортировка"
+          >
+            <option value="rating-desc">Рейтинг (Высокие→Низкие)</option>
+            <option value="rating-asc">Рейтинг (Низкие→Высокие)</option>
+            <option value="year-desc">Год (Новее)</option>
+            <option value="year-asc">Год (Старее)</option>
+            <option value="title">Название (A-Z)</option>
+          </select>
+          <div class="flex items-center p-2.5 filter-item">
+            <span class="mr-2 text-sm text-[var(--text-secondary)]">Рейтинг от:</span>
             <input 
-              id="min-rating"
               type="number" 
               x-model.number="minRating" 
               placeholder="0" 
               min="0" 
               max="10" 
-              step="0.1"
-              class="bg-transparent w-20 focus:outline-none text-cyan-300"
-              aria-describedby="min-rating-help"
+              class="bg-transparent w-14 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-white"
+              aria-label="Минимальный рейтинг"
             />
-            <div id="min-rating-help" class="sr-only">Минимальный рейтинг для фильтрации</div>
           </div>
-          
-          <div class="flex items-center futuristic-input flex-1 min-w-[140px]">
-            <label for="min-year" class="mr-3 text-sm text-purple-300 whitespace-nowrap">📅 Год от:</label>
+          <div class="flex items-center p-2.5 filter-item">
+            <span class="mr-2 text-sm text-[var(--text-secondary)]">Год от:</span>
             <input 
-              id="min-year"
               type="number" 
               x-model.number="minYear" 
               placeholder="1900" 
-              min="1900"
-              max="2030"
-              class="bg-transparent w-24 focus:outline-none text-purple-300"
-              aria-describedby="min-year-help"
+              class="bg-transparent w-20 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-white"
+              aria-label="Минимальный год"
             />
-            <div id="min-year-help" class="sr-only">Минимальный год для фильтрации</div>
           </div>
-          
-          <div class="flex items-center futuristic-input flex-1 min-w-[140px]">
-            <label for="max-year" class="mr-3 text-sm text-pink-300 whitespace-nowrap">📅 Год до:</label>
+          <div class="flex items-center p-2.5 filter-item">
+            <span class="mr-2 text-sm text-[var(--text-secondary)]">Год до:</span>
             <input 
-              id="max-year"
               type="number" 
               x-model.number="maxYear" 
               placeholder="2025" 
-              min="1900"
-              max="2030"
-              class="bg-transparent w-24 focus:outline-none text-pink-300"
-              aria-describedby="max-year-help"
+              class="bg-transparent w-20 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-white"
+              aria-label="Максимальный год"
             />
-            <div id="max-year-help" class="sr-only">Максимальный год для фильтрации</div>
           </div>
-          
           <button 
             @click="pickRandomItem()" 
-            class="futuristic-btn futuristic-btn-secondary flex-1 sm:flex-grow-0 min-w-[160px]"
+            class="p-2.5 bg-[var(--primary)] hover:bg-[var(--secondary)] text-white action-button filter-item"
             aria-label="Выбрать случайный элемент"
           >
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-            </svg>
-            🎲 Мне повезёт
+            Мне повезёт
           </button>
         </div>
       </div>
-
-      <!-- Счетчик результатов -->
-      <div class="mt-6 text-center" x-show="!loading && !error">
-        <span class="text-cyan-300 neon-text text-lg font-semibold" x-text="`🔍 Найдено: ${filteredItems.length} из ${items.length}`"></span>
-      </div>
-    </section>
-
-    <!-- Состояния загрузки и ошибок -->
-    <div x-show="loading" class="text-center py-20" role="status" aria-live="polite">
-      <div class="futuristic-spinner mx-auto mb-6"></div>
-      <p class="text-2xl neon-text text-cyan-300">⚡ Загрузка данных...</p>
     </div>
 
-    <div x-show="error" class="text-center py-20" role="alert" aria-live="assertive">
-      <div class="futuristic-notification futuristic-notification-error mx-auto mb-6 relative max-w-md">
-        <svg class="w-8 h-8 text-pink-400 mb-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <p class="text-xl font-medium text-pink-400 neon-text" x-text="error"></p>
-        <button 
-          @click="loadItems()" 
-          class="futuristic-btn futuristic-btn-primary mt-6"
-          aria-label="Повторить загрузку данных"
-        >
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-          </svg>
-          🔄 Попробовать снова
-        </button>
-      </div>
+    <!-- Состояние загрузки -->
+    <div x-show="loading" class="text-center py-12">
+      <div class="spinner"></div>
+      <p class="text-xl mt-4 text-white">Загрузка данных...</p>
     </div>
-
-    <!-- Сетка карточек (3 в ряд) -->
-    <main x-show="!loading && !error" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" role="main">
-      <template x-for="item in filteredAndSortedItems" :key="item.title + '-' + item.year + '-' + (item.rating ?? '')">
-        <article 
-          @click="openModal(item)" 
-          @keydown.enter="openModal(item)"
-          @keydown.space.prevent="openModal(item)"
-          class="futuristic-card futuristic-fade-in futuristic-focus gpu-optimized"
-          tabindex="0"
-          role="button"
-          :aria-label="`Открыть подробности: ${item.title}`"
-        >
-          <!-- Изображение -->
-          <div class="relative w-full aspect-[2/3] rounded-xl mb-6 overflow-hidden futuristic-img">
-            <template x-if="item.image">
-              <div class="relative w-full h-full">
-                <div class="futuristic-placeholder absolute inset-0" x-show="!item.imageLoaded"></div>
-                <img 
-                  class="futuristic-lazy-image gpu-optimized" 
-                  :src="item.imageLoaded ? item.image : null"
-                  :data-src="!item.imageLoaded ? item.image : null" 
-                  :alt="`Постер ${item.title}`"
-                  @load="(e) => { e.target.classList.add('loaded'); item.imageLoaded = true; }" 
-                  @error="handleImageError($event, item)" 
-                  loading="lazy"
-                />
-              </div>
-            </template>
-            <template x-if="!item.image">
-              <div class="w-full h-full flex items-center justify-center glass text-cyan-300 text-center p-6">
-                <div>
-                  <svg class="w-16 h-16 mx-auto mb-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                  </svg>
-                  <p class="text-sm">🖼️ Изображение недоступно</p>
-                </div>
-              </div>
-            </template>
-          </div>
-
-          <!-- Информация о медиа -->
-          <div class="space-y-3">
-            <h2 class="text-xl font-bold text-cyan-100 leading-tight" x-text="item.title"></h2>
-            <p class="text-sm text-purple-300 font-medium" x-text="`${item.typeDisplay} • ${item.year}`"></p>
-            <div class="flex items-center justify-between">
-              <p :class="getRatingClass(item)" class="font-bold text-lg">
-                <span class="mr-1">⭐</span>
-                <span x-text="getRatingText(item)"></span>/10
-              </p>
-              <div class="text-xs text-cyan-400" x-show="item.genres.length">
-                <span x-text="item.genres.slice(0, 2).join(', ')"></span>
-                <span x-show="item.genres.length > 2" class="text-purple-400" x-text="`+${item.genres.length - 2}`"></span>
-              </div>
-            </div>
-          </div>
-        </article>
-      </template>
-    </main>
-
-    <!-- Сообщение об отсутствии результатов -->
-    <div x-show="!loading && !error && filteredAndSortedItems.length === 0" class="text-center py-20">
-      <svg class="w-20 h-20 mx-auto mb-6 text-cyan-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
-      </svg>
-      <h3 class="text-2xl font-bold mb-4 neon-text text-cyan-300">🔍 Ничего не найдено</h3>
-      <p class="text-lg text-purple-300 mb-6">Попробуйте изменить параметры поиска или фильтры</p>
-      <button @click="clearFilters()" class="futuristic-btn futuristic-btn-secondary">
-        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-        🗑️ Очистить фильтры
+    <!-- Состояние ошибки -->
+    <div x-show="error" class="text-center py-12 text-red-400">
+      <p class="text-xl" x-text="error"></p>
+      <button 
+        @click="loadItems()" 
+        class="mt-4 bg-[var(--primary)] hover:bg-[var(--secondary)] px-5 py-2.5 rounded-lg action-button"
+        aria-label="Попробовать снова"
+      >
+        Попробовать снова
       </button>
     </div>
-  </div>
 
-  <!-- Футуристическое модальное окно -->
-  <div 
-    x-show="modalItem" 
-    x-transition:enter="transition ease-out duration-500"
-    x-transition:enter-start="opacity-0"
-    x-transition:enter-end="opacity-100"
-    x-transition:leave="transition ease-in duration-300"
-    x-transition:leave-start="opacity-100"
-    x-transition:leave-end="opacity-0"
-    class="fixed inset-0 z-50 flex items-center justify-center futuristic-modal" 
-    @click.self="closeModal()"
-    @keydown.escape="closeModal()"
-    role="dialog"
-    aria-modal="true"
-    :aria-labelledby="modalItem ? 'modal-title' : null"
-  >
-    <div 
-      class="futuristic-modal-content p-8 w-[95%] max-w-7xl" 
-      @click.stop
-      x-transition:enter="transition ease-out duration-500 transform"
-      x-transition:enter-start="opacity-0 scale-90"
-      x-transition:enter-end="opacity-100 scale-100"
-      x-transition:leave="transition ease-in duration-300 transform"
-      x-transition:leave-start="opacity-100 scale-100"
-      x-transition:leave-end="opacity-0 scale-90"
-    >
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-        <!-- Изображение -->
-        <div class="flex justify-center">
-          <template x-if="modalItem.image">
-            <div class="futuristic-img max-w-md">
+    <!-- Сетка карточек -->
+    <div x-show="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <template x-for="item in filteredAndSortedItems" :key="item.id">
+        <div 
+          class="card relative"
+          role="button"
+          tabindex="0"
+          @click="openModal(item)"
+          @keydown.enter="openModal(item)"
+          @keydown.space.prevent="openModal(item)"
+        >
+          <template x-if="item.image">
+            <div class="relative w-full aspect-[2/3] rounded-lg mb-4 overflow-hidden">
+              <div class="card-img lazy-placeholder" x-show="!item.imageLoaded"></div>
               <img 
-                :src="modalItem.image" 
-                class="w-full max-h-[70vh] object-contain" 
-                :alt="`Постер ${modalItem.title}`"
-                @error="modalItem.image = null"
+                class="lazy-image card-img" 
+                :data-src="item.image"
+                :srcset="item.image ? `${item.image} 1x, ${item.image.replace('.jpg', '-2x.webp')} 2x` : null"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                @load="(e) => { e.target.classList.add('loaded'); item.imageLoaded = true; console.log(`Loaded image: ${item.title}`); }"
+                @error="handleImageError($event, item)"
+                :alt="`Постер ${item.title}`"
+                loading="lazy"
               />
             </div>
           </template>
-          <template x-if="!modalItem.image">
-            <div class="w-full max-w-md h-96 flex items-center justify-center glass text-cyan-300 rounded-xl text-center p-8">
-              <div>
-                <svg class="w-20 h-20 mx-auto mb-6 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
-                <p class="text-lg">🖼️ Изображение недоступно</p>
-              </div>
+          <template x-if="!item.image">
+            <div class="w-full aspect-[2/3] flex items-center justify-center bg-[var(--bg-card)] text-[var(--text-secondary)] rounded-lg mb-4 text-center p-4">
+              Нет изображения
             </div>
           </template>
+          <h2 class="text-lg font-semibold mb-1 truncate-text" x-text="item.title"></h2>
+          <p class="text-sm text-[var(--text-secondary)] mb-2" x-text="`${item.typeDisplay} • ${item.year}`"></p>
+          <p :class="getRatingClass(item)">★ <span x-text="getRatingText(item)"></span>/10</p>
+          <template x-if="item.genres.length">
+            <p class="text-sm text-[var(--text-secondary)] mt-1 truncate-text" x-text="item.genres.join(', ')"></p>
+          </template>
+          <button 
+            @click.stop="toggleFavorite(item)" 
+            class="absolute top-2 right-2 text-xl favorite-btn" 
+            :class="{ 'favorited': isFavorited(item) }"
+            :aria-label="isFavorited(item) ? 'Убрать из избранного' : 'Добавить в избранное'"
+          >
+            ★
+          </button>
         </div>
+      </template>
+    </div>
 
-        <!-- Информация -->
-        <div class="space-y-6">
-          <div>
-            <h2 id="modal-title" class="text-4xl font-bold mb-4 holographic-text" x-text="modalItem.title"></h2>
-            <p class="text-lg text-purple-300 mb-2" x-text="`${modalItem.typeDisplay} • ${modalItem.year}`"></p>
-            <p :class="getRatingClass(modalItem) + ' font-bold text-2xl mb-6'">
-              <span class="mr-2">⭐</span>
-              <span x-text="getRatingText(modalItem)"></span>/10
-            </p>
-            <template x-if="modalItem.genres.length">
-              <div class="flex flex-wrap gap-3 mb-6">
-                <template x-for="genre in modalItem.genres" :key="genre">
-                  <span class="px-3 py-1 glass text-cyan-300 text-sm rounded-full border border-cyan-500/30" x-text="genre"></span>
-                </template>
+    <!-- Модальное окно -->
+    <div 
+      x-show="modalItem" 
+      class="fixed inset-0 z-50 flex items-center justify-center modal-bg" 
+      @click.self="modalItem = null"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div class="modal-content p-6 w-[90%] max-w-4xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          <div class="flex justify-center">
+            <template x-if="modalItem.image">
+              <img 
+                :src="modalItem.image" 
+                :srcset="modalItem.image ? `${modalItem.image} 1x, ${modalItem.image.replace('.jpg', '-2x.webp')} 2x` : null"
+                sizes="(max-width: 640px) 100vw, 50vw"
+                class="full-img" 
+                @error="modalItem.image = null"
+                :alt="`Постер ${modalItem.title}`"
+                loading="lazy"
+              />
+            </template>
+            <template x-if="!modalItem.image">
+              <div class="w-full h-80 flex items-center justify-center bg-[var(--bg-card)] text-[var(--text-secondary)] rounded-lg text-center p-4">
+                Нет изображения
               </div>
             </template>
           </div>
-          
-          <!-- Футуристические кнопки переключения -->
-          <div class="futuristic-toggle-container" x-show="hasAnyContent" role="tablist">
+          <div>
+            <h2 id="modal-title" class="text-2xl font-bold mb-2 text-white" x-text="modalItem.title"></h2>
+            <p class="text-sm text-[var(--text-secondary)] mb-2" x-text="`${modalItem.typeDisplay} • ${modalItem.year}`"></p>
+            <p :class="getRatingClass(modalItem) + ' font-bold mb-3 text-lg'">★ <span x-text="getRatingText(modalItem)"></span>/10</p>
+            <template x-if="modalItem.genres.length">
+              <p class="text-sm text-[var(--text-secondary)] mb-3" x-text="modalItem.genres.join(', ')"></p>
+            </template>
             <button 
-              @click="showReview = true" 
-              :class="getToggleButtonClass('review')"
-              :disabled="!modalItem.review"
-              :aria-selected="showReview"
-              role="tab"
-              :aria-controls="showReview ? 'review-content' : null"
+              @click="toggleFavorite(modalItem)" 
+              class="mb-3 text-xl favorite-btn" 
+              :class="{ 'favorited': isFavorited(modalItem) }"
+              :aria-label="isFavorited(modalItem) ? 'Убрать из избранного' : 'Добавить в избранное'"
             >
-              <span x-show="!modalItem.review">📝 Рецензии нет</span>
-              <span x-show="modalItem.review">📝 Рецензия</span>
+              ★
             </button>
-            
+            <div class="toggle-container" x-show="hasAnyContent">
+              <button 
+                @click="showReview = true" 
+                :class="getToggleButtonClass('review')"
+                :disabled="!modalItem.review"
+                :aria-pressed="showReview"
+                aria-label="Показать рецензию"
+              >
+                <span x-show="!modalItem.review">Рецензии нет</span>
+                <span x-show="modalItem.review">Рецензия</span>
+              </button>
+              <button 
+                @click="showReview = false" 
+                :class="getToggleButtonClass('description')"
+                :disabled="!modalItem.description"
+                :aria-pressed="!showReview"
+                aria-label="Показать описание"
+              >
+                <span x-show="!modalItem.description">Описания нет</span>
+                <span x-show="modalItem.description">Описание</span>
+              </button>
+            </div>
+            <div class="content-section" x-show="hasAnyContent">
+              <div x-show="showReview && modalItem.review">
+                <p class="text-gray-200 prose" x-text="modalItem.review"></p>
+              </div>
+              <div x-show="!showReview && modalItem.description">
+                <p class="text-gray-200 prose" x-text="modalItem.description"></p>
+              </div>
+              <div x-show="(showReview && !modalItem.review) || (!showReview && !modalItem.description)" class="text-center py-4">
+                <p class="text-[var(--text-secondary)] italic">Этот раздел пуст</p>
+              </div>
+            </div>
+            <div class="py-4 text-center" x-show="!hasAnyContent">
+              <p class="text-[var(--text-secondary)] italic">Информация отсутствует</p>
+            </div>
             <button 
-              @click="showReview = false" 
-              :class="getToggleButtonClass('description')"
-              :disabled="!modalItem.description"
-              :aria-selected="!showReview"
-              role="tab"
-              :aria-controls="!showReview ? 'description-content' : null"
-            >
-              <span x-show="!modalItem.description">📄 Описания нет</span>
-              <span x-show="modalItem.description">📄 Описание</span>
-            </button>
-          </div>
-          
-          <!-- Контент -->
-          <div class="futuristic-content-section" x-show="hasAnyContent" role="tabpanel">
-            <!-- Рецензия -->
-            <div 
-              x-show="showReview && modalItem.review" 
-              id="review-content"
-              role="tabpanel"
-              aria-labelledby="review-tab"
-            >
-              <h3 class="text-xl font-bold mb-4 text-cyan-300 neon-text">📝 Рецензия</h3>
-              <p class="text-gray-200 leading-relaxed text-lg" x-text="modalItem.review"></p>
-            </div>
-            
-            <!-- Описание -->
-            <div 
-              x-show="!showReview && modalItem.description" 
-              id="description-content"
-              role="tabpanel"
-              aria-labelledby="description-tab"
-            >
-              <h3 class="text-xl font-bold mb-4 text-purple-300 neon-text">📄 Описание</h3>
-              <p class="text-gray-200 leading-relaxed text-lg" x-text="modalItem.description"></p>
-            </div>
-            
-            <!-- Пустой контент -->
-            <div x-show="(showReview && !modalItem.review) || (!showReview && !modalItem.description)" class="text-center py-10">
-              <svg class="w-16 h-16 mx-auto mb-4 text-cyan-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
-              </svg>
-              <p class="text-cyan-400 italic text-lg">📭 Этот раздел пуст</p>
-            </div>
-          </div>
-          
-          <!-- Сообщение об отсутствии контента -->
-          <div class="py-10 text-center" x-show="!hasAnyContent">
-            <svg class="w-16 h-16 mx-auto mb-4 text-cyan-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
-            </svg>
-            <p class="text-cyan-400 italic text-xl">📭 Дополнительная информация отсутствует</p>
-          </div>
-          
-          <!-- Кнопки действий -->
-          <div class="flex gap-4 pt-6 border-t border-cyan-500/30">
-            <button 
-              @click="closeModal()" 
-              class="futuristic-btn futuristic-btn-secondary flex-1"
+              @click="modalItem = null" 
+              class="mt-4 bg-[var(--primary)] hover:bg-[var(--secondary)] px-5 py-2.5 rounded-lg action-button"
               aria-label="Закрыть модальное окно"
             >
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-              ❌ Закрыть
-            </button>
-            <button 
-              @click="pickRandomItem()" 
-              class="futuristic-btn futuristic-btn-primary"
-              aria-label="Выбрать другой случайный элемент"
-            >
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-              </svg>
-              🎲 Ещё
+              Закрыть
             </button>
           </div>
         </div>
@@ -1118,6 +520,7 @@
   <script>
     function mediaApp() {
       return {
+        // State
         search: '',
         categoryFilter: '',
         sortKey: 'rating-desc',
@@ -1130,262 +533,215 @@
         maxYear: null,
         imageObserver: null,
         showReview: true,
-        
-        // Функция для перевода типов в отображаемый текст
+        filtersOpen: window.innerWidth >= 640,
+        favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
+        suggestions: [],
+
+        // Инициализация
+        init() {
+          this.loadItems();
+          this.setupKeyboardEvents();
+        },
+
+        // Настройка событий клавиатуры
+        setupKeyboardEvents() {
+          window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.modalItem) {
+              this.modalItem = null;
+            }
+          });
+        },
+
+        // Тип отображения
         getTypeDisplay(typeValue) {
           const typeMap = {
-            'movie': 'Фильмы',
-            'show': 'Сериалы',
-            'anime': 'Аниме',
-            'game': 'Игры',
-            'book': 'Чтиво',
-            'cartoon': 'Мультики'
+            movie: 'Фильмы',
+            show: 'Сериалы',
+            anime: 'Аниме',
+            game: 'Игры',
+            book: 'Чтиво',
+            cartoon: 'Мультики'
           };
           return typeMap[typeValue] || typeValue;
         },
 
-        // Улучшенная функция загрузки данных
+        // Загрузка данных
         async loadItems() {
           this.loading = true;
           this.error = null;
           const urls = ['anime_data.json', 'movies_data.json', 'games_data.json', 'books_data.json', 'cartoons_data.json'];
           let allItems = [];
-          
           try {
-            // Используем Promise.allSettled для более надежной загрузки
-            const results = await Promise.allSettled(
-              urls.map(url => fetch(url).then(res => {
-                if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-                return res.json();
-              }))
-            );
-
-            // Обрабатываем результаты
-            results.forEach((result, index) => {
-              if (result.status === 'fulfilled') {
-                const data = result.value;
-                if (Array.isArray(data)) {
-                  allItems = allItems.concat(data);
-                } else {
-                  console.warn(`Файл ${urls[index]} не содержит массив данных`);
-                }
-              } else {
-                console.warn(`Не удалось загрузить ${urls[index]}:`, result.reason);
-              }
-            });
-
-            if (allItems.length === 0) {
-              throw new Error('Не удалось загрузить данные ни из одного источника');
+            for (const url of urls) {
+              const res = await fetch(url);
+              if (!res.ok) throw new Error(`Ошибка загрузки ${url}`);
+              const data = await res.json();
+              if (!Array.isArray(data)) throw new Error(`Ожидался массив в ${url}`);
+              allItems = allItems.concat(data);
             }
-
-            // Обрабатываем и валидируем данные
-            this.items = allItems.map(item => {
-              const rating = parseFloat(item.rating);
-              return {
-                title: item.title || 'Без названия',
-                type: item.type || 'unknown',
-                typeDisplay: this.getTypeDisplay(item.type) || 'Неизвестно',
-                year: item.year || 'Н/Д',
-                rating: !isNaN(rating) ? rating : null,
-                genres: Array.isArray(item.genres) ? item.genres : [],
-                description: item.description || '',
-                review: item.review || '',
-                image: item.image || null,
-                imageLoaded: false
-              };
-            });
-            
-            // Инициализация Intersection Observer
-            this.$nextTick(() => {
-              this.initLazyLoading();
-            });
-
+            this.items = allItems.map((i, index) => ({
+              id: `${i.title}-${i.year}-${index}`, // Уникальный ID
+              title: i.title || 'Без названия',
+              type: i.type || 'Неизвестно',
+              typeDisplay: this.getTypeDisplay(i.type),
+              year: i.year || 'Н/Д',
+              rating: !isNaN(parseFloat(i.rating)) ? parseFloat(i.rating) : null,
+              genres: Array.isArray(i.genres) ? i.genres : [],
+              description: i.description || '',
+              review: i.review || '',
+              image: i.image || null,
+              imageLoaded: false
+            }));
+            this.$nextTick(() => this.initLazyLoading());
           } catch (e) {
-            this.error = `⚠️ Ошибка загрузки данных: ${e.message}`;
+            this.error = `Не удалось загрузить данные: ${e.message}`;
             this.items = [];
-            console.error('Ошибка загрузки:', e);
           } finally {
             this.loading = false;
           }
         },
 
-        // Улучшенная функция lazy loading
+        // Ленивая загрузка изображений
         initLazyLoading() {
           if (this.imageObserver) {
             this.imageObserver.disconnect();
           }
-          
           this.imageObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
               if (entry.isIntersecting) {
                 const img = entry.target;
                 const src = img.getAttribute('data-src');
-                if (src) {
-                  img.setAttribute('src', src);
-                  img.removeAttribute('data-src');
+                if (src && !img.src) {
+                  img.src = src;
+                  console.log(`Lazy-loading image: ${src}`);
                   this.imageObserver.unobserve(img);
                 }
               }
             });
           }, {
-            rootMargin: '150px 0px',
+            rootMargin: '200px 0px',
             threshold: 0.01
           });
-          
-          // Небольшая задержка для обеспечения рендеринга DOM
-          setTimeout(() => {
-            document.querySelectorAll('img[data-src]').forEach(img => {
-              this.imageObserver.observe(img);
-            });
-          }, 100);
-        },
-
-        // Улучшенная функция открытия модального окна
-        openModal(item) { 
-          this.modalItem = {...item};
-          this.showReview = item.review ? true : false;
-          
-          // Предотвращаем скролл фона
-          document.body.style.overflow = 'hidden';
-          
-          // Фокус на модальном окне для доступности
-          this.$nextTick(() => {
-            const modal = document.querySelector('[role="dialog"]');
-            if (modal) modal.focus();
+          document.querySelectorAll('img[data-src]').forEach(img => {
+            this.imageObserver.observe(img);
           });
         },
 
-        // Функция закрытия модального окна
-        closeModal() {
-          this.modalItem = null;
-          document.body.style.overflow = '';
-        },
-        
-        // Обработка ошибок изображений
-        handleImageError(e, item) { 
-          item.image = null; 
-          item.imageLoaded = false;
-          console.warn(`Не удалось загрузить изображение для: ${item.title}`);
+        // Автодополнение поиска
+        suggestTitles() {
+          const query = this.search.toLowerCase();
+          if (query.length < 2) {
+            this.suggestions = [];
+            return;
+          }
+          this.suggestions = this.items
+            .filter(item => item.title.toLowerCase().includes(query))
+            .map(item => item.title)
+            .slice(0, 5);
         },
 
-        // Улучшенная функция случайного выбора
+        // Управление избранным
+        toggleFavorite(item) {
+          const id = item.id;
+          if (this.isFavorited(item)) {
+            this.favorites = this.favorites.filter(fav => fav !== id);
+          } else {
+            this.favorites.push(id);
+          }
+          localStorage.setItem('favorites', JSON.stringify(this.favorites));
+        },
+
+        isFavorited(item) {
+          return this.favorites.includes(item.id);
+        },
+
+        // Открытие модального окна
+        openModal(item) {
+          this.modalItem = { ...item };
+          this.showReview = item.review ? true : false;
+          this.suggestions = [];
+        },
+
+        // Обработка ошибок изображений
+        handleImageError(e, item) {
+          item.image = null;
+          item.imageLoaded = false;
+          console.log(`Image error for: ${item.title}`);
+        },
+
+        // Случайный выбор
         pickRandomItem() {
           const availableItems = this.filteredItems;
           if (availableItems.length === 0) {
-            this.showNotification('🔍 Нет элементов, соответствующих фильтрам', 'error');
+            this.error = 'Нет элементов, соответствующих фильтрам';
+            setTimeout(() => this.error = null, 3000);
             return;
           }
           const randomIndex = Math.floor(Math.random() * availableItems.length);
           this.openModal(availableItems[randomIndex]);
         },
 
-        // Функция очистки фильтров
-        clearFilters() {
-          this.search = '';
-          this.categoryFilter = '';
-          this.minRating = null;
-          this.minYear = null;
-          this.maxYear = null;
-          this.sortKey = 'rating-desc';
-        },
-
-        // Функция показа уведомлений
-        showNotification(message, type = 'info') {
-          // Простая реализация уведомлений
-          const notification = document.createElement('div');
-          notification.className = `futuristic-notification futuristic-notification-${type}`;
-          notification.innerHTML = `
-            <div class="flex items-center">
-              <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-              <span>${message}</span>
-            </div>
-          `;
-          document.body.appendChild(notification);
-          
-          setTimeout(() => {
-            notification.remove();
-          }, 4000);
-        },
-
-        // Функции для рейтингов
+        // Текст рейтинга
         getRatingText(item) {
-          return (item.rating != null) ? item.rating.toFixed(1) : '?';
+          return item.rating != null ? item.rating : '?';
         },
-        
+
+        // Класс для рейтинга
         getRatingClass(item) {
-          if (item.rating == null) return 'rating-unknown';
-          if (item.rating >= 10) return 'rating-perfect';
-          if (item.rating >= 7) return 'rating-good';
-          if (item.rating >= 4) return 'rating-average';
-          return 'rating-poor';
+          if (item.rating == null) return 'text-[var(--text-secondary)]';
+          if (item.rating >= 10) return 'text-[var(--secondary)]';
+          if (item.rating >= 7) return 'text-[var(--primary)]';
+          if (item.rating >= 4) return 'text-yellow-400';
+          return 'text-red-400';
         },
-        
-        // Функция для стилей кнопок переключения
+
+        // Класс для кнопок переключения
         getToggleButtonClass(type) {
           if (type === 'review') {
-            if (!this.modalItem.review) return 'futuristic-toggle-btn futuristic-toggle-btn-disabled';
-            return this.showReview ? 'futuristic-toggle-btn futuristic-toggle-btn-active' : 'futuristic-toggle-btn futuristic-toggle-btn-inactive';
+            if (!this.modalItem.review) return 'toggle-btn toggle-btn-disabled';
+            return this.showReview ? 'toggle-btn toggle-btn-active' : 'toggle-btn toggle-btn-inactive';
           }
-          
           if (type === 'description') {
-            if (!this.modalItem.description) return 'futuristic-toggle-btn futuristic-toggle-btn-disabled';
-            return !this.showReview ? 'futuristic-toggle-btn futuristic-toggle-btn-active' : 'futuristic-toggle-btn futuristic-toggle-btn-inactive';
+            if (!this.modalItem.description) return 'toggle-btn toggle-btn-disabled';
+            return !this.showReview ? 'toggle-btn toggle-btn-active' : 'toggle-btn toggle-btn-inactive';
           }
-          
-          return 'futuristic-toggle-btn futuristic-toggle-btn-inactive';
+          return 'toggle-btn toggle-btn-inactive';
         },
-        
-        // Computed свойства
+
+        // Проверка наличия контента
         get hasAnyContent() {
           return this.modalItem && (this.modalItem.review || this.modalItem.description);
         },
 
+        // Фильтрованные элементы
         get filteredItems() {
           return this.items
-            .filter(item => !this.search || item.title.toLowerCase().includes(this.search.toLowerCase()))
-            .filter(item => !this.categoryFilter || item.type === this.categoryFilter)
-            .filter(item => this.minRating == null || (item.rating != null && item.rating >= this.minRating))
-            .filter(item => this.minYear == null || (item.year !== 'Н/Д' && parseInt(item.year) >= this.minYear))
-            .filter(item => this.maxYear == null || (item.year !== 'Н/Д' && parseInt(item.year) <= this.maxYear));
+            .filter(i => !this.search || i.title.toLowerCase().includes(this.search.toLowerCase()))
+            .filter(i => !this.categoryFilter || i.type === this.categoryFilter)
+            .filter(i => this.minRating == null || (i.rating != null && i.rating >= this.minRating))
+            .filter(i => this.minYear == null || (i.year !== 'Н/Д' && parseInt(i.year) >= this.minYear))
+            .filter(i => this.maxYear == null || (i.year !== 'Н/Д' && parseInt(i.year) <= this.maxYear));
         },
 
+        // Отфильтрованные и отсортированные элементы
         get filteredAndSortedItems() {
           const items = [...this.filteredItems].sort((a, b) => {
-            const ratingA = (a.rating == null) ? -1 : a.rating;
-            const ratingB = (b.rating == null) ? -1 : b.rating;
-            
+            const ra = a.rating == null ? -1 : a.rating;
+            const rb = b.rating == null ? -1 : b.rating;
             switch (this.sortKey) {
-              case 'rating-asc':   return ratingA - ratingB;
-              case 'rating-desc':  return ratingB - ratingA;
-              case 'year-asc':     return (parseInt(a.year) || 0) - (parseInt(b.year) || 0);
-              case 'year-desc':    return (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
-              case 'title':        return a.title.localeCompare(b.title, 'ru');
-              default:             return 0;
+              case 'rating-asc': return ra - rb;
+              case 'rating-desc': return rb - ra;
+              case 'year-asc': return (parseInt(a.year) || 0) - (parseInt(b.year) || 0);
+              case 'year-desc': return (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
+              case 'title': return a.title.localeCompare(b.title);
+              default: return 0;
             }
           });
-          
-          // Повторная инициализация lazy loading
-          this.$nextTick(() => {
-            this.initLazyLoading();
-          });
-          
+          this.$nextTick(() => this.initLazyLoading());
           return items;
-        },
-
-        // Обработка клавиатуры для доступности
-        init() {
-          // Обработка Escape для закрытия модального окна
-          document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modalItem) {
-              this.closeModal();
-            }
-          });
         }
-      }
+      };
     }
   </script>
 </body>
 </html>
-
