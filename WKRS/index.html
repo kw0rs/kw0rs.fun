@@ -417,7 +417,7 @@
       top: 100%;
       left: 0;
       right: 0;
-      z-index: 1000;
+      z-index: 9999;
       margin-top: 0.5rem;
       background: rgba(10, 10, 15, 0.95);
       backdrop-filter: blur(30px);
@@ -1034,7 +1034,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
               </button>
-              <div class="futuristic-dropdown-menu futuristic-dropdown-simple-grid" role="listbox">
+              <div class="futuristic-dropdown-menu" role="listbox">
                 <div 
                   class="futuristic-dropdown-item" 
                   :class="{ 'selected': categoryFilter === '' }"
