@@ -1563,7 +1563,6 @@
             this.$nextTick(() => {
               this.initLazyLoading();
             });
-
           } catch (e) {
             this.error = `⚠️ Ошибка загрузки данных: ${e.message}`;
             this.items = [];
@@ -1730,19 +1729,14 @@
             }
           });
           
-          // Повторная инициализация lazy loading
-          this.$nextTick(() => {
-            this.initLazyLoading();
-          });
-          
           return items;
         },
 
         // Обработка клавиатуры для доступности
         init() {
           // Обработка Escape для закрытия модального окна
-          document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modalItem) {
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && this.modalItem) {
               this.closeModal();
             }
           });
