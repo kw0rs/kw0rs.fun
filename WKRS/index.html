@@ -408,7 +408,7 @@
       color: var(--neon-cyan);
     }
 
-    .futuristic-dropdown-open .futuristic-dropdown-icon {
+    .futuristic-dropdown.open .futuristic-dropdown-icon {
       transform: rotate(180deg);
     }
 
@@ -436,7 +436,7 @@
       visibility: hidden;
     }
 
-    .futuristic-dropdown-open .futuristic-dropdown-menu {
+    .futuristic-dropdown.open .futuristic-dropdown-menu {
       opacity: 1;
       transform: translateY(0) scale(1);
       pointer-events: auto;
@@ -950,11 +950,10 @@
           
           <!-- Кастомный выпадающий список категорий -->
           <div class="w-full sm:w-auto min-w-[180px]">
-            <div class="futuristic-dropdown" x-data="{ open: false }" @click.away="open = false">
+            <div class="futuristic-dropdown" x-data="{ open: false }" @click.away="open = false" :class="{ 'open': open }">
               <button 
                 @click="open = !open"
                 class="futuristic-dropdown-trigger"
-                :class="{ 'futuristic-dropdown-open': open }"
                 aria-haspopup="listbox"
                 :aria-expanded="open"
                 aria-label="Выбрать категорию"
@@ -964,7 +963,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
               </button>
-              <div class="futuristic-dropdown-menu" :class="{ 'futuristic-dropdown-open': open }" role="listbox">
+              <div class="futuristic-dropdown-menu" role="listbox">
                 <div 
                   class="futuristic-dropdown-item" 
                   :class="{ 'selected': categoryFilter === '' }"
@@ -1034,11 +1033,10 @@
           
           <!-- Кастомный выпадающий список сортировки -->
           <div class="w-full sm:w-auto min-w-[200px]">
-            <div class="futuristic-dropdown" x-data="{ open: false }" @click.away="open = false">
+            <div class="futuristic-dropdown" x-data="{ open: false }" @click.away="open = false" :class="{ 'open': open }">
               <button 
                 @click="open = !open"
                 class="futuristic-dropdown-trigger"
-                :class="{ 'futuristic-dropdown-open': open }"
                 aria-haspopup="listbox"
                 :aria-expanded="open"
                 aria-label="Выбрать сортировку"
@@ -1048,7 +1046,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
               </button>
-              <div class="futuristic-dropdown-menu" :class="{ 'futuristic-dropdown-open': open }" role="listbox">
+              <div class="futuristic-dropdown-menu" role="listbox">
                 <div 
                   class="futuristic-dropdown-item" 
                   :class="{ 'selected': sortKey === 'rating-desc' }"
