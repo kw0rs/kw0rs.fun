@@ -445,6 +445,24 @@
       visibility: visible;
     }
 
+    /* Портал для выпадающего меню */
+    .futuristic-dropdown-menu-portal {
+      position: fixed !important;
+      z-index: 999999 !important;
+      background: rgba(10, 10, 15, 0.95);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-md);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(0, 255, 255, 0.1);
+      max-height: 300px;
+      overflow-y: auto;
+      min-width: 200px;
+      width: max-content;
+    }
+
     /* Простая сетка для выпадающего меню категорий */
     .futuristic-dropdown-simple-grid {
       display: grid;
@@ -1025,88 +1043,18 @@
           <div class="w-full sm:w-auto min-w-[180px]">
             <div class="futuristic-dropdown" x-data="{ open: false }" @click.away="open = false" :class="{ 'open': open }">
               <button 
-                @click="open = !open; if(open) { 
-                  const button = $el; 
-                  const menu = $el.nextElementSibling; 
-                  const rect = button.getBoundingClientRect(); 
-                  menu.style.top = (rect.bottom + 8) + 'px'; 
-                  menu.style.left = rect.left + 'px'; 
-                }"
+                @click="open = !open"
                 class="futuristic-dropdown-trigger"
                 aria-haspopup="listbox"
                 :aria-expanded="open"
                 aria-label="Выбрать категорию"
+                id="category-button"
               >
                 <span x-text="getCategoryDisplayText()"></span>
                 <svg class="w-5 h-5 futuristic-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
               </button>
-              <div class="futuristic-dropdown-menu" role="listbox">
-                <div 
-                  class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === '' }"
-                  @click="categoryFilter = ''; open = false"
-                  role="option"
-                  :aria-selected="categoryFilter === ''"
-                >
-                  🎭 Все категории
-                </div>
-                <div 
-                  class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'movie' }"
-                  @click="categoryFilter = 'movie'; open = false"
-                  role="option"
-                  :aria-selected="categoryFilter === 'movie'"
-                >
-                  🎬 Фильмы
-                </div>
-                <div 
-                  class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'show' }"
-                  @click="categoryFilter = 'show'; open = false"
-                  role="option"
-                  :aria-selected="categoryFilter === 'show'"
-                >
-                  📺 Сериалы
-                </div>
-                <div 
-                  class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'anime' }"
-                  @click="categoryFilter = 'anime'; open = false"
-                  role="option"
-                  :aria-selected="categoryFilter === 'anime'"
-                >
-                  🎌 Аниме
-                </div>
-                <div 
-                  class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'game' }"
-                  @click="categoryFilter = 'game'; open = false"
-                  role="option"
-                  :aria-selected="categoryFilter === 'game'"
-                >
-                  🎮 Игры
-                </div>
-                <div 
-                  class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'book' }"
-                  @click="categoryFilter = 'book'; open = false"
-                  role="option"
-                  :aria-selected="categoryFilter === 'book'"
-                >
-                  📚 Чтиво
-                </div>
-                <div 
-                  class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'cartoon' }"
-                  @click="categoryFilter = 'cartoon'; open = false"
-                  role="option"
-                  :aria-selected="categoryFilter === 'cartoon'"
-                >
-                  🎨 Мультики
-                </div>
-              </div>
             </div>
           </div>
           
@@ -1909,6 +1857,76 @@
         }
       }
     }
+  </script>
+
+  <!-- Отдельный контейнер для выпадающего меню категорий -->
+  <div id="category-dropdown-portal" class="futuristic-dropdown-menu-portal" style="display: none;" role="listbox">
+    <div 
+      class="futuristic-dropdown-item" 
+      onclick="window.categoryFilter = ''; document.getElementById('category-dropdown-portal').style.display = 'none';"
+    >
+      🎭 Все категории
+    </div>
+    <div 
+      class="futuristic-dropdown-item" 
+      onclick="window.categoryFilter = 'movie'; document.getElementById('category-dropdown-portal').style.display = 'none';"
+    >
+      🎬 Фильмы
+    </div>
+    <div 
+      class="futuristic-dropdown-item" 
+      onclick="window.categoryFilter = 'show'; document.getElementById('category-dropdown-portal').style.display = 'none';"
+    >
+      📺 Сериалы
+    </div>
+    <div 
+      class="futuristic-dropdown-item" 
+      onclick="window.categoryFilter = 'anime'; document.getElementById('category-dropdown-portal').style.display = 'none';"
+    >
+      🎌 Аниме
+    </div>
+    <div 
+      class="futuristic-dropdown-item" 
+      onclick="window.categoryFilter = 'game'; document.getElementById('category-dropdown-portal').style.display = 'none';"
+    >
+      🎮 Игры
+    </div>
+    <div 
+      class="futuristic-dropdown-item" 
+      onclick="window.categoryFilter = 'book'; document.getElementById('category-dropdown-portal').style.display = 'none';"
+    >
+      📚 Чтиво
+    </div>
+    <div 
+      class="futuristic-dropdown-item" 
+      onclick="window.categoryFilter = 'cartoon'; document.getElementById('category-dropdown-portal').style.display = 'none';"
+    >
+      🎨 Мультики
+    </div>
+  </div>
+
+  <script>
+    // Обработчик для кнопки категорий
+    document.addEventListener('DOMContentLoaded', function() {
+      const button = document.getElementById('category-button');
+      const portal = document.getElementById('category-dropdown-portal');
+      
+      button.addEventListener('click', function() {
+        const rect = button.getBoundingClientRect();
+        portal.style.position = 'fixed';
+        portal.style.top = (rect.bottom + 8) + 'px';
+        portal.style.left = rect.left + 'px';
+        portal.style.zIndex = '999999';
+        portal.style.display = portal.style.display === 'none' ? 'block' : 'none';
+      });
+      
+      // Закрытие при клике вне меню
+      document.addEventListener('click', function(e) {
+        if (!button.contains(e.target) && !portal.contains(e.target)) {
+          portal.style.display = 'none';
+        }
+      });
+    });
   </script>
 </body>
 </html>
