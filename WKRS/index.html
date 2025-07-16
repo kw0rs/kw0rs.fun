@@ -1497,56 +1497,111 @@
           return sortMap[this.sortKey] || '⭐ Рейтинг (Высокие→Низкие)';
         },
 
-        // Улучшенная функция загрузки данных
+        // Улучшенная функция загрузки данных для GitHub Pages
         async loadItems() {
           this.loading = true;
           this.error = null;
-          const urls = ['anime_data.json', 'movies_data.json', 'games_data.json', 'books_data.json', 'cartoons_data.json'];
+          
+          // Различные варианты путей для GitHub Pages
+          const baseUrls = [
+            '', // Относительный путь (текущая директория)
+            './', // Явный относительный путь
+            window.location.pathname.replace(/\/[^\/]*$/, '/'), // Путь от текущей страницы
+          ];
+          
+          const fileNames = ['anime_data.json', 'movies_data.json', 'games_data.json', 'books_data.json', 'cartoons_data.json'];
           let allItems = [];
+          let loadedFiles = 0;
+          
+          console.log('🔄 Начинаем загрузку данных...');
+          console.log('📍 Текущий URL:', window.location.href);
+          console.log('📂 Базовый путь:', window.location.pathname);
           
           try {
-            // Используем Promise.allSettled для более надежной загрузки
-            const results = await Promise.allSettled(
-              urls.map(url => fetch(url).then(res => {
-                if (!res.ok) {
-                  // Для GitHub Pages добавляем более детальную обработку ошибок
-                  if (res.status === 404) {
-                    console.warn(`Файл ${url} не найден (404). Возможно, файл отсутствует в репозитории.`);
-                    return []; // Возвращаем пустой массив вместо ошибки
+            // Пробуем загрузить файлы с разными базовыми путями
+            for (const baseUrl of baseUrls) {
+              if (loadedFiles > 0) break; // Если уже загрузили файлы, прекращаем
+              
+              console.log(`🔍 Пробуем базовый путь: "${baseUrl}"`);
+              
+              const results = await Promise.allSettled(
+                fileNames.map(async fileName => {
+                  const fullUrl = baseUrl + fileName;
+                  console.log(`📥 Загружаем: ${fullUrl}`);
+                  
+                  try {
+                    const response = await fetch(fullUrl, {
+                      method: 'GET',
+                      headers: {
+                        'Accept': 'application/json',
+                        'Cache-Control': 'no-cache'
+                      }
+                    });
+                    
+                    console.log(`📊 ${fileName}: ${response.status} ${response.statusText}`);
+                    
+                    if (!response.ok) {
+                      if (response.status === 404) {
+                        console.warn(`❌ ${fileName} не найден по пути ${fullUrl}`);
+                        return [];
+                      }
+                      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const text = await response.text();
+                    console.log(`📄 ${fileName} размер: ${text.length} символов`);
+                    
+                    if (!text.trim()) {
+                      console.warn(`⚠️ ${fileName} пустой`);
+                      return [];
+                    }
+                    
+                    const data = JSON.parse(text);
+                    console.log(`✅ ${fileName} загружен: ${Array.isArray(data) ? data.length : 'не массив'} элементов`);
+                    
+                    return Array.isArray(data) ? data : [];
+                  } catch (err) {
+                    console.error(`❌ Ошибка загрузки ${fileName}:`, err.message);
+                    return [];
                   }
-                  throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-                }
-                return res.json();
-              }).catch(err => {
-                console.warn(`Ошибка загрузки ${url}:`, err.message);
-                return []; // Возвращаем пустой массив при ошибке
-              }))
-            );
+                })
+              );
 
-            // Обрабатываем результаты
-            results.forEach((result, index) => {
-              if (result.status === 'fulfilled') {
-                const data = result.value;
-                if (Array.isArray(data)) {
-                  allItems = allItems.concat(data);
-                } else {
-                  console.warn(`Файл ${urls[index]} не содержит массив данных`);
-                }
-              } else {
-                console.warn(`Не удалось загрузить ${urls[index]}:`, result.reason);
+              // Подсчитываем успешно загруженные файлы
+              const successfulResults = results.filter(result => 
+                result.status === 'fulfilled' && result.value.length > 0
+              );
+              
+              if (successfulResults.length > 0) {
+                console.log(`✅ Успешно загружено ${successfulResults.length} файлов с базовым путем "${baseUrl}"`);
+                
+                // Собираем все данные
+                results.forEach((result, index) => {
+                  if (result.status === 'fulfilled' && result.value.length > 0) {
+                    allItems = allItems.concat(result.value);
+                    loadedFiles++;
+                  }
+                });
+                break; // Прекращаем попытки с другими путями
               }
-            });
+            }
 
             // Если нет данных, показываем ошибку
             if (allItems.length === 0) {
-              throw new Error('Не удалось загрузить данные ни из одного источника');
+              throw new Error(`Не удалось загрузить данные ни из одного JSON файла. Проверьте:
+              1. Файлы находятся в той же папке, что и index.html
+              2. Файлы имеют правильные имена: ${fileNames.join(', ')}
+              3. Файлы содержат валидный JSON
+              4. GitHub Pages корректно развернут`);
             }
 
+            console.log(`🎉 Всего загружено ${allItems.length} элементов из ${loadedFiles} файлов`);
+
             // Обрабатываем и валидируем данные
-            this.items = allItems.map(item => {
+            this.items = allItems.map((item, index) => {
               const rating = parseFloat(item.rating);
-              return {
-                title: item.title || 'Без названия',
+              const processedItem = {
+                title: item.title || `Без названия ${index + 1}`,
                 type: item.type || 'unknown',
                 typeDisplay: this.getTypeDisplay(item.type) || 'Неизвестно',
                 year: item.year || 'Н/Д',
@@ -1557,18 +1612,34 @@
                 image: item.image || null,
                 imageLoaded: false
               };
+              
+              // Логируем первые несколько элементов для отладки
+              if (index < 3) {
+                console.log(`📋 Элемент ${index + 1}:`, {
+                  title: processedItem.title,
+                  type: processedItem.type,
+                  year: processedItem.year,
+                  rating: processedItem.rating
+                });
+              }
+              
+              return processedItem;
             });
             
-            // Инициализация Intersection Observer
-            this.$nextTick(() => {
+            console.log(`✅ Обработано ${this.items.length} элементов`);
+            
+            // Инициализация Intersection Observer с задержкой
+            setTimeout(() => {
               this.initLazyLoading();
-            });
+            }, 100);
+            
           } catch (e) {
-            this.error = `⚠️ Ошибка загрузки данных: ${e.message}`;
+            console.error('💥 Критическая ошибка загрузки:', e);
+            this.error = e.message;
             this.items = [];
-            console.error('Ошибка загрузки:', e);
           } finally {
             this.loading = false;
+            console.log('🏁 Загрузка завершена');
           }
         },
 
