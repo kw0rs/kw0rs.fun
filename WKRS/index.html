@@ -433,14 +433,12 @@
       transform: translateY(-10px) scale(0.95);
       transition: all var(--transition-fast);
       pointer-events: none;
-      visibility: hidden;
     }
 
     .futuristic-dropdown-open .futuristic-dropdown-menu {
       opacity: 1;
       transform: translateY(0) scale(1);
       pointer-events: auto;
-      visibility: visible;
     }
 
     .futuristic-dropdown-item {
@@ -950,7 +948,7 @@
           
           <!-- Кастомный выпадающий список категорий -->
           <div class="w-full sm:w-auto min-w-[180px]">
-            <div class="futuristic-dropdown" x-data="{ open: false }" @click.away="open = false">
+            <div class="futuristic-dropdown" x-data="{ open: false, categoryFilter: $store.mediaApp.categoryFilter }" @click.away="open = false">
               <button 
                 @click="open = !open"
                 class="futuristic-dropdown-trigger"
@@ -959,7 +957,7 @@
                 :aria-expanded="open"
                 aria-label="Выбрать категорию"
               >
-                <span x-text="getCategoryDisplayText()"></span>
+                <span x-text="$store.mediaApp.getCategoryDisplayText()"></span>
                 <svg class="w-5 h-5 futuristic-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
@@ -967,64 +965,64 @@
               <div class="futuristic-dropdown-menu" :class="{ 'futuristic-dropdown-open': open }" role="listbox">
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === '' }"
-                  @click="categoryFilter = ''; open = false"
+                  :class="{ 'selected': $store.mediaApp.categoryFilter === '' }"
+                  @click="$store.mediaApp.categoryFilter = ''; open = false"
                   role="option"
-                  :aria-selected="categoryFilter === ''"
+                  :aria-selected="$store.mediaApp.categoryFilter === ''"
                 >
                   🎭 Все категории
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'movie' }"
-                  @click="categoryFilter = 'movie'; open = false"
+                  :class="{ 'selected': $store.mediaApp.categoryFilter === 'movie' }"
+                  @click="$store.mediaApp.categoryFilter = 'movie'; open = false"
                   role="option"
-                  :aria-selected="categoryFilter === 'movie'"
+                  :aria-selected="$store.mediaApp.categoryFilter === 'movie'"
                 >
                   🎬 Фильмы
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'show' }"
-                  @click="categoryFilter = 'show'; open = false"
+                  :class="{ 'selected': $store.mediaApp.categoryFilter === 'show' }"
+                  @click="$store.mediaApp.categoryFilter = 'show'; open = false"
                   role="option"
-                  :aria-selected="categoryFilter === 'show'"
+                  :aria-selected="$store.mediaApp.categoryFilter === 'show'"
                 >
                   📺 Сериалы
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'anime' }"
-                  @click="categoryFilter = 'anime'; open = false"
+                  :class="{ 'selected': $store.mediaApp.categoryFilter === 'anime' }"
+                  @click="$store.mediaApp.categoryFilter = 'anime'; open = false"
                   role="option"
-                  :aria-selected="categoryFilter === 'anime'"
+                  :aria-selected="$store.mediaApp.categoryFilter === 'anime'"
                 >
                   🎌 Аниме
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'game' }"
-                  @click="categoryFilter = 'game'; open = false"
+                  :class="{ 'selected': $store.mediaApp.categoryFilter === 'game' }"
+                  @click="$store.mediaApp.categoryFilter = 'game'; open = false"
                   role="option"
-                  :aria-selected="categoryFilter === 'game'"
+                  :aria-selected="$store.mediaApp.categoryFilter === 'game'"
                 >
                   🎮 Игры
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'book' }"
-                  @click="categoryFilter = 'book'; open = false"
+                  :class="{ 'selected': $store.mediaApp.categoryFilter === 'book' }"
+                  @click="$store.mediaApp.categoryFilter = 'book'; open = false"
                   role="option"
-                  :aria-selected="categoryFilter === 'book'"
+                  :aria-selected="$store.mediaApp.categoryFilter === 'book'"
                 >
                   📚 Чтиво
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'cartoon' }"
-                  @click="categoryFilter = 'cartoon'; open = false"
+                  :class="{ 'selected': $store.mediaApp.categoryFilter === 'cartoon' }"
+                  @click="$store.mediaApp.categoryFilter = 'cartoon'; open = false"
                   role="option"
-                  :aria-selected="categoryFilter === 'cartoon'"
+                  :aria-selected="$store.mediaApp.categoryFilter === 'cartoon'"
                 >
                   🎨 Мультики
                 </div>
@@ -1034,7 +1032,7 @@
           
           <!-- Кастомный выпадающий список сортировки -->
           <div class="w-full sm:w-auto min-w-[200px]">
-            <div class="futuristic-dropdown" x-data="{ open: false }" @click.away="open = false">
+            <div class="futuristic-dropdown" x-data="{ open: false, sortKey: $store.mediaApp.sortKey }" @click.away="open = false">
               <button 
                 @click="open = !open"
                 class="futuristic-dropdown-trigger"
@@ -1043,7 +1041,7 @@
                 :aria-expanded="open"
                 aria-label="Выбрать сортировку"
               >
-                <span x-text="getSortDisplayText()"></span>
+                <span x-text="$store.mediaApp.getSortDisplayText()"></span>
                 <svg class="w-5 h-5 futuristic-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
@@ -1051,46 +1049,46 @@
               <div class="futuristic-dropdown-menu" :class="{ 'futuristic-dropdown-open': open }" role="listbox">
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': sortKey === 'rating-desc' }"
-                  @click="sortKey = 'rating-desc'; open = false"
+                  :class="{ 'selected': $store.mediaApp.sortKey === 'rating-desc' }"
+                  @click="$store.mediaApp.sortKey = 'rating-desc'; open = false"
                   role="option"
-                  :aria-selected="sortKey === 'rating-desc'"
+                  :aria-selected="$store.mediaApp.sortKey === 'rating-desc'"
                 >
                   ⭐ Рейтинг (Высокие→Низкие)
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': sortKey === 'rating-asc' }"
-                  @click="sortKey = 'rating-asc'; open = false"
+                  :class="{ 'selected': $store.mediaApp.sortKey === 'rating-asc' }"
+                  @click="$store.mediaApp.sortKey = 'rating-asc'; open = false"
                   role="option"
-                  :aria-selected="sortKey === 'rating-asc'"
+                  :aria-selected="$store.mediaApp.sortKey === 'rating-asc'"
                 >
                   ⭐ Рейтинг (Низкие→Высокие)
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': sortKey === 'year-desc' }"
-                  @click="sortKey = 'year-desc'; open = false"
+                  :class="{ 'selected': $store.mediaApp.sortKey === 'year-desc' }"
+                  @click="$store.mediaApp.sortKey = 'year-desc'; open = false"
                   role="option"
-                  :aria-selected="sortKey === 'year-desc'"
+                  :aria-selected="$store.mediaApp.sortKey === 'year-desc'"
                 >
                   📅 Год (Новее)
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': sortKey === 'year-asc' }"
-                  @click="sortKey = 'year-asc'; open = false"
+                  :class="{ 'selected': $store.mediaApp.sortKey === 'year-asc' }"
+                  @click="$store.mediaApp.sortKey = 'year-asc'; open = false"
                   role="option"
-                  :aria-selected="sortKey === 'year-asc'"
+                  :aria-selected="$store.mediaApp.sortKey === 'year-asc'"
                 >
                   📅 Год (Старее)
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': sortKey === 'title' }"
-                  @click="sortKey = 'title'; open = false"
+                  :class="{ 'selected': $store.mediaApp.sortKey === 'title' }"
+                  @click="$store.mediaApp.sortKey = 'title'; open = false"
                   role="option"
-                  :aria-selected="sortKey === 'title'"
+                  :aria-selected="$store.mediaApp.sortKey === 'title'"
                 >
                   🔤 Название (A-Z)
                 </div>
@@ -1455,8 +1453,8 @@
   </div>
 
   <script>
-    function mediaApp() {
-      return {
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('mediaApp', {
         search: '',
         categoryFilter: '',
         sortKey: 'rating-desc',
@@ -1747,8 +1745,10 @@
             }
           });
         }
-      }
-    }
+      });
+    });
   </script>
 </body>
 </html>
+
+
