@@ -433,12 +433,14 @@
       transform: translateY(-10px) scale(0.95);
       transition: all var(--transition-fast);
       pointer-events: none;
+      visibility: hidden;
     }
 
     .futuristic-dropdown-open .futuristic-dropdown-menu {
       opacity: 1;
       transform: translateY(0) scale(1);
       pointer-events: auto;
+      visibility: visible;
     }
 
     .futuristic-dropdown-item {
@@ -1750,4 +1752,3 @@
   </script>
 </body>
 </html>
-
