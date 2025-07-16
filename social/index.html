@@ -2,143 +2,361 @@
 <html lang="ru">
 <head>
     <!-- Open Graph -->
-<meta property="og:title" content="Академия имени Вильяма Кворса">
-<meta property="og:description" content="Блин, а прикольный сайтик так-то.">
-<meta property="og:image" content="https://kw0rs.fun/icon/williamkw0rs.jpg">
-<meta property="og:url" content="https://kw0rs.fun/social">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Академия Кворса">
+    <meta property="og:title" content="Академия имени Вильяма Кворса">
+    <meta property="og:description" content="Блин, а прикольный сайтик так-то.">
+    <meta property="og:image" content="https://kw0rs.fun/icon/williamkw0rs.jpg">
+    <meta property="og:url" content="https://kw0rs.fun/social">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Академия Кворса">
 
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Академия имени Вильяма Кворса">
-<meta name="twitter:description" content="Блин, а прикольный сайтик так-то.">
-<meta name="twitter:image" content="https://kw0rs.fun/icon/williamkw0rs.jpg">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Академия имени Вильяма Кворса">
+    <meta name="twitter:description" content="Блин, а прикольный сайтик так-то.">
+    <meta name="twitter:image" content="https://kw0rs.fun/icon/williamkw0rs.jpg">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Социальные сети | Академия Кворса</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Социальные сети | Академия Кворса</title>
 
-<!-- Favicon -->
-<link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
-<link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
-<link rel="manifest" href="/icon/site.webmanifest">
-<link rel="shortcut icon" href="/icon/favicon.ico">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
+    <link rel="manifest" href="/icon/site.webmanifest">
+    <link rel="shortcut icon" href="/icon/favicon.ico">
 
-<!-- Перегонка www на без www -->
-<script>
-if (location.hostname === 'www.kw0rs.fun') {
-    window.location.href = 'https://kw0rs.fun' + location.pathname;
-}
-</script>
-
-<!-- Редирект с больших букв на маленькие -->
-<script>
-var path = window.location.pathname;
-if (path !== path.toLowerCase()) {
-    window.location.pathname = path.toLowerCase();
-}
-</script>
-
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background-color: #1a1a1a;
-    color: white;
-    font-family: Arial, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
-  
-  .menu-button {
-    padding: 10px 20px;
-    background-color: #333;
-    color: white;
-    border: none;
-    text-decoration: none;
-    font-size: 16px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
-  
-  .menu-button:hover {
-    background-color: #555;
-  }
-
-  .button-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-    max-width: 600px;
-  }
-
-  .social-button {
-    display: block;
-    padding: 20px;
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 24px;
-    border-radius: 10px;
-    text-align: center;
-    transition: background-color 0.3s, transform 0.3s;
-  }
-  
-  .social-button:hover {
-    transform: translateY(-3px);
-  }
-  
-  .telegram-streams {
-    background-color: #ff0000;
-  }
-  
-  .telegram-academy {
-    background-color: #0088cc;
-  }
-  
-  .twitch {
-    background-color: #6441a5;
-  }
-  
-  .youtube {
-    background-color: #cc0000;
-  }
-  
-  .steam {
-    background-color: #2a475e;
-  }
-
-  .telegram-streams:hover { background-color: #cc0000; }
-  .telegram-academy:hover { background-color: #006699; }
-  .twitch:hover { background-color: #4b367c; }
-  .youtube:hover { background-color: #990000; }
-  .steam:hover { background-color: #1f3545; }
-
-  @media (max-width: 768px) {
-    .social-button {
-      font-size: 20px;
-      padding: 16px;
+    <!-- Перегонка www на без www -->
+    <script>
+    if (location.hostname === 'www.kw0rs.fun') {
+        window.location.href = 'https://kw0rs.fun' + location.pathname;
     }
-  }
-</style>
+    </script>
+
+    <!-- Редирект с больших букв на маленькие -->
+    <script>
+    var path = window.location.pathname;
+    if (path !== path.toLowerCase()) {
+        window.location.pathname = path.toLowerCase();
+    }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at 50% 50%, #0a0a0a 0%, #000000 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(600px circle at 20% 30%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(800px circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(400px circle at 40% 80%, rgba(0, 255, 127, 0.1) 0%, transparent 50%);
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        
+
+        
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ff7f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
+            to { text-shadow: 0 0 30px rgba(0, 255, 255, 0.8); }
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #888;
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        
+        .menu-button {
+            padding: 14px 28px;
+            background: rgba(26, 26, 26, 0.8);
+            border: 2px solid transparent;
+            border-radius: 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.4s ease;
+            display: inline-block;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .menu-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .menu-button:hover::before {
+            left: 100%;
+        }
+        
+        .menu-button:hover {
+            background: rgba(26, 26, 26, 0.9);
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .social-button {
+            padding: 24px 32px;
+            border: 3px solid transparent;
+            border-radius: 25px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 700;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            display: block;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .social-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+            transition: all 1s cubic-bezier(0.23, 1, 0.320, 1);
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .social-button:hover::before {
+            width: 600px;
+            height: 600px;
+        }
+        
+        .social-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                rgba(255, 255, 255, 0.3) 90deg,
+                transparent 180deg,
+                rgba(255, 255, 255, 0.3) 270deg,
+                transparent 360deg
+            );
+            border-radius: 25px;
+            opacity: 0;
+            transition: all 0.8s ease;
+            animation: none;
+        }
+        
+        .social-button:hover::after {
+            opacity: 1;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .social-button:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                inset 0 0 50px rgba(255, 255, 255, 0.1);
+        }
+        
+        .telegram-streams {
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(255, 0, 0, 0.9) 0%, rgba(255, 0, 0, 0.7) 100%),
+                conic-gradient(from 0deg, #ff0000, #ff6600, #ff0000);
+            border-color: rgba(255, 0, 0, 0.7);
+        }
+        
+        .telegram-academy {
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(0, 136, 204, 0.9) 0%, rgba(0, 136, 204, 0.7) 100%),
+                conic-gradient(from 0deg, #0088cc, #00aaff, #0088cc);
+            border-color: rgba(0, 136, 204, 0.7);
+        }
+        
+        .twitch {
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(100, 65, 165, 0.9) 0%, rgba(100, 65, 165, 0.7) 100%),
+                conic-gradient(from 0deg, #6441a5, #9966cc, #6441a5);
+            border-color: rgba(100, 65, 165, 0.7);
+        }
+        
+        .youtube {
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(204, 0, 0, 0.9) 0%, rgba(204, 0, 0, 0.7) 100%),
+                conic-gradient(from 0deg, #cc0000, #ff3333, #cc0000);
+            border-color: rgba(204, 0, 0, 0.7);
+        }
+        
+        .steam {
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(42, 71, 94, 0.9) 0%, rgba(42, 71, 94, 0.7) 100%),
+                conic-gradient(from 0deg, #2a475e, #4477aa, #2a475e);
+            border-color: rgba(42, 71, 94, 0.7);
+        }
+
+        .telegram-streams:hover { 
+            box-shadow: 
+                0 20px 80px rgba(255, 0, 0, 0.6),
+                inset 0 0 50px rgba(255, 0, 0, 0.3),
+                0 0 100px rgba(255, 0, 0, 0.4);
+            border-color: rgba(255, 0, 0, 1);
+        }
+        .telegram-academy:hover { 
+            box-shadow: 
+                0 20px 80px rgba(0, 136, 204, 0.6),
+                inset 0 0 50px rgba(0, 136, 204, 0.3),
+                0 0 100px rgba(0, 136, 204, 0.4);
+            border-color: rgba(0, 136, 204, 1);
+        }
+        .twitch:hover { 
+            box-shadow: 
+                0 20px 80px rgba(100, 65, 165, 0.6),
+                inset 0 0 50px rgba(100, 65, 165, 0.3),
+                0 0 100px rgba(100, 65, 165, 0.4);
+            border-color: rgba(100, 65, 165, 1);
+        }
+        .youtube:hover { 
+            box-shadow: 
+                0 20px 80px rgba(204, 0, 0, 0.6),
+                inset 0 0 50px rgba(204, 0, 0, 0.3),
+                0 0 100px rgba(204, 0, 0, 0.4);
+            border-color: rgba(204, 0, 0, 1);
+        }
+        .steam:hover { 
+            box-shadow: 
+                0 20px 80px rgba(42, 71, 94, 0.6),
+                inset 0 0 50px rgba(42, 71, 94, 0.3),
+                0 0 100px rgba(42, 71, 94, 0.4);
+            border-color: rgba(42, 71, 94, 1);
+        }
+
+        @media (max-width: 768px) {
+            .social-button {
+                font-size: 16px;
+                padding: 16px 24px;
+            }
+            
+            .container {
+                max-width: 380px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+        
+        /* Дополнительные футуристические эффекты */
+        
+        .menu-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.3) 0%, transparent 70%);
+            transition: all 0.6s ease;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+        
+        .menu-button:hover::after {
+            width: 150px;
+            height: 150px;
+        }
+    </style>
 </head>
 
 <body>
-
-<a href="/menu" class="menu-button">В меню</a>
-
-<div class="button-container">
-  <a href="https://t.me/kw0rs" class="social-button telegram-streams" target="_blank">Telegram Стримов</a>
-  <a href="https://t.me/kw0rs_edu" class="social-button telegram-academy" target="_blank">Telegram Академии</a>
-  <a href="https://www.twitch.tv/kw0rs" class="social-button twitch" target="_blank">Twitch</a>
-  <a href="https://www.youtube.com/@kw0rs" class="social-button youtube" target="_blank">YouTube</a>
-  <a href="https://store.steampowered.com/curator/45513934-академия-имени-вильяма/" class="social-button steam" target="_blank">Steam Академии</a>
-</div>
-
+    <div class="container">
+        <h1>Социальные сети</h1>
+        
+        <a href="/menu" class="menu-button">В меню</a>
+        
+        <div class="social-buttons">
+            <a href="https://t.me/kw0rs" class="social-button telegram-streams" target="_blank">Telegram Стримов</a>
+            <a href="https://t.me/kw0rs_edu" class="social-button telegram-academy" target="_blank">Telegram Академии</a>
+            <a href="https://www.twitch.tv/kw0rs" class="social-button twitch" target="_blank">Twitch</a>
+            <a href="https://www.youtube.com/@kw0rs" class="social-button youtube" target="_blank">YouTube</a>
+            <a href="https://store.steampowered.com/curator/45513934-академия-имени-вильяма/" class="social-button steam" target="_blank">Steam Академии</a>
+        </div>
+    </div>
 </body>
 </html>
