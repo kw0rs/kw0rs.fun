@@ -413,11 +413,12 @@
     }
 
     .futuristic-dropdown-menu {
-      position: absolute;
-      top: 100%;
-      right: 0;
+      position: fixed !important;
+      top: auto !important;
+      right: auto !important;
+      left: auto !important;
       transform: translateY(-10px) scale(0.95);
-      z-index: 9999;
+      z-index: 999999 !important;
       margin-top: 0.5rem;
       background: rgba(10, 10, 15, 0.95);
       backdrop-filter: blur(30px);
@@ -1024,7 +1025,13 @@
           <div class="w-full sm:w-auto min-w-[180px]">
             <div class="futuristic-dropdown" x-data="{ open: false }" @click.away="open = false" :class="{ 'open': open }">
               <button 
-                @click="open = !open"
+                @click="open = !open; if(open) { 
+                  const button = $el; 
+                  const menu = $el.nextElementSibling; 
+                  const rect = button.getBoundingClientRect(); 
+                  menu.style.top = (rect.bottom + 8) + 'px'; 
+                  menu.style.left = rect.left + 'px'; 
+                }"
                 class="futuristic-dropdown-trigger"
                 aria-haspopup="listbox"
                 :aria-expanded="open"
