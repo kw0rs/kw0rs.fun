@@ -429,19 +429,17 @@
         0 0 30px rgba(0, 255, 255, 0.1);
       max-height: 300px;
       overflow-y: auto;
-      opacity: 0;
-      transform: translateY(-10px) scale(0.95);
+      /* opacity: 0; */ /* Removed for x-show */
+      /* transform: translateY(-10px) scale(0.95); */ /* Removed for x-show */
       transition: all var(--transition-fast);
-      pointer-events: none;
-      visibility: hidden;
+      /* pointer-events: none; */ /* Removed for x-show */
     }
 
-    .futuristic-dropdown-open .futuristic-dropdown-menu {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      pointer-events: auto;
-      visibility: visible;
-    }
+    /* .futuristic-dropdown-open .futuristic-dropdown-menu { */ /* Removed for x-show */
+      /* opacity: 1; */
+      /* transform: translateY(0) scale(1); */
+      /* pointer-events: auto; */
+    /* } */
 
     .futuristic-dropdown-item {
       padding: 0.75rem 1rem;
@@ -761,8 +759,8 @@
         opacity: 0;
       }
       to {
-        transform: translateX(0) scale(1);
         opacity: 1;
+        transform: translateX(0) scale(1);
       }
     }
 
@@ -939,7 +937,7 @@
             <input 
               id="search-input"
               type="text" 
-              x-model="search" 
+              x-model="$store.mediaApp.search" 
               placeholder="🔍 Поиск по названию..." 
               class="futuristic-input"
               autocomplete="off"
@@ -959,72 +957,72 @@
                 :aria-expanded="open"
                 aria-label="Выбрать категорию"
               >
-                <span x-text="getCategoryDisplayText()"></span>
+                <span x-text="$store.mediaApp.getCategoryDisplayText()"></span>
                 <svg class="w-5 h-5 futuristic-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
               </button>
-              <div class="futuristic-dropdown-menu" :class="{ 'futuristic-dropdown-open': open }" role="listbox">
+              <div class="futuristic-dropdown-menu" x-show="open" x-transition role="listbox">
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === '' }"
-                  @click="categoryFilter = ''; open = false"
+                  :class="{ 'selected': $store.mediaApp.categoryFilter === '' }"
+                  @click="$store.mediaApp.categoryFilter = ''; open = false"
                   role="option"
-                  :aria-selected="categoryFilter === ''"
+                  :aria-selected="$store.mediaApp.categoryFilter === ''"
                 >
                   🎭 Все категории
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'movie' }"
-                  @click="categoryFilter = 'movie'; open = false"
+                  :class="{ 'selected': $store.mediaApp.categoryFilter === 'movie' }"
+                  @click="$store.mediaApp.categoryFilter = 'movie'; open = false"
                   role="option"
-                  :aria-selected="categoryFilter === 'movie'"
+                  :aria-selected="$store.mediaApp.categoryFilter === 'movie'"
                 >
                   🎬 Фильмы
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'show' }"
-                  @click="categoryFilter = 'show'; open = false"
+                  :class="{ 'selected': $store.mediaApp.categoryFilter === 'show' }"
+                  @click="$store.mediaApp.categoryFilter = 'show'; open = false"
                   role="option"
-                  :aria-selected="categoryFilter === 'show'"
+                  :aria-selected="$store.mediaApp.categoryFilter === 'show'"
                 >
                   📺 Сериалы
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'anime' }"
-                  @click="categoryFilter = 'anime'; open = false"
+                  :class="{ 'selected': $store.mediaApp.categoryFilter === 'anime' }"
+                  @click="$store.mediaApp.categoryFilter = 'anime'; open = false"
                   role="option"
-                  :aria-selected="categoryFilter === 'anime'"
+                  :aria-selected="$store.mediaApp.categoryFilter === 'anime'"
                 >
                   🎌 Аниме
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'game' }"
-                  @click="categoryFilter = 'game'; open = false"
+                  :class="{ 'selected': $store.mediaApp.categoryFilter === 'game' }"
+                  @click="$store.mediaApp.categoryFilter = 'game'; open = false"
                   role="option"
-                  :aria-selected="categoryFilter === 'game'"
+                  :aria-selected="$store.mediaApp.categoryFilter === 'game'"
                 >
                   🎮 Игры
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'book' }"
-                  @click="categoryFilter = 'book'; open = false"
+                  :class="{ 'selected': $store.mediaApp.categoryFilter === 'book' }"
+                  @click="$store.mediaApp.categoryFilter = 'book'; open = false"
                   role="option"
-                  :aria-selected="categoryFilter === 'book'"
+                  :aria-selected="$store.mediaApp.categoryFilter === 'book'"
                 >
                   📚 Чтиво
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'cartoon' }"
-                  @click="categoryFilter = 'cartoon'; open = false"
+                  :class="{ 'selected': $store.mediaApp.categoryFilter === 'cartoon' }"
+                  @click="$store.mediaApp.categoryFilter = 'cartoon'; open = false"
                   role="option"
-                  :aria-selected="categoryFilter === 'cartoon'"
+                  :aria-selected="$store.mediaApp.categoryFilter === 'cartoon'"
                 >
                   🎨 Мультики
                 </div>
@@ -1043,54 +1041,54 @@
                 :aria-expanded="open"
                 aria-label="Выбрать сортировку"
               >
-                <span x-text="getSortDisplayText()"></span>
+                <span x-text="$store.mediaApp.getSortDisplayText()"></span>
                 <svg class="w-5 h-5 futuristic-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
               </button>
-              <div class="futuristic-dropdown-menu" :class="{ 'futuristic-dropdown-open': open }" role="listbox">
+              <div class="futuristic-dropdown-menu" x-show="open" x-transition role="listbox">
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': sortKey === 'rating-desc' }"
-                  @click="sortKey = 'rating-desc'; open = false"
+                  :class="{ 'selected': $store.mediaApp.sortKey === 'rating-desc' }"
+                  @click="$store.mediaApp.sortKey = 'rating-desc'; open = false"
                   role="option"
-                  :aria-selected="sortKey === 'rating-desc'"
+                  :aria-selected="$store.mediaApp.sortKey === 'rating-desc'"
                 >
                   ⭐ Рейтинг (Высокие→Низкие)
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': sortKey === 'rating-asc' }"
-                  @click="sortKey = 'rating-asc'; open = false"
+                  :class="{ 'selected': $store.mediaApp.sortKey === 'rating-asc' }"
+                  @click="$store.mediaApp.sortKey = 'rating-asc'; open = false"
                   role="option"
-                  :aria-selected="sortKey === 'rating-asc'"
+                  :aria-selected="$store.mediaApp.sortKey === 'rating-asc'"
                 >
                   ⭐ Рейтинг (Низкие→Высокие)
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': sortKey === 'year-desc' }"
-                  @click="sortKey = 'year-desc'; open = false"
+                  :class="{ 'selected': $store.mediaApp.sortKey === 'year-desc' }"
+                  @click="$store.mediaApp.sortKey = 'year-desc'; open = false"
                   role="option"
-                  :aria-selected="sortKey === 'year-desc'"
+                  :aria-selected="$store.mediaApp.sortKey === 'year-desc'"
                 >
                   📅 Год (Новее)
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': sortKey === 'year-asc' }"
-                  @click="sortKey = 'year-asc'; open = false"
+                  :class="{ 'selected': $store.mediaApp.sortKey === 'year-asc' }"
+                  @click="$store.mediaApp.sortKey = 'year-asc'; open = false"
                   role="option"
-                  :aria-selected="sortKey === 'year-asc'"
+                  :aria-selected="$store.mediaApp.sortKey === 'year-asc'"
                 >
                   📅 Год (Старее)
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
-                  :class="{ 'selected': sortKey === 'title' }"
-                  @click="sortKey = 'title'; open = false"
+                  :class="{ 'selected': $store.mediaApp.sortKey === 'title' }"
+                  @click="$store.mediaApp.sortKey = 'title'; open = false"
                   role="option"
-                  :aria-selected="sortKey === 'title'"
+                  :aria-selected="$store.mediaApp.sortKey === 'title'"
                 >
                   🔤 Название (A-Z)
                 </div>
@@ -1106,11 +1104,11 @@
             <div class="futuristic-slider-container">
               <label class="futuristic-slider-label">
                 ⭐ Минимальный рейтинг
-                <span class="futuristic-slider-value" x-text="minRating || '0'"></span>
+                <span class="futuristic-slider-value" x-text="$store.mediaApp.minRating || '0'"></span>
               </label>
               <input 
                 type="range" 
-                x-model.number="minRating" 
+                x-model.number="$store.mediaApp.minRating" 
                 min="0" 
                 max="10" 
                 step="0.1"
@@ -1125,11 +1123,11 @@
             <div class="futuristic-slider-container">
               <label class="futuristic-slider-label">
                 📅 Год от
-                <span class="futuristic-slider-value" x-text="minYear || '1900'"></span>
+                <span class="futuristic-slider-value" x-text="$store.mediaApp.minYear || '1900'"></span>
               </label>
               <input 
                 type="range" 
-                x-model.number="minYear" 
+                x-model.number="$store.mediaApp.minYear" 
                 min="1900" 
                 max="2030"
                 class="futuristic-slider"
@@ -1143,11 +1141,11 @@
             <div class="futuristic-slider-container">
               <label class="futuristic-slider-label">
                 📅 Год до
-                <span class="futuristic-slider-value" x-text="maxYear || '2030'"></span>
+                <span class="futuristic-slider-value" x-text="$store.mediaApp.maxYear || '2030'"></span>
               </label>
               <input 
                 type="range" 
-                x-model.number="maxYear" 
+                x-model.number="$store.mediaApp.maxYear" 
                 min="1900" 
                 max="2030"
                 class="futuristic-slider"
@@ -1159,7 +1157,7 @@
           <!-- Кнопки действий -->
           <div class="flex gap-2 items-end">
             <button 
-              @click="clearFilters()" 
+              @click="$store.mediaApp.clearFilters()" 
               class="futuristic-btn futuristic-btn-secondary"
               aria-label="Очистить все фильтры"
             >
@@ -1170,7 +1168,7 @@
             </button>
             
             <button 
-              @click="pickRandomItem()" 
+              @click="$store.mediaApp.pickRandomItem()" 
               class="futuristic-btn futuristic-btn-primary"
               aria-label="Выбрать случайный элемент"
             >
@@ -1184,25 +1182,25 @@
       </div>
 
       <!-- Счетчик результатов -->
-      <div class="mt-6 text-center" x-show="!loading && !error">
-        <span class="text-cyan-300 neon-text text-lg font-semibold" x-text="`🔍 Найдено: ${filteredItems.length} из ${items.length}`"></span>
+      <div class="mt-6 text-center" x-show="!$store.mediaApp.loading && !$store.mediaApp.error">
+        <span class="text-cyan-300 neon-text text-lg font-semibold" x-text="`🔍 Найдено: ${$store.mediaApp.filteredItems.length} из ${$store.mediaApp.items.length}`"></span>
       </div>
     </section>
 
     <!-- Состояния загрузки и ошибок -->
-    <div x-show="loading" class="text-center py-20" role="status" aria-live="polite">
+    <div x-show="$store.mediaApp.loading" class="text-center py-20" role="status" aria-live="polite">
       <div class="futuristic-spinner mx-auto mb-6"></div>
       <p class="text-2xl neon-text text-cyan-300">⚡ Загрузка данных...</p>
     </div>
 
-    <div x-show="error" class="text-center py-20" role="alert" aria-live="assertive">
+    <div x-show="$store.mediaApp.error" class="text-center py-20" role="alert" aria-live="assertive">
       <div class="futuristic-notification futuristic-notification-error mx-auto mb-6 relative max-w-md">
         <svg class="w-8 h-8 text-pink-400 mb-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
-        <p class="text-xl font-medium text-pink-400 neon-text" x-text="error"></p>
+        <p class="text-xl font-medium text-pink-400 neon-text" x-text="$store.mediaApp.error"></p>
         <button 
-          @click="loadItems()" 
+          @click="$store.mediaApp.loadItems()" 
           class="futuristic-btn futuristic-btn-primary mt-6"
           aria-label="Повторить загрузку данных"
         >
@@ -1215,12 +1213,12 @@
     </div>
 
     <!-- Сетка карточек (3 в ряд) с исправленным обрезанием текста -->
-    <main x-show="!loading && !error" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" role="main">
-      <template x-for="item in filteredAndSortedItems" :key="item.title + '-' + item.year + '-' + (item.rating ?? '')">
+    <main x-show="!$store.mediaApp.loading && !$store.mediaApp.error" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" role="main">
+      <template x-for="item in $store.mediaApp.filteredAndSortedItems" :key="item.title + '-' + item.year + '-' + (item.rating ?? '')">
         <article 
-          @click="openModal(item)" 
-          @keydown.enter="openModal(item)"
-          @keydown.space.prevent="openModal(item)"
+          @click="$store.mediaApp.openModal(item)" 
+          @keydown.enter="$store.mediaApp.openModal(item)"
+          @keydown.space.prevent="$store.mediaApp.openModal(item)"
           class="futuristic-card futuristic-fade-in futuristic-focus gpu-optimized"
           tabindex="0"
           role="button"
@@ -1237,7 +1235,7 @@
                   :data-src="!item.imageLoaded ? item.image : null" 
                   :alt="`Постер ${item.title}`"
                   @load="(e) => { e.target.classList.add('loaded'); item.imageLoaded = true; }" 
-                  @error="handleImageError($event, item)" 
+                  @error="$store.mediaApp.handleImageError($event, item)" 
                   loading="lazy"
                 />
               </div>
@@ -1259,9 +1257,9 @@
             <h2 class="text-xl font-bold text-cyan-100" x-text="item.title"></h2>
             <p class="text-sm text-purple-300 font-medium" x-text="`${item.typeDisplay} • ${item.year}`"></p>
             <div class="flex items-center justify-between">
-              <p :class="getRatingClass(item)" class="font-bold text-lg">
+              <p :class="$store.mediaApp.getRatingClass(item)" class="font-bold text-lg">
                 <span class="mr-1">⭐</span>
-                <span x-text="getRatingText(item)"></span>/10
+                <span x-text="$store.mediaApp.getRatingText(item)"></span>/10
               </p>
               <div class="text-xs text-cyan-400" x-show="item.genres.length">
                 <span x-text="item.genres.slice(0, 2).join(', ')"></span>
@@ -1274,13 +1272,13 @@
     </main>
 
     <!-- Сообщение об отсутствии результатов -->
-    <div x-show="!loading && !error && filteredAndSortedItems.length === 0" class="text-center py-20">
+    <div x-show="!$store.mediaApp.loading && !$store.mediaApp.error && $store.mediaApp.filteredAndSortedItems.length === 0" class="text-center py-20">
       <svg class="w-20 h-20 mx-auto mb-6 text-cyan-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
       </svg>
       <h3 class="text-2xl font-bold mb-4 neon-text text-cyan-300">🔍 Ничего не найдено</h3>
       <p class="text-lg text-purple-300 mb-6">Попробуйте изменить параметры поиска или фильтры</p>
-      <button @click="clearFilters()" class="futuristic-btn futuristic-btn-secondary">
+      <button @click="$store.mediaApp.clearFilters()" class="futuristic-btn futuristic-btn-secondary">
         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
         </svg>
@@ -1291,7 +1289,7 @@
 
   <!-- Футуристическое модальное окно -->
   <div 
-    x-show="modalItem" 
+    x-show="$store.mediaApp.modalItem" 
     x-transition:enter="transition ease-out duration-500"
     x-transition:enter-start="opacity-0"
     x-transition:enter-end="opacity-100"
@@ -1299,11 +1297,11 @@
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0"
     class="fixed inset-0 z-50 flex items-center justify-center futuristic-modal" 
-    @click.self="closeModal()"
-    @keydown.escape="closeModal()"
+    @click.self="$store.mediaApp.closeModal()"
+    @keydown.escape="$store.mediaApp.closeModal()"
     role="dialog"
     aria-modal="true"
-    :aria-labelledby="modalItem ? 'modal-title' : null"
+    :aria-labelledby="$store.mediaApp.modalItem ? 'modal-title' : null"
   >
     <div 
       class="futuristic-modal-content p-8 w-[95%] max-w-7xl" 
@@ -1318,20 +1316,20 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
         <!-- Изображение -->
         <div class="flex justify-center">
-          <template x-if="modalItem.image">
+          <template x-if="$store.mediaApp.modalItem.image">
             <div class="futuristic-img max-w-md">
               <img 
-                :src="modalItem.image" 
+                :src="$store.mediaApp.modalItem.image" 
                 class="w-full max-h-[70vh] object-contain" 
-                :alt="`Постер ${modalItem.title}`"
-                @error="modalItem.image = null"
+                :alt="`Постер ${$store.mediaApp.modalItem.title}`"
+                @error="$store.mediaApp.modalItem.image = null"
               />
             </div>
           </template>
-          <template x-if="!modalItem.image">
+          <template x-if="!$store.mediaApp.modalItem.image">
             <div class="w-full max-w-md h-96 flex items-center justify-center glass text-cyan-300 rounded-xl text-center p-8">
               <div>
-                <svg class="w-20 h-20 mx-auto mb-6 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-20 h-20 mx-auto mb-4 text-cyan-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
                 <p class="text-lg">🖼️ Изображение недоступно</p>
@@ -1343,15 +1341,15 @@
         <!-- Информация -->
         <div class="space-y-6">
           <div>
-            <h2 id="modal-title" class="text-4xl font-bold mb-4 holographic-text" x-text="modalItem.title"></h2>
-            <p class="text-lg text-purple-300 mb-2" x-text="`${modalItem.typeDisplay} • ${modalItem.year}`"></p>
-            <p :class="getRatingClass(modalItem) + ' font-bold text-2xl mb-6'">
+            <h2 id="modal-title" class="text-4xl font-bold mb-4 holographic-text" x-text="$store.mediaApp.modalItem.title"></h2>
+            <p class="text-lg text-purple-300 mb-2" x-text="`${$store.mediaApp.modalItem.typeDisplay} • ${$store.mediaApp.modalItem.year}`"></p>
+            <p :class="$store.mediaApp.getRatingClass($store.mediaApp.modalItem) + ' font-bold text-2xl mb-6'">
               <span class="mr-2">⭐</span>
-              <span x-text="getRatingText(modalItem)"></span>/10
+              <span x-text="$store.mediaApp.getRatingText($store.mediaApp.modalItem)"></span>/10
             </p>
-            <template x-if="modalItem.genres.length">
+            <template x-if="$store.mediaApp.modalItem.genres.length">
               <div class="flex flex-wrap gap-3 mb-6">
-                <template x-for="genre in modalItem.genres" :key="genre">
+                <template x-for="genre in $store.mediaApp.modalItem.genres" :key="genre">
                   <span class="px-3 py-1 glass text-cyan-300 text-sm rounded-full border border-cyan-500/30" x-text="genre"></span>
                 </template>
               </div>
@@ -1359,58 +1357,58 @@
           </div>
           
           <!-- Футуристические кнопки переключения -->
-          <div class="futuristic-toggle-container" x-show="hasAnyContent" role="tablist">
+          <div class="futuristic-toggle-container" x-show="$store.mediaApp.hasAnyContent" role="tablist">
             <button 
-              @click="showReview = true" 
-              :class="getToggleButtonClass('review')"
-              :disabled="!modalItem.review"
-              :aria-selected="showReview"
+              @click="$store.mediaApp.showReview = true" 
+              :class="$store.mediaApp.getToggleButtonClass('review')"
+              :disabled="!$store.mediaApp.modalItem.review"
+              :aria-selected="$store.mediaApp.showReview"
               role="tab"
-              :aria-controls="showReview ? 'review-content' : null"
+              :aria-controls="$store.mediaApp.showReview ? 'review-content' : null"
             >
-              <span x-show="!modalItem.review">📝 Рецензии нет</span>
-              <span x-show="modalItem.review">📝 Рецензия</span>
+              <span x-show="!$store.mediaApp.modalItem.review">📝 Рецензии нет</span>
+              <span x-show="$store.mediaApp.modalItem.review">📝 Рецензия</span>
             </button>
             
             <button 
-              @click="showReview = false" 
-              :class="getToggleButtonClass('description')"
-              :disabled="!modalItem.description"
-              :aria-selected="!showReview"
+              @click="$store.mediaApp.showReview = false" 
+              :class="$store.mediaApp.getToggleButtonClass('description')"
+              :disabled="!$store.mediaApp.modalItem.description"
+              :aria-selected="!$store.mediaApp.showReview"
               role="tab"
-              :aria-controls="!showReview ? 'description-content' : null"
+              :aria-controls="!$store.mediaApp.showReview ? 'description-content' : null"
             >
-              <span x-show="!modalItem.description">📄 Описания нет</span>
-              <span x-show="modalItem.description">📄 Описание</span>
+              <span x-show="!$store.mediaApp.modalItem.description">📄 Описания нет</span>
+              <span x-show="$store.mediaApp.modalItem.description">📄 Описание</span>
             </button>
           </div>
           
           <!-- Контент -->
-          <div class="futuristic-content-section" x-show="hasAnyContent" role="tabpanel">
+          <div class="futuristic-content-section" x-show="$store.mediaApp.hasAnyContent" role="tabpanel">
             <!-- Рецензия -->
             <div 
-              x-show="showReview && modalItem.review" 
+              x-show="$store.mediaApp.showReview && $store.mediaApp.modalItem.review" 
               id="review-content"
               role="tabpanel"
               aria-labelledby="review-tab"
             >
               <h3 class="text-xl font-bold mb-4 text-cyan-300 neon-text">📝 Рецензия</h3>
-              <p class="text-gray-200 leading-relaxed text-lg" x-text="modalItem.review"></p>
+              <p class="text-gray-200 leading-relaxed text-lg" x-text="$store.mediaApp.modalItem.review"></p>
             </div>
             
             <!-- Описание -->
             <div 
-              x-show="!showReview && modalItem.description" 
+              x-show="!$store.mediaApp.showReview && $store.mediaApp.modalItem.description" 
               id="description-content"
               role="tabpanel"
               aria-labelledby="description-tab"
             >
               <h3 class="text-xl font-bold mb-4 text-purple-300 neon-text">📄 Описание</h3>
-              <p class="text-gray-200 leading-relaxed text-lg" x-text="modalItem.description"></p>
+              <p class="text-gray-200 leading-relaxed text-lg" x-text="$store.mediaApp.modalItem.description"></p>
             </div>
             
             <!-- Пустой контент -->
-            <div x-show="(showReview && !modalItem.review) || (!showReview && !modalItem.description)" class="text-center py-10">
+            <div x-show="($store.mediaApp.showReview && !$store.mediaApp.modalItem.review) || (!$store.mediaApp.showReview && !$store.mediaApp.modalItem.description)" class="text-center py-10">
               <svg class="w-16 h-16 mx-auto mb-4 text-cyan-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
               </svg>
@@ -1419,7 +1417,7 @@
           </div>
           
           <!-- Сообщение об отсутствии контента -->
-          <div class="py-10 text-center" x-show="!hasAnyContent">
+          <div class="py-10 text-center" x-show="!$store.mediaApp.hasAnyContent">
             <svg class="w-16 h-16 mx-auto mb-4 text-cyan-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
             </svg>
@@ -1429,7 +1427,7 @@
           <!-- Кнопки действий -->
           <div class="flex gap-4 pt-6 border-t border-cyan-500/30">
             <button 
-              @click="closeModal()" 
+              @click="$store.mediaApp.closeModal()" 
               class="futuristic-btn futuristic-btn-secondary flex-1"
               aria-label="Закрыть модальное окно"
             >
@@ -1439,7 +1437,7 @@
               ❌ Закрыть
             </button>
             <button 
-              @click="pickRandomItem()" 
+              @click="$store.mediaApp.pickRandomItem()" 
               class="futuristic-btn futuristic-btn-primary"
               aria-label="Выбрать другой случайный элемент"
             >
@@ -1455,8 +1453,8 @@
   </div>
 
   <script>
-    function mediaApp() {
-      return {
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('mediaApp', {
         search: '',
         categoryFilter: '',
         sortKey: 'rating-desc',
@@ -1747,8 +1745,8 @@
             }
           });
         }
-      }
-    }
+      });
+    });
   </script>
 </body>
 </html>
