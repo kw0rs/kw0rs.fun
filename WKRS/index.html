@@ -1348,58 +1348,58 @@
           </div>
           
           <!-- Футуристические кнопки переключения -->
-          <div class="futuristic-toggle-container" x-show="$store.mediaApp.hasAnyContent" role="tablist">
+          <div class="futuristic-toggle-container" x-show="$store.mediaApp.modalItem && $store.mediaApp.hasAnyContent" role="tablist">
             <button 
               @click="$store.mediaApp.showReview = true" 
               :class="$store.mediaApp.getToggleButtonClass('review')"
-              :disabled="!$store.mediaApp.modalItem.review"
+              :disabled="!$store.mediaApp.modalItem?.review"
               :aria-selected="$store.mediaApp.showReview"
               role="tab"
               :aria-controls="$store.mediaApp.showReview ? 'review-content' : null"
             >
-              <span x-show="!$store.mediaApp.modalItem.review">📝 Рецензии нет</span>
-              <span x-show="$store.mediaApp.modalItem.review">📝 Рецензия</span>
+              <span x-show="!$store.mediaApp.modalItem?.review">📝 Рецензии нет</span>
+              <span x-show="$store.mediaApp.modalItem?.review">📝 Рецензия</span>
             </button>
             
             <button 
               @click="$store.mediaApp.showReview = false" 
               :class="$store.mediaApp.getToggleButtonClass('description')"
-              :disabled="!$store.mediaApp.modalItem.description"
+              :disabled="!$store.mediaApp.modalItem?.description"
               :aria-selected="!$store.mediaApp.showReview"
               role="tab"
               :aria-controls="!$store.mediaApp.showReview ? 'description-content' : null"
             >
-              <span x-show="!$store.mediaApp.modalItem.description">📄 Описания нет</span>
-              <span x-show="$store.mediaApp.modalItem.description">📄 Описание</span>
+              <span x-show="!$store.mediaApp.modalItem?.description">📄 Описания нет</span>
+              <span x-show="$store.mediaApp.modalItem?.description">📄 Описание</span>
             </button>
           </div>
           
           <!-- Контент -->
-          <div class="futuristic-content-section" x-show="$store.mediaApp.hasAnyContent" role="tabpanel">
+          <div class="futuristic-content-section" x-show="$store.mediaApp.modalItem && $store.mediaApp.hasAnyContent" role="tabpanel">
             <!-- Рецензия -->
             <div 
-              x-show="$store.mediaApp.showReview && $store.mediaApp.modalItem.review" 
+              x-show="$store.mediaApp.showReview && $store.mediaApp.modalItem?.review" 
               id="review-content"
               role="tabpanel"
               aria-labelledby="review-tab"
             >
               <h3 class="text-xl font-bold mb-4 text-cyan-300 neon-text">📝 Рецензия</h3>
-              <p class="text-gray-200 leading-relaxed text-lg" x-text="$store.mediaApp.modalItem.review"></p>
+              <p class="text-gray-200 leading-relaxed text-lg" x-text="$store.mediaApp.modalItem?.review"></p>
             </div>
             
             <!-- Описание -->
             <div 
-              x-show="!$store.mediaApp.showReview && $store.mediaApp.modalItem.description" 
+              x-show="!$store.mediaApp.showReview && $store.mediaApp.modalItem?.description" 
               id="description-content"
               role="tabpanel"
               aria-labelledby="description-tab"
             >
               <h3 class="text-xl font-bold mb-4 text-purple-300 neon-text">📄 Описание</h3>
-              <p class="text-gray-200 leading-relaxed text-lg" x-text="$store.mediaApp.modalItem.description"></p>
+              <p class="text-gray-200 leading-relaxed text-lg" x-text="$store.mediaApp.modalItem?.description"></p>
             </div>
             
             <!-- Пустой контент -->
-            <div x-show="($store.mediaApp.showReview && !$store.mediaApp.modalItem.review) || (!$store.mediaApp.showReview && !$store.mediaApp.modalItem.description)" class="text-center py-10">
+            <div x-show="($store.mediaApp.showReview && !$store.mediaApp.modalItem?.review) || (!$store.mediaApp.showReview && !$store.mediaApp.modalItem?.description)" class="text-center py-10">
               <svg class="w-16 h-16 mx-auto mb-4 text-cyan-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
               </svg>
@@ -1408,7 +1408,7 @@
           </div>
           
           <!-- Сообщение об отсутствии контента -->
-          <div class="py-10 text-center" x-show="!$store.mediaApp.hasAnyContent">
+          <div class="py-10 text-center" x-show="$store.mediaApp.modalItem && !$store.mediaApp.hasAnyContent">
             <svg class="w-16 h-16 mx-auto mb-4 text-cyan-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
             </svg>
@@ -1683,10 +1683,10 @@
           document.body.style.overflow = 'hidden';
           
           // Фокус на модальном окне для доступности
-          this.$nextTick(() => {
+          setTimeout(() => {
             const modal = document.querySelector('[role="dialog"]');
             if (modal) modal.focus();
-          });
+          }, 100);
         },
 
         // Функция закрытия модального окна
@@ -1758,6 +1758,8 @@
         
         // Функция для стилей кнопок переключения
         getToggleButtonClass(type) {
+          if (!this.modalItem) return 'futuristic-toggle-btn futuristic-toggle-btn-disabled';
+          
           if (type === 'review') {
             if (!this.modalItem.review) return 'futuristic-toggle-btn futuristic-toggle-btn-disabled';
             return this.showReview ? 'futuristic-toggle-btn futuristic-toggle-btn-active' : 'futuristic-toggle-btn futuristic-toggle-btn-inactive';
