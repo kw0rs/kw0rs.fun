@@ -415,8 +415,8 @@
     .futuristic-dropdown-menu {
       position: absolute;
       top: 100%;
-      left: 0;
-      right: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(-10px) scale(0.95);
       z-index: 9999;
       margin-top: 0.5rem;
       background: rgba(10, 10, 15, 0.95);
@@ -430,15 +430,16 @@
       max-height: 300px;
       overflow-y: auto;
       opacity: 0;
-      transform: translateY(-10px) scale(0.95);
       transition: all var(--transition-fast);
       pointer-events: none;
       visibility: hidden;
+      min-width: 200px;
+      width: max-content;
     }
 
     .futuristic-dropdown.open .futuristic-dropdown-menu {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: translateX(-50%) translateY(0) scale(1);
       pointer-events: auto;
       visibility: visible;
     }
