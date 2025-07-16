@@ -443,36 +443,17 @@
       visibility: visible;
     }
 
-    /* Сетка для выпадающего меню категорий */
-    .futuristic-dropdown-tree {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      padding: 1rem;
-      min-width: 350px;
-    }
-
-    .tree-center {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 0.5rem;
-    }
-
-    .tree-center-item {
-      min-width: 140px;
-      text-align: center;
-      border: 2px solid var(--neon-cyan);
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-    }
-
-    .tree-grid {
+    /* Простая сетка для выпадающего меню категорий */
+    .futuristic-dropdown-simple-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(2, 1fr);
       gap: 0.5rem;
+      padding: 1rem;
+      min-width: 350px;
     }
 
-    .futuristic-dropdown-tree .futuristic-dropdown-item {
+    .futuristic-dropdown-simple-grid .futuristic-dropdown-item {
       padding: 0.75rem;
       text-align: center;
       border-radius: var(--border-radius-md);
@@ -481,7 +462,7 @@
       transition: all var(--transition-fast);
     }
 
-    .futuristic-dropdown-tree .futuristic-dropdown-item:hover {
+    .futuristic-dropdown-simple-grid .futuristic-dropdown-item:hover {
       background: rgba(0, 255, 255, 0.1);
       color: var(--neon-cyan);
       text-shadow: var(--glow-sm);
@@ -489,7 +470,7 @@
       transform: translateY(-2px);
     }
 
-    .futuristic-dropdown-tree .futuristic-dropdown-item.selected {
+    .futuristic-dropdown-simple-grid .futuristic-dropdown-item.selected {
       background: rgba(0, 255, 255, 0.15);
       color: var(--neon-cyan);
       text-shadow: var(--glow-sm);
@@ -905,24 +886,15 @@
       }
 
       /* Адаптивная сетка категорий для мобильных */
-      .futuristic-dropdown-tree {
+      .futuristic-dropdown-simple-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
         min-width: 280px;
-        gap: 0.75rem;
+        gap: 0.25rem;
         padding: 0.75rem;
       }
 
-      .tree-center-item {
-        min-width: 120px;
-        font-size: 0.8rem;
-      }
-
-      .tree-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(3, 1fr);
-        gap: 0.25rem;
-      }
-
-      .futuristic-dropdown-tree .futuristic-dropdown-item {
+      .futuristic-dropdown-simple-grid .futuristic-dropdown-item {
         padding: 0.5rem;
         font-size: 0.8rem;
       }
@@ -1062,136 +1034,69 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
               </button>
-              <div class="futuristic-dropdown-menu futuristic-dropdown-tree" role="listbox">
-                <!-- Центральная кнопка сверху -->
-                <div class="tree-center">
-                  <div 
-                    class="futuristic-dropdown-item tree-center-item" 
-                    :class="{ 'selected': categoryFilter === '' }"
-                    @click="categoryFilter = ''; open = false"
-                    role="option"
-                    :aria-selected="categoryFilter === ''"
-                    x-show="categoryFilter !== ''"
-                  >
-                    🎭 Все категории
-                  </div>
-                  <div 
-                    class="futuristic-dropdown-item tree-center-item" 
-                    :class="{ 'selected': categoryFilter === 'movie' }"
-                    @click="categoryFilter = 'movie'; open = false"
-                    role="option"
-                    :aria-selected="categoryFilter === 'movie'"
-                    x-show="categoryFilter === ''"
-                  >
-                    🎬 Фильмы
-                  </div>
-                  <div 
-                    class="futuristic-dropdown-item tree-center-item" 
-                    :class="{ 'selected': categoryFilter === 'show' }"
-                    @click="categoryFilter = 'show'; open = false"
-                    role="option"
-                    :aria-selected="categoryFilter === 'show'"
-                    x-show="categoryFilter === ''"
-                  >
-                    📺 Сериалы
-                  </div>
-                  <div 
-                    class="futuristic-dropdown-item tree-center-item" 
-                    :class="{ 'selected': categoryFilter === 'anime' }"
-                    @click="categoryFilter = 'anime'; open = false"
-                    role="option"
-                    :aria-selected="categoryFilter === 'anime'"
-                    x-show="categoryFilter === ''"
-                  >
-                    🎌 Аниме
-                  </div>
-                  <div 
-                    class="futuristic-dropdown-item tree-center-item" 
-                    :class="{ 'selected': categoryFilter === 'game' }"
-                    @click="categoryFilter = 'game'; open = false"
-                    role="option"
-                    :aria-selected="categoryFilter === 'game'"
-                    x-show="categoryFilter === ''"
-                  >
-                    🎮 Игры
-                  </div>
-                  <div 
-                    class="futuristic-dropdown-item tree-center-item" 
-                    :class="{ 'selected': categoryFilter === 'cartoon' }"
-                    @click="categoryFilter = 'cartoon'; open = false"
-                    role="option"
-                    :aria-selected="categoryFilter === 'cartoon'"
-                    x-show="categoryFilter === ''"
-                  >
-                    🎨 Мультики
-                  </div>
+              <div class="futuristic-dropdown-menu futuristic-dropdown-simple-grid" role="listbox">
+                <!-- Первый ряд -->
+                <div 
+                  class="futuristic-dropdown-item" 
+                  :class="{ 'selected': categoryFilter === '' }"
+                  @click="categoryFilter = ''; open = false"
+                  role="option"
+                  :aria-selected="categoryFilter === ''"
+                  x-show="categoryFilter !== ''"
+                >
+                  🎭 Все категории
+                </div>
+                <div 
+                  class="futuristic-dropdown-item" 
+                  :class="{ 'selected': categoryFilter === 'movie' }"
+                  @click="categoryFilter = 'movie'; open = false"
+                  role="option"
+                  :aria-selected="categoryFilter === 'movie'"
+                  x-show="categoryFilter !== 'movie'"
+                >
+                  🎬 Фильмы
+                </div>
+                <div 
+                  class="futuristic-dropdown-item" 
+                  :class="{ 'selected': categoryFilter === 'show' }"
+                  @click="categoryFilter = 'show'; open = false"
+                  role="option"
+                  :aria-selected="categoryFilter === 'show'"
+                  x-show="categoryFilter !== 'show'"
+                >
+                  📺 Сериалы
                 </div>
                 
-                <!-- Сетка 2x3 снизу -->
-                <div class="tree-grid">
-                  <!-- Первый ряд -->
-                  <div 
-                    class="futuristic-dropdown-item" 
-                    :class="{ 'selected': categoryFilter === 'movie' }"
-                    @click="categoryFilter = 'movie'; open = false"
-                    role="option"
-                    :aria-selected="categoryFilter === 'movie'"
-                    x-show="categoryFilter !== 'movie'"
-                  >
-                    🎬 Фильмы
-                  </div>
-                  <div 
-                    class="futuristic-dropdown-item" 
-                    :class="{ 'selected': categoryFilter === 'show' }"
-                    @click="categoryFilter = 'show'; open = false"
-                    role="option"
-                    :aria-selected="categoryFilter === 'show'"
-                    x-show="categoryFilter !== 'show'"
-                  >
-                    📺 Сериалы
-                  </div>
-                  <div 
-                    class="futuristic-dropdown-item" 
-                    :class="{ 'selected': categoryFilter === 'anime' }"
-                    @click="categoryFilter = 'anime'; open = false"
-                    role="option"
-                    :aria-selected="categoryFilter === 'anime'"
-                    x-show="categoryFilter !== 'anime'"
-                  >
-                    🎌 Аниме
-                  </div>
-                  
-                  <!-- Второй ряд -->
-                  <div 
-                    class="futuristic-dropdown-item" 
-                    :class="{ 'selected': categoryFilter === 'game' }"
-                    @click="categoryFilter = 'game'; open = false"
-                    role="option"
-                    :aria-selected="categoryFilter === 'game'"
-                    x-show="categoryFilter !== 'game'"
-                  >
-                    🎮 Игры
-                  </div>
-                  <div 
-                    class="futuristic-dropdown-item" 
-                    :class="{ 'selected': categoryFilter === 'cartoon' }"
-                    @click="categoryFilter = 'cartoon'; open = false"
-                    role="option"
-                    :aria-selected="categoryFilter === 'cartoon'"
-                    x-show="categoryFilter !== 'cartoon'"
-                  >
-                    🎨 Мультики
-                  </div>
-                  <div 
-                    class="futuristic-dropdown-item" 
-                    :class="{ 'selected': categoryFilter === '' }"
-                    @click="categoryFilter = ''; open = false"
-                    role="option"
-                    :aria-selected="categoryFilter === ''"
-                    x-show="categoryFilter !== ''"
-                  >
-                    🎭 Все категории
-                  </div>
+                <!-- Второй ряд -->
+                <div 
+                  class="futuristic-dropdown-item" 
+                  :class="{ 'selected': categoryFilter === 'anime' }"
+                  @click="categoryFilter = 'anime'; open = false"
+                  role="option"
+                  :aria-selected="categoryFilter === 'anime'"
+                  x-show="categoryFilter !== 'anime'"
+                >
+                  🎌 Аниме
+                </div>
+                <div 
+                  class="futuristic-dropdown-item" 
+                  :class="{ 'selected': categoryFilter === 'game' }"
+                  @click="categoryFilter = 'game'; open = false"
+                  role="option"
+                  :aria-selected="categoryFilter === 'game'"
+                  x-show="categoryFilter !== 'game'"
+                >
+                  🎮 Игры
+                </div>
+                <div 
+                  class="futuristic-dropdown-item" 
+                  :class="{ 'selected': categoryFilter === 'cartoon' }"
+                  @click="categoryFilter = 'cartoon'; open = false"
+                  role="option"
+                  :aria-selected="categoryFilter === 'cartoon'"
+                  x-show="categoryFilter !== 'cartoon'"
+                >
+                  🎨 Мультики
                 </div>
               </div>
             </div>
