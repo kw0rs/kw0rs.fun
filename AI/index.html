@@ -2,22 +2,22 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>К.А.Л. Кворс Аниме Лист</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Академия Кворса | Оценки</title>
 
-  <!-- SEO & Open Graph -->
-  <meta property="og:title" content="К.А.Л. Кворс Аниме Лист" />
-  <meta property="og:description" content="Список аниме, игр, фильмов и книг от Кворса." />
-  <meta property="og:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg " />
-  <meta property="og:url" content="https://kw0rs.uno/anime-list " />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Академия имени Вильяма Кворса" />
+  <meta property="og:description" content="Блин, а прикольный сайтик так-то." />
+  <meta property="og:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg" />
+  <meta property="og:url" content="https://kw0rs.uno" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Академия Кворса" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="К.А.Л. Кворс Аниме Лист" />
-  <meta name="twitter:description" content="Список аниме, игр, фильмов и книг от Кворса." />
-  <meta name="twitter:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg " />
+  <meta name="twitter:title" content="Академия имени Вильяма Кворса" />
+  <meta name="twitter:description" content="Блин, а прикольный сайтик так-то." />
+  <meta name="twitter:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png" />
@@ -27,147 +27,106 @@
   <link rel="shortcut icon" href="/icon/favicon.ico" />
 
   <!-- TailwindCSS CDN -->
-  <script src="https://cdn.tailwindcss.com "></script>
-
-  <!-- Alpine.js -->
-  <script defer src="https://unpkg.com/alpinejs @3.x.x/dist/cdn.min.js"></script>
-
-  <!-- Перенаправление www → без www -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    if (location.hostname === 'www.kw0rs.uno') {
-      window.location.href = 'https://kw0rs.uno ' + location.pathname;
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#ef4444'
+          }
+        }
+      }
     }
   </script>
 
-  <!-- Стили -->
+  <!-- AlpineJS -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- WWW редирект -->
+  <script>
+    if (location.hostname === 'www.kw0rs.uno') {
+      location.href = 'https://kw0rs.uno' + location.pathname;
+    }
+  </script>
+
   <style>
-    .toggle-btn-active::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background-color: white;
+    body {
+      background-color: #1c1c1c;
+    }
+    .lazy-image {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .lazy-image.loaded {
+      opacity: 1;
     }
   </style>
 </head>
-<body class="text-white font-sans bg-gray-900" x-data="app()" x-init="init()">
-  <header class="flex justify-between items-center mb-6 px-4 py-3 border-b border-gray-700">
-    <h1 class="text-3xl font-bold">К.А.Л. Кворс Аниме Лист</h1>
-    <a href="https://kw0rs.uno/ " class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">В меню</a>
-  </header>
+<body class="text-white font-sans" x-data="app()" x-init="load()">
+  <div class="max-w-7xl mx-auto p-4">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold">К.А.Л. Кворс Аниме Лист</h1>
+      <a href="https://kw0rs.uno/" class="bg-primary hover:bg-red-700 px-4 py-2 rounded">В меню</a>
+    </div>
 
-  <main class="max-w-7xl mx-auto p-4">
     <!-- Фильтры -->
-    <div class="mb-6 space-y-4">
-      <input type="text" x-model="search" placeholder="Поиск..." class="p-2 w-full rounded bg-neutral-800 border border-neutral-700">
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <select x-model="categoryFilter" class="p-2 rounded bg-neutral-800 border border-neutral-700">
-          <option value="">Все категории</option>
-          <option value="movie">Фильмы</option>
-          <option value="show">Сериалы</option>
-          <option value="anime">Аниме</option>
-          <option value="game">Игры</option>
-          <option value="book">Чтиво</option>
-          <option value="cartoon">Мультики</option>
-        </select>
-
-        <select x-model="sortKey" class="p-2 rounded bg-neutral-800 border border-neutral-700">
-          <option value="rating-desc">Рейтинг (Высокие→Низкие)</option>
-          <option value="rating-asc">Рейтинг (Низкие→Высокие)</option>
-          <option value="year-desc">Год (Новее)</option>
-          <option value="year-asc">Год (Старее)</option>
-          <option value="title">Название (A-Z)</option>
-        </select>
-
-        <button @click="pickRandomItem" class="bg-red-600 hover:bg-red-700 text-white p-2 rounded">Мне повезёт</button>
-      </div>
-
+    <div class="grid gap-4 mb-6">
       <div class="flex flex-wrap gap-2">
-        <input type="number" x-model.number="minRating" min="0" max="10" placeholder="Рейтинг от" class="p-2 flex-1 bg-neutral-800 border border-neutral-700 rounded">
-        <input type="number" x-model.number="minYear" placeholder="Год от" class="p-2 flex-1 bg-neutral-800 border border-neutral-700 rounded">
-        <input type="number" x-model.number="maxYear" placeholder="Год до" class="p-2 flex-1 bg-neutral-800 border border-neutral-700 rounded">
+        <input type="text" x-model="search" placeholder="Поиск..." class="p-2 rounded bg-neutral-800 border border-neutral-700 min-w-[200px] flex-1">
+        <select x-model="category" class="p-2 rounded bg-neutral-800 border border-neutral-700">
+          <option value="">Все</option>
+          <option value="anime">Аниме</option>
+          <option value="movie">Фильмы</option>
+          <option value="game">Игры</option>
+          <option value="book">Книги</option>
+          <option value="cartoon">Мультики</option>
+          <option value="show">Сериалы</option>
+        </select>
+        <select x-model="sort" class="p-2 rounded bg-neutral-800 border border-neutral-700">
+          <option value="rating-desc">★ (высокие)</option>
+          <option value="rating-asc">★ (низкие)</option>
+          <option value="year-desc">Год ↓</option>
+          <option value="year-asc">Год ↑</option>
+          <option value="title">Название</option>
+        </select>
+        <button @click="random()" class="bg-primary hover:bg-red-700 px-4 py-2 rounded text-white">Мне повезёт</button>
       </div>
     </div>
 
-    <!-- Загрузка -->
-    <div x-show="loading" class="text-center py-10">
-      <p class="text-xl">Загрузка данных...</p>
-    </div>
-
-    <!-- Ошибка -->
-    <div x-show="error" class="text-center py-10 text-red-400">
-      <p class="text-xl" x-text="error"></p>
-      <button @click="loadItems" class="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Попробовать снова</button>
-    </div>
-
-    <!-- Список элементов -->
+    <!-- Список -->
+    <div x-show="loading" class="text-center py-10">Загрузка...</div>
     <div x-show="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <template x-for="item in filteredAndSortedItems" :key="item.id || item.title">
-        <div @click="openModal(item)" class="bg-neutral-900 rounded-xl overflow-hidden shadow hover:shadow-xl transition cursor-pointer">
-          <template x-if="item.image">
-            <img :src="item.image" class="w-full aspect-[2/3] object-cover" alt="">
-          </template>
-          <template x-if="!item.image">
-            <div class="w-full aspect-[2/3] bg-neutral-800 flex items-center justify-center text-gray-400">
-              Нет картинки
-            </div>
-          </template>
-          <div class="p-4">
-            <h2 class="text-xl font-semibold truncate" x-text="item.title"></h2>
-            <p class="text-sm text-gray-400 mb-1" x-text="`${getTypeDisplay(item.type)} • ${item.year}`"></p>
-            <p :class="getRatingClass(item)">★ <span x-text="getRatingText(item)"></span>/10</p>
-            <template x-if="item.genres.length">
-              <p class="text-sm text-gray-400 mt-1" x-text="item.genres.join(', ')"></p>
-            </template>
+      <template x-for="item in filtered" :key="item.title + item.year">
+        <div @click="modal = item" class="bg-neutral-900 p-4 rounded-xl shadow hover:shadow-xl cursor-pointer">
+          <div class="relative aspect-[2/3] w-full rounded overflow-hidden mb-2">
+            <div class="absolute inset-0 bg-neutral-700 animate-pulse" x-show="!item.loaded"></div>
+            <img :src="item.loaded ? item.image : null" :data-src="item.image" class="lazy-image w-full h-full object-cover" @load="item.loaded = true">
           </div>
+          <h2 class="text-xl font-bold truncate" x-text="item.title"></h2>
+          <p class="text-sm text-gray-400" x-text="item.type + ' • ' + item.year"></p>
+          <p x-text="item.rating != null ? '★ ' + item.rating + '/10' : 'Без оценки'" :class="ratingColor(item.rating)" class="font-bold"></p>
         </div>
       </template>
     </div>
-  </main>
 
-  <!-- Modal -->
-  <div x-show="modalItem" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80" @click.self="closeModal">
-    <div class="bg-neutral-900 p-6 rounded-lg w-[90%] max-w-5xl shadow-2xl" @click.stop>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="flex justify-center">
-          <img :src="modalItem?.image" class="max-h-96 rounded" @error="modalItem.image = null" />
-        </div>
-        <div>
-          <h2 class="text-2xl font-bold mb-2" x-text="modalItem?.title"></h2>
-          <p class="text-sm text-gray-400 mb-1" x-text="`${getTypeDisplay(modalItem?.type)} • ${modalItem?.year}`"></p>
-          <p :class="getRatingClass(modalItem)" class="font-bold mb-3">★ <span x-text="getRatingText(modalItem)"></span>/10</p>
-          <template x-if="modalItem?.genres.length">
-            <p class="text-sm text-gray-400 mb-3" x-text="modalItem?.genres.join(', ')"></p>
-          </template>
+    <!-- Ошибка -->
+    <div x-show="error" class="text-center text-red-500 py-6" x-text="error"></div>
 
-          <div class="toggle-container mb-4" x-show="hasContent">
-            <button @click="showReview = true" :class="getToggleClass('review')" :disabled="!modalItem?.review">
-              <span x-show="!modalItem?.review">Рецензии нет</span>
-              <span x-show="modalItem?.review">Рецензия</span>
-            </button>
-            <button @click="showReview = false" :class="getToggleClass('description')" :disabled="!modalItem?.description">
-              <span x-show="!modalItem?.description">Описания нет</span>
-              <span x-show="modalItem?.description">Описание</span>
-            </button>
-          </div>
-
-          <div class="content-section" x-show="hasContent">
-            <div x-show="showReview && modalItem?.review" x-text="modalItem?.review"></div>
-            <div x-show="!showReview && modalItem?.description" x-text="modalItem?.description"></div>
-            <div x-show="(showReview && !modalItem?.review) || (!showReview && !modalItem?.description)" class="text-center py-3 italic text-gray-400">
-              Этот раздел пуст
-            </div>
-          </div>
-
-          <div class="py-4 text-center" x-show="!hasContent">
-            <p class="italic text-gray-400">Информация отсутствует</p>
-          </div>
-
-          <button @click="closeModal" class="mt-4 bg-neutral-700 hover:bg-neutral-600 px-4 py-2 rounded">Закрыть</button>
-        </div>
+    <!-- Модалка -->
+    <div x-show="modal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4" @click.self="modal = null">
+      <div class="bg-neutral-900 p-6 rounded-lg max-w-4xl w-full">
+        <h2 class="text-2xl font-bold mb-2" x-text="modal?.title"></h2>
+        <p class="text-sm text-gray-400" x-text="modal?.type + ' • ' + modal?.year"></p>
+        <p class="font-bold my-2" x-text="modal?.rating != null ? '★ ' + modal?.rating + '/10' : 'Без оценки'" :class="ratingColor(modal?.rating)"></p>
+        <template x-if="modal?.description">
+          <p class="text-gray-300 mb-2" x-text="modal.description"></p>
+        </template>
+        <template x-if="modal?.review">
+          <p class="text-gray-400 italic" x-text="modal.review"></p>
+        </template>
+        <button class="mt-4 bg-neutral-700 hover:bg-neutral-600 px-4 py-2 rounded" @click="modal = null">Закрыть</button>
       </div>
     </div>
   </div>
@@ -176,180 +135,70 @@
     function app() {
       return {
         search: '',
-        categoryFilter: '',
-        sortKey: 'rating-desc',
-        minRating: null,
-        minYear: null,
-        maxYear: null,
-        modalItem: null,
-        showReview: true,
-        items: [],
-        loading: true,
+        category: '',
+        sort: 'rating-desc',
+        modal: null,
         error: null,
+        loading: true,
+        items: [],
 
-        translations: {
-          ru: {
-            noItems: "Нет элементов по этим фильтрам",
-          },
-        },
-
-        init() {
-          this.loadItems();
-          this.syncFiltersWithURL();
-
-          // Debounced search
-          this.$watch('search', debounce(() => {
-            this.updateURL();
-          }, 300));
-        },
-
-        syncFiltersWithURL() {
-          const params = new URLSearchParams(location.search);
-          this.search = params.get('search') || '';
-          this.categoryFilter = params.get('category') || '';
-        },
-
-        updateURL() {
-          const params = new URLSearchParams();
-          if (this.search) params.set('search', this.search);
-          if (this.categoryFilter) params.set('category', this.categoryFilter);
-          history.replaceState(null, '', '?' + params.toString());
-        },
-
-        async loadItems() {
-          this.loading = true;
-          this.error = null;
-
-          const urls = [
-            'anime_data.json',
-            'movies_data.json',
-            'games_data.json',
-            'books_data.json',
-            'cartoons_data.json'
-          ];
-
-          let allItems = [];
+        async load() {
+          const files = ['anime_data.json', 'movies_data.json', 'games_data.json', 'books_data.json', 'cartoons_data.json'];
           try {
-            for (const url of urls) {
-              const res = await fetch(url);
-              if (!res.ok) throw new Error(`Ошибка загрузки ${url}`);
-              const data = await res.json();
-              if (!Array.isArray(data)) throw new Error(`Ожидался массив в ${url}`);
-              allItems.push(...data);
-            }
-
-            this.items = allItems.map((item, idx) => ({
-              id: idx,
-              title: item.title || 'Без названия',
-              type: item.type || 'Неизвестно',
-              year: item.year || 'Н/Д',
-              rating: parseFloat(item.rating),
-              genres: Array.isArray(item.genres) ? item.genres : [],
-              description: item.description || '',
-              review: item.review || '',
-              image: item.image || null,
-            }));
-          } catch (e) {
-            this.error = `Не удалось загрузить данные: ${e.message}`;
-            this.items = [];
-          } finally {
+            const data = await Promise.all(files.map(f => fetch(f).then(r => r.json())));
+            this.items = data.flat().map(i => ({ ...i, loaded: false }));
             this.loading = false;
+            this.lazy();
+          } catch (e) {
+            this.error = 'Ошибка загрузки: ' + e.message;
           }
         },
 
-        pickRandomItem() {
-          const available = this.filteredAndSortedItems;
-          if (!available.length) {
-            this.error = 'Нет элементов по этим фильтрам';
-            setTimeout(() => this.error = null, 3000);
-            return;
-          }
-          this.openModal(available[Math.floor(Math.random() * available.length)]);
-        },
-
-        openModal(item) {
-          this.modalItem = { ...item };
-          this.showReview = !!item.review;
-        },
-
-        closeModal() {
-          this.modalItem = null;
-        },
-
-        getTypeDisplay(type) {
-          const map = {
-            movie: 'Фильм',
-            show: 'Сериал',
-            anime: 'Аниме',
-            game: 'Игра',
-            book: 'Книга',
-            cartoon: 'Мультфильм',
-          };
-          return map[type] || type;
-        },
-
-        get hasContent() {
-          return this.modalItem?.description || this.modalItem?.review;
-        },
-
-        getRatingText(item) {
-          return item.rating != null ? item.rating.toFixed(1) : '?';
-        },
-
-        getRatingClass(item) {
-          if (item.rating == null) return 'text-gray-400';
-          if (item.rating >= 10) return 'text-purple-500 [text-shadow:0_0_8px_rgba(168,85,247,0.8),0_0_16px_rgba(168,85,247,0.6)]';
-          if (item.rating >= 7) return 'text-green-400';
-          if (item.rating >= 4) return 'text-yellow-400';
-          return 'text-red-500';
-        },
-
-        getToggleClass(type) {
-          const active = 'toggle-btn toggle-btn-active';
-          const inactive = 'toggle-btn toggle-btn-inactive';
-          const disabled = 'toggle-btn toggle-btn-disabled';
-
-          if (type === 'review') {
-            if (!this.modalItem?.review) return disabled;
-            return this.showReview ? active : inactive;
-          }
-
-          if (type === 'description') {
-            if (!this.modalItem?.description) return disabled;
-            return !this.showReview ? active : inactive;
-          }
-
-          return inactive;
-        },
-
-        get filteredAndSortedItems() {
-          let result = this.items.filter(i => {
-            const matchesSearch = !this.search || i.title.toLowerCase().includes(this.search.toLowerCase());
-            const matchesCategory = !this.categoryFilter || i.type === this.categoryFilter;
-            const matchesMinRating = this.minRating == null || (i.rating != null && i.rating >= this.minRating);
-            const matchesMinYear = this.minYear == null || (i.year !== 'Н/Д' && parseInt(i.year) >= this.minYear);
-            const matchesMaxYear = this.maxYear == null || (i.year !== 'Н/Д' && parseInt(i.year) <= this.maxYear);
-            return matchesSearch && matchesCategory && matchesMinRating && matchesMinYear && matchesMaxYear;
+        get filtered() {
+          let out = this.items.filter(i => i.title.toLowerCase().includes(this.search.toLowerCase()));
+          if (this.category) out = out.filter(i => i.type === this.category);
+          return out.sort((a, b) => {
+            const ra = a.rating ?? -1, rb = b.rating ?? -1;
+            const ya = parseInt(a.year) || 0, yb = parseInt(b.year) || 0;
+            switch (this.sort) {
+              case 'rating-asc': return ra - rb;
+              case 'rating-desc': return rb - ra;
+              case 'year-asc': return ya - yb;
+              case 'year-desc': return yb - ya;
+              case 'title': return a.title.localeCompare(b.title);
+            }
           });
+        },
 
-          switch (this.sortKey) {
-            case 'rating-desc': return result.sort((a, b) => (b.rating ?? -1) - (a.rating ?? -1));
-            case 'rating-asc': return result.sort((a, b) => (a.rating ?? -1) - (b.rating ?? -1));
-            case 'year-desc': return result.sort((a, b) => parseInt(b.year) - parseInt(a.year));
-            case 'year-asc': return result.sort((a, b) => parseInt(a.year) - parseInt(b.year));
-            case 'title': return result.sort((a, b) => a.title.localeCompare(b.title));
-            default: return result;
-          }
+        random() {
+          const arr = this.filtered;
+          if (!arr.length) return;
+          const i = Math.floor(Math.random() * arr.length);
+          this.modal = arr[i];
+        },
+
+        ratingColor(r) {
+          if (r == null) return 'text-gray-500';
+          if (r >= 9.5) return 'text-purple-400';
+          if (r >= 8) return 'text-green-400';
+          if (r >= 5) return 'text-yellow-400';
+          return 'text-red-400';
+        },
+
+        lazy() {
+          const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+              if (e.isIntersecting) {
+                const img = e.target;
+                img.src = img.dataset.src;
+                obs.unobserve(img);
+              }
+            });
+          }, { rootMargin: '200px' });
+
+          document.querySelectorAll('img[data-src]').forEach(img => obs.observe(img));
         }
-      };
-    }
-
-    function debounce(fn, delay) {
-      let timeout;
-      return (...args) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => fn.apply(this, args), delay);
-      };
+      }
     }
   </script>
 </body>
