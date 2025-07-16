@@ -1035,14 +1035,12 @@
                 </svg>
               </button>
               <div class="futuristic-dropdown-menu futuristic-dropdown-simple-grid" role="listbox">
-                <!-- Первый ряд -->
                 <div 
                   class="futuristic-dropdown-item" 
                   :class="{ 'selected': categoryFilter === '' }"
                   @click="categoryFilter = ''; open = false"
                   role="option"
                   :aria-selected="categoryFilter === ''"
-                  x-show="categoryFilter !== ''"
                 >
                   🎭 Все категории
                 </div>
@@ -1052,7 +1050,6 @@
                   @click="categoryFilter = 'movie'; open = false"
                   role="option"
                   :aria-selected="categoryFilter === 'movie'"
-                  x-show="categoryFilter !== 'movie'"
                 >
                   🎬 Фильмы
                 </div>
@@ -1062,19 +1059,15 @@
                   @click="categoryFilter = 'show'; open = false"
                   role="option"
                   :aria-selected="categoryFilter === 'show'"
-                  x-show="categoryFilter !== 'show'"
                 >
                   📺 Сериалы
                 </div>
-                
-                <!-- Второй ряд -->
                 <div 
                   class="futuristic-dropdown-item" 
                   :class="{ 'selected': categoryFilter === 'anime' }"
                   @click="categoryFilter = 'anime'; open = false"
                   role="option"
                   :aria-selected="categoryFilter === 'anime'"
-                  x-show="categoryFilter !== 'anime'"
                 >
                   🎌 Аниме
                 </div>
@@ -1084,7 +1077,6 @@
                   @click="categoryFilter = 'game'; open = false"
                   role="option"
                   :aria-selected="categoryFilter === 'game'"
-                  x-show="categoryFilter !== 'game'"
                 >
                   🎮 Игры
                 </div>
@@ -1094,19 +1086,15 @@
                   @click="categoryFilter = 'book'; open = false"
                   role="option"
                   :aria-selected="categoryFilter === 'book'"
-                  x-show="categoryFilter !== 'book'"
                 >
                   📚 Чтиво
                 </div>
-                
-                <!-- Третий ряд -->
                 <div 
                   class="futuristic-dropdown-item" 
                   :class="{ 'selected': categoryFilter === 'cartoon' }"
                   @click="categoryFilter = 'cartoon'; open = false"
                   role="option"
                   :aria-selected="categoryFilter === 'cartoon'"
-                  x-show="categoryFilter !== 'cartoon'"
                 >
                   🎨 Мультики
                 </div>
