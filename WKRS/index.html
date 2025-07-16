@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Академия Кворса | Оценки</title>
 
   <!-- Open Graph -->
   <meta property="og:title" content="Академия имени Вильяма Кворса" />
-  <meta property="og:description" content="Блин, а прикольный сайтик так-то." />
+  <meta property="og:description" content="Ультрасовременный интерфейс для твоего медиа-опыта!" />
   <meta property="og:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg" />
   <meta property="og:url" content="https://kw0rs.uno" />
   <meta property="og:type" content="website" />
@@ -17,7 +16,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Академия имени Вильяма Кворса" />
-  <meta name="twitter:description" content="Блин, а прикольный сайтик так-то." />
+  <meta name="twitter:description" content="Ультрасовременный интерфейс для твоего медиа-опыта!" />
   <meta name="twitter:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg" />
 
   <!-- Favicon -->
@@ -27,15 +26,14 @@
   <link rel="manifest" href="/icon/site.webmanifest" />
   <link rel="shortcut icon" href="/icon/favicon.ico" />
 
-  <!-- Preconnect для улучшения производительности -->
-  <link rel="preconnect" href="https://cdn.tailwindcss.com">
-  <link rel="preconnect" href="https://unpkg.com">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;500;700&display=swap" />
 
   <!-- Tailwind & Alpine.js -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-  <!-- Перегонка www → без www -->
+  <!-- Redirect www to non-www -->
   <script>
     if (location.hostname === 'www.kw0rs.uno') {
       window.location.href = 'https://kw0rs.uno' + location.pathname;
@@ -43,861 +41,446 @@
   </script>
 
   <style>
-    /* CSS Custom Properties для лучшей поддержки тем */
     :root {
-      --bg-primary: #1c1c1c;
-      --bg-secondary: #171717;
-      --bg-card: #262626;
-      --bg-modal: rgba(0, 0, 0, 0.85);
-      --text-primary: #ffffff;
-      --text-secondary: #a3a3a3;
-      --text-muted: #737373;
-      --border-color: rgba(75, 85, 99, 0.4);
-      --accent-color: #ef4444;
-      --accent-hover: #dc2626;
-      --success-color: #22c55e;
-      --warning-color: #eab308;
-      --error-color: #ef4444;
-      --purple-glow: #a855f7;
-      --transition-fast: 0.15s ease;
-      --transition-normal: 0.3s ease;
-      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      --neon-pink: #ff2e63;
+      --neon-blue: #00ddeb;
+      --neon-purple: #9b59b6;
     }
-
-    /* Поддержка темной темы */
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-primary: #0a0a0a;
-        --bg-secondary: #111111;
-        --bg-card: #1a1a1a;
-      }
-    }
-
-    /* Базовые стили */
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      line-height: 1.6;
-      scroll-behavior: smooth;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+      overflow-x: hidden;
     }
-
-    /* Улучшенные стили для модального окна */
+    h1, h2 {
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 0 0 10px var(--neon-blue);
+    }
     .modal-bg {
-      background-color: var(--bg-modal);
+      background: rgba(0, 0, 0, 0.9);
       backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
     }
-
-    /* Улучшенные стили для изображений */
-    .card-img {
-      width: 100%;
-      aspect-ratio: 2/3;
-      object-fit: cover;
-      object-position: center;
-      transition: transform var(--transition-normal), filter var(--transition-normal);
+    .modal-content {
+      background: rgba(20, 20, 30, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--neon-blue);
+      animation: popIn 0.4s ease-out;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 0 20px rgba(0, 221, 235, 0.3);
     }
-
-    .card-img:hover {
-      transform: scale(1.05);
-      filter: brightness(1.1);
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.9) translateY(-20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
     }
-
     .full-img {
       width: 100%;
       height: auto;
       object-fit: contain;
       border-radius: 0.5rem;
+      box-shadow: 0 0 15px rgba(0, 221, 235, 0.2);
     }
-
-    /* Улучшенные стили для lazy loading */
+    .card-img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 0.5rem;
+      transition: transform 0.3s ease;
+    }
+    .card {
+      background: rgba(20, 20, 30, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--neon-pink);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+    }
+    .card:hover {
+      transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-10px);
+      box-shadow: 0 15px 30px rgba(255, 46, 99, 0.3);
+    }
     .lazy-image {
       opacity: 0;
-      transition: opacity var(--transition-normal);
+      transition: opacity 0.5s ease;
     }
-
     .lazy-image.loaded {
       opacity: 1;
     }
-
     .lazy-placeholder {
-      background: linear-gradient(110deg, #2a2a2a 8%, #3a3a3a 18%, #2a2a2a 33%);
+      background: linear-gradient(110deg, #2a2a3a 8%, #3a3a4a 18%, #2a2a3a 33%);
       background-size: 200% 100%;
       animation: shine 1.5s linear infinite;
+      position: absolute;
+      inset: 0;
     }
-
     @keyframes shine {
-      to {
-        background-position-x: -200%;
+      to { background-position-x: -200%; }
+    }
+    .spinner {
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      border-top: 4px solid var(--neon-blue);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      animation: spin 0.8s ease-in-out infinite;
+      margin: auto;
+      box-shadow: 0 0 15px var(--neon-blue);
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .truncate-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .filter-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      background: rgba(20, 20, 30, 0.7);
+      backdrop-filter: blur(10px);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--neon-purple);
+    }
+    .filter-item {
+      flex: 1 1 auto;
+      min-width: 140px;
+    }
+    .filter-item input, .filter-item select, .filter-item button {
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 221, 235, 0.2);
+    }
+    .filter-item input:focus, .filter-item select:focus, .filter-item button:hover {
+      box-shadow: 0 0 15px var(--neon-blue);
+      border-color: var(--neon-blue);
+    }
+    @media (max-width: 640px) {
+      .filter-item {
+        flex: 1 1 100%;
+      }
+      .modal-content {
+        width: 95%;
       }
     }
-
-    /* Улучшенные стили для карточек */
-    .media-card {
-      background-color: var(--bg-card);
-      border-radius: 1rem;
-      padding: 1rem;
-      box-shadow: var(--shadow-md);
-      transition: all var(--transition-normal);
-      cursor: pointer;
-      border: 1px solid transparent;
-      position: relative;
+    .toggle-container {
+      display: flex;
+      border-radius: 0.5rem;
       overflow: hidden;
+      border: 1px solid var(--neon-purple);
+      background: rgba(20, 20, 30, 0.5);
     }
-
-    .media-card::before {
+    .toggle-btn {
+      transition: all 0.3s ease;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      position: relative;
+      text-shadow: 0 0 5px var(--neon-blue);
+    }
+    .toggle-btn-active {
+      background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
+      color: white;
+      box-shadow: 0 0 15px rgba(0, 221, 235, 0.5);
+    }
+    .toggle-btn-active::after {
       content: '';
       position: absolute;
-      top: 0;
+      bottom: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, transparent 0%, rgba(239, 68, 68, 0.1) 100%);
-      opacity: 0;
-      transition: opacity var(--transition-normal);
-      pointer-events: none;
+      height: 3px;
+      background: var(--neon-blue);
+      box-shadow: 0 0 10px var(--neon-blue);
     }
-
-    .media-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-xl);
-      border-color: var(--accent-color);
+    .toggle-btn-inactive {
+      background: rgba(20, 20, 30, 0.5);
+      color: #d1d5db;
     }
-
-    .media-card:hover::before {
-      opacity: 1;
+    .toggle-btn-inactive:hover:not(:disabled) {
+      background: rgba(50, 50, 70, 0.5);
+      box-shadow: 0 0 10px rgba(0, 221, 235, 0.3);
     }
-
-    .media-card:focus-visible {
-      outline: 2px solid var(--accent-color);
-      outline-offset: 2px;
+    .toggle-btn-disabled {
+      background: rgba(20, 20, 30, 0.3);
+      color: #9ca3af;
+      cursor: not-allowed;
+      opacity: 0.6;
+      text-decoration: line-through;
     }
-
-    /* Улучшенные стили для кнопок */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.5rem 1rem;
+    .content-section {
+      min-height: 120px;
+      padding: 1rem;
       border-radius: 0.5rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all var(--transition-fast);
-      border: none;
-      cursor: pointer;
-      font-size: 0.875rem;
-      line-height: 1.25rem;
+      background: rgba(20, 20, 30, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--neon-blue);
+      margin-bottom: 1rem;
+    }
+    .filters-collapse {
+      transition: max-height 0.3s ease;
+      overflow: hidden;
+    }
+    .neon-button {
       position: relative;
       overflow: hidden;
     }
-
-    .btn::before {
+    .neon-button::before {
       content: '';
       position: absolute;
       top: 0;
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left var(--transition-normal);
+      background: linear-gradient(90deg, transparent, rgba(0, 221, 235, 0.3), transparent);
+      transition: left 0.5s ease;
     }
-
-    .btn:hover::before {
+    .neon-button:hover::before {
       left: 100%;
-    }
-
-    .btn-primary {
-      background-color: var(--accent-color);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background-color: var(--accent-hover);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .btn-secondary {
-      background-color: var(--bg-card);
-      color: var(--text-primary);
-      border: 1px solid var(--border-color);
-    }
-
-    .btn-secondary:hover {
-      background-color: #404040;
-      border-color: var(--accent-color);
-    }
-
-    /* Улучшенные стили для форм */
-    .form-input {
-      width: 100%;
-      padding: 0.75rem;
-      border-radius: 0.5rem;
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-primary);
-      transition: all var(--transition-fast);
-      font-size: 0.875rem;
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: var(--accent-color);
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-    }
-
-    .form-input::placeholder {
-      color: var(--text-muted);
-    }
-
-    /* Улучшенные стили для переключателей */
-    .toggle-container {
-      display: flex;
-      border-radius: 0.5rem;
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-      width: fit-content;
-      background-color: var(--bg-secondary);
-    }
-
-    .toggle-btn {
-      transition: all var(--transition-fast);
-      padding: 0.75rem 1.5rem;
-      font-weight: 500;
-      position: relative;
-      border: none;
-      cursor: pointer;
-      font-size: 0.875rem;
-    }
-
-    .toggle-btn-active {
-      background-color: var(--accent-color);
-      color: white;
-      box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
-    }
-
-    .toggle-btn-inactive {
-      background-color: transparent;
-      color: var(--text-secondary);
-    }
-
-    .toggle-btn-inactive:hover:not(:disabled) {
-      background-color: rgba(55, 65, 81, 0.5);
-      color: var(--text-primary);
-    }
-
-    .toggle-btn-disabled {
-      background-color: transparent;
-      color: var(--text-muted);
-      cursor: not-allowed;
-      opacity: 0.6;
-      text-decoration: line-through;
-    }
-
-    /* Улучшенные стили для контента */
-    .content-section {
-      min-height: 100px;
-      padding: 1rem;
-      border-radius: 0.5rem;
-      background-color: var(--bg-secondary);
-      margin-bottom: 1rem;
-      border: 1px solid var(--border-color);
-    }
-
-    /* Стили для рейтингов */
-    .rating-perfect {
-      color: var(--purple-glow);
-      text-shadow: 0 0 8px rgba(168, 85, 247, 0.8), 0 0 16px rgba(168, 85, 247, 0.6);
-      font-weight: 700;
-    }
-
-    .rating-good {
-      color: var(--success-color);
-      font-weight: 600;
-    }
-
-    .rating-average {
-      color: var(--warning-color);
-      font-weight: 500;
-    }
-
-    .rating-poor {
-      color: var(--error-color);
-      font-weight: 500;
-    }
-
-    .rating-unknown {
-      color: var(--text-muted);
-      font-weight: 400;
-    }
-
-    /* Улучшенная типографика */
-    .text-truncate {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .text-balance {
-      text-wrap: balance;
-    }
-
-    /* Адаптивные стили */
-    @media (max-width: 768px) {
-      .modal-content {
-        max-height: 85vh;
-        overflow-y: auto;
-        margin: 1rem;
-      }
-
-      .media-card {
-        padding: 0.75rem;
-      }
-
-      .toggle-btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .filter-grid {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-      }
-
-      .filter-row {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-
-      .btn {
-        width: 100%;
-      }
-    }
-
-    /* Стили для скелетона загрузки */
-    .skeleton {
-      background: linear-gradient(110deg, #2a2a2a 8%, #3a3a3a 18%, #2a2a2a 33%);
-      background-size: 200% 100%;
-      animation: shine 1.5s linear infinite;
-      border-radius: 0.5rem;
-    }
-
-    .skeleton-card {
-      height: 400px;
-      width: 100%;
-    }
-
-    /* Улучшенная анимация появления */
-    .fade-in {
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Стили для фокуса и доступности */
-    .focus-visible:focus-visible {
-      outline: 2px solid var(--accent-color);
-      outline-offset: 2px;
-    }
-
-    /* Улучшенные стили для скроллбара */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: var(--bg-secondary);
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--border-color);
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--accent-color);
-    }
-
-    /* Стили для уведомлений */
-    .notification {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 0.5rem;
-      padding: 1rem;
-      box-shadow: var(--shadow-lg);
-      z-index: 1000;
-      max-width: 300px;
-      animation: slideIn 0.3s ease-out;
-    }
-
-    @keyframes slideIn {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    .notification-error {
-      border-color: var(--error-color);
-      background-color: rgba(239, 68, 68, 0.1);
-    }
-
-    .notification-success {
-      border-color: var(--success-color);
-      background-color: rgba(34, 197, 94, 0.1);
-    }
-
-    /* Стили для загрузки */
-    .loading-spinner {
-      width: 2rem;
-      height: 2rem;
-      border: 2px solid var(--border-color);
-      border-top: 2px solid var(--accent-color);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* Улучшения для производительности */
-    .will-change-transform {
-      will-change: transform;
-    }
-
-    .gpu-accelerated {
-      transform: translateZ(0);
     }
   </style>
 </head>
+<body class="text-white font-sans" x-data="mediaApp()" x-init="init()">
+  <div class="max-w-7xl mx-auto p-4 relative">
+    <!-- Фоновая анимация -->
+    <div class="absolute inset-0 -z-10 opacity-20">
+      <div class="absolute w-96 h-96 bg-gradient-to-r from-[var(--neon-blue)] to-transparent rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute w-96 h-96 bg-gradient-to-r from-[var(--neon-pink)] to-transparent rounded-full blur-3xl top-1/2 right-0 animate-pulse delay-1000"></div>
+    </div>
 
-<body class="text-white font-sans" x-data="mediaApp()" x-init="loadItems()">
-  <!-- Основной контейнер -->
-  <div class="max-w-7xl mx-auto p-4">
-    <!-- Заголовок -->
-    <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-      <div>
-        <h1 class="text-4xl font-bold text-balance mb-2">К.А.Л. Кворс Аниме Лист</h1>
-        <p class="text-gray-400 text-sm">Коллекция медиа-контента с рейтингами и рецензиями</p>
-      </div>
-      <a
-        href="https://kw0rs.uno/"
-        class="btn btn-primary focus-visible"
-        aria-label="Перейти в главное меню"
-      >
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-        </svg>
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-4xl font-bold tracking-wide text-[var(--neon-blue)]">К.А.Л. Кворс Аниме Лист</h1>
+      <a href="https://kw0rs.uno/" class="bg-[var(--neon-pink)] hover:bg-[var(--neon-blue)] text-white px-5 py-2.5 rounded-lg neon-button transition-colors">
         В меню
       </a>
-    </header>
-    
-    <!-- Улучшенные фильтры -->
-    <section class="mb-8" aria-label="Фильтры и поиск">
-      <div class="grid grid-cols-1 gap-4">
-        <!-- Первая строка: поиск и основные фильтры -->
-        <div class="flex flex-wrap gap-3">
-          <div class="flex-1 min-w-[200px]">
-            <label for="search-input" class="sr-only">Поиск по названию</label>
+    </div>
+
+    <!-- Фильтры -->
+    <div class="mb-6">
+      <button 
+        @click="filtersOpen = !filtersOpen" 
+        class="sm:hidden mb-4 bg-[var(--neon-blue)]/10 px-4 py-2 rounded-lg w-full flex justify-between items-center neon-button"
+        aria-expanded="filtersOpen"
+        aria-controls="filters"
+      >
+        <span>Фильтры</span>
+        <span x-text="filtersOpen ? 'Свернуть' : 'Развернуть'"></span>
+      </button>
+      <div 
+        id="filters"
+        class="filters-collapse" 
+        x-bind:style="filtersOpen || window.innerWidth >= 640 ? 'max-height: 1000px' : 'max-height: 0px'"
+      >
+        <div class="filter-controls">
+          <input 
+            type="text" 
+            x-model="search" 
+            placeholder="Поиск..." 
+            class="p-2.5 rounded-lg bg-[var(--neon-blue)]/10 border border-[var(--neon-blue)]/30 focus:ring-2 focus:ring-[var(--neon-blue)] filter-item text-white placeholder-gray-400"
+            aria-label="Поиск по названию"
+          />
+          <select 
+            x-model="categoryFilter" 
+            class="p-2.5 rounded-lg bg-[var(--neon-blue)]/10 border border-[var(--neon-blue)]/30 focus:ring-2 focus:ring-[var(--neon-blue)] filter-item text-white"
+            aria-label="Фильтр по категории"
+          >
+            <option value="">Все категории</option>
+            <option value="movie">Фильмы</option>
+            <option value="show">Сериалы</option>
+            <option value="anime">Аниме</option>
+            <option value="game">Игры</option>
+            <option value="book">Чтиво</option>
+            <option value="cartoon">Мультики</option>
+          </select>
+          <select 
+            x-model="sortKey" 
+            class="p-2.5 rounded-lg bg-[var(--neon-blue)]/10 border border-[var(--neon-blue)]/30 focus:ring-2 focus:ring-[var(--neon-blue)] filter-item text-white"
+            aria-label="Сортировка"
+          >
+            <option value="rating-desc">Рейтинг (Высокие→Низкие)</option>
+            <option value="rating-asc">Рейтинг (Низкие→Высокие)</option>
+            <option value="year-desc">Год (Новее)</option>
+            <option value="year-asc">Год (Старее)</option>
+            <option value="title">Название (A-Z)</option>
+          </select>
+          <div class="flex items-center bg-[var(--neon-blue)]/10 border border-[var(--neon-blue)]/30 rounded-lg p-2.5 filter-item">
+            <span class="mr-2 text-sm text-gray-300">Рейтинг от:</span>
             <input 
-              id="search-input"
-              type="text" 
-              x-model="search" 
-              placeholder="Поиск по названию..." 
-              class="form-input"
-              autocomplete="off"
-              aria-describedby="search-help"
-            />
-            <div id="search-help" class="sr-only">Введите название для поиска медиа-контента</div>
-          </div>
-          
-          <div class="w-full sm:w-auto min-w-[150px]">
-            <label for="category-filter" class="sr-only">Фильтр по категории</label>
-            <select 
-              id="category-filter"
-              x-model="categoryFilter" 
-              class="form-input"
-              aria-describedby="category-help"
-            >
-              <option value="">Все категории</option>
-              <option value="movie">Фильмы</option>
-              <option value="show">Сериалы</option>
-              <option value="anime">Аниме</option>
-              <option value="game">Игры</option>
-              <option value="book">Чтиво</option>
-              <option value="cartoon">Мультики</option>
-            </select>
-            <div id="category-help" class="sr-only">Выберите категорию для фильтрации</div>
-          </div>
-          
-          <div class="w-full sm:w-auto min-w-[180px]">
-            <label for="sort-select" class="sr-only">Сортировка</label>
-            <select 
-              id="sort-select"
-              x-model="sortKey" 
-              class="form-input"
-              aria-describedby="sort-help"
-            >
-              <option value="rating-desc">Рейтинг (Высокие→Низкие)</option>
-              <option value="rating-asc">Рейтинг (Низкие→Высокие)</option>
-              <option value="year-desc">Год (Новее)</option>
-              <option value="year-asc">Год (Старее)</option>
-              <option value="title">Название (A-Z)</option>
-            </select>
-            <div id="sort-help" class="sr-only">Выберите способ сортировки результатов</div>
-          </div>
-        </div>
-        
-        <!-- Вторая строка: дополнительные фильтры -->
-        <div class="flex flex-wrap gap-3">
-          <div class="flex items-center form-input flex-1 min-w-[120px]">
-            <label for="min-rating" class="mr-2 text-sm text-gray-400 whitespace-nowrap">Рейтинг от:</label>
-            <input 
-              id="min-rating"
               type="number" 
               x-model.number="minRating" 
               placeholder="0" 
               min="0" 
               max="10" 
-              step="0.1"
-              class="bg-transparent w-16 focus:outline-none"
-              aria-describedby="min-rating-help"
+              class="bg-transparent w-14 focus:outline-none focus:ring-2 focus:ring-[var(--neon-blue)] text-white"
+              aria-label="Минимальный рейтинг"
             />
-            <div id="min-rating-help" class="sr-only">Минимальный рейтинг для фильтрации</div>
           </div>
-          
-          <div class="flex items-center form-input flex-1 min-w-[120px]">
-            <label for="min-year" class="mr-2 text-sm text-gray-400 whitespace-nowrap">Год от:</label>
+          <div class="flex items-center bg-[var(--neon-blue)]/10 border border-[var(--neon-blue)]/30 rounded-lg p-2.5 filter-item">
+            <span class="mr-2 text-sm text-gray-300">Год от:</span>
             <input 
-              id="min-year"
               type="number" 
               x-model.number="minYear" 
               placeholder="1900" 
-              min="1900"
-              max="2030"
-              class="bg-transparent w-20 focus:outline-none"
-              aria-describedby="min-year-help"
+              class="bg-transparent w-20 focus:outline-none focus:ring-2 focus:ring-[var(--neon-blue)] text-white"
+              aria-label="Минимальный год"
             />
-            <div id="min-year-help" class="sr-only">Минимальный год для фильтрации</div>
           </div>
-          
-          <div class="flex items-center form-input flex-1 min-w-[120px]">
-            <label for="max-year" class="mr-2 text-sm text-gray-400 whitespace-nowrap">Год до:</label>
+          <div class="flex items-center bg-[var(--neon-blue)]/10 border border-[var(--neon-blue)]/30 rounded-lg p-2.5 filter-item">
+            <span class="mr-2 text-sm text-gray-300">Год до:</span>
             <input 
-              id="max-year"
               type="number" 
               x-model.number="maxYear" 
               placeholder="2025" 
-              min="1900"
-              max="2030"
-              class="bg-transparent w-20 focus:outline-none"
-              aria-describedby="max-year-help"
+              class="bg-transparent w-20 focus:outline-none focus:ring-2 focus:ring-[var(--neon-blue)] text-white"
+              aria-label="Максимальный год"
             />
-            <div id="max-year-help" class="sr-only">Максимальный год для фильтрации</div>
           </div>
-          
           <button 
             @click="pickRandomItem()" 
-            class="btn btn-primary flex-1 sm:flex-grow-0 min-w-[140px]"
+            class="p-2.5 rounded-lg bg-[var(--neon-pink)] hover:bg-[var(--neon-blue)] text-white neon-button filter-item"
             aria-label="Выбрать случайный элемент"
           >
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-            </svg>
             Мне повезёт
           </button>
         </div>
       </div>
-
-      <!-- Счетчик результатов -->
-      <div class="mt-4 text-sm text-gray-400" x-show="!loading && !error">
-        <span x-text="`Найдено: ${filteredItems.length} из ${items.length}`"></span>
-      </div>
-    </section>
-
-    <!-- Состояния загрузки и ошибок -->
-    <div x-show="loading" class="text-center py-16" role="status" aria-live="polite">
-      <div class="loading-spinner mx-auto mb-4"></div>
-      <p class="text-xl">Загрузка данных...</p>
     </div>
 
-    <div x-show="error" class="text-center py-16" role="alert" aria-live="assertive">
-      <div class="notification notification-error mx-auto mb-4 relative max-w-md">
-        <svg class="w-6 h-6 text-red-400 mb-2 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <p class="text-lg font-medium text-red-400" x-text="error"></p>
-        <button 
-          @click="loadItems()" 
-          class="btn btn-primary mt-4"
-          aria-label="Повторить загрузку данных"
-        >
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-          </svg>
-          Попробовать снова
-        </button>
-      </div>
+    <!-- Состояние загрузки -->
+    <div x-show="loading" class="text-center py-12">
+      <div class="spinner"></div>
+      <p class="text-xl mt-4 text-[var(--neon-blue)]">Загрузка данных...</p>
+    </div>
+    <!-- Состояние ошибки -->
+    <div x-show="error" class="text-center py-12 text-[var(--neon-pink)]">
+      <p class="text-xl" x-text="error"></p>
+      <button 
+        @click="loadItems()" 
+        class="mt-4 bg-[var(--neon-blue)] hover:bg-[var(--neon-pink)] px-5 py-2.5 rounded-lg neon-button"
+        aria-label="Попробовать снова"
+      >
+        Попробовать снова
+      </button>
     </div>
 
     <!-- Сетка карточек -->
-    <main x-show="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" role="main">
+    <div x-show="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <template x-for="item in filteredAndSortedItems" :key="item.title + '-' + item.year + '-' + (item.rating ?? '')">
-        <article 
+        <div 
           @click="openModal(item)" 
+          class="card rounded-xl p-4 shadow-lg cursor-pointer"
+          role="button"
+          tabindex="0"
           @keydown.enter="openModal(item)"
           @keydown.space.prevent="openModal(item)"
-          class="media-card fade-in focus-visible will-change-transform"
-          tabindex="0"
-          role="button"
-          :aria-label="`Открыть подробности: ${item.title}`"
         >
-          <!-- Изображение -->
-          <div class="relative w-full aspect-[2/3] rounded-lg mb-4 overflow-hidden bg-gray-800">
-            <template x-if="item.image">
-              <div class="relative w-full h-full">
-                <div class="lazy-placeholder absolute inset-0" x-show="!item.imageLoaded"></div>
-                <img 
-                  class="lazy-image card-img gpu-accelerated" 
-                  :src="item.imageLoaded ? item.image : null"
-                  :data-src="!item.imageLoaded ? item.image : null" 
-                  :alt="`Постер ${item.title}`"
-                  @load="(e) => { e.target.classList.add('loaded'); item.imageLoaded = true; }" 
-                  @error="handleImageError($event, item)" 
-                  loading="lazy"
-                />
-              </div>
-            </template>
-            <template x-if="!item.image">
-              <div class="w-full h-full flex items-center justify-center bg-gray-800 text-gray-400 text-center p-4">
-                <div>
-                  <svg class="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                  </svg>
-                  <p class="text-sm">Изображение недоступно</p>
-                </div>
-              </div>
-            </template>
-          </div>
-
-          <!-- Информация о медиа -->
-          <div class="space-y-2">
-            <h2 class="text-lg font-semibold text-truncate text-balance" x-text="item.title"></h2>
-            <p class="text-sm text-gray-400" x-text="`${item.typeDisplay} • ${item.year}`"></p>
-            <div class="flex items-center justify-between">
-              <p :class="getRatingClass(item)" class="font-medium">
-                <span class="mr-1">★</span>
-                <span x-text="getRatingText(item)"></span>/10
-              </p>
-              <div class="text-xs text-gray-500" x-show="item.genres.length">
-                <span x-text="item.genres.slice(0, 2).join(', ')"></span>
-                <span x-show="item.genres.length > 2" x-text="`+${item.genres.length - 2}`"></span>
-              </div>
+          <template x-if="item.image">
+            <div class="relative w-full aspect-[2/3] rounded-lg mb-4 overflow-hidden">
+              <div class="card-img lazy-placeholder" x-show="!item.imageLoaded"></div>
+              <img 
+                class="lazy-image card-img" 
+                :src="item.imageLoaded ? item.image : null"
+                :data-src="!item.imageLoaded ? item.image : null"
+                :srcset="item.image ? `${item.image} 1x, ${item.image.replace('.jpg', '-2x.webp')} 2x` : null"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                @load="(e) => { e.target.classList.add('loaded'); item.imageLoaded = true; }"
+                @error="handleImageError($event, item)"
+                :alt="`Постер ${item.title}`"
+              />
             </div>
-          </div>
-        </article>
-      </template>
-    </main>
-
-    <!-- Сообщение об отсутствии результатов -->
-    <div x-show="!loading && !error && filteredAndSortedItems.length === 0" class="text-center py-16">
-      <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
-      </svg>
-      <h3 class="text-xl font-medium mb-2">Ничего не найдено</h3>
-      <p class="text-gray-400 mb-4">Попробуйте изменить параметры поиска или фильтры</p>
-      <button @click="clearFilters()" class="btn btn-secondary">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-        Очистить фильтры
-      </button>
-    </div>
-  </div>
-
-  <!-- Улучшенное модальное окно -->
-  <div 
-    x-show="modalItem" 
-    x-transition:enter="transition ease-out duration-300"
-    x-transition:enter-start="opacity-0"
-    x-transition:enter-end="opacity-100"
-    x-transition:leave="transition ease-in duration-200"
-    x-transition:leave-start="opacity-100"
-    x-transition:leave-end="opacity-0"
-    class="fixed inset-0 z-50 flex items-center justify-center modal-bg" 
-    @click.self="closeModal()"
-    @keydown.escape="closeModal()"
-    role="dialog"
-    aria-modal="true"
-    :aria-labelledby="modalItem ? 'modal-title' : null"
-  >
-    <div 
-      class="bg-neutral-900 p-6 rounded-xl w-[95%] max-w-6xl shadow-2xl modal-content border border-gray-700" 
-      @click.stop
-      x-transition:enter="transition ease-out duration-300 transform"
-      x-transition:enter-start="opacity-0 scale-95"
-      x-transition:enter-end="opacity-100 scale-100"
-      x-transition:leave="transition ease-in duration-200 transform"
-      x-transition:leave-start="opacity-100 scale-100"
-      x-transition:leave-end="opacity-0 scale-95"
-    >
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-        <!-- Изображение -->
-        <div class="flex justify-center">
-          <template x-if="modalItem.image">
-            <img 
-              :src="modalItem.image" 
-              class="full-img max-h-[70vh] shadow-lg" 
-              :alt="`Постер ${modalItem.title}`"
-              @error="modalItem.image = null"
-            />
           </template>
-          <template x-if="!modalItem.image">
-            <div class="w-full max-w-md h-80 flex items-center justify-center bg-gray-800 text-gray-400 rounded-lg text-center p-6">
-              <div>
-                <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
-                <p>Изображение недоступно</p>
-              </div>
+          <template x-if="!item.image">
+            <div class="w-full aspect-[2/3] flex items-center justify-center bg-[var(--neon-blue)]/10 text-gray-300 rounded-lg mb-4 text-center p-4">
+              Картинку съели,<br>скоро принесём новую
             </div>
+          </template>
+          <h2 class="text-xl font-semibold mb-2 truncate-text text-[var(--neon-blue)]" x-text="item.title"></h2>
+          <p class="text-sm text-gray-300 mb-2" x-text="`${item.typeDisplay} • ${item.year}`"></p>
+          <p :class="getRatingClass(item)">★ <span x-text="getRatingText(item)"></span>/10</p>
+          <template x-if="item.genres.length">
+            <p class="text-sm text-gray-300 mt-1 truncate-text" x-text="item.genres.join(', ')"></p>
           </template>
         </div>
+      </template>
+    </div>
 
-        <!-- Информация -->
-        <div class="space-y-4">
-          <div>
-            <h2 id="modal-title" class="text-3xl font-bold mb-2 text-balance" x-text="modalItem.title"></h2>
-            <p class="text-gray-400 mb-1" x-text="`${modalItem.typeDisplay} • ${modalItem.year}`"></p>
-            <p :class="getRatingClass(modalItem) + ' font-bold text-lg mb-3'">
-              <span class="mr-1">★</span>
-              <span x-text="getRatingText(modalItem)"></span>/10
-            </p>
-            <template x-if="modalItem.genres.length">
-              <div class="flex flex-wrap gap-2 mb-4">
-                <template x-for="genre in modalItem.genres" :key="genre">
-                  <span class="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded-full" x-text="genre"></span>
-                </template>
+    <!-- Модальное окно -->
+    <div 
+      x-show="modalItem" 
+      class="fixed inset-0 z-50 flex items-center justify-center modal-bg" 
+      @click.self="modalItem = null"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div class="modal-content p-6 rounded-xl w-[90%] max-w-5xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          <div class="flex justify-center">
+            <template x-if="modalItem.image">
+              <img 
+                :src="modalItem.image" 
+                :srcset="modalItem.image ? `${modalItem.image} 1x, ${modalItem.image.replace('.jpg', '-2x.webp')} 2x` : null"
+                sizes="(max-width: 640px) 100vw, 50vw"
+                class="full-img" 
+                @error="modalItem.image = null"
+                :alt="`Постер ${modalItem.title}`"
+              />
+            </template>
+            <template x-if="!modalItem.image">
+              <div class="w-full h-80 flex items-center justify-center bg-[var(--neon-blue)]/10 text-gray-300 rounded-lg text-center p-4">
+                Картинку съели,<br>скоро принесём новую
               </div>
             </template>
           </div>
-          
-          <!-- Улучшенные кнопки переключения -->
-          <div class="toggle-container" x-show="hasAnyContent" role="tablist">
-            <button 
-              @click="showReview = true" 
-              :class="getToggleButtonClass('review')"
-              :disabled="!modalItem.review"
-              :aria-selected="showReview"
-              role="tab"
-              :aria-controls="showReview ? 'review-content' : null"
-            >
-              <span x-show="!modalItem.review">Рецензии нет</span>
-              <span x-show="modalItem.review">Рецензия</span>
-            </button>
-            
-            <button 
-              @click="showReview = false" 
-              :class="getToggleButtonClass('description')"
-              :disabled="!modalItem.description"
-              :aria-selected="!showReview"
-              role="tab"
-              :aria-controls="!showReview ? 'description-content' : null"
-            >
-              <span x-show="!modalItem.description">Описания нет</span>
-              <span x-show="modalItem.description">Описание</span>
-            </button>
-          </div>
-          
-          <!-- Контент -->
-          <div class="content-section" x-show="hasAnyContent" role="tabpanel">
-            <!-- Рецензия -->
-            <div 
-              x-show="showReview && modalItem.review" 
-              id="review-content"
-              role="tabpanel"
-              aria-labelledby="review-tab"
-            >
-              <h3 class="text-lg font-semibold mb-3 text-gray-300">Рецензия</h3>
-              <p class="text-gray-300 leading-relaxed" x-text="modalItem.review"></p>
+          <div>
+            <h2 id="modal-title" class="text-2xl font-bold mb-2 text-[var(--neon-blue)]" x-text="modalItem.title"></h2>
+            <p class="text-sm text-gray-300 mb-2" x-text="`${modalItem.typeDisplay} • ${modalItem.year}`"></p>
+            <p :class="getRatingClass(modalItem) + ' font-bold mb-3 text-lg'">★ <span x-text="getRatingText(modalItem)"></span>/10</p>
+            <template x-if="modalItem.genres.length">
+              <p class="text-sm text-gray-300 mb-3" x-text="modalItem.genres.join(', ')"></p>
+            </template>
+            <div class="toggle-container" x-show="hasAnyContent">
+              <button 
+                @click="showReview = true" 
+                :class="getToggleButtonClass('review')"
+                :disabled="!modalItem.review"
+                :aria-pressed="showReview"
+                aria-label="Показать рецензию"
+              >
+                <span x-show="!modalItem.review">Рецензии нет</span>
+                <span x-show="modalItem.review">Рецензия</span>
+              </button>
+              <button 
+                @click="showReview = false" 
+                :class="getToggleButtonClass('description')"
+                :disabled="!modalItem.description"
+                :aria-pressed="!showReview"
+                aria-label="Показать описание"
+              >
+                <span x-show="!modalItem.description">Описания нет</span>
+                <span x-show="modalItem.description">Описание</span>
+              </button>
             </div>
-            
-            <!-- Описание -->
-            <div 
-              x-show="!showReview && modalItem.description" 
-              id="description-content"
-              role="tabpanel"
-              aria-labelledby="description-tab"
-            >
-              <h3 class="text-lg font-semibold mb-3 text-gray-300">Описание</h3>
-              <p class="text-gray-300 leading-relaxed" x-text="modalItem.description"></p>
+            <div class="content-section" x-show="hasAnyContent">
+              <div x-show="showReview && modalItem.review">
+                <p class="text-gray-200 prose" x-text="modalItem.review"></p>
+              </div>
+              <div x-show="!showReview && modalItem.description">
+                <p class="text-gray-200 prose" x-text="modalItem.description"></p>
+              </div>
+              <div x-show="(showReview && !modalItem.review) || (!showReview && !modalItem.description)" class="text-center py-4">
+                <p class="text-gray-300 italic">Этот раздел пуст</p>
+              </div>
             </div>
-            
-            <!-- Пустой контент -->
-            <div x-show="(showReview && !modalItem.review) || (!showReview && !modalItem.description)" class="text-center py-8">
-              <svg class="w-12 h-12 mx-auto mb-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
-              </svg>
-              <p class="text-gray-400 italic">Этот раздел пуст</p>
+            <div class="py-4 text-center" x-show="!hasAnyContent">
+              <p class="text-gray-300 italic">Информация отсутствует</p>
             </div>
-          </div>
-          
-          <!-- Сообщение об отсутствии контента -->
-          <div class="py-8 text-center" x-show="!hasAnyContent">
-            <svg class="w-12 h-12 mx-auto mb-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
-            </svg>
-            <p class="text-gray-400 italic text-lg">Дополнительная информация отсутствует</p>
-          </div>
-          
-          <!-- Кнопки действий -->
-          <div class="flex gap-3 pt-4 border-t border-gray-700">
             <button 
-              @click="closeModal()" 
-              class="btn btn-secondary flex-1"
+              @click="modalItem = null" 
+              class="mt-4 bg-[var(--neon-blue)] hover:bg-[var(--neon-pink)] px-5 py-2.5 rounded-lg neon-button"
               aria-label="Закрыть модальное окно"
             >
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
               Закрыть
-            </button>
-            <button 
-              @click="pickRandomItem()" 
-              class="btn btn-primary"
-              aria-label="Выбрать другой случайный элемент"
-            >
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-              </svg>
-              Ещё
             </button>
           </div>
         </div>
@@ -908,6 +491,7 @@
   <script>
     function mediaApp() {
       return {
+        // State
         search: '',
         categoryFilter: '',
         sortKey: 'rating-desc',
@@ -920,91 +504,76 @@
         maxYear: null,
         imageObserver: null,
         showReview: true,
-        
-        // Функция для перевода типов в отображаемый текст
+        filtersOpen: window.innerWidth >= 640,
+
+        // Инициализация
+        init() {
+          this.loadItems();
+          this.setupKeyboardEvents();
+        },
+
+        // Настройка событий клавиатуры
+        setupKeyboardEvents() {
+          window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.modalItem) {
+              this.modalItem = null;
+            }
+          });
+        },
+
+        // Тип отображения
         getTypeDisplay(typeValue) {
           const typeMap = {
-            'movie': 'Фильмы',
-            'show': 'Сериалы',
-            'anime': 'Аниме',
-            'game': 'Игры',
-            'book': 'Чтиво',
-            'cartoon': 'Мультики'
+            movie: 'Фильмы',
+            show: 'Сериалы',
+            anime: 'Аниме',
+            game: 'Игры',
+            book: 'Чтиво',
+            cartoon: 'Мультики'
           };
           return typeMap[typeValue] || typeValue;
         },
 
-        // Улучшенная функция загрузки данных
+        // Загрузка данных
         async loadItems() {
           this.loading = true;
           this.error = null;
           const urls = ['anime_data.json', 'movies_data.json', 'games_data.json', 'books_data.json', 'cartoons_data.json'];
           let allItems = [];
-          
           try {
-            // Используем Promise.allSettled для более надежной загрузки
-            const results = await Promise.allSettled(
-              urls.map(url => fetch(url).then(res => {
-                if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-                return res.json();
-              }))
-            );
-
-            // Обрабатываем результаты
-            results.forEach((result, index) => {
-              if (result.status === 'fulfilled') {
-                const data = result.value;
-                if (Array.isArray(data)) {
-                  allItems = allItems.concat(data);
-                } else {
-                  console.warn(`Файл ${urls[index]} не содержит массив данных`);
-                }
-              } else {
-                console.warn(`Не удалось загрузить ${urls[index]}:`, result.reason);
-              }
-            });
-
-            if (allItems.length === 0) {
-              throw new Error('Не удалось загрузить данные ни из одного источника');
+            for (const url of urls) {
+              const res = await fetch(url);
+              if (!res.ok) throw new Error(`Ошибка загрузки ${url}`);
+              const data = await res.json();
+              if (!Array.isArray(data)) throw new Error(`Ожидался массив в ${url}`);
+              allItems = allItems.concat(data);
             }
-
-            // Обрабатываем и валидируем данные
-            this.items = allItems.map(item => {
-              const rating = parseFloat(item.rating);
-              return {
-                title: item.title || 'Без названия',
-                type: item.type || 'unknown',
-                typeDisplay: this.getTypeDisplay(item.type) || 'Неизвестно',
-                year: item.year || 'Н/Д',
-                rating: !isNaN(rating) ? rating : null,
-                genres: Array.isArray(item.genres) ? item.genres : [],
-                description: item.description || '',
-                review: item.review || '',
-                image: item.image || null,
-                imageLoaded: false
-              };
-            });
-            
-            // Инициализация Intersection Observer
-            this.$nextTick(() => {
-              this.initLazyLoading();
-            });
-
+            this.items = allItems.map(i => ({
+              title: i.title || 'Без названия',
+              type: i.type || 'Неизвестно',
+              typeDisplay: this.getTypeDisplay(i.type),
+              year: i.year || 'Н/Д',
+              rating: !isNaN(parseFloat(i.rating)) ? parseFloat(i.rating) : null,
+              genres: Array.isArray(i.genres) ? i.genres : [],
+              description: i.description || '',
+              review: i.review || '',
+              image: i.image || null,
+              imageLoaded: false
+            }));
+            this.$nextTick(() => this.initLazyLoading());
           } catch (e) {
-            this.error = `Ошибка загрузки данных: ${e.message}`;
+            this.error = `Не удалось загрузить данные: ${e.message}`;
             this.items = [];
-            console.error('Ошибка загрузки:', e);
           } finally {
             this.loading = false;
           }
         },
 
-        // Улучшенная функция lazy loading
+        // Ленивая загрузка изображений
         initLazyLoading() {
           if (this.imageObserver) {
             this.imageObserver.disconnect();
           }
-          
           this.imageObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
               if (entry.isIntersecting) {
@@ -1012,163 +581,104 @@
                 const src = img.getAttribute('data-src');
                 if (src) {
                   img.setAttribute('src', src);
-                  img.removeAttribute('data-src');
                   this.imageObserver.unobserve(img);
                 }
               }
             });
           }, {
-            rootMargin: '100px 0px',
+            rootMargin: '200px 0px',
             threshold: 0.01
           });
-          
-          // Небольшая задержка для обеспечения рендеринга DOM
-          setTimeout(() => {
-            document.querySelectorAll('img[data-src]').forEach(img => {
-              this.imageObserver.observe(img);
-            });
-          }, 100);
-        },
-
-        // Улучшенная функция открытия модального окна
-        openModal(item) { 
-          this.modalItem = {...item};
-          this.showReview = item.review ? true : false;
-          
-          // Предотвращаем скролл фона
-          document.body.style.overflow = 'hidden';
-          
-          // Фокус на модальном окне для доступности
-          this.$nextTick(() => {
-            const modal = document.querySelector('[role="dialog"]');
-            if (modal) modal.focus();
+          document.querySelectorAll('img[data-src]').forEach(img => {
+            this.imageObserver.observe(img);
           });
         },
 
-        // Функция закрытия модального окна
-        closeModal() {
-          this.modalItem = null;
-          document.body.style.overflow = '';
-        },
-        
-        // Обработка ошибок изображений
-        handleImageError(e, item) { 
-          item.image = null; 
-          item.imageLoaded = false;
-          console.warn(`Не удалось загрузить изображение для: ${item.title}`);
+        // Открытие модального окна
+        openModal(item) {
+          this.modalItem = { ...item };
+          this.showReview = item.review ? true : false;
         },
 
-        // Улучшенная функция случайного выбора
+        // Обработка ошибок изображений
+        handleImageError(e, item) {
+          item.image = null;
+          item.imageLoaded = false;
+        },
+
+        // Случайный выбор
         pickRandomItem() {
           const availableItems = this.filteredItems;
           if (availableItems.length === 0) {
-            this.showNotification('Нет элементов, соответствующих фильтрам', 'error');
+            this.error = 'Нет элементов, соответствующих фильтрам';
+            setTimeout(() => this.error = null, 3000);
             return;
           }
           const randomIndex = Math.floor(Math.random() * availableItems.length);
           this.openModal(availableItems[randomIndex]);
         },
 
-        // Функция очистки фильтров
-        clearFilters() {
-          this.search = '';
-          this.categoryFilter = '';
-          this.minRating = null;
-          this.minYear = null;
-          this.maxYear = null;
-          this.sortKey = 'rating-desc';
-        },
-
-        // Функция показа уведомлений
-        showNotification(message, type = 'info') {
-          // Простая реализация уведомлений
-          const notification = document.createElement('div');
-          notification.className = `notification notification-${type}`;
-          notification.textContent = message;
-          document.body.appendChild(notification);
-          
-          setTimeout(() => {
-            notification.remove();
-          }, 3000);
-        },
-
-        // Функции для рейтингов
+        // Текст рейтинга
         getRatingText(item) {
-          return (item.rating != null) ? item.rating.toFixed(1) : '?';
+          return item.rating != null ? item.rating : '?';
         },
-        
+
+        // Класс для рейтинга
         getRatingClass(item) {
-          if (item.rating == null) return 'rating-unknown';
-          if (item.rating >= 10) return 'rating-perfect';
-          if (item.rating >= 7) return 'rating-good';
-          if (item.rating >= 4) return 'rating-average';
-          return 'rating-poor';
+          if (item.rating == null) return 'text-gray-300';
+          if (item.rating >= 10) return 'text-[var(--neon-purple)] [text-shadow:0_0_8px_rgba(155,89,182,0.8),0_0_16px_rgba(155,89,182,0.6)]';
+          if (item.rating >= 7) return 'text-[var(--neon-blue)]';
+          if (item.rating >= 4) return 'text-[var(--neon-pink)]';
+          return 'text-red-400';
         },
-        
-        // Функция для стилей кнопок переключения
+
+        // Класс для кнопок переключения
         getToggleButtonClass(type) {
           if (type === 'review') {
             if (!this.modalItem.review) return 'toggle-btn toggle-btn-disabled';
             return this.showReview ? 'toggle-btn toggle-btn-active' : 'toggle-btn toggle-btn-inactive';
           }
-          
           if (type === 'description') {
             if (!this.modalItem.description) return 'toggle-btn toggle-btn-disabled';
             return !this.showReview ? 'toggle-btn toggle-btn-active' : 'toggle-btn toggle-btn-inactive';
           }
-          
           return 'toggle-btn toggle-btn-inactive';
         },
-        
-        // Computed свойства
+
+        // Проверка наличия контента
         get hasAnyContent() {
           return this.modalItem && (this.modalItem.review || this.modalItem.description);
         },
 
+        // Фильтрованные элементы
         get filteredItems() {
           return this.items
-            .filter(item => !this.search || item.title.toLowerCase().includes(this.search.toLowerCase()))
-            .filter(item => !this.categoryFilter || item.type === this.categoryFilter)
-            .filter(item => this.minRating == null || (item.rating != null && item.rating >= this.minRating))
-            .filter(item => this.minYear == null || (item.year !== 'Н/Д' && parseInt(item.year) >= this.minYear))
-            .filter(item => this.maxYear == null || (item.year !== 'Н/Д' && parseInt(item.year) <= this.maxYear));
+            .filter(i => !this.search || i.title.toLowerCase().includes(this.search.toLowerCase()))
+            .filter(i => !this.categoryFilter || i.type === this.categoryFilter)
+            .filter(i => this.minRating == null || (i.rating != null && i.rating >= this.minRating))
+            .filter(i => this.minYear == null || (i.year !== 'Н/Д' && parseInt(i.year) >= this.minYear))
+            .filter(i => this.maxYear == null || (i.year !== 'Н/Д' && parseInt(i.year) <= this.maxYear));
         },
 
+        // Отфильтрованные и отсортированные элементы
         get filteredAndSortedItems() {
           const items = [...this.filteredItems].sort((a, b) => {
-            const ratingA = (a.rating == null) ? -1 : a.rating;
-            const ratingB = (b.rating == null) ? -1 : b.rating;
-            
+            const ra = a.rating == null ? -1 : a.rating;
+            const rb = b.rating == null ? -1 : b.rating;
             switch (this.sortKey) {
-              case 'rating-asc':   return ratingA - ratingB;
-              case 'rating-desc':  return ratingB - ratingA;
-              case 'year-asc':     return (parseInt(a.year) || 0) - (parseInt(b.year) || 0);
-              case 'year-desc':    return (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
-              case 'title':        return a.title.localeCompare(b.title, 'ru');
-              default:             return 0;
+              case 'rating-asc': return ra - rb;
+              case 'rating-desc': return rb - ra;
+              case 'year-asc': return (parseInt(a.year) || 0) - (parseInt(b.year) || 0);
+              case 'year-desc': return (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
+              case 'title': return a.title.localeCompare(b.title);
+              default: return 0;
             }
           });
-          
-          // Повторная инициализация lazy loading
-          this.$nextTick(() => {
-            this.initLazyLoading();
-          });
-          
+          this.$nextTick(() => this.initLazyLoading());
           return items;
-        },
-
-        // Обработка клавиатуры для доступности
-        init() {
-          // Обработка Escape для закрытия модального окна
-          document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modalItem) {
-              this.closeModal();
-            }
-          });
         }
-      }
+      };
     }
   </script>
 </body>
 </html>
-
