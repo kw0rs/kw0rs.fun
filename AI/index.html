@@ -1,168 +1,202 @@
 <!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Кастомный Wordle</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #222; color: #eee; display: flex; flex-direction: column; align-items: center; }
-        .hidden { display: none; }
-        .row { display: flex; margin: 5px 0; }
-        .cell {
-            width: 40px; height: 40px; border: 2px solid #444; margin: 2px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5em; background: #333; color: #fff; font-weight: bold;
-        }
-        .cell.correct { background: #6aaa64; }
-        .cell.present { background: #c9b458; }
-        .cell.absent { background: #444; }
-        #message { margin: 10px; min-height: 24px; }
-        input[type="text"] { font-size: 1.2em; padding: 4px; }
-        button { font-size: 1em; padding: 6px 12px; margin-left: 6px; }
-    </style>
-</head>
-<body>
-    <h2>Wordle с кастомным словом</h2>
-    <div id="setup">
-        <label>Введите загаданное слово: <input type="text" id="secretWord" maxlength="12" autocomplete="off"></label>
-        <button id="setSecretBtn">Подтвердить</button>
-    </div>
-    <div id="game" class="hidden">
-        <div id="board"></div>
-        <form id="guessForm" autocomplete="off">
-            <input type="text" id="guessInput" maxlength="12" autocomplete="off" placeholder="Ваш вариант">
-            <button type="submit">Проверить</button>
-        </form>
-        <div id="message"></div>
-        <button id="restartBtn" class="hidden">Начать заново</button>
-    </div>
+<html lang="ru" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Академия Кворса | Оценки</title>
+
+    <!-- Open Graph / Twitter / Favicon -->
+    <meta property="og:title" content="Академия имени Вильяма Кворса" />
+    <meta property="og:description" content="Блин, а прикольный сайтик так-то." />
+    <meta property="og:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg" />
+    <meta property="og:url" content="https://kw0rs.uno" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/icon/favicon.ico" />
+
+    <!-- TailwindCSS CDN (для статики, без билда) -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        let secret = '';
-        let maxTries = 6;
-        let currentTry = 0;
-        let wordLength = 0;
-        let finished = false;
-
-        const setupDiv = document.getElementById('setup');
-        const secretInput = document.getElementById('secretWord');
-        const setSecretBtn = document.getElementById('setSecretBtn');
-        const gameDiv = document.getElementById('game');
-        const boardDiv = document.getElementById('board');
-        const guessForm = document.getElementById('guessForm');
-        const guessInput = document.getElementById('guessInput');
-        const messageDiv = document.getElementById('message');
-        const restartBtn = document.getElementById('restartBtn');
-
-        setSecretBtn.onclick = function() {
-            let val = secretInput.value.trim().toLowerCase();
-            if (!val.match(/^[а-яa-zё]+$/i)) {
-                messageDiv.textContent = 'Слово должно содержать только буквы!';
-                return;
-            }
-            if (val.length < 3 || val.length > 12) {
-                messageDiv.textContent = 'Длина слова от 3 до 12 букв!';
-                return;
-            }
-            secret = val;
-            wordLength = secret.length;
-            setupDiv.classList.add('hidden');
-            gameDiv.classList.remove('hidden');
-            guessInput.setAttribute('maxlength', wordLength);
-            startGame();
-        };
-
-        function startGame() {
-            boardDiv.innerHTML = '';
-            messageDiv.textContent = '';
-            currentTry = 0;
-            finished = false;
-            guessInput.value = '';
-            guessInput.disabled = false;
-            guessInput.focus();
-            restartBtn.classList.add('hidden');
-            // Создать пустые строки
-            for (let i = 0; i < maxTries; i++) {
-                let row = document.createElement('div');
-                row.className = 'row';
-                for (let j = 0; j < wordLength; j++) {
-                    let cell = document.createElement('div');
-                    cell.className = 'cell';
-                    cell.textContent = '';
-                    row.appendChild(cell);
-                }
-                boardDiv.appendChild(row);
-            }
-        }
-
-        guessForm.onsubmit = function(e) {
-            e.preventDefault();
-            if (finished) return;
-            let guess = guessInput.value.trim().toLowerCase();
-            if (guess.length !== wordLength) {
-                messageDiv.textContent = `Слово должно быть из ${wordLength} букв!`;
-                return;
-            }
-            if (!guess.match(/^[а-яa-zё]+$/i)) {
-                messageDiv.textContent = 'Только буквы!';
-                return;
-            }
-            showGuess(guess);
-            guessInput.value = '';
-        };
-
-        function showGuess(guess) {
-            let row = boardDiv.children[currentTry];
-            let secretArr = secret.split('');
-            let guessArr = guess.split('');
-            let result = Array(wordLength).fill('absent');
-            let used = Array(wordLength).fill(false);
-
-            // Сначала отмечаем правильные буквы
-            for (let i = 0; i < wordLength; i++) {
-                if (guessArr[i] === secretArr[i]) {
-                    result[i] = 'correct';
-                    used[i] = true;
-                    secretArr[i] = null; // чтобы не использовать повторно
-                }
-            }
-            // Затем отмечаем присутствующие буквы
-            for (let i = 0; i < wordLength; i++) {
-                if (result[i] === 'correct') continue;
-                let idx = secretArr.indexOf(guessArr[i]);
-                if (idx !== -1 && !used[idx]) {
-                    result[i] = 'present';
-                    secretArr[idx] = null;
-                }
-            }
-            // Отобразить буквы
-            for (let i = 0; i < wordLength; i++) {
-                let cell = row.children[i];
-                cell.textContent = guessArr[i].toUpperCase();
-                cell.classList.add(result[i]);
-            }
-            currentTry++;
-            if (guess === secret) {
-                messageDiv.textContent = 'Поздравляем! Вы угадали!';
-                finishGame();
-            } else if (currentTry >= maxTries) {
-                messageDiv.textContent = `Не угадали! Слово было: ${secret.toUpperCase()}`;
-                finishGame();
-            } else {
-                messageDiv.textContent = '';
-            }
-        }
-
-        function finishGame() {
-            finished = true;
-            guessInput.disabled = true;
-            restartBtn.classList.remove('hidden');
-        }
-
-        restartBtn.onclick = function() {
-            setupDiv.classList.remove('hidden');
-            gameDiv.classList.add('hidden');
-            secretInput.value = '';
-            messageDiv.textContent = '';
-        };
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              background: '#1c1c1c',
+              card: '#111827',
+              primary: '#ef4444',
+              accent: '#8b5cf6',
+            },
+            borderRadius: {
+              xl: '1rem',
+            },
+          },
+        },
+      }
     </script>
-</body>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Перенаправление www → без www -->
+    <script>
+      if (location.hostname === 'www.kw0rs.uno') {
+        window.location.href = 'https://kw0rs.uno' + location.pathname;
+      }
+    </script>
+  </head>
+  <body class="bg-background text-white font-sans" x-data="mediaApp()" x-init="loadItems()">
+    <main class="max-w-7xl mx-auto px-4 py-6">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">К.А.Л. Кворс Аниме Лист</h1>
+        <a href="https://kw0rs.uno/" class="bg-primary hover:bg-red-700 px-4 py-2 rounded">В меню</a>
+      </div>
+
+      <!-- Фильтры -->
+      <section class="grid gap-4 mb-8">
+        <div class="flex flex-wrap gap-3">
+          <input type="text" x-model="search" placeholder="Поиск..." class="bg-card border border-neutral-700 p-2 rounded w-full sm:w-64" />
+          <select x-model="categoryFilter" class="bg-card border border-neutral-700 p-2 rounded">
+            <option value="">Все категории</option>
+            <option value="anime">Аниме</option>
+            <option value="movie">Фильмы</option>
+            <option value="show">Сериалы</option>
+            <option value="game">Игры</option>
+            <option value="book">Чтиво</option>
+            <option value="cartoon">Мультики</option>
+          </select>
+          <select x-model="sortKey" class="bg-card border border-neutral-700 p-2 rounded">
+            <option value="rating-desc">Рейтинг (высокие → низкие)</option>
+            <option value="rating-asc">Рейтинг (низкие → высокие)</option>
+            <option value="year-desc">Год (новее)</option>
+            <option value="year-asc">Год (старее)</option>
+            <option value="title">Название (A-Z)</option>
+          </select>
+          <button @click="pickRandomItem()" class="bg-primary px-4 py-2 rounded">Мне повезёт</button>
+        </div>
+      </section>
+
+      <!-- Список элементов -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <template x-for="item in filteredAndSortedItems" :key="item.title + item.year">
+          <div class="bg-card rounded-xl p-4 shadow hover:shadow-xl transition cursor-pointer" @click="openModal(item)">
+            <picture>
+              <source :srcset="item.image.replace('.jpg','.webp')" type="image/webp" />
+              <img loading="lazy" :src="item.image" alt="" class="rounded-xl mb-3 aspect-[2/3] object-cover w-full" @error="item.image = null" />
+            </picture>
+            <h2 class="font-semibold text-lg truncate" x-text="item.title"></h2>
+            <p class="text-sm text-gray-400" x-text="`${item.typeDisplay} • ${item.year}`"></p>
+            <p :class="getRatingClass(item)">★ <span x-text="getRatingText(item)"></span>/10</p>
+          </div>
+        </template>
+      </section>
+
+      <!-- Модалка -->
+      <div x-show="modalItem" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4" @click.self="modalItem = null">
+        <div class="bg-card rounded-xl p-6 w-full max-w-4xl" @click.stop>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <img :src="modalItem.image" loading="lazy" class="rounded-xl w-full" alt="" @error="modalItem.image = null" />
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold mb-2" x-text="modalItem.title"></h2>
+              <p class="text-sm text-gray-400 mb-1" x-text="`${modalItem.typeDisplay} • ${modalItem.year}`"></p>
+              <p :class="getRatingClass(modalItem) + ' font-bold mb-3'">★ <span x-text="getRatingText(modalItem)"></span>/10</p>
+              <p class="text-sm text-gray-400 mb-3" x-text="modalItem.genres.join(', ')"></p>
+              <p class="text-gray-300 whitespace-pre-wrap" x-text="modalItem.description || 'Нет описания.'"></p>
+              <p class="text-gray-300 mt-4 whitespace-pre-wrap" x-text="modalItem.review || 'Нет рецензии.'"></p>
+              <button class="mt-4 bg-neutral-700 hover:bg-neutral-600 px-4 py-2 rounded" @click="modalItem = null">Закрыть</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function mediaApp() {
+        return {
+          search: '',
+          categoryFilter: '',
+          sortKey: 'rating-desc',
+          modalItem: null,
+          items: [],
+
+          async loadItems() {
+            const urls = [
+              'anime_data.json', 'movies_data.json', 'games_data.json', 'books_data.json', 'cartoons_data.json'
+            ];
+            let allItems = [];
+            for (const url of urls) {
+              try {
+                const res = await fetch(url);
+                const data = await res.json();
+                allItems = allItems.concat(data);
+              } catch (e) {
+                console.warn(`Ошибка загрузки ${url}:`, e);
+              }
+            }
+            this.items = allItems.map(i => ({
+              title: i.title || 'Без названия',
+              type: i.type || 'Неизвестно',
+              typeDisplay: this.getTypeDisplay(i.type),
+              year: i.year || 'Н/Д',
+              rating: parseFloat(i.rating) || null,
+              genres: Array.isArray(i.genres) ? i.genres : [],
+              description: i.description || '',
+              review: i.review || '',
+              image: i.image || null,
+            }));
+          },
+
+          openModal(item) {
+            this.modalItem = { ...item };
+          },
+
+          pickRandomItem() {
+            const pool = this.filteredAndSortedItems;
+            if (pool.length) {
+              const rand = pool[Math.floor(Math.random() * pool.length)];
+              this.openModal(rand);
+            }
+          },
+
+          getTypeDisplay(type) {
+            const map = {
+              anime: 'Аниме', movie: 'Фильмы', show: 'Сериалы', game: 'Игры', book: 'Чтиво', cartoon: 'Мультики'
+            };
+            return map[type] || type;
+          },
+
+          getRatingText(item) {
+            return item.rating ?? '?';
+          },
+
+          getRatingClass(item) {
+            const r = item.rating;
+            if (r == null) return 'text-gray-400';
+            if (r >= 10) return 'text-purple-500';
+            if (r >= 7) return 'text-green-400';
+            if (r >= 4) return 'text-yellow-400';
+            return 'text-red-500';
+          },
+
+          get filteredAndSortedItems() {
+            return [...this.items]
+              .filter(i => !this.search || i.title.toLowerCase().includes(this.search.toLowerCase()))
+              .filter(i => !this.categoryFilter || i.type === this.categoryFilter)
+              .sort((a, b) => {
+                const ra = a.rating ?? -1;
+                const rb = b.rating ?? -1;
+                switch (this.sortKey) {
+                  case 'rating-asc': return ra - rb;
+                  case 'rating-desc': return rb - ra;
+                  case 'year-asc': return (parseInt(a.year) || 0) - (parseInt(b.year) || 0);
+                  case 'year-desc': return (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
+                  case 'title': return a.title.localeCompare(b.title);
+                  default: return 0;
+                }
+              });
+          }
+        }
+      }
+    </script>
+  </body>
 </html>
