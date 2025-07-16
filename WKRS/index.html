@@ -443,6 +443,39 @@
       visibility: visible;
     }
 
+    /* Сетка для выпадающего меню категорий */
+    .futuristic-dropdown-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 0.5rem;
+      padding: 1rem;
+      min-width: 400px;
+    }
+
+    .futuristic-dropdown-grid .futuristic-dropdown-item {
+      padding: 0.75rem;
+      text-align: center;
+      border-radius: var(--border-radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 0;
+    }
+
+    .futuristic-dropdown-grid .futuristic-dropdown-item:hover {
+      background: rgba(0, 255, 255, 0.1);
+      color: var(--neon-cyan);
+      text-shadow: var(--glow-sm);
+      border-color: var(--neon-cyan);
+    }
+
+    .futuristic-dropdown-grid .futuristic-dropdown-item.selected {
+      background: rgba(0, 255, 255, 0.15);
+      color: var(--neon-cyan);
+      text-shadow: var(--glow-sm);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    }
+
     .futuristic-dropdown-item {
       padding: 0.75rem 1rem;
       cursor: pointer;
@@ -849,6 +882,20 @@
       .futuristic-dropdown-menu {
         max-height: 200px;
       }
+
+      /* Адаптивная сетка категорий для мобильных */
+      .futuristic-dropdown-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        min-width: 300px;
+        gap: 0.25rem;
+        padding: 0.75rem;
+      }
+
+      .futuristic-dropdown-grid .futuristic-dropdown-item {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+      }
     }
 
     @media (max-width: 640px) {
@@ -985,7 +1032,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
               </button>
-              <div class="futuristic-dropdown-menu" role="listbox">
+              <div class="futuristic-dropdown-menu futuristic-dropdown-grid" role="listbox">
                 <div 
                   class="futuristic-dropdown-item" 
                   :class="{ 'selected': categoryFilter === '' }"
@@ -1030,15 +1077,6 @@
                   :aria-selected="categoryFilter === 'game'"
                 >
                   🎮 Игры
-                </div>
-                <div 
-                  class="futuristic-dropdown-item" 
-                  :class="{ 'selected': categoryFilter === 'book' }"
-                  @click="categoryFilter = 'book'; open = false"
-                  role="option"
-                  :aria-selected="categoryFilter === 'book'"
-                >
-                  📚 Чтиво
                 </div>
                 <div 
                   class="futuristic-dropdown-item" 
@@ -1511,7 +1549,6 @@
             'show': '📺 Сериалы',
             'anime': '🎌 Аниме',
             'game': '🎮 Игры',
-            'book': '📚 Чтиво',
             'cartoon': '🎨 Мультики'
           };
           return categoryMap[this.categoryFilter] || '🎭 Все категории';
