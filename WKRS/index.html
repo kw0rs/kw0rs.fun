@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="ru" class="scroll-smooth">
+<html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="К.А.Л. Кворс Аниме Лист - коллекция оценок фильмов, сериалов, аниме и других медиа" />
-
   <title>Академия Кворса | Оценки</title>
 
   <!-- Open Graph -->
   <meta property="og:title" content="Академия имени Вильяма Кворса" />
-  <meta property="og:description" content="Блин, а прикольный сайтик так-то." />
+  <meta property="og:description" content="Элегантный и современный медиа-каталог будущего." />
   <meta property="og:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg" />
   <meta property="og:url" content="https://kw0rs.uno" />
   <meta property="og:type" content="website" />
@@ -18,7 +16,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Академия имени Вильяма Кворса" />
-  <meta name="twitter:description" content="Блин, а прикольный сайтик так-то." />
+  <meta name="twitter:description" content="Элегантный и современный медиа-каталог будущего." />
   <meta name="twitter:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg" />
 
   <!-- Favicon -->
@@ -29,158 +27,158 @@
   <link rel="shortcut icon" href="/icon/favicon.ico" />
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" />
+
+  <!-- Preload critical resources -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" as="style" />
+  <link rel="preload" href="anime_data.json" as="fetch" crossorigin="anonymous" />
 
   <!-- Tailwind & Alpine.js -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-          colors: {
-            primary: {
-              600: '#ef4444',
-              700: '#dc2626',
-            },
-            dark: {
-              800: '#1e1e1e',
-              900: '#121212',
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-  <!-- Перегонка www → без www -->
+  <!-- Redirect www to non-www -->
   <script>
     if (location.hostname === 'www.kw0rs.uno') {
       window.location.href = 'https://kw0rs.uno' + location.pathname;
     }
   </script>
+
   <style>
     :root {
-      --header-height: 64px;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --bg-dark: #0f172a;
+      --bg-secondary: #1e293b;
     }
-    
-    body { 
-      background-color: #121212;
-      color: #f5f5f5;
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, var(--bg-dark), var(--bg-secondary));
+      color: #e2e8f0;
     }
-    
-    /* Анимации */
+    h1, h2 {
+      font-weight: 900;
+      letter-spacing: -0.025em;
+    }
+    .modal-bg {
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(6px);
+    }
+    .modal-content {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      animation: fadeIn 0.3s ease-out;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 1rem;
+    }
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    
-    @keyframes slideUp {
-      from { 
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to { 
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .full-img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 0.75rem;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
-    
-    .animate-fade-in {
-      animation: fadeIn 0.3s ease-out forwards;
+    .card-img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 0.75rem;
+      transition: transform 0.3s ease;
     }
-    
-    .animate-slide-up {
-      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    .card {
+      background: rgba(30, 41, 59, 0.9);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 1rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    
-    /* Стили для lazy loading */
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+    }
     .lazy-image {
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.5s ease;
     }
     .lazy-image.loaded {
       opacity: 1;
     }
     .lazy-placeholder {
-      background: linear-gradient(110deg, #2a2a2a 8%, #3a3a3a 18%, #2a2a2a 33%);
+      background: linear-gradient(110deg, #1e293b 8%, #2d3a4b 18%, #1e293b 33%);
       background-size: 200% 100%;
       animation: shine 1.5s linear infinite;
+      position: absolute;
+      inset: 0;
+      border-radius: 0.75rem;
     }
     @keyframes shine {
-      to {
-        background-position-x: -200%;
-      }
+      to { background-position-x: -200%; }
     }
-    
-    /* Карточки */
-    .media-card {
-      transition: all 0.2s ease;
-      transform-origin: center;
+    .spinner {
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      border-top: 4px solid var(--accent-blue);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 0.8s ease-in-out infinite;
+      margin: auto;
     }
-    
-    .media-card:hover {
-      transform: translateY(-4px) scale(1.01);
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
-    
-    .media-card:active {
-      transform: translateY(0) scale(0.98);
+    .truncate-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    
-    /* Модальное окно */
-    .modal-enter-active, .modal-leave-active {
-      transition: opacity 0.3s ease;
+    .filter-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(6px);
+      padding: 1rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(59, 130, 246, 0.2);
     }
-    
-    .modal-enter-from, .modal-leave-to {
-      opacity: 0;
-    }
-    
-    .modal-content-enter-active, .modal-content-leave-active {
+    .filter-item input, .filter-item select, .filter-item button {
       transition: all 0.3s ease;
     }
-    
-    .modal-content-enter-from, .modal-content-leave-to {
-      opacity: 0;
-      transform: scale(0.95);
+    .filter-item input:focus, .filter-item select:focus, .filter-item button:hover {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
     }
-    
-    /* Кастомный скроллбар */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+    @media (max-width: 640px) {
+      .modal-content {
+        width: 95%;
+      }
     }
-    
-    ::-webkit-scrollbar-track {
-      background: #2a2a2a;
+    .toggle-container {
+      display: flex;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      background: rgba(15, 23, 42, 0.5);
     }
-    
-    ::-webkit-scrollbar-thumb {
-      background: #4a4a4a;
-      border-radius: 4px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-      background: #5a5a5a;
-    }
-    
-    /* Переключатели в модалке */
     .toggle-btn {
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
       position: relative;
     }
-    
     .toggle-btn-active {
-      background-color: #ef4444;
+      background: var(--accent-blue);
       color: white;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
     }
-    
     .toggle-btn-active::after {
       content: '';
       position: absolute;
@@ -188,450 +186,281 @@
       left: 0;
       right: 0;
       height: 2px;
-      background-color: white;
+      background: white;
     }
-    
-    /* Эффект параллакса для фона */
-    .parallax-bg {
-      background-attachment: fixed;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
+    .toggle-btn-inactive {
+      background: transparent;
+      color: #d1d5db;
     }
-    
-    /* Адаптивные отступы */
-    @media (max-width: 640px) {
-      :root {
-        --header-height: 56px;
-      }
+    .toggle-btn-inactive:hover:not(:disabled) {
+      background: rgba(59, 130, 246, 0.1);
+    }
+    .toggle-btn-disabled {
+      background: rgba(15, 23, 42, 0.3);
+      color: #9ca3af;
+      cursor: not-allowed;
+      opacity: 0.6;
+      text-decoration: line-through;
+    }
+    .content-section {
+      min-height: 120px;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      margin-bottom: 1rem;
+    }
+    .filters-collapse {
+      transition: max-height 0.3s ease;
+      overflow: hidden;
+    }
+    .neon-button {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .neon-button:hover {
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
     }
   </style>
 </head>
-<body class="min-h-screen" 
-      x-data="mediaApp()" 
-      x-init="loadItems()"
-      :class="{'overflow-hidden': modalItem}">
-  
-  <!-- Шапка -->
-  <header class="sticky top-0 z-40 bg-dark-800/90 backdrop-blur-sm border-b border-dark-700">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-[var(--header-height)]">
-        <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-red-500 to-purple-500 bg-clip-text text-transparent">
-          К.А.Л. Кворс Аниме Лист
-        </h1>
-        <a href="https://kw0rs.uno/" class="btn-primary">
-          В меню
-        </a>
-      </div>
+<body class="text-white font-sans" x-data="mediaApp()" x-init="init()">
+  <div class="max-w-7xl mx-auto p-4">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-4xl font-bold tracking-tight text-white">К.А.Л. Кворс Аниме Лист</h1>
+      <a href="https://kw0rs.uno/" class="bg-[var(--accent-blue)] hover:bg-[var(--accent-purple)] text-white px-5 py-2.5 rounded-lg neon-button">
+        В меню
+      </a>
     </div>
-  </header>
 
-  <!-- Основное содержимое -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-    <!-- Фильтры и сортировка -->
-    <section class="mb-8 animate-fade-in">
-      <div class="grid grid-cols-1 gap-4">
-        <!-- Строка 1: Поиск и категории -->
-        <div class="flex flex-wrap gap-3">
-          <div class="flex-1 min-w-[200px]">
-            <label for="search" class="sr-only">Поиск</label>
-            <div class="relative">
-              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-              <input 
-                id="search"
-                type="text" 
-                x-model.debounce.300ms="search" 
-                placeholder="Поиск по названию..." 
-                class="input-field pl-10"
-              />
-            </div>
-          </div>
-          
-          <div class="flex-1 min-w-[160px]">
-            <label for="category" class="sr-only">Категория</label>
-            <div class="relative">
-              <select 
-                id="category"
-                x-model="categoryFilter" 
-                class="input-field appearance-none pr-8">
-                <option value="">Все категории</option>
-                <option value="movie">Фильмы</option>
-                <option value="show">Сериалы</option>
-                <option value="anime">Аниме</option>
-                <option value="game">Игры</option>
-                <option value="book">Чтиво</option>
-                <option value="cartoon">Мультики</option>
-              </select>
-              <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-            </div>
-          </div>
-          
-          <div class="flex-1 min-w-[160px]">
-            <label for="sort" class="sr-only">Сортировка</label>
-            <div class="relative">
-              <select 
-                id="sort"
-                x-model="sortKey" 
-                class="input-field appearance-none pr-8">
-                <option value="rating-desc">Рейтинг (Высокие→Низкие)</option>
-                <option value="rating-asc">Рейтинг (Низкие→Высокие)</option>
-                <option value="year-desc">Год (Новее)</option>
-                <option value="year-asc">Год (Старее)</option>
-                <option value="title">Название (A-Z)</option>
-              </select>
-              <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Строка 2: Дополнительные фильтры -->
-        <div class="flex flex-wrap gap-3">
-          <div class="flex-1 min-w-[120px]">
-            <label for="min-rating" class="block text-sm font-medium text-gray-300 mb-1">Рейтинг от</label>
-            <div class="relative">
-              <input 
-                id="min-rating"
-                type="number" 
-                x-model.number="minRating" 
-                placeholder="0" 
-                min="0" 
-                max="10" 
-                class="input-field"
-              />
-              <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                <span class="text-gray-400">/10</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="flex-1 min-w-[120px]">
-            <label for="min-year" class="block text-sm font-medium text-gray-300 mb-1">Год от</label>
+    <!-- Фильтры -->
+    <div class="mb-6">
+      <button 
+        @click="filtersOpen = !filtersOpen" 
+        class="sm:hidden mb-4 bg-[var(--bg-secondary)] px-4 py-2 rounded-lg w-full flex justify-between items-center neon-button"
+        aria-expanded="filtersOpen"
+        aria-controls="filters"
+      >
+        <span>Фильтры</span>
+        <span x-text="filtersOpen ? 'Свернуть' : 'Развернуть'"></span>
+      </button>
+      <div 
+        id="filters"
+        class="filters-collapse" 
+        x-bind:style="filtersOpen || window.innerWidth >= 640 ? 'max-height: 1000px' : 'max-height: 0px'"
+      >
+        <div class="filter-controls">
+          <input 
+            type="text" 
+            x-model="search" 
+            placeholder="Поиск..." 
+            class="p-2.5 rounded-lg bg-[var(--bg-secondary)] border border-[var(--accent-blue)]/30 focus:ring-2 focus:ring-[var(--accent-blue)] filter-item text-white placeholder-gray-400"
+            aria-label="Поиск по названию"
+          />
+          <select 
+            x-model="categoryFilter" 
+            class="p-2.5 rounded-lg bg-[var(--bg-secondary)] border border-[var(--accent-blue)]/30 focus:ring-2 focus:ring-[var(--accent-blue)] filter-item text-white"
+            aria-label="Фильтр по категории"
+          >
+            <option value="">Все категории</option>
+            <option value="movie">Фильмы</option>
+            <option value="show">Сериалы</option>
+            <option value="anime">Аниме</option>
+            <option value="game">Игры</option>
+            <option value="book">Чтиво</option>
+            <option value="cartoon">Мультики</option>
+          </select>
+          <select 
+            x-model="sortKey" 
+            class="p-2.5 rounded-lg bg-[var(--bg-secondary)] border border-[var(--accent-blue)]/30 focus:ring-2 focus:ring-[var(--accent-blue)] filter-item text-white"
+            aria-label="Сортировка"
+          >
+            <option value="rating-desc">Рейтинг (Высокие→Низкие)</option>
+            <option value="rating-asc">Рейтинг (Низкие→Высокие)</option>
+            <option value="year-desc">Год (Новее)</option>
+            <option value="year-asc">Год (Старее)</option>
+            <option value="title">Название (A-Z)</option>
+          </select>
+          <div class="flex items-center bg-[var(--bg-secondary)] border border-[var(--accent-blue)]/30 rounded-lg p-2.5 filter-item">
+            <span class="mr-2 text-sm text-gray-300">Рейтинг от:</span>
             <input 
-              id="min-year"
+              type="number" 
+              x-model.number="minRating" 
+              placeholder="0" 
+              min="0" 
+              max="10" 
+              class="bg-transparent w-14 focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] text-white"
+              aria-label="Минимальный рейтинг"
+            />
+          </div>
+          <div class="flex items-center bg-[var(--bg-secondary)] border border-[var(--accent-blue)]/30 rounded-lg p-2.5 filter-item">
+            <span class="mr-2 text-sm text-gray-300">Год от:</span>
+            <input 
               type="number" 
               x-model.number="minYear" 
               placeholder="1900" 
-              min="1900" 
-              max="2100" 
-              class="input-field"
+              class="bg-transparent w-20 focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] text-white"
+              aria-label="Минимальный год"
             />
           </div>
-          
-          <div class="flex-1 min-w-[120px]">
-            <label for="max-year" class="block text-sm font-medium text-gray-300 mb-1">Год до</label>
+          <div class="flex items-center bg-[var(--bg-secondary)] border border-[var(--accent-blue)]/30 rounded-lg p-2.5 filter-item">
+            <span class="mr-2 text-sm text-gray-300">Год до:</span>
             <input 
-              id="max-year"
               type="number" 
               x-model.number="maxYear" 
               placeholder="2025" 
-              min="1900" 
-              max="2100" 
-              class="input-field"
+              class="bg-transparent w-20 focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] text-white"
+              aria-label="Максимальный год"
             />
           </div>
-          
-          <div class="flex-1 min-w-[120px] flex items-end">
-            <button 
-              @click="pickRandomItem()" 
-              class="btn-primary w-full flex items-center justify-center gap-2"
-              :disabled="filteredItems.length === 0">
-              <svg x-show="!randomLoading" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              <svg x-show="randomLoading" class="animate-spin w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              <span>Мне повезёт</span>
-            </button>
-          </div>
+          <button 
+            @click="pickRandomItem()" 
+            class="p-2.5 rounded-lg bg-[var(--accent-blue)] hover:bg-[var(--accent-purple)] text-white neon-button filter-item"
+            aria-label="Выбрать случайный элемент"
+          >
+            Мне повезёт
+          </button>
         </div>
       </div>
-      
-      <!-- Индикатор количества найденных элементов -->
-      <div class="mt-4 text-sm text-gray-400" x-show="!loading && !error">
-        Найдено: <span x-text="filteredItems.length" class="font-medium"></span> из <span x-text="items.length" class="font-medium"></span>
-      </div>
-    </section>
+    </div>
 
-    <!-- Состояния загрузки и ошибки -->
-    <section x-show="loading" class="py-12 text-center animate-fade-in">
-      <div class="flex justify-center">
-        <svg class="animate-spin h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-      </div>
-      <p class="mt-4 text-xl">Загрузка данных...</p>
-    </section>
-
-    <section x-show="error" class="py-12 text-center animate-fade-in">
-      <div class="flex justify-center">
-        <svg class="h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-        </svg>
-      </div>
-      <p class="mt-4 text-xl text-red-400" x-text="error"></p>
-      <button @click="loadItems()" class="mt-6 btn-primary">
+    <!-- Состояние загрузки -->
+    <div x-show="loading" class="text-center py-12">
+      <div class="spinner"></div>
+      <p class="text-xl mt-4 text-white">Загрузка данных...</p>
+    </div>
+    <!-- Состояние ошибки -->
+    <div x-show="error" class="text-center py-12 text-red-400">
+      <p class="text-xl" x-text="error"></p>
+      <button 
+        @click="loadItems()" 
+        class="mt-4 bg-[var(--accent-blue)] hover:bg-[var(--accent-purple)] px-5 py-2.5 rounded-lg neon-button"
+        aria-label="Попробовать снова"
+      >
         Попробовать снова
       </button>
-    </section>
+    </div>
 
-    <!-- Сетка медиа-элементов -->
-    <section x-show="!loading && !error" 
-             x-transition:enter="transition ease-out duration-300"
-             x-transition:enter-start="opacity-0"
-             x-transition:enter-end="opacity-100">
-      <!-- Пустое состояние -->
-      <div x-show="filteredItems.length === 0" class="py-16 text-center">
-        <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <h3 class="mt-4 text-lg font-medium">Ничего не найдено</h3>
-        <p class="mt-2 text-gray-400">Попробуйте изменить параметры фильтрации</p>
-        <button @click="resetFilters()" class="mt-4 btn-secondary">
-          Сбросить фильтры
-        </button>
-      </div>
-      
-      <!-- Сетка элементов -->
-      <div x-show="filteredItems.length > 0" 
-           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-           x-data="{ observeItems() {
-             const observer = new IntersectionObserver((entries) => {
-               entries.forEach(entry => {
-                 if (entry.isIntersecting) {
-                   const img = entry.target;
-                   const src = img.getAttribute('data-src');
-                   if (src) {
-                     img.setAttribute('src', src);
-                     observer.unobserve(img);
-                   }
-                 }
-               });
-             }, { rootMargin: '200px 0px' });
-             
-             this.$nextTick(() => {
-               document.querySelectorAll('img[data-src]').forEach(img => {
-                 observer.observe(img);
-               });
-             });
-           } }"
-           x-init="observeItems()"
-           @filter-updated.window="observeItems()">
-        
-        <template x-for="item in filteredAndSortedItems" :key="item.id">
-          <article @click="openModal(item)" 
-                  class="media-card group relative bg-dark-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition-all cursor-pointer">
-            <!-- Бейдж категории -->
-            <div class="absolute top-3 left-3 z-10">
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" 
-                    :class="getCategoryBadgeClass(item.type)">
-                <span x-text="item.typeDisplay"></span>
-              </span>
+    <!-- Сетка карточек -->
+    <div x-show="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <template x-for="item in filteredAndSortedItems" :key="item.title + '-' + item.year + '-' + (item.rating ?? '')">
+        <div 
+          @click="openModal(item)" 
+          class="card p-4 cursor-pointer"
+          role="button"
+          tabindex="0"
+          @keydown.enter="openModal(item)"
+          @keydown.space.prevent="openModal(item)"
+        >
+          <template x-if="item.image">
+            <div class="relative w-full aspect-[2/3] rounded-lg mb-4 overflow-hidden">
+              <div class="card-img lazy-placeholder" x-show="!item.imageLoaded"></div>
+              <img 
+                class="lazy-image card-img" 
+                :data-src="item.image"
+                :srcset="item.image ? `${item.image} 1x, ${item.image.replace('.jpg', '-2x.webp')} 2x` : null"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                @load="(e) => { e.target.classList.add('loaded'); item.imageLoaded = true; console.log(`Loaded image: ${item.title}`); }"
+                @error="handleImageError($event, item)"
+                :alt="`Постер ${item.title}`"
+                loading="lazy"
+              />
             </div>
-            
-            <!-- Изображение -->
-            <div class="relative w-full aspect-[2/3] bg-dark-700 overflow-hidden">
-              <template x-if="item.image">
-                <div class="absolute inset-0">
-                  <div class="lazy-placeholder absolute inset-0" x-show="!item.imageLoaded"></div>
-                  <img 
-                    class="lazy-image w-full h-full object-cover transition-opacity duration-300" 
-                    :src="item.imageLoaded ? item.image : null"
-                    :data-src="!item.imageLoaded ? item.image : null" 
-                    @load="(e) => { e.target.classList.add('loaded'); item.imageLoaded = true; }" 
-                    @error="handleImageError($event,item)"
-                    alt="" 
-                    loading="lazy"
-                  />
-                </div>
-              </template>
-              <template x-if="!item.image">
-                <div class="w-full h-full flex items-center justify-center text-gray-400 p-4 text-center">
-                  <div>
-                    <svg class="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <p class="mt-2 text-sm">Изображение отсутствует</p>
-                  </div>
-                </div>
-              </template>
-              
-              <!-- Рейтинг -->
-              <div class="absolute bottom-3 right-3 z-10">
-                <div class="flex items-center justify-center w-12 h-12 rounded-full bg-dark-900/90 backdrop-blur-sm border border-dark-700 shadow-lg"
-                     :class="getRatingBgClass(item)">
-                  <span class="font-bold text-sm" x-text="getRatingText(item)"></span>
-                </div>
-              </div>
+          </template>
+          <template x-if="!item.image">
+            <div class="w-full aspect-[2/3] flex items-center justify-center bg-[var(--bg-secondary)] text-gray-400 rounded-lg mb-4 text-center p-4">
+              Картинку съели,<br>скоро принесём новую
             </div>
-            
-            <!-- Контент карточки -->
-            <div class="p-4">
-              <h2 class="text-lg font-semibold mb-1 truncate" x-text="item.title"></h2>
-              <div class="flex items-center justify-between text-sm text-gray-400">
-                <span x-text="item.year"></span>
-                <template x-if="item.genres.length > 0">
-                  <span class="truncate max-w-[50%]" x-text="item.genres[0]"></span>
-                </template>
-              </div>
-            </div>
-          </article>
-        </template>
-      </div>
-    </section>
-  </main>
+          </template>
+          <h2 class="text-xl font-semibold mb-2 truncate-text text-white" x-text="item.title"></h2>
+          <p class="text-sm text-gray-400 mb-2" x-text="`${item.typeDisplay} • ${item.year}`"></p>
+          <p :class="getRatingClass(item)">★ <span x-text="getRatingText(item)"></span>/10</p>
+          <template x-if="item.genres.length">
+            <p class="text-sm text-gray-400 mt-1 truncate-text" x-text="item.genres.join(', ')"></p>
+          </template>
+        </div>
+      </template>
+    </div>
 
-  <!-- Модальное окно -->
-  <div x-show="modalItem" 
-       x-transition.opacity.duration.300ms
-       class="fixed inset-0 z-50 overflow-y-auto"
-       @keydown.escape.window="modalItem = null">
-    <div class="flex items-center justify-center min-h-screen p-4">
-      <!-- Затемнение фона -->
-      <div class="fixed inset-0 bg-black/80 transition-opacity" 
-           @click="modalItem = null"
-           x-transition:enter="ease-out duration-300"
-           x-transition:enter-start="opacity-0"
-           x-transition:enter-end="opacity-100"
-           x-transition:leave="ease-in duration-200"
-           x-transition:leave-start="opacity-100"
-           x-transition:leave-end="opacity-0"></div>
-      
-      <!-- Контент модалки -->
-      <div class="relative bg-dark-800 rounded-xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden"
-           x-transition:enter="ease-out duration-300"
-           x-transition:enter-start="opacity-0 scale-95"
-           x-transition:enter-end="opacity-100 scale-100"
-           x-transition:leave="ease-in duration-200"
-           x-transition:leave-start="opacity-100 scale-100"
-           x-transition:leave-end="opacity-0 scale-95">
-        
-        <!-- Кнопка закрытия -->
-        <button @click="modalItem = null" 
-                class="absolute top-4 right-4 z-10 p-2 rounded-full bg-dark-700 hover:bg-dark-600 transition"
-                aria-label="Закрыть">
-          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-        
-        <div class="flex flex-col md:flex-row h-full">
-          <!-- Левая часть (изображение) -->
-          <div class="md:w-1/2 bg-dark-900 flex items-center justify-center p-6">
+    <!-- Модальное окно -->
+    <div 
+      x-show="modalItem" 
+      class="fixed inset-0 z-50 flex items-center justify-center modal-bg" 
+      @click.self="modalItem = null"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div class="modal-content p-6 w-[90%] max-w-5xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          <div class="flex justify-center">
             <template x-if="modalItem.image">
-              <img :src="modalItem.image" 
-                   class="max-h-[60vh] w-auto rounded-lg shadow-lg object-contain"
-                   @error="modalItem.image = null"
-                   :alt="modalItem.title">
+              <img 
+                :src="modalItem.image" 
+                :srcset="modalItem.image ? `${modalItem.image} 1x, ${modalItem.image.replace('.jpg', '-2x.webp')} 2x` : null"
+                sizes="(max-width: 640px) 100vw, 50vw"
+                class="full-img" 
+                @error="modalItem.image = null"
+                :alt="`Постер ${modalItem.title}`"
+                loading="lazy"
+              />
             </template>
             <template x-if="!modalItem.image">
-              <div class="w-full h-64 flex items-center justify-center text-gray-400">
-                <div class="text-center">
-                  <svg class="mx-auto h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <p class="mt-2">Изображение отсутствует</p>
-                </div>
+              <div class="w-full h-80 flex items-center justify-center bg-[var(--bg-secondary)] text-gray-400 rounded-lg text-center p-4">
+                Картинку съели,<br>скоро принесём новую
               </div>
             </template>
           </div>
-          
-          <!-- Правая часть (контент) -->
-          <div class="md:w-1/2 p-6 overflow-y-auto">
-            <div class="flex items-start justify-between mb-4">
-              <div>
-                <h2 class="text-2xl font-bold" x-text="modalItem.title"></h2>
-                <div class="flex items-center mt-1 space-x-4 text-sm text-gray-400">
-                  <span x-text="modalItem.typeDisplay"></span>
-                  <span>•</span>
-                  <span x-text="modalItem.year"></span>
-                </div>
-              </div>
-              
-              <div class="flex items-center justify-center w-14 h-14 rounded-full bg-dark-700 border border-dark-600 shadow"
-                   :class="getRatingBgClass(modalItem)">
-                <span class="font-bold text-lg" x-text="getRatingText(modalItem)"></span>
-              </div>
-            </div>
-            
-            <!-- Жанры -->
-            <template x-if="modalItem.genres.length > 0">
-              <div class="mb-4">
-                <div class="flex flex-wrap gap-2">
-                  <template x-for="genre in modalItem.genres">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-dark-700 text-gray-300">
-                      <span x-text="genre"></span>
-                    </span>
-                  </template>
-                </div>
-              </div>
+          <div>
+            <h2 id="modal-title" class="text-2xl font-bold mb-2 text-white" x-text="modalItem.title"></h2>
+            <p class="text-sm text-gray-400 mb-2" x-text="`${modalItem.typeDisplay} • ${modalItem.year}`"></p>
+            <p :class="getRatingClass(modalItem) + ' font-bold mb-3 text-lg'">★ <span x-text="getRatingText(modalItem)"></span>/10</p>
+            <template x-if="modalItem.genres.length">
+              <p class="text-sm text-gray-400 mb-3" x-text="modalItem.genres.join(', ')"></p>
             </template>
-            
-            <!-- Переключатель контента -->
-            <div class="mb-4" x-show="hasAnyContent">
-              <div class="flex rounded-lg bg-dark-700 p-1">
-                <!-- Кнопка "Рецензия" -->
-                <button 
-                  @click="showReview = true" 
-                  :class="getToggleButtonClass('review')"
-                  :disabled="!modalItem.review"
-                  class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition">
-                  <span x-show="!modalItem.review">Рецензии нет</span>
-                  <span x-show="modalItem.review">Рецензия</span>
-                </button>
-                
-                <!-- Кнопка "Описание" -->
-                <button 
-                  @click="showReview = false" 
-                  :class="getToggleButtonClass('description')"
-                  :disabled="!modalItem.description"
-                  class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition">
-                  <span x-show="!modalItem.description">Описания нет</span>
-                  <span x-show="modalItem.description">Описание</span>
-                </button>
+            <div class="toggle-container" x-show="hasAnyContent">
+              <button 
+                @click="showReview = true" 
+                :class="getToggleButtonClass('review')"
+                :disabled="!modalItem.review"
+                :aria-pressed="showReview"
+                aria-label="Показать рецензию"
+              >
+                <span x-show="!modalItem.review">Рецензии нет</span>
+                <span x-show="modalItem.review">Рецензия</span>
+              </button>
+              <button 
+                @click="showReview = false" 
+                :class="getToggleButtonClass('description')"
+                :disabled="!modalItem.description"
+                :aria-pressed="!showReview"
+                aria-label="Показать описание"
+              >
+                <span x-show="!modalItem.description">Описания нет</span>
+                <span x-show="modalItem.description">Описание</span>
+              </button>
+            </div>
+            <div class="content-section" x-show="hasAnyContent">
+              <div x-show="showReview && modalItem.review">
+                <p class="text-gray-200 prose" x-text="modalItem.review"></p>
+              </div>
+              <div x-show="!showReview && modalItem.description">
+                <p class="text-gray-200 prose" x-text="modalItem.description"></p>
+              </div>
+              <div x-show="(showReview && !modalItem.review) || (!showReview && !modalItem.description)" class="text-center py-4">
+                <p class="text-gray-400 italic">Этот раздел пуст</p>
               </div>
             </div>
-            
-            <!-- Контент (рецензия или описание) -->
-            <div class="prose prose-invert max-w-none" x-show="hasAnyContent">
-              <!-- Рецензия -->
-              <div x-show="showReview && modalItem.review" x-html="formatText(modalItem.review)"></div>
-              
-              <!-- Описание -->
-              <div x-show="!showReview && modalItem.description" x-html="formatText(modalItem.description)"></div>
-              
-              <!-- Если выбран таб без контента -->
-              <div x-show="(showReview && !modalItem.review) || (!showReview && !modalItem.description)" 
-                   class="text-center py-6 text-gray-400">
-                <svg class="mx-auto h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <p class="mt-2">Информация отсутствует</p>
-              </div>
+            <div class="py-4 text-center" x-show="!hasAnyContent">
+              <p class="text-gray-400 italic">Информация отсутствует</p>
             </div>
-            
-            <!-- Сообщение, если нет ни рецензии, ни описания -->
-            <div class="py-6 text-center" x-show="!hasAnyContent">
-              <svg class="mx-auto h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <p class="mt-2 text-gray-400">
-                Информация отсутствует
-              </p>
-            </div>
+            <button 
+              @click="modalItem = null" 
+              class="mt-4 bg-[var(--accent-blue)] hover:bg-[var(--accent-purple)] px-5 py-2.5 rounded-lg neon-button"
+              aria-label="Закрыть модальное окно"
+            >
+              Закрыть
+            </button>
           </div>
         </div>
       </div>
@@ -641,6 +470,7 @@
   <script>
     function mediaApp() {
       return {
+        // State
         search: '',
         categoryFilter: '',
         sortKey: 'rating-desc',
@@ -651,40 +481,56 @@
         minRating: null,
         minYear: null,
         maxYear: null,
+        imageObserver: null,
         showReview: true,
-        randomLoading: false,
-        
+        filtersOpen: window.innerWidth >= 640,
+
+        // Инициализация
+        init() {
+          this.loadItems();
+          this.setupKeyboardEvents();
+        },
+
+        // Настройка событий клавиатуры
+        setupKeyboardEvents() {
+          window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.modalItem) {
+              this.modalItem = null;
+            }
+          });
+        },
+
+        // Тип отображения
+        getTypeDisplay(typeValue) {
+          const typeMap = {
+            movie: 'Фильмы',
+            show: 'Сериалы',
+            anime: 'Аниме',
+            game: 'Игры',
+            book: 'Чтиво',
+            cartoon: 'Мультики'
+          };
+          return typeMap[typeValue] || typeValue;
+        },
+
         // Загрузка данных
         async loadItems() {
           this.loading = true;
           this.error = null;
-          
+          const urls = ['anime_data.json', 'movies_data.json', 'games_data.json', 'books_data.json', 'cartoons_data.json'];
+          let allItems = [];
           try {
-            // Используем Promise.all для параллельной загрузки
-            const urls = [
-              'anime_data.json', 
-              'movies_data.json', 
-              'games_data.json', 
-              'books_data.json', 
-              'cartoons_data.json'
-            ];
-            
-            const responses = await Promise.all(urls.map(url => fetch(url)));
-            
-            // Проверяем все ответы
-            for (const res of responses) {
-              if (!res.ok) throw new Error(`Ошибка загрузки данных: ${res.status}`);
+            for (const url of urls) {
+              const res = await fetch(url);
+              if (!res.ok) throw new Error(`Ошибка загрузки ${url}`);
+              const data = await res.json();
+              if (!Array.isArray(data)) throw new Error(`Ожидался массив в ${url}`);
+              allItems = allItems.concat(data);
             }
-            
-            // Парсим все JSON
-            const dataArrays = await Promise.all(responses.map(res => res.json()));
-            
-            // Объединяем и обрабатываем данные
-            this.items = dataArrays.flat().map((i, idx) => ({
-              id: idx, // Уникальный ID для ключей
+            this.items = allItems.map(i => ({
               title: i.title || 'Без названия',
               type: i.type || 'Неизвестно',
-              typeDisplay: this.getTypeDisplay(i.type) || 'Неизвестно',
+              typeDisplay: this.getTypeDisplay(i.type),
               year: i.year || 'Н/Д',
               rating: !isNaN(parseFloat(i.rating)) ? parseFloat(i.rating) : null,
               genres: Array.isArray(i.genres) ? i.genres : [],
@@ -693,134 +539,99 @@
               image: i.image || null,
               imageLoaded: false
             }));
-            
+            this.$nextTick(() => this.initLazyLoading());
           } catch (e) {
-            console.error('Ошибка загрузки данных:', e);
             this.error = `Не удалось загрузить данные: ${e.message}`;
             this.items = [];
           } finally {
             this.loading = false;
-            // Отправляем событие об обновлении фильтров
-            this.$dispatch('filter-updated');
           }
         },
-        
-        // Открытие модального окна
-        openModal(item) { 
-          this.modalItem = {...item};
-          this.showReview = item.review ? true : false;
-          // Прокрутка в начало модального окна
-          this.$nextTick(() => {
-            const modalContent = this.$el.querySelector('.overflow-y-auto');
-            if (modalContent) modalContent.scrollTop = 0;
+
+        // Ленивая загрузка изображений
+        initLazyLoading() {
+          if (this.imageObserver) {
+            this.imageObserver.disconnect();
+          }
+          this.imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const img = entry.target;
+                const src = img.getAttribute('data-src');
+                if (src && !img.src) {
+                  img.src = src;
+                  console.log(`Lazy-loading image: ${src}`);
+                  this.imageObserver.unobserve(img);
+                }
+              }
+            });
+          }, {
+            rootMargin: '200px 0px',
+            threshold: 0.01
+          });
+          document.querySelectorAll('img[data-src]').forEach(img => {
+            this.imageObserver.observe(img);
           });
         },
-        
-        // Обработчик ошибки изображения
-        handleImageError(e, item) { 
-          item.image = null; 
+
+        // Открытие модального окна
+        openModal(item) {
+          this.modalItem = { ...item };
+          this.showReview = item.review ? true : false;
+        },
+
+        // Обработка ошибок изображений
+        handleImageError(e, item) {
+          item.image = null;
           item.imageLoaded = false;
+          console.log(`Image error for: ${item.title}`);
         },
-        
-        // Случайный выбор элемента
-        async pickRandomItem() {
-          if (this.filteredItems.length === 0) return;
-          
-          this.randomLoading = true;
-          
-          // Имитация задержки для лучшего UX
-          await new Promise(resolve => setTimeout(resolve, 300));
-          
-          const randomIndex = Math.floor(Math.random() * this.filteredItems.length);
-          this.openModal(this.filteredItems[randomIndex]);
-          
-          this.randomLoading = false;
+
+        // Случайный выбор
+        pickRandomItem() {
+          const availableItems = this.filteredItems;
+          if (availableItems.length === 0) {
+            this.error = 'Нет элементов, соответствующих фильтрам';
+            setTimeout(() => this.error = null, 3000);
+            return;
+          }
+          const randomIndex = Math.floor(Math.random() * availableItems.length);
+          this.openModal(availableItems[randomIndex]);
         },
-        
-        // Сброс фильтров
-        resetFilters() {
-          this.search = '';
-          this.categoryFilter = '';
-          this.minRating = null;
-          this.minYear = null;
-          this.maxYear = null;
-          this.sortKey = 'rating-desc';
-        },
-        
-        // Форматирование текста (для переносов строк в описаниях)
-        formatText(text) {
-          return text.replace(/\n/g, '<br>');
-        },
-        
-        // Получение отображаемого текста рейтинга
+
+        // Текст рейтинга
         getRatingText(item) {
-          return (item.rating != null) ? item.rating : '?';
+          return item.rating != null ? item.rating : '?';
         },
-        
-        // Классы для рейтинга
+
+        // Класс для рейтинга
         getRatingClass(item) {
           if (item.rating == null) return 'text-gray-400';
-          if (item.rating >= 10) return 'text-purple-500 [text-shadow:0_0_8px_rgba(168,85,247,0.8),0_0_16px_rgba(168,85,247,0.6)]';
-          if (item.rating >= 7) return 'text-green-400';
+          if (item.rating >= 10) return 'text-[var(--accent-purple)]';
+          if (item.rating >= 7) return 'text-[var(--accent-blue)]';
           if (item.rating >= 4) return 'text-yellow-400';
-          return 'text-red-500';
+          return 'text-red-400';
         },
-        
-        // Классы для фона рейтинга
-        getRatingBgClass(item) {
-          if (item.rating == null) return 'text-gray-400';
-          if (item.rating >= 10) return 'bg-purple-900/80 text-purple-300';
-          if (item.rating >= 7) return 'bg-green-900/80 text-green-300';
-          if (item.rating >= 4) return 'bg-yellow-900/80 text-yellow-300';
-          return 'bg-red-900/80 text-red-300';
-        },
-        
-        // Классы для бейджей категорий
-        getCategoryBadgeClass(type) {
-          const typeClasses = {
-            'movie': 'bg-blue-900 text-blue-100',
-            'show': 'bg-indigo-900 text-indigo-100',
-            'anime': 'bg-purple-900 text-purple-100',
-            'game': 'bg-green-900 text-green-100',
-            'book': 'bg-amber-900 text-amber-100',
-            'cartoon': 'bg-pink-900 text-pink-100',
-          };
-          return typeClasses[type] || 'bg-gray-700 text-gray-100';
-        },
-        
-        // Функция для перевода type в отображаемый текст
-        getTypeDisplay(typeValue) {
-          const typeMap = {
-            'movie': 'Фильм',
-            'show': 'Сериал',
-            'anime': 'Аниме',
-            'game': 'Игра',
-            'book': 'Книга',
-            'cartoon': 'Мультфильм'
-          };
-          return typeMap[typeValue] || typeValue;
-        },
-        
-        // Классы для переключателей в модалке
+
+        // Класс для кнопок переключения
         getToggleButtonClass(type) {
-          const isActive = type === 'review' ? this.showReview : !this.showReview;
-          const hasContent = type === 'review' ? this.modalItem.review : this.modalItem.description;
-          
-          if (!hasContent) {
-            return 'text-gray-500 cursor-not-allowed';
+          if (type === 'review') {
+            if (!this.modalItem.review) return 'toggle-btn toggle-btn-disabled';
+            return this.showReview ? 'toggle-btn toggle-btn-active' : 'toggle-btn toggle-btn-inactive';
           }
-          
-          return isActive 
-            ? 'bg-dark-600 text-white shadow' 
-            : 'text-gray-300 hover:text-white hover:bg-dark-600/50';
+          if (type === 'description') {
+            if (!this.modalItem.description) return 'toggle-btn toggle-btn-disabled';
+            return !this.showReview ? 'toggle-btn toggle-btn-active' : 'toggle-btn toggle-btn-inactive';
+          }
+          return 'toggle-btn toggle-btn-inactive';
         },
-        
-        // Проверка наличия контента в модалке
+
+        // Проверка наличия контента
         get hasAnyContent() {
           return this.modalItem && (this.modalItem.review || this.modalItem.description);
         },
 
-        // Фильтрация элементов
+        // Фильтрованные элементы
         get filteredItems() {
           return this.items
             .filter(i => !this.search || i.title.toLowerCase().includes(this.search.toLowerCase()))
@@ -830,25 +641,24 @@
             .filter(i => this.maxYear == null || (i.year !== 'Н/Д' && parseInt(i.year) <= this.maxYear));
         },
 
-        // Сортировка элементов
+        // Отфильтрованные и отсортированные элементы
         get filteredAndSortedItems() {
-          return [...this.filteredItems].sort((a, b) => {
-            const ra = (a.rating == null) ? -1 : a.rating;
-            const rb = (b.rating == null) ? -1 : b.rating;
-            const ya = parseInt(a.year) || 0;
-            const yb = parseInt(b.year) || 0;
-            
+          const items = [...this.filteredItems].sort((a, b) => {
+            const ra = a.rating == null ? -1 : a.rating;
+            const rb = b.rating == null ? -1 : b.rating;
             switch (this.sortKey) {
-              case 'rating-asc':   return ra - rb;
-              case 'rating-desc':  return rb - ra;
-              case 'year-asc':     return ya - yb;
-              case 'year-desc':    return yb - ya;
-              case 'title':        return a.title.localeCompare(b.title);
-              default:            return 0;
+              case 'rating-asc': return ra - rb;
+              case 'rating-desc': return rb - ra;
+              case 'year-asc': return (parseInt(a.year) || 0) - (parseInt(b.year) || 0);
+              case 'year-desc': return (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
+              case 'title': return a.title.localeCompare(b.title);
+              default: return 0;
             }
           });
+          this.$nextTick(() => this.initLazyLoading());
+          return items;
         }
-      }
+      };
     }
   </script>
 </body>
