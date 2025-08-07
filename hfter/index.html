@@ -24,6 +24,38 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+
+        /* Кнопка меню */
+        .menu-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            z-index: 100;
+        }
+
+        .menu-button:hover {
+            background: #2a2a2a;
+            border-color: #555;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-button::before {
+            content: '🏠';
+            font-size: 16px;
+        }
         
         .header {
             text-align: center;
@@ -270,16 +302,34 @@
                 height: 50px;
                 font-size: 24px;
             }
+
+            .menu-button {
+                top: 15px;
+                right: 15px;
+                padding: 10px 16px;
+                font-size: 13px;
+            }
         }
         
         @media (max-width: 480px) {
             .devices-grid {
                 grid-template-columns: 1fr 1fr;
             }
+
+            .menu-button {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .menu-button::before {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
+    <a href="https://kw0rs.uno" class="menu-button">В меню</a>
+
     <div class="container">
         <div class="header">
             <h1>Мои устройства</h1>
@@ -626,7 +676,7 @@
                 icon: '🖥️',
                 title: 'Третий монитор',
                 info: 'Профессиональный монитор с USB-C подключением',
-                image: 'https://topradar.com.ua/image/cache/catalog/i/ni/kc/bc66c1f96d52789850229340ad31f36c-500x500.jpg', // Вставьте сюда ссылку на картинку
+                image: 'https://topradar.com.ua/image/cache/catalog/i/ni/kc/bc66c1f96d52789850229340ad31f36c-500x500.jpg',
                 specs: [
                     { label: 'Модель', value: 'DELL U2419Hc' },
                     { label: 'Диагональ', value: '24 дюйма' },
@@ -640,7 +690,7 @@
                 icon: '🖱️',
                 title: 'Игровая мышь',
                 info: 'Профессиональная игровая мышь с точным сенсором',
-                image: 'https://cdn.shopify.com/s/files/1/0631/9590/6271/products/DSC08473.jpg', // Вставьте сюда ссылку на картинку
+                image: 'https://cdn.shopify.com/s/files/1/0631/9590/6271/products/DSC08473.jpg',
                 specs: [
                     { label: 'Модель', value: 'Dareu A950 PRO' },
                     { label: 'Сенсор', value: 'PixArt 3395' },
@@ -654,7 +704,7 @@
                 icon: '⌨️',
                 title: 'Механическая клавиатура',
                 info: 'Премиум механическая клавиатура с кастомными переключателями',
-                image: 'https://i.moyo.ua/img/gallery/5276/15/1760941_middle.jpg', // Вставьте сюда ссылку на картинку
+                image: 'https://i.moyo.ua/img/gallery/5276/15/1760941_middle.jpg',
                 specs: [
                     { label: 'Модель', value: 'Varmilo Sakura EC 2' },
                     { label: 'Переключатели', value: 'Sakura switches' },
@@ -668,7 +718,7 @@
                 icon: '🖱️',
                 title: 'Коврик для мыши',
                 info: 'Большой игровой коврик с гладкой поверхностью',
-                image: 'https://img.telemart.ua/444469-586762/asus-rog-sheath-xxl-90mp00k1-b0uc00-black.jpg', // Вставьте сюда ссылку на картинку
+                image: 'https://img.telemart.ua/444469-586762/asus-rog-sheath-xxl-90mp00k1-b0uc00-black.jpg',
                 specs: [
                     { label: 'Модель', value: 'Asus ROG Sheath XXL' },
                     { label: 'Размер', value: '900x440x3 мм' },
@@ -682,7 +732,7 @@
                 icon: '🎧',
                 title: 'Игровые наушники',
                 info: 'Беспроводные игровые наушники',
-                image: 'https://logitech.com.ua/image/catalog/product/g735/g735-2.webp', // Вставьте сюда ссылку на картинку
+                image: 'https://logitech.com.ua/image/catalog/product/g735/g735-2.webp',
                 specs: [
                     { label: 'Модель', value: 'Logitech G735 Wireless' },
                     { label: 'Подключение', value: 'Радиоканал + блютуз к телефону' },
@@ -691,11 +741,11 @@
                     { label: 'Микрофон', value: 'Где-то валяется' }
                 ]
             },
-                        headphones2: {
+            headphones2: {
                 icon: '🎧',
                 title: 'Игровые наушники',
                 info: 'Проводные игровые наушники',
-                image: 'https://sm.ign.com/ign_pk/review/l/logitech-g/logitech-g-pro-x-gaming-headset-review_32zr.jpg', // Вставьте сюда ссылку на картинку
+                image: 'https://sm.ign.com/ign_pk/review/l/logitech-g/logitech-g-pro-x-gaming-headset-review_32zr.jpg',
                 specs: [
                     { label: 'Модель', value: 'G PRO X' },
                     { label: 'Подключение', value: '3.5 в USB карту' },
@@ -708,7 +758,7 @@
                 icon: '🎤',
                 title: 'Студийный микрофон',
                 info: 'USB микрофон для стриминга и записи контента',
-                image: 'https://www.gamerevolution.com/wp-content/uploads/sites/2/2022/12/HyperX-ProCast-Review_0004_Layer-8.jpg', // Вставьте сюда ссылку на картинку
+                image: 'https://www.gamerevolution.com/wp-content/uploads/sites/2/2022/12/HyperX-ProCast-Review_0004_Layer-8.jpg',
                 specs: [
                     { label: 'Модель', value: 'HyperX ProCast' },
                     { label: 'Тип', value: 'Конденсаторный' },
@@ -722,7 +772,7 @@
                 icon: '🎤',
                 title: 'Держатель микрофона',
                 info: 'Регулируемый настольный держатель для микрофона',
-                image: 'https://files.foxtrot.com.ua/PhotoNew/1_638243177727735870.jpg', // Вставьте сюда ссылку на картинку
+                image: 'https://files.foxtrot.com.ua/PhotoNew/1_638243177727735870.jpg',
                 specs: [
                     { label: 'Модель', value: 'OfficePro SA166' },
                     { label: 'Тип', value: 'Настольный с зажимом' },
@@ -736,7 +786,7 @@
                 icon: '🎛️',
                 title: 'Аудиоинтерфейс',
                 info: 'Компактный аудиоинтерфейс для записи и мониторинга',
-                image: 'https://prodj.ua/image/cache/catalog/img4b/2019/01/20190124130713-920x920.webp', // Вставьте сюда ссылку на картинку
+                image: 'https://prodj.ua/image/cache/catalog/img4b/2019/01/20190124130713-920x920.webp',
                 specs: [
                     { label: 'Модель', value: 'Native Instruments Komplete Audio 1' },
                     { label: 'Входы', value: '2 (mic/line)' },
@@ -750,7 +800,7 @@
                 icon: '📷',
                 title: 'Веб-камера',
                 info: 'Профессиональная веб-камера для стриминга',
-                image: 'https://avic.com.ua/storage/photos/shares/veb-kamera-razer-kiyo-pro-ultra_1.jpg', // Вставьте сюда ссылку на картинку
+                image: 'https://avic.com.ua/storage/photos/shares/veb-kamera-razer-kiyo-pro-ultra_1.jpg',
                 specs: [
                     { label: 'Модель', value: 'Razer Kiyo PRO' },
                     { label: 'Разрешение', value: '1080p при 60 FPS' },
@@ -764,7 +814,7 @@
                 icon: '🪑',
                 title: 'Игровое кресло',
                 info: 'Эргономичное игровое кресло премиум класса',
-                image: 'http://andaseat.ua/wp-content/uploads/2024/08/K4Green1.webp', // Вставьте сюда ссылку на картинку
+                image: 'http://andaseat.ua/wp-content/uploads/2024/08/K4Green1.webp',
                 specs: [
                     { label: 'Модель', value: 'Anda Seat Kaiser 4' },
                     { label: 'Материал', value: 'Кожа + ткань' },
@@ -778,7 +828,7 @@
                 icon: '📱',
                 title: 'Смартфон',
                 info: 'Основной смартфон для повседневного использования',
-                image: 'https://hotline.ua/img/tx/298/2989120325.jpg', // Вставьте сюда ссылку на картинку
+                image: 'https://hotline.ua/img/tx/298/2989120325.jpg',
                 specs: [
                     { label: 'Модель', value: 'Apple iPhone 13' },
                     { label: 'Память', value: '128GB' },
@@ -792,7 +842,7 @@
                 icon: '🎧',
                 title: 'Наушники для прогулок',
                 info: 'Беспроводные наушники с активным шумоподавлением',
-                image: 'https://wazza.com.ua/25570-thickbox_default/naushniki-skullcandy-crusher-wireless-over-ear-anc.jpg', // Вставьте сюда ссылку на картинку
+                image: 'https://wazza.com.ua/25570-thickbox_default/naushniki-skullcandy-crusher-wireless-over-ear-anc.jpg',
                 specs: [
                     { label: 'Модель', value: 'Skullcandy Crusher ANC' },
                     { label: 'Тип', value: 'Накладные' },
@@ -806,7 +856,7 @@
                 icon: '💡',
                 title: 'Фоновый свет',
                 info: 'RGB светодиодная панель для создания атмосферы',
-                image: 'https://whitenight.com.ua/Media/shop-18449/_imports/5670206375_ruchnoj-svetodiodnyj-svetilnik.jpg', // Вставьте сюда ссылку на картинку
+                image: 'https://whitenight.com.ua/Media/shop-18449/_imports/5670206375_ruchnoj-svetodiodnyj-svetilnik.jpg',
                 specs: [
                     { label: 'Модель', value: 'ULANZI VL119' },
                     { label: 'Тип', value: 'RGB LED панель' },
@@ -820,7 +870,7 @@
                 icon: '💡',
                 title: 'Основной свет',
                 info: 'Умная LED лампа с софтбоксом для студийного освещения',
-                image: 'https://content2.rozetka.com.ua/goods/images/big/194924980.jpg', // Вставьте сюда ссылку на картинку
+                image: 'https://content2.rozetka.com.ua/goods/images/big/194924980.jpg',
                 specs: [
                     { label: 'Тип', value: 'Smart LED Bulb RGB' },
                     { label: 'Мощность', value: '15W' },
@@ -834,7 +884,7 @@
                 icon: '💡',
                 title: 'Второй свет',
                 info: 'Компактный студийный свет для дополнительного освещения',
-                image: 'https://for-extreme.com.ua/image/cache/catalog/image/catalog/puluz/2053/puluz-pu392-nastolnaya-kolcevaya-lampa-02.webp', // Вставьте сюда ссылку на картинку
+                image: 'https://for-extreme.com.ua/image/cache/catalog/image/catalog/puluz/2053/puluz-pu392-nastolnaya-kolcevaya-lampa-02.webp',
                 specs: [
                     { label: 'Модель', value: 'PULUZ PU392' },
                     { label: 'Тип', value: 'LED кольцевой свет' },
@@ -844,7 +894,6 @@
                     { label: 'Крепление', value: 'Настольная стойка' }
                 ]
             }
-
         };
         
         // Элементы модального окна
