@@ -679,4 +679,154 @@
                 info: 'Профессиональная веб-камера для стриминга',
                 specs: [
                     { label: 'Модель', value: 'Razer Kiyo PRO' },
-                    { label:
+                    { label: 'Разрешение', value: '1080p при 60 FPS' },
+                    { label: 'Автофокус', value: 'Да' },
+                    { label: 'Угол обзора', value: '103°' },
+                    { label: 'Подключение', value: 'USB 3.0' },
+                    { label: 'Совместимость', value: 'Windows/Mac/Linux' }
+                ]
+            },
+            chair: {
+                icon: '🪑',
+                title: 'Игровое кресло',
+                info: 'Эргономичное игровое кресло премиум класса',
+                specs: [
+                    { label: 'Модель', value: 'Anda Seat Kaiser 4' },
+                    { label: 'Материал', value: 'Кожа + ткань' },
+                    { label: 'Нагрузка', value: 'до 180 кг' },
+                    { label: 'Регулировки', value: '4D подлокотники' },
+                    { label: 'Наклон', value: '90-165°' },
+                    { label: 'Поясничная поддержка', value: 'Магнитная' }
+                ]
+            },
+            phone: {
+                icon: '📱',
+                title: 'Смартфон',
+                info: 'Основной смартфон для повседневного использования',
+                specs: [
+                    { label: 'Модель', value: 'Apple iPhone 13' },
+                    { label: 'Память', value: '128GB' },
+                    { label: 'Процессор', value: 'A15 Bionic' },
+                    { label: 'Экран', value: '6.1" Super Retina XDR' },
+                    { label: 'Камера', value: '12MP двойная' },
+                    { label: 'Цвет', value: 'Midnight' }
+                ]
+            },
+            walkheadphones: {
+                icon: '🎧',
+                title: 'Наушники для прогулок',
+                info: 'Беспроводные наушники с активным шумоподавлением',
+                specs: [
+                    { label: 'Модель', value: 'Skullcandy Crusher ANC' },
+                    { label: 'Тип', value: 'Накладные' },
+                    { label: 'ANC', value: 'Активное шумоподавление' },
+                    { label: 'Время работы', value: 'до 24 часов' },
+                    { label: 'Подключение', value: 'Bluetooth 5.0' },
+                    { label: 'Особенности', value: 'Sensory Bass' }
+                ]
+            },
+            backgroundlight: {
+                icon: '💡',
+                title: 'Фоновый свет',
+                info: 'RGB светодиодная панель для создания атмосферы',
+                specs: [
+                    { label: 'Модель', value: 'ULANZI VL119' },
+                    { label: 'Тип', value: 'RGB LED панель' },
+                    { label: 'Мощность', value: '10W' },
+                    { label: 'Цветовая температура', value: '2500-9000K' },
+                    { label: 'Управление', value: 'Пульт ДУ / App' },
+                    { label: 'Питание', value: 'USB-C / батарея' }
+                ]
+            },
+            mainlight: {
+                icon: '💡',
+                title: 'Основной свет',
+                info: 'Умная LED лампа с софтбоксом для студийного освещения',
+                specs: [
+                    { label: 'Тип', value: 'Smart LED Bulb RGB' },
+                    { label: 'Мощность', value: '15W' },
+                    { label: 'Цвета', value: '16 миллионов' },
+                    { label: 'Диммирование', value: '1-100%' },
+                    { label: 'Софтбокс', value: '60x90 см' },
+                    { label: 'Управление', value: 'WiFi / App' }
+                ]
+            },
+            secondlight: {
+                icon: '💡',
+                title: 'Второй свет',
+                info: 'Компактный студийный свет для дополнительного освещения',
+                specs: [
+                    { label: 'Модель', value: 'PULUZ PU392' },
+                    { label: 'Тип', value: 'LED кольцевой свет' },
+                    { label: 'Диаметр', value: '12 дюймов' },
+                    { label: 'Мощность', value: '18W' },
+                    { label: 'Температура', value: '3200-5600K' },
+                    { label: 'Крепление', value: 'Настольная стойка' }
+                ]
+            }
+        };
+        
+        // Элементы модального окна
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalInfo = document.getElementById('modalInfo');
+        const modalSpecs = document.getElementById('modalSpecs');
+        const modalClose = document.getElementById('modalClose');
+        
+        // Функция открытия модального окна
+        function openModal(deviceId) {
+            const device = deviceData[deviceId];
+            if (!device) return;
+            
+            modalIcon.textContent = device.icon;
+            modalTitle.textContent = device.title;
+            modalInfo.textContent = device.info;
+            
+            // Очищаем и заполняем характеристики
+            modalSpecs.innerHTML = '';
+            device.specs.forEach(spec => {
+                const specItem = document.createElement('div');
+                specItem.className = 'spec-item';
+                specItem.innerHTML = `
+                    <span class="spec-label">${spec.label}:</span>
+                    <span class="spec-value">${spec.value}</span>
+                `;
+                modalSpecs.appendChild(specItem);
+            });
+            
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Функция закрытия модального окна
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Обработчики событий для карточек устройств
+        document.querySelectorAll('.device-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const deviceId = card.dataset.device;
+                openModal(deviceId);
+            });
+        });
+        
+        // Обработчики закрытия модального окна
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+        
+        // Закрытие по клавише Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
