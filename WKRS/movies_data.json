@@ -218,5 +218,15 @@
     "description": "",
     "review": "",
     "image": "https://www.dvdsreleasedates.com/posters/800/N/Napoleon-2023-movie-poster.jpg"
+  },
+        {
+    "title": "The Phoenician Scheme",
+    "type": "movie",
+    "rating": "7.0",
+    "year": 2025,
+    "genres": ["Комедия", "Артхаус"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
   }
 ]
