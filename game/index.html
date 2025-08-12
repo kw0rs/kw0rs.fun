@@ -4,19 +4,18 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Сапёр — Hard (30×16, 99 mines)</title>
-<link rel="icon" href="/icon/favicon-32x32.png">
 <style>
   :root{
     --bg:#0a0a0a;
     --panel:#1a1a1a;
     --muted:#888888;
-    --border:#333333;
+    --border:#555555; /* сделал ярче */
     --accent-blue:#007AFF;
     --accent-gold:#FFD700;
     --accent-pink:#FF69B4;
     --text:#ffffff;
-    --cell:#0f0f0f;
-    --cell-alt:#141414;
+    --cell:#121212;
+    --cell-alt:#1a1a1a;
     --flag-color:var(--accent-gold);
     --mine-color:#ff4d4f;
     --shadow: 0 6px 18px rgba(0,0,0,0.7);
@@ -70,25 +69,7 @@
     text-align:center;
   }
   .stat .num{font-weight:700;font-size:18px}
-  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-  .btn{
-    background:var(--panel);
-    border:1px solid var(--border);
-    color:var(--text);
-    padding:10px 12px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:600;
-    transition:all .12s;
-  }
-  .btn:hover{transform:translateY(-2px)}
-  .btn-blue{border-color:var(--accent-blue)}
-  .btn-gold{border-color:var(--accent-gold)}
-  .btn-pink{border-color:var(--accent-pink)}
 
-  .hint{font-size:13px;color:var(--muted);margin-top:8px}
-
-  /* Field */
   .board-wrap{
     display:flex;
     align-items:center;
@@ -98,6 +79,7 @@
     padding:18px;
     border:1px solid var(--border);
     box-shadow:var(--shadow);
+    overflow:auto;
   }
 
   .board{
@@ -105,6 +87,11 @@
     touch-action: manipulation;
     user-select:none;
     -webkit-user-select:none;
+    grid-template-columns: repeat(30, 28px);
+    grid-auto-rows: 28px;
+    gap: 1px; /* разделитель между клетками */
+    background:#555555; /* яркая граница между клетками */
+    border-radius: 10px;
   }
 
   .cell{
@@ -114,32 +101,34 @@
     align-items:center;
     justify-content:center;
     background:var(--cell);
-    border:1px solid #0a0a0a;
     color:var(--text);
     font-weight:700;
     font-size:14px;
     border-radius:6px;
     cursor:pointer;
     box-shadow: inset 0 -2px 0 rgba(255,255,255,0.02);
+    user-select:none;
   }
   .cell.alt{background:var(--cell-alt)}
   .cell.revealed{
     background:linear-gradient(180deg,#0b0b0b,#131313);
     color:var(--text);
     cursor:default;
-    border:1px solid rgba(255,255,255,0.03);
     box-shadow:none;
   }
-  .cell.mine{background:linear-gradient(180deg,#2a0b0b,#3a0b0b)}
+  .cell.mine{
+    background:linear-gradient(180deg,#2a0b0b,#3a0b0b);
+    color:var(--mine-color);
+  }
   .cell.flag{color:var(--flag-color)}
   .cell.question{color:var(--muted);font-weight:600}
 
   /* number colors */
-  .n1{color:#4aa3ff} /* blue */
-  .n2{color:#7ee787} /* green */
-  .n3{color:#ff8b6b} /* orange */
-  .n4{color:#9b9bff} /* purple */
-  .n5{color:#ff7aa2} /* pink */
+  .n1{color:#4aa3ff}
+  .n2{color:#7ee787}
+  .n3{color:#ff8b6b}
+  .n4{color:#9b9bff}
+  .n5{color:#ff7aa2}
   .n6{color:#00d7ff}
   .n7{color:#ffe27a}
   .n8{color:#d0d0d0}
@@ -150,73 +139,51 @@
     .panel{order:2}
   }
 
-  /* small footer */
   .footer{margin-top:16px;font-size:12px;color:var(--muted)}
 </style>
 </head>
 <body>
   <div class="wrap">
     <div class="panel">
-      <h1>Сложный сапёр — Hard (30×16, 99)</h1>
-      <div class="sub">Палитра под твою страницу. ПК/моб — работает. Правая кнопка ставит флаг, long-press на мобиле.</div>
-
+      <h1>Сложный сапёр — Hard (30×16, 99 мин)</h1>
+      <div class="sub">ПК/моб — работает. Правый клик ставит флаг, long-press на мобиле.</div>
       <div class="stats">
         <div class="stat">
-          <div style="font-size:12px;color:var(--muted)">Mines</div>
+          <div style="font-size:12px;color:var(--muted)">Мины</div>
           <div id="mines-left" class="num">99</div>
         </div>
         <div class="stat">
-          <div style="font-size:12px;color:var(--muted)">Time</div>
+          <div style="font-size:12px;color:var(--muted)">Время</div>
           <div id="timer" class="num">0.0</div>
         </div>
         <div class="stat">
-          <div style="font-size:12px;color:var(--muted)">Best</div>
+          <div style="font-size:12px;color:var(--muted)">Лучший</div>
           <div id="best" class="num">—</div>
         </div>
       </div>
-
-      <div class="controls">
-        <button id="btn-new" class="btn btn-blue">Новая игра</button>
-        <button id="btn-hint" class="btn btn-gold">Подсказка (chord)</button>
-        <button id="btn-cheat" class="btn btn-pink">Показать мины (на секунду)</button>
-      </div>
-
-      <div class="hint">Правый клик — флаг. Если число открытo и рядом флагов столько же — клик на число откроет соседей (chord).</div>
-      <div class="hint">Лучший результат сохраняется в localStorage. Жми <strong>Новая игра</strong> при готовности.</div>
-
-      <div class="footer">Лёгкий UI — сложный геймплей. Нет менюшек. Решил — играешь.</div>
+      <button id="btn-new" class="btn btn-blue" style="margin-top:12px; width:100%; padding:14px; font-weight:600; border-radius:12px; border:1px solid var(--accent-blue); background:var(--panel); color:var(--text); cursor:pointer; user-select:none;">
+        Новая игра
+      </button>
+      <div class="footer">Нет читов и подсказок — сам думай, где мины.</div>
     </div>
 
     <div class="board-wrap panel" id="boardPanel">
-      <div id="boardContainer" style="width:100%;overflow:auto"></div>
+      <div id="boardContainer"></div>
     </div>
   </div>
 
 <script>
-/*
-  Hard Minesweeper (single-file)
-  - Default: 30 cols × 16 rows, 99 mines (classic expert)
-  - Left click reveal, right click flag, chord supported.
-  - Long-press on touch toggles flag.
-  - Timer with tenths, best time saved in localStorage as "ms_best_hard"
-*/
-
 (() => {
-  // CONFIG: hard only
   const COLS = 30;
   const ROWS = 16;
   const MINES = 99;
 
-  // DOM
   const boardContainer = document.getElementById('boardContainer');
   const minesLeftEl = document.getElementById('mines-left');
   const timerEl = document.getElementById('timer');
   const bestEl = document.getElementById('best');
   const btnNew = document.getElementById('btn-new');
-  const btnHint = document.getElementById('btn-hint');
-  const btnCheat = document.getElementById('btn-cheat');
 
-  // state
   let grid = [];
   let revealed = 0;
   let flags = 0;
@@ -224,12 +191,12 @@
   let lost = false;
   let timer = null;
   let startTime = 0;
-  let bestKey = 'ms_best_hard';
+  const bestKey = 'ms_best_hard';
 
   function resetState(){
     grid = new Array(ROWS);
     for(let r=0;r<ROWS;r++){
-      grid[r] = new Array(COLS).fill().map(()=>({
+      grid[r] = new Array(COLS).fill().map(() => ({
         mine:false,
         count:0,
         revealed:false,
@@ -254,37 +221,36 @@
   }
 
   function placeMines(excludeR, excludeC){
-    // place MINES randomly excluding exclude cell and its neighbors to avoid instant death
     const forbidden = new Set();
-    for(let dr=-1;dr<=1;dr++){
-      for(let dc=-1;dc<=1;dc++){
-        const rr = excludeR+dr, cc = excludeC+dc;
+    for(let dr=-1; dr<=1; dr++){
+      for(let dc=-1; dc<=1; dc++){
+        const rr=excludeR+dr, cc=excludeC+dc;
         if(rr>=0 && rr<ROWS && cc>=0 && cc<COLS) forbidden.add(rr+','+cc);
       }
     }
-    let placed = 0;
+    let placed=0;
     while(placed < MINES){
-      const r = Math.floor(Math.random()*ROWS);
-      const c = Math.floor(Math.random()*COLS);
+      const r=Math.floor(Math.random()*ROWS);
+      const c=Math.floor(Math.random()*COLS);
       if(forbidden.has(r+','+c)) continue;
       if(!grid[r][c].mine){
         grid[r][c].mine = true;
         placed++;
       }
     }
-    // compute counts
-    for(let r=0;r<ROWS;r++){
-      for(let c=0;c<COLS;c++){
+    // counts
+    for(let r=0; r<ROWS; r++){
+      for(let c=0; c<COLS; c++){
         if(grid[r][c].mine) continue;
-        let cnt = 0;
-        for(let dr=-1;dr<=1;dr++){
-          for(let dc=-1;dc<=1;dc++){
+        let cnt=0;
+        for(let dr=-1; dr<=1; dr++){
+          for(let dc=-1; dc<=1; dc++){
             if(dr===0 && dc===0) continue;
-            const rr = r+dr, cc = c+dc;
+            const rr=r+dr, cc=c+dc;
             if(rr>=0 && rr<ROWS && cc>=0 && cc<COLS && grid[rr][cc].mine) cnt++;
           }
         }
-        grid[r][c].count = cnt;
+        grid[r][c].count=cnt;
       }
     }
   }
@@ -295,63 +261,43 @@
     board.className = 'board';
     board.style.gridTemplateColumns = `repeat(${COLS}, 28px)`;
     board.style.gridAutoRows = '28px';
-    board.style.gap = '8px';
+    board.style.gap = '1px';
     boardContainer.appendChild(board);
 
-    for(let r=0;r<ROWS;r++){
-      for(let c=0;c<COLS;c++){
+    for(let r=0; r<ROWS; r++){
+      for(let c=0; c<COLS; c++){
         const cell = document.createElement('div');
         cell.className = 'cell '+(((r+c)&1)?'alt':'');
         cell.dataset.r = r;
         cell.dataset.c = c;
-        cell.dataset.index = r*COLS+c;
-        cell.addEventListener('mousedown', onMouseDown);
-        cell.addEventListener('mouseup', onMouseUp);
-        cell.addEventListener('contextmenu', onContextMenu);
+        cell.dataset.index = r*COLS + c;
         cell.addEventListener('click', onClick);
-        // touch support: long-press to flag
+        cell.addEventListener('contextmenu', onContextMenu);
         addTouchFlag(cell);
         board.appendChild(cell);
       }
     }
   }
 
-  // LONG PRESS FLAG (mobile)
   function addTouchFlag(el){
-    let touchTimer = null;
-    let moved = false;
+    let touchTimer=null;
     el.addEventListener('touchstart', (e)=>{
-      moved = false;
-      touchTimer = setTimeout(()=>{ // long-press -> toggle flag
-        const ev = {preventDefault:()=>{}, target:el};
-        toggleFlag(ev);
-        touchTimer = null;
+      touchTimer = setTimeout(()=>{
+        toggleFlag({currentTarget: el, preventDefault: ()=>{}});
       }, 450);
     }, {passive:true});
-    el.addEventListener('touchmove', ()=>{ moved = true; if(touchTimer){ clearTimeout(touchTimer); touchTimer=null } }, {passive:true});
-    el.addEventListener('touchend', ()=>{ if(touchTimer){ clearTimeout(touchTimer); touchTimer=null } }, {passive:true});
-  }
-
-  // EVENTS
-  let mouseDownInfo = null;
-  function onMouseDown(e){
-    // store mousedown for potential chord operation
-    mouseDownInfo = {target:e.currentTarget, which:e.button};
-  }
-  function onMouseUp(e){
-    // nothing
+    el.addEventListener('touchmove', ()=>{
+      if(touchTimer){ clearTimeout(touchTimer); touchTimer=null; }
+    }, {passive:true});
+    el.addEventListener('touchend', ()=>{
+      if(touchTimer){ clearTimeout(touchTimer); touchTimer=null; }
+    }, {passive:true});
   }
 
   function onClick(e){
     if(lost) return;
     const el = e.currentTarget;
     const r = +el.dataset.r, c = +el.dataset.c;
-    // if it's revealed and left-click -> attempt chord
-    if(grid[r][c].revealed && e.button===0){
-      chord(r,c);
-      return;
-    }
-    // left click
     revealCell(r,c);
   }
 
@@ -370,20 +316,16 @@
       cell.flagged = false;
       cell.question = true;
       flags--;
-      renderCell(r,c);
     } else if(cell.question){
       cell.question = false;
-      flags = Math.max(0, flags);
-      renderCell(r,c);
     } else {
       cell.flagged = true;
       flags++;
-      renderCell(r,c);
     }
+    renderCell(r,c);
     minesLeftEl.textContent = Math.max(0, MINES - flags);
   }
 
-  // reveal logic
   function revealCell(r,c){
     if(lost) return;
     if(!started){
@@ -394,7 +336,6 @@
     const cell = grid[r][c];
     if(cell.revealed || cell.flagged) return;
     if(cell.mine){
-      // explode
       cell.revealed = true;
       revealAllMines();
       gameOver(false);
@@ -405,21 +346,21 @@
   }
 
   function floodReveal(sr, sc){
-    const stack = [[sr,sc]];
+    const stack=[[sr,sc]];
     while(stack.length){
-      const [r,c] = stack.pop();
-      const cell = grid[r][c];
+      const [r,c]=stack.pop();
+      const cell=grid[r][c];
       if(cell.revealed || cell.flagged) continue;
-      cell.revealed = true;
+      cell.revealed=true;
       revealed++;
       renderCell(r,c);
       if(cell.count === 0){
-        for(let dr=-1;dr<=1;dr++){
-          for(let dc=-1;dc<=1;dc++){
+        for(let dr=-1; dr<=1; dr++){
+          for(let dc=-1; dc<=1; dc++){
             if(dr===0 && dc===0) continue;
-            const rr = r+dr, cc = c+dc;
+            const rr=r+dr, cc=c+dc;
             if(rr>=0 && rr<ROWS && cc>=0 && cc<COLS){
-              const neigh = grid[rr][cc];
+              const neigh=grid[rr][cc];
               if(!neigh.revealed && !neigh.flagged) stack.push([rr,cc]);
             }
           }
@@ -428,38 +369,11 @@
     }
   }
 
-  function chord(r,c){
-    const cell = grid[r][c];
-    if(!cell.revealed || cell.count===0) return;
-    // count flags around
-    let fcount = 0;
-    const neighbors = [];
-    for(let dr=-1;dr<=1;dr++){
-      for(let dc=-1;dc<=1;dc++){
-        if(dr===0 && dc===0) continue;
-        const rr = r+dr, cc = c+dc;
-        if(rr>=0 && rr<ROWS && cc>=0 && cc<COLS){
-          neighbors.push([rr,cc]);
-          if(grid[rr][cc].flagged) fcount++;
-        }
-      }
-    }
-    if(fcount === cell.count){
-      // open all non-flagged neighbors
-      for(const [rr,cc] of neighbors){
-        if(!grid[rr][cc].flagged && !grid[rr][cc].revealed){
-          revealCell(rr,cc);
-        }
-        if(lost) return;
-      }
-    }
-  }
-
   function revealAllMines(){
-    for(let r=0;r<ROWS;r++){
-      for(let c=0;c<COLS;c++){
+    for(let r=0; r<ROWS; r++){
+      for(let c=0; c<COLS; c++){
         if(grid[r][c].mine){
-          grid[r][c].revealed = true;
+          grid[r][c].revealed=true;
           renderCell(r,c);
         }
       }
@@ -467,7 +381,7 @@
   }
 
   function checkWin(){
-    const totalCells = ROWS*COLS;
+    const totalCells=ROWS*COLS;
     if(revealed === totalCells - MINES){
       gameOver(true);
     }
@@ -476,73 +390,67 @@
   function gameOver(win){
     lost = !win;
     stopTimer();
-    // reveal mines if win -> show flags; if lose -> show exploded mine
     if(win){
-      // mark flags correctly
-      for(let r=0;r<ROWS;r++){
-        for(let c=0;c<COLS;c++){
+      for(let r=0; r<ROWS; r++){
+        for(let c=0; c<COLS; c++){
           if(grid[r][c].mine) grid[r][c].flagged = true;
           renderCell(r,c);
         }
       }
       const totalMs = Date.now() - startTime;
       saveBest(totalMs);
-    } else {
-      // show exploded effect (already revealed in revealCell)
-      // nothing else
     }
   }
 
   function saveBest(ms){
-    const prev = localStorage.getItem(bestKey);
+    const prev=localStorage.getItem(bestKey);
     if(!prev || ms < Number(prev)){
-      localStorage.setItem(bestKey, String(ms));
+      localStorage.setItem(bestKey,String(ms));
       updateBest();
     }
   }
 
-  // timer
   function startTimer(){
-    startTime = Date.now();
+    startTime=Date.now();
     timerEl.textContent = '0.0';
-    timer = setInterval(()=>{
-      const ms = Date.now() - startTime;
-      timerEl.textContent = (ms/1000).toFixed(1);
-    }, 100);
+    timer=setInterval(()=>{
+      const ms=Date.now()-startTime;
+      timerEl.textContent=(ms/1000).toFixed(1);
+    },100);
   }
-  function stopTimer(){ if(timer) clearInterval(timer); timer = null; }
+  function stopTimer(){
+    if(timer) clearInterval(timer);
+    timer=null;
+  }
 
-  // render helpers
   function renderCell(r,c){
-    const index = r*COLS + c;
-    const el = boardContainer.querySelector('.cell[data-index="'+index+'"]');
-    const state = grid[r][c];
-    el.className = 'cell '+(((r+c)&1)?'alt':'');
-    if(state.revealed){
+    const idx=r*COLS+c;
+    const el=boardContainer.querySelector('.cell[data-index="'+idx+'"]');
+    const s=grid[r][c];
+    el.className='cell '+(((r+c)&1)?'alt':'');
+    if(s.revealed){
       el.classList.add('revealed');
       el.classList.remove('flag','question');
-      if(state.mine){
+      if(s.mine){
         el.classList.add('mine');
-        el.innerHTML = '&#x1F4A3;'; // bomb emoji
+        el.innerHTML = '&#x1F4A3;';
         el.style.color = 'var(--mine-color)';
-      } else if(state.count > 0){
-        el.textContent = state.count;
-        el.classList.add('n'+state.count);
+      } else if(s.count > 0){
+        el.textContent = s.count;
+        el.classList.add('n'+s.count);
       } else {
         el.textContent = '';
       }
     } else {
-      // hidden
-      el.textContent = state.flagged ? '⚑' : (state.question ? '?' : '');
-      if(state.flagged){
+      el.textContent = s.flagged ? '⚑' : (s.question ? '?' : '');
+      if(s.flagged){
         el.classList.add('flag');
-      } else if(state.question){
+      } else if(s.question){
         el.classList.add('question');
       }
     }
   }
 
-  // build & initial render
   function renderAll(){
     for(let r=0;r<ROWS;r++){
       for(let c=0;c<COLS;c++){
@@ -551,80 +459,21 @@
     }
   }
 
-  // quick cheat: flash mines
-  function cheatFlash(){
-    const mineEls = [];
-    for(let r=0;r<ROWS;r++){
-      for(let c=0;c<COLS;c++){
-        if(grid[r][c].mine && !grid[r][c].revealed){
-          mineEls.push(boardContainer.querySelector('.cell[data-index="'+(r*COLS+c)+'"]'));
-        }
-      }
-    }
-    mineEls.forEach(el=>el.style.transform='scale(1.05) rotate(-4deg)');
-    setTimeout(()=>mineEls.forEach(el=>el.style.transform=''), 750);
-  }
-
-  // init
-  function init(){
+  btnNew.onclick = ()=>{
     resetState();
     buildBoard();
     renderAll();
+  };
 
-    btnNew.onclick = ()=>{ resetState(); buildBoard(); renderAll(); };
-    btnHint.onclick = ()=>{ /* try to auto-chord a safe-looking cell: trivial heuristic */ autoHint(); };
-    btnCheat.onclick = ()=>{ cheatFlash(); };
+  // защита от выделения
+  boardContainer.addEventListener('selectstart', e=>e.preventDefault());
 
-    // prevent text selection on double click
-    boardContainer.addEventListener('selectstart', e=>e.preventDefault());
+  // стартуем игру сразу
+  resetState();
+  buildBoard();
+  renderAll();
 
-    // save initial best if any
-    updateBest();
-  }
-
-  // auto hint heuristic (not perfect): find revealed cell with count >0 and flagged count < count and there are unflagged hidden neighbors -> perform chord if safe-looking, otherwise reveal a random safe candidate near edges
-  function autoHint(){
-    // try to chord a revealed cell where flagged == count
-    for(let r=0;r<ROWS;r++){
-      for(let c=0;c<COLS;c++){
-        if(grid[r][c].revealed && grid[r][c].count>0){
-          const neigh = [];
-          let f=0,h=0;
-          for(let dr=-1;dr<=1;dr++){
-            for(let dc=-1;dc<=1;dc++){
-              if(dr===0 && dc===0) continue;
-              const rr=r+dr, cc=c+dc;
-              if(rr>=0 && rr<ROWS && cc>=0 && cc<COLS){
-                if(grid[rr][cc].flagged) f++;
-                else if(!grid[rr][cc].revealed) { neigh.push([rr,cc]); h++; }
-              }
-            }
-          }
-          if(h>0 && f === grid[r][c].count){
-            // chord it
-            chord(r,c);
-            return;
-          }
-        }
-      }
-    }
-    // else reveal a random hidden cell far from center (riskier but something)
-    for(let attempt=0; attempt<500; attempt++){
-      const r = Math.floor(Math.random()*ROWS);
-      const c = Math.floor(Math.random()*COLS);
-      if(!grid[r][c].revealed && !grid[r][c].flagged){
-        revealCell(r,c);
-        return;
-      }
-    }
-  }
-
-  // initial call
-  init();
-
-  // watch flags -> update mines left
-  const obs = new MutationObserver(()=>{ minesLeftEl.textContent = Math.max(0, MINES - flags); });
-  obs.observe(boardContainer, {subtree:true, childList:true, attributes:true});
+  updateBest();
 
 })();
 </script>
