@@ -228,5 +228,355 @@
     "description": "",
     "review": "",
     "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Birds of Prey: And the Fantabulous Emancipation of One Harley Quinn",
+    "type": "movie",
+    "rating": "4.0",
+    "year": 2020,
+    "genres": ["Боевик", "Криминал", "Приключения"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Black Adam",
+    "type": "movie",
+    "rating": "5.0",
+    "year": 2022,
+    "genres": ["Боевик", "Фэнтези", "Фантастика"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aGVN9f1f0C4K1Y5002L0L0L0L0L0L0.jpg"
+  },
+  {
+    "title": "The Suicide Squad",
+    "type": "movie",
+    "rating": "7.0",
+    "year": 2021,
+    "genres": ["Боевик", "Приключения", "Комедия"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Blue Beetle",
+    "type": "movie",
+    "rating": "6.0",
+    "year": 2023,
+    "genres": ["Боевик", "Приключения", "Фантастика"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "In Time",
+    "type": "movie",
+    "rating": "6.0",
+    "year": 2011,
+    "genres": ["Фантастика", "Триллер", "Боевик"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "The Hunger Games",
+    "type": "movie",
+    "rating": "6.0",
+    "year": 2012,
+    "genres": ["Приключения", "Фантастика", "Боевик"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Hero Mode",
+    "type": "movie",
+    "rating": "3.0",
+    "year": 2021,
+    "genres": ["Комедия", "Семейный"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "The Truman Show",
+    "type": "movie",
+    "rating": "9.0",
+    "year": 1998,
+    "genres": ["Комедия", "Драма", "Фантастика"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "The Count of Monte Cristo",
+    "type": "movie",
+    "rating": "7.5",
+    "year": 2002,
+    "genres": ["Боевик", "Приключения", "Драма"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "The Intern",
+    "type": "movie",
+    "rating": "9.0",
+    "year": 2015,
+    "genres": ["Комедия", "Драма"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "The War with Grandpa",
+    "type": "movie",
+    "rating": "3.0",
+    "year": 2020,
+    "genres": ["Комедия", "Семейный"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Your Highness",
+    "type": "movie",
+    "rating": "8.5",
+    "year": 2011,
+    "genres": ["Приключения", "Комедия", "Фэнтези"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Dirty Grandpa",
+    "type": "movie",
+    "rating": "7.0",
+    "year": 2016,
+    "genres": ["Комедия"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Upgrade",
+    "type": "movie",
+    "rating": "6.0",
+    "year": 2018,
+    "genres": ["Боевик", "Фантастика", "Триллер"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Black Widow",
+    "type": "movie",
+    "rating": "3.0",
+    "year": 2021,
+    "genres": ["Боевик", "Приключения", "Фантастика"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Captain America: Brave New World",
+    "type": "movie",
+    "rating": "3.5",
+    "year": 2025,
+    "genres": ["Боевик", "Приключения", "Фантастика"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Blade Runner",
+    "type": "movie",
+    "rating": "5.5",
+    "year": 1982,
+    "genres": ["Фантастика", "Триллер"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Blade Runner 2049",
+    "type": "movie",
+    "rating": "7.5",
+    "year": 2017,
+    "genres": ["Фантастика", "Драма", "Детектив"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Anora",
+    "type": "movie",
+    "rating": "6.0",
+    "year": 2024,
+    "genres": ["Комедия", "Драма"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Nothing to Lose",
+    "type": "movie",
+    "rating": "4.5",
+    "year": 1997,
+    "genres": ["Боевик", "Комедия"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Bruno",
+    "type": "movie",
+    "rating": "6.5",
+    "year": 2009,
+    "genres": ["Комедия"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Mickey 17",
+    "type": "movie",
+    "rating": "5.0",
+    "year": 2025,
+    "genres": ["Фантастика", "Приключения", "Драма"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Sinners",
+    "type": "movie",
+    "rating": "7.0",
+    "year": 2025,
+    "genres": ["Триллер", "Ужасы"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Under the Silver Lake",
+    "type": "movie",
+    "rating": "2.5",
+    "year": 2018,
+    "genres": ["Комедия", "Криминал", "Драма"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "How to Train Your Dragon (Movie 2025)",
+    "type": "movie",
+    "rating": "9.0",
+    "year": 2025,
+    "genres": ["Мультфильм", "Приключения", "Семейный"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Fargo",
+    "type": "movie",
+    "rating": "5.0",
+    "year": 1996,
+    "genres": ["Криминал", "Драма", "Триллер"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Se7en",
+    "type": "movie",
+    "rating": "7.5",
+    "year": 1995,
+    "genres": ["Криминал", "Драма", "Детектив"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "The Wonderful Story of Henry Sugar",
+    "type": "movie",
+    "rating": "9.0",
+    "year": 2023,
+    "genres": ["Комедия", "Драма", "Короткометражка"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "The Swan",
+    "type": "movie",
+    "rating": "6.0",
+    "year": 2023,
+    "genres": ["Драма", "Короткометражка"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "The Rat Catcher",
+    "type": "movie",
+    "rating": "5.5",
+    "year": 2023,
+    "genres": ["Драма", "Короткометражка"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Poison",
+    "type": "movie",
+    "rating": "6.5",
+    "year": 2023,
+    "genres": ["Драма", "Короткометражка"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "The Grand Budapest Hotel",
+    "type": "movie",
+    "rating": "6.5",
+    "year": 2014,
+    "genres": ["Приключения", "Комедия", "Драма"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Superman",
+    "type": "movie",
+    "rating": "6.5",
+    "year": 1978,
+    "genres": ["Боевик", "Приключения", "Фантастика"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "F1",
+    "type": "movie",
+    "rating": "6.5",
+    "year": 2025,
+    "genres": ["Боевик", "Драма", "Спорт"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+  },
+  {
+    "title": "Weapons",
+    "type": "movie",
+    "rating": "6.5",
+    "year": 2025,
+    "genres": ["Ужасы", "Триллер"],
+    "description": "",
+    "review": "",
+    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
   }
 ]
