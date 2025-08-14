@@ -237,7 +237,7 @@
     "genres": ["Боевик", "Криминал", "Приключения"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://media.posterstore.com/site_images/68631cc00b074212f55c8448_1701954112_WB0067-8.jpg"
   },
   {
     "title": "Black Adam",
@@ -247,17 +247,17 @@
     "genres": ["Боевик", "Фэнтези", "Фантастика"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aGVN9f1f0C4K1Y5002L0L0L0L0L0L0.jpg"
+    "image": "https://cdn11.bigcommerce.com/s-ydriczk/images/stencil/1500x1500/products/89963/97343/black-adam-advance-style-B-original-movie-poster-us-one-sheet-buy-now-at-starstills__73126.1670428229.jpg"
   },
   {
     "title": "The Suicide Squad",
     "type": "movie",
     "rating": "7.0",
-    "year": 2021,
+    "year": 2024,
     "genres": ["Боевик", "Приключения", "Комедия"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BMWU3Y2NlZmEtMjJjNS00ZWMxLWE1MzctYWYyMjMzMDdkNTE4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "Blue Beetle",
@@ -267,7 +267,7 @@
     "genres": ["Боевик", "Приключения", "Фантастика"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BOTEyYzQzOTMtMWExNi00OWNjLTgwMDUtNzY0YjhmZDBiMTk2XkEyXkFqcGc@._V1_.jpg"
   },
   {
     "title": "In Time",
@@ -277,7 +277,7 @@
     "genres": ["Фантастика", "Триллер", "Боевик"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BMTUyNDAxMjY0OF5BMl5BanBnXkFtZTgwNTM2NDAwMjI@._V1_.jpg"
   },
   {
     "title": "The Hunger Games",
@@ -287,7 +287,7 @@
     "genres": ["Приключения", "Фантастика", "Боевик"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BMWI1OGM4YjQtNmIxNi00YmE2LWJkNTAtY2Q0YjU4NTI5NWQyXkEyXkFqcGc@._V1_.jpg"
   },
   {
     "title": "Hero Mode",
@@ -297,7 +297,7 @@
     "genres": ["Комедия", "Семейный"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BNzMyZmMzYzQtOWI0Mi00YzUxLWJiM2EtYjllN2ZmM2Y5OTBmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "The Truman Show",
@@ -307,7 +307,7 @@
     "genres": ["Комедия", "Драма", "Фантастика"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BNzA3ZjZlNzYtMTdjMy00NjMzLTk5ZGYtMTkyYzNiOGM1YmM3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "The Count of Monte Cristo",
@@ -317,7 +317,7 @@
     "genres": ["Боевик", "Приключения", "Драма"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BYWQ2ZTI4ODYtZmRkOS00NzlmLWIyMGItNTEzZmMwNmUxZDRkXkEyXkFqcGc@._V1_.jpg"
   },
   {
     "title": "The Intern",
@@ -327,7 +327,7 @@
     "genres": ["Комедия", "Драма"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BNDRlMjAyZGEtM2JiYy00ZDE0LWJhY2UtNWE3ZTFkMjk3NTY3XkEyXkFqcGc@._V1_.jpg"
   },
   {
     "title": "The War with Grandpa",
@@ -337,7 +337,7 @@
     "genres": ["Комедия", "Семейный"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BZTJhYWYyYWEtMGZjOC00YzEyLWJkMzgtMmFiZWI1MzJiZDE4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "Your Highness",
@@ -347,7 +347,7 @@
     "genres": ["Приключения", "Комедия", "Фэнтези"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BMTY2MDgwODIyMV5BMl5BanBnXkFtZTcwODc1NDQ0NA@@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "Dirty Grandpa",
@@ -357,7 +357,7 @@
     "genres": ["Комедия"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BMTUyNjgwODM0NV5BMl5BanBnXkFtZTgwMzY2MjU2NzE@._V1_.jpg"
   },
   {
     "title": "Upgrade",
@@ -367,7 +367,7 @@
     "genres": ["Боевик", "Фантастика", "Триллер"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BMzgzMzZlYzItNjM0OC00ZWQ3LWJmMzMtMDE2ZTg4MmFkYjhjXkEyXkFqcGc@._V1_.jpg"
   },
   {
     "title": "Black Widow",
@@ -377,7 +377,7 @@
     "genres": ["Боевик", "Приключения", "Фантастика"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BZTMyZTA0ZTItYjY3Yi00ODNjLWExYTgtYzgxZTk0NTg0Y2FlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "Captain America: Brave New World",
@@ -387,7 +387,7 @@
     "genres": ["Боевик", "Приключения", "Фантастика"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BNDRjY2E0ZmEtN2QwNi00NTEwLWI3MWItODNkMGYwYWFjNGE0XkEyXkFqcGc@._V1_.jpg"
   },
   {
     "title": "Blade Runner",
@@ -397,7 +397,7 @@
     "genres": ["Фантастика", "Триллер"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BNzA1Njg4NzYxOV5BMl5BanBnXkFtZTgwODk5NjU3MzI@._V1_.jpg"
   },
   {
     "title": "Blade Runner 2049",
@@ -407,7 +407,7 @@
     "genres": ["Фантастика", "Драма", "Детектив"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BNzA1Njg4NzYxOV5BMl5BanBnXkFtZTgwODk5NjU3MzI@._V1_.jpg"
   },
   {
     "title": "Anora",
@@ -417,7 +417,7 @@
     "genres": ["Комедия", "Драма"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BYThiN2M0NTItODRmNC00NDhlLWFiYTgtMWM2YTEyYzI3ZTY1XkEyXkFqcGc@._V1_.jpg"
   },
   {
     "title": "Nothing to Lose",
@@ -427,7 +427,7 @@
     "genres": ["Боевик", "Комедия"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BOWQ2NmNlYjEtOGViNC00MzA0LTgzMjQtMzU2ZTgwMDJkZDU5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "Bruno",
@@ -437,7 +437,7 @@
     "genres": ["Комедия"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BMTUwNDIwNDE5MV5BMl5BanBnXkFtZTcwMDA2MzA1Mg@@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "Mickey 17",
@@ -447,7 +447,7 @@
     "genres": ["Фантастика", "Приключения", "Драма"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BN2UyMWYzYTctNmUxYS00MzI1LWFiNzgtY2I4ZjQ0MDJjYzJkXkEyXkFqcGc@._V1_.jpg"
   },
   {
     "title": "Sinners",
@@ -457,7 +457,7 @@
     "genres": ["Триллер", "Ужасы"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BNjIwZWY4ZDEtMmIxZS00NDA4LTg4ZGMtMzUwZTYyNzgxMzk5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "Under the Silver Lake",
@@ -467,17 +467,17 @@
     "genres": ["Комедия", "Криминал", "Драма"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BMTMzN2JkZDAtYjgyMy00M2QxLWE2NWItNTEyZGVlNTgyYTViXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   },
   {
-    "title": "How to Train Your Dragon (Movie 2025)",
+    "title": "How to Train Your Dragon",
     "type": "movie",
     "rating": "9.0",
     "year": 2025,
-    "genres": ["Мультфильм", "Приключения", "Семейный"],
+    "genres": ["Приключения", "Семейный"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BODA5Y2M0NjctNWQzMy00ODRhLWE0MzUtYmE1YTAzZjYyYmQyXkEyXkFqcGc@._V1_.jpg"
   },
   {
     "title": "Fargo",
@@ -487,7 +487,7 @@
     "genres": ["Криминал", "Драма", "Триллер"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BMTM3MTcwNTEyOF5BMl5BanBnXkFtZTcwNjEwNjUyMQ@@._V1_.jpg"
   },
   {
     "title": "Se7en",
@@ -497,7 +497,7 @@
     "genres": ["Криминал", "Драма", "Детектив"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BY2IzNzMxZjctZjUxZi00YzAxLTk3ZjMtODFjODdhMDU5NDM1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "The Wonderful Story of Henry Sugar",
@@ -507,7 +507,7 @@
     "genres": ["Комедия", "Драма", "Короткометражка"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BZjA1ZjliMGYtNTcyYS00YjA3LWI3NGItMjdmNzE1NjUyY2RmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "The Swan",
@@ -517,7 +517,7 @@
     "genres": ["Драма", "Короткометражка"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BZWFiZDg2OGQtMzBkZS00NDIzLTkyOWEtZjg0NTYzMjQ0OWI4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "The Rat Catcher",
@@ -527,7 +527,7 @@
     "genres": ["Драма", "Короткометражка"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR63EdKNGBfBRhMzhx_AYHg3e_32xW4fj6pxg&s"
   },
   {
     "title": "Poison",
@@ -537,7 +537,7 @@
     "genres": ["Драма", "Короткометражка"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BZGQ3MmRjY2EtODAwMS00NGQ1LWFkMTItYmU0OGJmYTM3NjEyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "The Grand Budapest Hotel",
@@ -547,17 +547,17 @@
     "genres": ["Приключения", "Комедия", "Драма"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BMzM5NjUxOTEyMl5BMl5BanBnXkFtZTgwNjEyMDM0MDE@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "Superman",
     "type": "movie",
     "rating": "6.5",
-    "year": 1978,
+    "year": 2025,
     "genres": ["Боевик", "Приключения", "Фантастика"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BOGMwZGJiM2EtMzEwZC00YTYzLWIxNzYtMmJmZWNlZjgxZTMwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "F1",
@@ -567,7 +567,7 @@
     "genres": ["Боевик", "Драма", "Спорт"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BZTYwYjJhNzYtY2ZiZS00ZmYxLWJkZjctYjRlNGIxYjI3ZTU0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   },
   {
     "title": "Weapons",
@@ -577,6 +577,6 @@
     "genres": ["Ужасы", "Триллер"],
     "description": "",
     "review": "",
-    "image": "https://image.tmdb.org/t/p/original/aHjpixSOn166tZLWRdIvHWDPu6y.jpg"
+    "image": "https://m.media-amazon.com/images/M/MV5BNTBhNWJjZWItYzY3NS00M2NkLThmOWYtYTlmNzBmN2UxZWFjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
   }
 ]
