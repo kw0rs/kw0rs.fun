@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semyon Boyko - CV</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Semyon Boyko - CV">
+    <meta property="og:description" content="Resume of IT, Animation and Automation Specialist">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #2a0a0a 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #cc0000, #ff4444);
+            border-radius: 2px;
+        }
+        
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #cc0000, #ff4444);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            font-weight: bold;
+            color: #000;
+            border: 4px solid #333;
+            box-shadow: 0 10px 30px rgba(204, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #cc0000, #ff4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .birth-date {
+            font-size: 18px;
+            color: #888;
+            margin-bottom: 30px;
+        }
+        
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #cc0000, #990000);
+            border: none;
+            border-radius: 12px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(204, 0, 0, 0.4);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(204, 0, 0, 0.6);
+            background: linear-gradient(135deg, #990000, #660000);
+        }
+        
+        .download-btn::before {
+            content: '⬇';
+            font-size: 18px;
+        }
+        
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 8px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .lang-btn {
+            padding: 8px 12px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .lang-btn:hover {
+            color: #ffffff;
+            border-color: #555;
+        }
+        
+        .lang-btn.active {
+            background: #cc0000;
+            color: #ffffff;
+            border-color: #cc0000;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 60px;
+        }
+        
+        .section {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            border-color: #555;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ff4444;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, #cc0000, #ff4444);
+            border-radius: 2px;
+        }
+        
+        .job {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .job:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .job-period {
+            font-size: 14px;
+            color: #ff4444;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .job-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        
+        .job-description {
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .skill-category {
+            background: rgba(204, 0, 0, 0.1);
+            border: 1px solid rgba(204, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .skill-category h4 {
+            color: #ff4444;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .skill-list {
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .languages {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .language {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            border-radius: 8px;
+        }
+        
+        .language-name {
+            font-weight: 600;
+            color: #ff4444;
+        }
+        
+        .language-level {
+            font-size: 14px;
+            color: #ccc;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .contact-info {
+            background: rgba(204, 0, 0, 0.1);
+            border: 1px solid rgba(204, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        .contact-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .contact-item strong {
+            color: #ff4444;
+            min-width: 80px;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            h1 {
+                font-size: 36px;
+            }
+            
+            .avatar {
+                width: 120px;
+                height: 120px;
+                font-size: 48px;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .language-switcher {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 0 auto 20px;
+                width: fit-content;
+            }
+        }
+        
+        .education {
+            background: rgba(204, 0, 0, 0.1);
+            border: 1px solid rgba(204, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .education-period {
+            font-size: 14px;
+            color: #ff4444;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .education-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        
+        .education-description {
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="language-switcher">
+            <a href="https://kw0rs.uno/cv/ru" class="lang-btn">RU</a>
+            <a href="https://kw0rs.uno/cv/en" class="lang-btn active">EN</a>
+            <a href="https://kw0rs.uno/cv/ua" class="lang-btn">UA</a>
+        </div>
+        
+        <div class="header">
+            <div class="avatar">SB</div>
+            <h1>Semyon Boyko</h1>
+            <p class="birth-date">07.01.2004</p>
+            <a href="#" class="download-btn" onclick="alert('CV file will be available for download from Google Drive'); return false;">Download CV</a>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">Work Experience</h2>
+                
+                <div class="job">
+                    <div class="job-period">July 2023 — Present</div>
+                    <div class="job-title">Freelance (Procurement, Tenders, Reports)</div>
+                    <div class="job-description">
+                        Price comparison, Excel spreadsheets and reports creation.<br>
+                        Preparation of procurement applications and power of attorney.<br>
+                        Fully remote work.
+                    </div>
+                </div>
+                
+                <div class="job">
+                    <div class="job-period">March 2022 — May 2023</div>
+                    <div class="job-title">2D Animator (Slots, Mobile Games)</div>
+                    <div class="job-description">
+                        Spine 2D, After Effects, Photoshop.<br>
+                        UI/character animation.
+                    </div>
+                </div>
+                
+                <div class="job">
+                    <div class="job-period">September — December 2021</div>
+                    <div class="job-title">Laser Machine Operator</div>
+                    <div class="job-description">
+                        Cutting and engraving products.<br>
+                        Preparation of layouts for production.
+                    </div>
+                </div>
+                
+                <div class="job">
+                    <div class="job-period">2017 — 2021</div>
+                    <div class="job-title">PC Club and Service Center Administrator</div>
+                    <div class="job-description">
+                        Customer consultation, system administration.<br>
+                        Software/hardware setup, OBS, local networks, routers.<br>
+                        PC selection and assembly for specific tasks.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">Education</h2>
+                <div class="education">
+                    <div class="education-period">2019 — 2022</div>
+                    <div class="education-title">Lower Post-Secondary Vocational Education</div>
+                    <div class="education-description">
+                        Irpin Economic College — Business, Trade and Exchange Activities
+                    </div>
+                </div>
+                
+                <h2 class="section-title" style="margin-top: 30px;">Contact</h2>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <strong>Phone:</strong> +380(63)835-70-22
+                    </div>
+                    <div class="contact-item">
+                        <strong>E-mail:</strong> kw0rs.wrk@gmail.com
+                    </div>
+                    <div class="contact-item">
+                        <strong>Telegram:</strong> @kw0rs_uno
+                    </div>
+                    <div class="contact-item">
+                        <strong>Discord:</strong> kw0rs
+                    </div>
+                </div>
+                
+                <h2 class="section-title" style="margin-top: 30px;">Languages</h2>
+                <div class="languages">
+                    <div class="language">
+                        <span class="language-name">Ukrainian</span>
+                        <span class="language-level">Native</span>
+                    </div>
+                    <div class="language">
+                        <span class="language-name">Russian</span>
+                        <span class="language-level">Native</span>
+                    </div>
+                    <div class="language">
+                        <span class="language-name">English</span>
+                        <span class="language-level">B1+</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section full-width">
+                <h2 class="section-title">Technical Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h4>Technical Skills</h4>
+                        <div class="skill-list">
+                            PC assembly, hardware configuration and diagnostics<br>
+                            Network setup (routers, LAN, internet)<br>
+                            Windows administration<br>
+                            Database work (manual + AI-assisted)<br>
+                            Website creation and hosting (GitHub)<br>
+                            Office software: WPS Office, MS Excel (data structuring, reports), presentations
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>Creative / Media</h4>
+                        <div class="skill-list">
+                            2D animation (Spine, After Effects)<br>
+                            Video editing (splicing, subtitles, basic color correction)<br>
+                            Photoshop (graphics, retouching)<br>
+                            Basic 3D (Cinema4D, Blender)<br>
+                            Audio editing (Adobe Audition)
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>AI / Automation</h4>
+                        <div class="skill-list">
+                            Experience with ChatGPT, Claude, Grok, Qwen, DeepSeek, Cursor, Manus<br>
+                            AI content generation (texts, images, videos, music)<br>
+                            Workflow automation (databases, spreadsheets, content)
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>Organization / Management</h4>
+                        <div class="skill-list">
+                            Tenders and procurement (price comparison, reporting, documentation)<br>
+                            Document work (applications, power of attorney, contract reading)<br>
+                            Data structuring and analysis<br>
+                            Project work (databases, websites, creative projects)
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>Soft Skills</h4>
+                        <div class="skill-list">
+                            Communication and consulting (explaining complex things in simple words)<br>
+                            Analytical and critical thinking<br>
+                            Fast self-learning<br>
+                            Time management, remote work experience
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
