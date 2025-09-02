@@ -1,204 +1,748 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semen Boiko - CV</title>
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="Semen Boiko - CV">
-    <meta property="og:description" content="Resume of IT, Animation and Automation Specialist">
-    <meta property="og:type" content="website">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
-    
+    <title>Лисиця Олег Іванович - Резюме</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif; background: linear-gradient(135deg, #0a0a0a 0%, #2a0a0a 100%); color: #ffffff; line-height: 1.6; min-height: 100vh; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
-        .header { text-align: center; margin-bottom: 60px; position: relative; }
-        .header::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 100px; height: 4px; background: linear-gradient(90deg, #cc0000, #ff4444); border-radius: 2px; }
-        .avatar { width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 30px; background: linear-gradient(135deg, #cc0000, #ff4444); display: flex; align-items: center; justify-content: center; font-size: 60px; font-weight: bold; color: #000; border: 4px solid #333; box-shadow: 0 10px 30px rgba(204, 0, 0, 0.3); }
-        h1 { font-size: 48px; font-weight: 700; margin-bottom: 10px; background: linear-gradient(135deg, #cc0000, #ff4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .birth-date { font-size: 18px; color: #888; margin-bottom: 30px; }
-        .download-btn { display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; background: linear-gradient(135deg, #cc0000, #990000); border: none; border-radius: 12px; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; transition: all 0.3s ease; cursor: pointer; box-shadow: 0 4px 15px rgba(204, 0, 0, 0.4); }
-        .download-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(204, 0, 0, 0.6); background: linear-gradient(135deg, #990000, #660000); }
-        .download-btn::before { content: '⬇'; font-size: 18px; }
-        .language-switcher { position: absolute; top: 20px; right: 20px; display: flex; gap: 8px; background: rgba(26, 26, 26, 0.8); border: 1px solid #333; border-radius: 12px; padding: 8px; backdrop-filter: blur(10px); }
-        .lang-btn { padding: 8px 12px; background: transparent; border: 1px solid transparent; border-radius: 8px; color: #888; text-decoration: none; font-size: 14px; font-weight: 600; transition: all 0.2s ease; cursor: pointer; }
-        .lang-btn:hover { color: #ffffff; border-color: #555; }
-        .lang-btn.active { background: #cc0000; color: #ffffff; border-color: #cc0000; }
-        .content { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 60px; }
-        .section { background: rgba(26, 26, 26, 0.8); border: 1px solid #333; border-radius: 16px; padding: 30px; backdrop-filter: blur(10px); transition: all 0.3s ease; }
-        .section:hover { border-color: #555; transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
-        .section-title { font-size: 24px; font-weight: 600; margin-bottom: 20px; color: #ff4444; display: flex; align-items: center; gap: 10px; }
-        .section-title::before { content: ''; width: 4px; height: 24px; background: linear-gradient(135deg, #cc0000, #ff4444); border-radius: 2px; }
-        .job { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #333; }
-        .job:last-child { border-bottom: none; margin-bottom: 0; }
-        .job-period { font-size: 14px; color: #ff4444; font-weight: 600; margin-bottom: 5px; }
-        .job-title { font-size: 18px; font-weight: 600; color: #ffffff; margin-bottom: 8px; }
-        .job-description { color: #ccc; font-size: 14px; line-height: 1.5; }
-        .skills-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        .skill-category { background: rgba(204, 0, 0, 0.1); border: 1px solid rgba(204, 0, 0, 0.3); border-radius: 12px; padding: 20px; }
-        .skill-category h4 { color: #ff4444; font-size: 16px; font-weight: 600; margin-bottom: 10px; }
-        .skill-list { color: #ccc; font-size: 14px; line-height: 1.6; }
-        .languages { display: flex; flex-direction: column; gap: 15px; }
-        .language { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(255, 68, 68, 0.1); border: 1px solid rgba(255, 68, 68, 0.3); border-radius: 8px; }
-        .language-name { font-weight: 600; color: #ff4444; }
-        .language-level { font-size: 14px; color: #ccc; }
-        .full-width { grid-column: 1 / -1; }
-        .contact-info { background: rgba(204, 0, 0, 0.1); border: 1px solid rgba(204, 0, 0, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
-        .contact-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: #ccc; font-size: 14px; }
-        .contact-item:last-child { margin-bottom: 0; }
-        .contact-item strong { color: #ff4444; min-width: 80px; }
-        @media (max-width: 768px) { .content { grid-template-columns: 1fr; gap: 30px; } h1 { font-size: 36px; } .avatar { width: 120px; height: 120px; font-size: 48px; } .container { padding: 20px 15px; } .language-switcher { position: relative; top: auto; right: auto; margin: 0 auto 20px; width: fit-content; } }
-        .education { background: rgba(204, 0, 0, 0.1); border: 1px solid rgba(204, 0, 0, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
-        .education-period { font-size: 14px; color: #ff4444; font-weight: 600; margin-bottom: 5px; }
-        .education-title { font-size: 16px; font-weight: 600; color: #ffffff; margin-bottom: 8px; }
-        .education-description { color: #ccc; font-size: 14px; line-height: 1.5; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #e2e8f0;
+            background: #0f172a;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            animation: floatBg 20s ease-in-out infinite;
+        }
+
+        @keyframes floatBg {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(1deg); }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        .header {
+            background: linear-gradient(135deg, 
+                rgba(79, 70, 229, 0.9) 0%, 
+                rgba(139, 92, 246, 0.9) 50%, 
+                rgba(236, 72, 153, 0.9) 100%);
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><defs><pattern id="dots" width="60" height="60" patternUnits="userSpaceOnUse"><circle cx="30" cy="30" r="2" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="60" height="60" fill="url(%23dots)"/></svg>');
+            animation: drift 30s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-60px, -60px); }
+        }
+
+        .header-content {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 40px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-section {
+            text-align: center;
+        }
+
+        .profile-img {
+            width: 160px;
+            height: 160px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+        }
+
+        .profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-img-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: rgba(255,255,255,0.7);
+            backdrop-filter: blur(10px);
+        }
+
+        .info-section h1 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #fff, #e2e8f0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .contact-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .main-content {
+            padding: 60px 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 700;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(135deg, #4f46e5, #8b5cf6, #ec4899);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #4f46e5, #8b5cf6);
+            border-radius: 2px;
+        }
+
+        .objective {
+            background: linear-gradient(135deg, 
+                rgba(79, 70, 229, 0.1), 
+                rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            padding: 30px;
+            border-radius: 16px;
+            font-size: 1.1em;
+            line-height: 1.8;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .objective::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #4f46e5, #8b5cf6);
+            border-radius: 0 2px 2px 0;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            margin-bottom: 25px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #4f46e5, #8b5cf6, #ec4899);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(139, 92, 246, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(139, 92, 246, 0.1);
+        }
+
+        .job-period {
+            font-weight: 600;
+            color: #8b5cf6;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .job-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin: 15px 0 8px 0;
+            color: #f1f5f9;
+        }
+
+        .job-company {
+            color: #94a3b8;
+            font-style: italic;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+
+        .job-description {
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .skill-category {
+            background: linear-gradient(135deg, 
+                rgba(30, 41, 59, 0.8), 
+                rgba(15, 23, 42, 0.8));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .skill-category:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .skill-category h4 {
+            color: #8b5cf6;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .skill-item {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(5px);
+            padding: 12px 18px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-item:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.3);
+            transform: translateX(8px);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2);
+        }
+
+        .achievements {
+            background: linear-gradient(135deg, 
+                rgba(245, 158, 11, 0.1), 
+                rgba(251, 146, 60, 0.1));
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            padding: 30px;
+            border-radius: 16px;
+            position: relative;
+        }
+
+        .achievements::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #f59e0b, #fb923c);
+            border-radius: 0 2px 2px 0;
+        }
+
+        .achievement-item {
+            margin-bottom: 18px;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+
+        .achievement-item::before {
+            content: '✨';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 16px;
+        }
+
+        .personal-qualities {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .quality-item {
+            background: linear-gradient(135deg, 
+                rgba(34, 197, 94, 0.1), 
+                rgba(16, 185, 129, 0.1));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            color: #a7f3d0;
+            transition: all 0.3s ease;
+        }
+
+        .quality-item:hover {
+            background: rgba(34, 197, 94, 0.15);
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.2);
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .floating-nav {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, 0.3);
+            border: 2px solid rgba(139, 92, 246, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+            transform: scale(1.3);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #4f46e5, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 16px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .print-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(79, 70, 229, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 40px 20px;
+            }
+
+            .header-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 30px;
+            }
+
+            .profile-img {
+                width: 120px;
+                height: 120px;
+            }
+
+            .main-content {
+                padding: 40px 20px;
+            }
+
+            .floating-nav {
+                display: none;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .personal-qualities {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+                padding: 0;
+            }
+            
+            body::before {
+                display: none;
+            }
+            
+            .container {
+                background: white;
+                box-shadow: none;
+                border: none;
+            }
+            
+            .header {
+                background: #4f46e5 !important;
+                -webkit-print-color-adjust: exact;
+            }
+            
+            .print-btn, .floating-nav {
+                display: none;
+            }
+            
+            .section {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="language-switcher">
-            <a href="https://kw0rs.uno/cv/ru" class="lang-btn">RU</a>
-            <a href="https://kw0rs.uno/cv/en" class="lang-btn active">EN</a>
-            <a href="https://kw0rs.uno/cv/ua" class="lang-btn">UA</a>
-        </div>
-        
-        <div class="header">
-            <div class="avatar"><img src="https://i.imgur.com/70IwhXK.png" alt="Semen Boiko Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
-            <h1>Semen Boiko</h1>
-            <p class="birth-date">07.01.2004</p>
-            <a href="https://docs.google.com/document/d/19KF4da4IQCRSQ346gqWb3Z8ogk4dp3IV/edit?usp=sharing&ouid=114524141464463575184&rtpof=true&sd=true" class="download-btn" target="_blank">Download CV</a>
-        </div>
-        
-        <div class="content">
-            <div class="section">
-                <h2 class="section-title">Work Experience</h2>
-                
-                <div class="job">
-                    <div class="job-period">July 2023 — Present</div>
-                    <div class="job-title">Freelance (Procurement, Tenders, Reports)</div>
-                    <div class="job-description">
-                        Price analysis, preparation of Excel reports and spreadsheets.<br>
-                        Preparation and submission of procurement documentation (applications, PoA).
+        <header class="header">
+            <div class="header-content">
+                <div class="profile-section">
+                    <div class="profile-img">
+                        <!-- Замените src на ссылку на ваше фото -->
+                        <img src="https://via.placeholder.com/160x160/4f46e5/ffffff?text=OЛ" alt="Лисиця Олег Іванович" onerror="this.parentElement.innerHTML='<div class=\'profile-img-placeholder\'>👨‍💼</div>'">
                     </div>
                 </div>
-                
-                <div class="job">
-                    <div class="job-period">March 2022 — May 2023</div>
-                    <div class="job-title">2D Animator (Slots, Mobile Games)</div>
-                    <div class="job-description">
-                        Spine 2D, After Effects, Photoshop.<br>
-                        Game UI and character animation.
-                    </div>
-                </div>
-                
-                <div class="job">
-                    <div class="job-period">September — December 2021</div>
-                    <div class="job-title">Laser Machine Operator</div>
-                    <div class="job-description">
-                        Cutting and engraving of products.<br>
-                        Preparation of layouts for production.
-                    </div>
-                </div>
-                
-                <div class="job">
-                    <div class="job-period">2017 — 2021</div>
-                    <div class="job-title">PC Club and Service Center Administrator</div>
-                    <div class="job-description">
-                        Customer consulting, system administration.<br>
-                        Software/hardware setup, streaming (OBS), local networks, routers.<br>
-                        PC selection and custom builds for specific tasks.
+                <div class="info-section">
+                    <h1>Лисиця Олег Іванович</h1>
+                    <div class="subtitle">Інженер • Керівник проєктів • Експерт з альтернативної енергетики</div>
+                    <div class="contact-grid">
+                        <div class="contact-item">
+                            <span class="contact-icon">🎂</span>
+                            <span>22.06.1976, Бершадь</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📍</span>
+                            <span>Буча, Київська обл.</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📱</span>
+                            <span>067-442-83-44</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">✉️</span>
+                            <span>foxttt76@gmail.com</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="section">
-                <h2 class="section-title">Education</h2>
-                <div class="education">
-                    <div class="education-period">2019 — 2022</div>
-                    <div class="education-title">Junior Specialist Degree</div>
-                    <div class="education-description">
-                        Irpin Economic College — Business, Trade, and Exchange Operations
-                    </div>
+        </header>
+
+        <main class="main-content">
+            <section class="section" id="objective">
+                <h2 class="section-title">Професійні цілі</h2>
+                <div class="objective">
+                    <strong>Мета:</strong> Реалізація енергоефективних, інженерних проєктів, розвиток альтернативної енергетики, будівництво промислових об'єктів, торгівельних комплексів, складських приміщень, тепличних і рибних господарств.
+                    <br><br>
+                    <strong>Бажана позиція:</strong> Інженер, керівник проєктів
                 </div>
+            </section>
+
+            <section class="section" id="education">
+                <h2 class="section-title">Освіта</h2>
+                <div class="card">
+                    <div class="job-period">1991-1995</div>
+                    <div class="job-title">Уманський технікум сільського господарства</div>
+                    <div class="job-company">Середньо-технічна освіта</div>
+                    <div class="job-description">Кваліфікація: технік-механік</div>
+                </div>
+            </section>
+
+            <section class="section" id="experience">
+                <h2 class="section-title">Досвід роботи</h2>
                 
-                <h2 class="section-title" style="margin-top: 30px;">Contact</h2>
-                <div class="contact-info">
-                    <div class="contact-item"><strong>Phone:</strong> +380(63)835-70-22</div>
-                    <div class="contact-item"><strong>E-mail:</strong> kw0rs.wrk@gmail.com</div>
-                    <div class="contact-item"><strong>Telegram:</strong> @kw0rs_uno</div>
-                    <div class="contact-item"><strong>Discord:</strong> kw0rs</div>
+                <div class="card">
+                    <div class="job-period">2022 - дотепер</div>
+                    <div class="job-title">Директор</div>
+                    <div class="job-company">ТОВ «ВКФ ЕКОБУДСИСТЕМ»</div>
+                    <div class="job-description">Керування комплексними інженерними проєктами, розвиток альтернативної енергетики</div>
                 </div>
-                
-                <h2 class="section-title" style="margin-top: 30px;">Languages</h2>
-                <div class="languages">
-                    <div class="language"><span class="language-name">Ukrainian</span><span class="language-level">Native</span></div>
-                    <div class="language"><span class="language-name">Russian</span><span class="language-level">Native</span></div>
-                    <div class="language"><span class="language-name">English</span><span class="language-level">B1+</span></div>
+
+                <div class="card">
+                    <div class="job-period">2014 - дотепер</div>
+                    <div class="job-title">Директор</div>
+                    <div class="job-company">ТОВ «ЕКОБУДСИСТЕМ»</div>
+                    <div class="job-description">Монтаж, обслуговування інженерних систем: опалення, вентиляція, кондиціонування, водопостачання, каналізація, теплопункти та котельні різної складності</div>
                 </div>
-            </div>
-            
-            <div class="section full-width">
-                <h2 class="section-title">Technical Skills</h2>
+
+                <div class="card">
+                    <div class="job-period">2008-2014</div>
+                    <div class="job-title">Приватний підприємець</div>
+                    <div class="job-company">ФОП «Лисиця О.І.»</div>
+                    <div class="job-description">Проєктування, монтаж, обслуговування інженерних систем всіх типів</div>
+                </div>
+
+                <div class="card">
+                    <div class="job-period">2002-2008</div>
+                    <div class="job-title">Керівник проєктів, головний інженер</div>
+                    <div class="job-company">ТОВ «Технології Третього Тисячоліття», Київ</div>
+                    <div class="job-description">Системи опалення, водопостачання, альтернативна енергетика, сонячні системи</div>
+                </div>
+
+                <div class="card">
+                    <div class="job-period">1995-2002</div>
+                    <div class="job-title">Начальник лабораторії ПММ</div>
+                    <div class="job-company">Збройні Сили України</div>
+                    <div class="job-description">Звання: прапорщик</div>
+                </div>
+            </section>
+
+            <section class="section" id="skills">
+                <h2 class="section-title">Професійні навички</h2>
                 <div class="skills-grid">
                     <div class="skill-category">
-                         <h4>PC | Hardware</h4>
-                        <div class="skill-list">
-                            PC assembly, hardware configuration and diagnostics<br>
-                            Network setup (routers, LAN, internet)<br>
-                            Windows administration<br>
-                            Database management (manual entry, AI-assisted workflows)<br>
-                            Basic website creation and hosting (GitHub Pages)<br>
-                            Office software: MS Excel (data structuring, reports), presentations; WPS Office
-                        </div>
+                        <h4>🔧 Інженерні системи</h4>
+                        <div class="skill-item">Теплопункти (газові, електричні, твердопаливні)</div>
+                        <div class="skill-item">Теплові насоси (повітряні та геотермальні)</div>
+                        <div class="skill-item">Системи вентиляції та кондиціонування</div>
+                        <div class="skill-item">Насосні станції та автоматика</div>
+                        <div class="skill-item">Електричні системи</div>
+                        <div class="skill-item">Водопостачання та каналізація</div>
                     </div>
                     
                     <div class="skill-category">
-                        <h4>Creative / Media</h4>
-                        <div class="skill-list">
-                            2D animation (Spine, After Effects)<br>
-                            Video editing (cuts, subtitles, basic color correction)<br>
-                            Photoshop (graphic design, retouching)<br>
-                            Basic 3D (Cinema4D, Blender)<br>
-                            Audio editing (Adobe Audition)
-                        </div>
+                        <h4>⚡ Альтернативна енергетика</h4>
+                        <div class="skill-item">Сонячні електростанції (понад 50 проєктів)</div>
+                        <div class="skill-item">Геліосистеми для нагріву води</div>
+                        <div class="skill-item">Системи акумулювання енергії</div>
+                        <div class="skill-item">Енергоефективні рішення</div>
                     </div>
-                    
+
                     <div class="skill-category">
-                        <h4>AI / Automation</h4>
-                        <div class="skill-list">
-                            Experience with AI tools (ChatGPT, Claude, Cursor, etc.)<br>
-                            AI-assisted content generation (text, images, video, music)<br>
-                            Workflow automation (databases, spreadsheets, content)
-                        </div>
+                        <h4>💻 Цифрові навички</h4>
+                        <div class="skill-item">Microsoft Office Suite</div>
+                        <div class="skill-item">Проєктна документація</div>
+                        <div class="skill-item">Інтернет технології</div>
+                        <div class="skill-item">Аналіз технічних даних</div>
                     </div>
-                    
+
                     <div class="skill-category">
-                        <h4>Organization / Management</h4>
-                        <div class="skill-list">
-                            Tenders and procurement (price comparison, reporting, documentation)<br>
-                            Document management (applications, PoA, contract analysis)<br>
-                            Data structuring and analysis<br>
-                            Project coordination (databases, websites, creative projects)
-                        </div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <h4>Soft Skills</h4>
-                        <div class="skill-list">
-                            Communication and consulting (explaining complex things in simple words)<br>
-                            Analytical and critical thinking<br>
-                            Quick adaptation and self-learning<br>
-                            Time management, remote work experience
-                        </div>
+                        <h4>🗣️ Комунікації</h4>
+                        <div class="skill-item">Українська мова (професійний)</div>
+                        <div class="skill-item">Російська мова (професійний)</div>
+                        <div class="skill-item">Технічний переклад</div>
+                        <div class="skill-item">Презентації проєктів</div>
                     </div>
                 </div>
+            </section>
+
+            <section class="section" id="achievements">
+                <h2 class="section-title">Ключові досягнення</h2>
+                <div class="achievements">
+                    <div class="achievement-item">Реалізовано понад 300 проєктів систем опалення, водопостачання, каналізації</div>
+                    <div class="achievement-item">Побудовано понад 50 сонячних електростанцій та геліосистем</div>
+                    <div class="achievement-item">2015: Промислова котельня у Видубицькому монастирі - номінація на "Кращу котельню року" від Vaillant</div>
+                    <div class="achievement-item">2015-2021: ЖК "ЗОЛОЧЕ" - 7 будинків, ресторан 2500м², централізоване теплопостачання (300кВт теплові насоси)</div>
+                    <div class="achievement-item">2017: Новий корпус ТЕЦ-5 у Харькові</div>
+                    <div class="achievement-item">2022-2023: Відбудова 300+ приватних будинків у Бучі та Ірпені після військових дій</div>
+                    <div class="achievement-item">2024: Комбікормовий завод у Монастирищі + сонячна електростанція 515кВт</div>
+                </div>
+            </section>
+
+            <section class="section" id="qualities">
+                <h2 class="section-title">Особисті якості</h2>
+                <div class="personal-qualities">
+                    <div class="quality-item">Лідерство (20-100 осіб)</div>
+                    <div class="quality-item">Аналітичне мислення</div>
+                    <div class="quality-item">Стратегічне планування</div>
+                    <div class="quality-item">Комунікабельність</div>
+                    <div class="quality-item">Відповідальність</div>
+                    <div class="quality-item">Командна робота</div>
+                    <div class="quality-item">Інноваційність</div>
+                    <div class="quality-item">Стресостійкість</div>
+                </div>
+            </section>
+
+            <div class="signature">
+                22.04.2025<br>
+                <strong>О.І. Лисиця</strong>
             </div>
-        </div>
+        </main>
     </div>
-</body>
-</html>
+
+    <nav class="floating-nav">
+        <div class="nav-dot active" data-section="objective"></div>
+        <div class="nav-dot" data-section="education"></div>
+        <div class="nav-dot" data-section="experience"></div>
+        <div class="nav-dot" data-section="skills"></div>
+        <div class="nav-dot" data-section="achievements"></div>
+        <div class="nav-dot" data-section="qualities"></div>
+    </nav>
+
+    <button class="print-btn" onclick="window.print()">
+        <span>🖨️</span>
+        <span>Друк</span>
+    </button>
+
+    <script>
+        // Анимация появления секций
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Обновляем навигацию
+                    const sectionId = entry.target.id;
+                    document.querySelectorAll('.nav-dot').forEach(dot => {
+                        dot.classList.remove('active');
+                    });
+                    const activeDot = document.querySelector(`[data-section="${sectionI
