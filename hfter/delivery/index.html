@@ -554,7 +554,7 @@
                 <div class="profile-section">
                     <div class="profile-img">
                         <!-- Замените src на ссылку на ваше фото -->
-                        <img src="https://via.placeholder.com/160x160/4f46e5/ffffff?text=OЛ" alt="Лисиця Олег Іванович" onerror="this.parentElement.innerHTML='<div class=\'profile-img-placeholder\'>👨‍💼</div>'">
+                        <img src="https://i.imgur.com/CXzhGa2.png" alt="Лисиця Олег Іванович" onerror="this.parentElement.innerHTML='<div class=\'profile-img-placeholder\'>👨‍💼</div>'">
                     </div>
                 </div>
                 <div class="info-section">
@@ -745,4 +745,37 @@
                     document.querySelectorAll('.nav-dot').forEach(dot => {
                         dot.classList.remove('active');
                     });
-                    const activeDot = document.querySelector(`[data-section="${sectionI
+                    const activeDot = document.querySelector(`[data-section="${sectionId}"]`);
+                    if (activeDot) {
+                        activeDot.classList.add('active');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Наблюдаем за всеми секциями
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Навигация по точкам
+        document.querySelectorAll('.nav-dot').forEach(dot => {
+            dot.addEventListener('click', function() {
+                const sectionId = this.dataset.section;
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Плавное появление при загрузке
+        window.addEventListener('load', function() {
+            document.querySelector('#objective').classList.add('visible');
+        });
+    </script>
+</body>
+</html>
