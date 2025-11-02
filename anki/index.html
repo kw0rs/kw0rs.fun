@@ -2,25 +2,28 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <title>KW0RS Flashcards</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KW0RS Cards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
     :root{--bg:#0d1117;--glass:rgba(255,255,255,.05);--green:#a8e6cf;--blue:#b0c4ff;--shadow:0 8px 32px #0006}
-    body{margin:0;background:var(--bg);color:#c9d1d9;font-family:'Inter',sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;overflow:hidden}
-    #card{width:88vw;max-width:400px;height:56vh;perspective:1200px;position:relative}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:#c9d1d9;font-family:'Inter',sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100dvh;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);overflow-x:hidden}
+    #card{width:92vw;max-width:400px;height:62dvh;margin-top:8dvh;position:relative;perspective:1200px}
     .inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .6s}
     .flipped .inner{transform:rotateY(180deg)}
-    .face{position:absolute;inset:0;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;font-size:2.1rem;text-align:center;padding:2rem;box-sizing:border-box;border-radius:20px;background:var(--glass);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);box-shadow:var(--shadow)}
+    .face{inset:0;position:absolute;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;padding:1.5rem;font-size:clamp(1.8rem,6vw,2.4rem);text-align:center;border-radius:20px;background:var(--glass);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);box-shadow:var(--shadow)}
     .front{color:var(--green)}
     .back{color:var(--blue);transform:rotateY(180deg)}
-    button{margin:1rem;padding:1rem 2rem;font-weight:700;border:none;border-radius:50px;cursor:pointer;transition:.3s;backdrop-filter:blur(10px)}
+    .btns{display:flex;gap:1rem;margin:2rem 0;flex-wrap:wrap;justify-content:center}
+    button{padding:1rem 2rem;font-weight:700;border:none;border-radius:50px;cursor:pointer;transition:.3s;backdrop-filter:blur(10px);font-size:1rem;min-width:140px}
     #next{background:var(--green);color:#111}
     #swap{background:var(--blue);color:#111}
-    #next:hover,#swap:hover{transform:scale(1.05);box-shadow:0 0 20px var(--green)}
-    #status{margin-top:.5rem;opacity:.7;font-size:.9rem}
+    #menu{background:#333;color:#fff;border:1px solid #555}
+    button:hover{transform:scale(1.05)}
+    #status{margin:.5rem 0;opacity:.7;font-size:.9rem}
     .fly{animation:fly 1s forwards}
-    @keyframes fly{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(-150vh) rotate(30deg);opacity:0}}
+    @keyframes fly{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(-120dvh) rotate(30deg);opacity:0}}
   </style>
 </head>
 <body>
@@ -29,9 +32,10 @@
     <div class="back face">ready</div>
   </div></div>
 
-  <div>
+  <div class="btns">
     <button id="next">Ещё →</button>
     <button id="swap">Ru→De</button>
+    <button id="menu">В МЕНЮ</button>
   </div>
   <div id="status">Гружу…</div>
 
@@ -39,69 +43,26 @@
   <script>
     const SHEET_ID = '1-ZE-5MEjbv95xm2RmGdkJfKZ7UXPaUDpwAMykUf793I';
     const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
-    let raw = [], deck = [], ptr = 0, dir = 0; // 0=Ru→De
+    let raw=[], deck=[], ptr=0, dir=0;
 
-    async function load() {
-      const res = await fetch(CSV_URL + '&t=' + Date.now());
-      const csv = await res.text();
-      raw = Papa.parse(csv, {header:true}).data
-        .filter(r => r.Ru && r.De)
-        .map(r => ({ru: r.Ru.trim(), de: r.De.trim()}));
-      makeDeck();
-      updateStatus();
-    }
-
-    function makeDeck() {
-      deck = raw.map(c => dir ? {f:c.de, b:c.ru} : {f:c.ru, b:c.de});
-      shuffle(deck);
-      ptr = 0;
-      show();
-    }
-
+    async function load(){const r=await fetch(CSV_URL+'&t='+Date.now());const c=await r.text();raw=Papa.parse(c,{header:true}).data.filter(x=>x.Ru&&x.De).map(x=>({ru:x.Ru.trim(),de:x.De.trim()}));makeDeck();status();}
+    function makeDeck(){deck=raw.map(c=>dir?{f:c.de,b:c.ru}:{f:c.ru,b:c.de});shuffle(deck);ptr=0;show();}
     function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*i);[a[i],a[j]]=[a[j],a[i]];}}
-
-    function show() {
-      if (!deck.length) return;
-      const c = deck[ptr];
-      $('.front').textContent = c.f;
-      $('.back').textContent  = c.b;
-      $('#card').classList.remove('flipped');
-      updateStatus();
-    }
-
-    function fly() {
-      const card = $('#card');
-      card.classList.add('fly');
-      setTimeout(()=>{card.classList.remove('fly'); next();}, 1000);
-    }
-
-    function next() {
-      ptr = (ptr + 1) % deck.length;
-      show();
-    }
-
-    function swap() {
-      dir = 1 - dir;
-      $('#swap').textContent = dir ? 'De→Ru' : 'Ru→De';
-      makeDeck();
-    }
-
-    function updateStatus() {
-      $('#status').textContent = `Слов: ${raw.length} | ${ptr+1}/${deck.length} | ${dir?'De→Ru':'Ru→De'}`;
-    }
-
-    const $ = s => document.querySelector(s);
-    $('#card').onclick = () => $('#card').classList.toggle('flipped');
-    $('#next').onclick = fly;
-    $('#swap').onclick = swap;
+    function show(){if(!deck.length)return;$('.front').textContent=deck[ptr].f;$('.back').textContent=deck[ptr].b;$('#card').classList.remove('flipped');status();}
+    function fly(){$('#card').classList.add('fly');setTimeout(()=>{$('#card').classList.remove('fly');next();},1000);}
+    function next(){ptr=(ptr+1)%deck.length;show();}
+    function swap(){dir=1-dir;$('#swap').textContent=dir?'De→Ru':'Ru→De';makeDeck();}
+    function status(){$('#status').textContent=`Слов: ${raw.length} | ${ptr+1}/${deck.length} | ${dir?'De→Ru':'Ru→De'}`;}
+    const $=s=>document.querySelector(s);
+    $('#card').onclick=e=>{if(e.target===e.currentTarget)$('#card').classList.toggle('flipped');};
+    $('#next').onclick=fly;
+    $('#swap').onclick=swap;
+    $('#menu').onclick=()=>location='https://kw0rs.uno';
 
     // swipe
-    let touchstartX = 0;
-    $('#card').addEventListener('touchstart', e => touchstartX = e.changedTouches[0].screenX);
-    $('#card').addEventListener('touchend', e => {
-      const diff = touchstartX - e.changedTouches[0].screenX;
-      if (Math.abs(diff) > 50) fly();
-    });
+    let tx=0;
+    $('#card').addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+    $('#card').addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50)fly();});
 
     load();
   </script>
