@@ -9,7 +9,7 @@
     :root{--bg:#0d1117;--glass:rgba(255,255,255,.05);--green:#a8e6cf;--blue:#b0c4ff;--shadow:0 8px 32px #0006}
     *{box-sizing:border-box;margin:0;padding:0}
     body{background:var(--bg);color:#c9d1d9;font-family:'Inter',sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100dvh;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);overflow:hidden}
-    #card{width:92vw;max-width:400px;height:62dvh;margin-top:8dvh;position:relative;perspective:1200px;user-select:none}
+    #card{width:92vw;max-width:400px;height:62dvh;margin-top:8dvh;position:relative;perspective:1200px;user-select:none;transition:transform 1s,opacity 1s}
     .inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .6s}
     .flipped .inner{transform:rotateY(180deg)}
     .face{inset:0;position:absolute;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;padding:1.5rem;font-size:clamp(1.8rem,6vw,2.4rem);text-align:center;border-radius:20px;background:var(--glass);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);box-shadow:var(--shadow)}
@@ -46,25 +46,13 @@
   </div>
   <div id="status">Гружу…</div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script>
     const SHEET_ID = '1-ZE-5MEjbv95xm2RmGdkJfKZ7UXPaUDpwAMykUf793I';
     const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
     const CACHE_KEY = 'kw0rs_cache';
-    const CACHE_TTL = 5*60*1000; // 5 мин
+    const CACHE_TTL = 5*60*1000;
     let raw=[], deck=[], ptr=0, dir=0, remaining=[];
-
-    // worker для parse
-    const workerCode = `
-    importScripts('https://cdn.jsdelivr.net/npm/papaparse@5/papaparse.min.js');
-    self.onmessage = e => {
-      Papa.parse(e.data, {
-        header: true,
-        complete: r => self.postMessage(r.data.filter(x=>x.Ru&&x.De).map(x=>({ru:x.Ru.trim(),de:x.De.trim()})))
-      });
-    };
-    `;
-    const blob = new Blob([workerCode], {type:'application/javascript'});
-    const worker = new Worker(URL.createObjectURL(blob));
 
     function setProgress(p, txt){
       document.getElementById('bar').style.width = p+'%';
@@ -74,37 +62,51 @@
     async function load(){
       const cached = localStorage.getItem(CACHE_KEY);
       if(cached){
-        const {data, ts} = JSON.parse(cached);
-        if(Date.now()-ts < CACHE_TTL){
-          raw = data; done(); return;
+        try {
+          const {data, ts} = JSON.parse(cached);
+          if(Date.now()-ts < CACHE_TTL){
+            raw = data; 
+            setProgress(100, 'Из кэша');
+            setTimeout(()=>{document.getElementById('preload').remove(); done();}, 300);
+            return;
+          }
+        } catch(e) {
+          localStorage.removeItem(CACHE_KEY);
         }
       }
 
       setProgress(10, 'Скачиваю…');
-      const r = await fetch(CSV_URL);
-      const txt = await r.text();
-      setProgress(40, 'Парсю…');
+      try {
+        const r = await fetch(CSV_URL);
+        const txt = await r.text();
+        setProgress(40, 'Парсю…');
 
-      worker.onmessage = e => {
-        raw = e.data;
-        localStorage.setItem(CACHE_KEY, JSON.stringify({data:raw, ts:Date.now()}));
-        setProgress(100, 'Готово');
-        setTimeout(()=>{document.getElementById('preload').remove(); done();}, 300);
-      };
-      worker.postMessage(txt);
+        Papa.parse(txt, {
+          header: true,
+          complete: result => {
+            raw = result.data.filter(x=>x.Ru&&x.De).map(x=>({ru:x.Ru.trim(),de:x.De.trim()}));
+            localStorage.setItem(CACHE_KEY, JSON.stringify({data:raw, ts:Date.now()}));
+            setProgress(100, 'Готово');
+            setTimeout(()=>{document.getElementById('preload').remove(); done();}, 300);
+          }
+        });
+      } catch(e) {
+        setProgress(0, 'Ошибка загрузки');
+        console.error(e);
+      }
     }
 
     function done(){
       remaining = raw.slice();
       addBatch(20);
-      makeDeck();
-      status();
+      show();
     }
 
     function addBatch(n){
       const batch = remaining.splice(0, n);
-      deck.push(...batch.map(c => dir ? {f:c.de, b:c.ru} : {f:c.ru, b:c.de}));
-      shuffle(deck.slice(-n)); // шаффлим только новый батч
+      const newCards = batch.map(c => dir ? {f:c.de, b:c.ru} : {f:c.ru, b:c.de});
+      shuffle(newCards);
+      deck.push(...newCards);
     }
 
     function checkAdd(){
@@ -113,17 +115,18 @@
       }
     }
 
-    function makeDeck(){
-      deck = deck.map(c => dir ? {f:c.b, b:c.f} : {f:c.b, b:c.f}); // swap без rebuild
-      show();
+    function swapDeck(){
+      deck = deck.map(c => ({f:c.b, b:c.f}));
     }
 
-    function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*i);[a[i],a[j]]=[a[j],a[i]];}}
+    function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}}
 
     function show(){
       if(ptr >= deck.length){
         document.querySelector('.front').textContent = 'В С Ё';
-        document.querySelector('.back').textContent = '';
+        document.querySelector('.back').textContent = '🎉';
+        document.getElementById('card').classList.remove('flipped');
+        status();
         return;
       }
       document.querySelector('.front').textContent=deck[ptr].f;
@@ -137,7 +140,7 @@
       const card = document.getElementById('card');
       card.style.transform = `translateY(-120dvh) rotate(${rot}deg)`;
       card.style.opacity = '0';
-      setTimeout(()=>{card.style.transform=''; card.style.opacity=''; next();},1000);
+      setTimeout(()=>{card.style.transform=''; card.style.opacity=''; next();},600);
     }
 
     function next(){
@@ -149,7 +152,8 @@
     function swap(){
       dir=1-dir;
       document.getElementById('swap').textContent=dir?'De→Ru':'Ru→De';
-      makeDeck();
+      swapDeck();
+      show();
     }
 
     function status(){
@@ -162,10 +166,9 @@
     document.getElementById('swap').onclick=swap;
     document.getElementById('menu').onclick=()=>location='https://kw0rs.uno';
 
-    // swipe
     let tx=0;
     card.addEventListener('touchstart',e=>{e.stopPropagation(); tx=e.touches[0].clientX;}, {passive:true});
-    card.addEventListener('touchend',e=>{e.stopPropagation(); if(Math.abs(tx-e.changedTouches[0].clientX)>30) fly();});
+    card.addEventListener('touchend',e=>{e.stopPropagation(); if(Math.abs(tx-e.changedTouches[0].clientX)>50) fly();});
 
     load();
   </script>
