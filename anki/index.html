@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Твой мини-Anki</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap');
+    body{margin:0;background:#111;color:#fff;font-family:'Inter',sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh}
+    #card{width:90vw;max-width:420px;height:55vh;perspective:1200px;cursor:pointer}
+    .inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s}
+    .flipped .inner{transform:rotateY(180deg)}
+    .face{position:absolute;width:100%;height:100%;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;font-size:2.2rem;text-align:center;padding:1rem;box-sizing:border-box;border-radius:16px;box-shadow:0 8px 32px #0006}
+    .front{background:#0f0;color:#000}
+    .back{background:#006;color:#0ff;transform:rotateY(180deg)}
+    button{margin-top:2rem;padding:1rem 2rem;font-size:1.2rem;background:#0f0;color:#000;border:none;border-radius:8px}
+    #status{margin-top:1rem;opacity:.7;font-size:.9rem}
+  </style>
+</head>
+<body>
+  <div id="card"><div class="inner">
+    <div class="front face">Жду слов…</div>
+    <div class="back face">???</div>
+  </div></div>
+  <button id="next">Ещё →</button>
+  <div id="status">Гружу 15/∞</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5/papaparse.min.js"></script>
+  <script>
+    const SHEET_ID = '1-ZE-5MEjbv95xm2RmGdkJfKZ7UXPaUDpwAMykUf793I';
+    const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+    const BATCH    = 15;
+
+    let deck = [], ptr = 0;
+
+    async function loadBatch() {
+      const res = await fetch(CSV_URL + '&t=' + Date.now()); // кэш-киллер
+      const csv = await res.text();
+      const rows = Papa.parse(csv, {header:true}).data.filter(r=>r.Ru && r.De);
+      deck.push(...rows.map(r=>({front:r.Ru.trim(), back:r.De.trim()})));
+      shuffle(deck);
+      updateStatus();
+      if (deck.length < 100) setTimeout(loadBatch, 2000); // на всякий
+    }
+
+    function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*i);[a[i],a[j]]=[a[j],a[i]];}}
+
+    function show() {
+      if (ptr >= deck.length - 5) loadBatch();
+      const c = deck[ptr];
+      $('.front').textContent = c.front;
+      $('.back').textContent  = c.back;
+      $('#card').classList.remove('flipped');
+    }
+
+    function next() {
+      ptr = (ptr + 1) % deck.length;
+      show();
+      updateStatus();
+    }
+
+    function updateStatus() {
+      $('#status').textContent = `Карточек: ${deck.length} | Показано: ${ptr+1}`;
+    }
+
+    const $ = s => document.querySelector(s);
+    $('#card').onclick = () => $('#card').classList.toggle('flipped');
+    $('#next').onclick = next;
+
+    loadBatch().then(()=>{ptr=0; show();});
+  </script>
+</body>
+</html>
