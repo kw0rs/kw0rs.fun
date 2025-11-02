@@ -136,17 +136,19 @@
     }
 
     function fly(){
-      const rot = Math.random()>0.5?15:-15;
+      const rot = (Math.random()-0.5)*30;
       const card = document.getElementById('card');
       card.style.transform = `translateY(-120dvh) rotate(${rot}deg)`;
       card.style.opacity = '0';
-      setTimeout(()=>{card.style.transform=''; card.style.opacity=''; next();},600);
-    }
-
-    function next(){
-      ptr++;
-      checkAdd();
-      show();
+      setTimeout(()=>{
+        ptr++;
+        checkAdd();
+        show();
+        card.style.transition = 'none';
+        card.style.transform=''; 
+        card.style.opacity='';
+        setTimeout(()=>{card.style.transition='transform 1s,opacity 1s';},50);
+      },600);
     }
 
     function swap(){
