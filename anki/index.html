@@ -3,175 +3,459 @@
 <head>
   <meta charset="utf-8">
   <title>KW0RS Cards</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
-    :root{--bg:#0d1117;--glass:rgba(255,255,255,.05);--green:#a8e6cf;--blue:#b0c4ff;--shadow:0 8px 32px #0006}
+    :root{
+      --bg:#0d1117;
+      --glass:rgba(255,255,255,.05);
+      --green:#a8e6cf;
+      --blue:#b0c4ff;
+      --shadow:0 8px 32px #0006;
+      --card-shadow:0 20px 60px rgba(0,0,0,.3);
+    }
     *{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);color:#c9d1d9;font-family:'Inter',sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100dvh;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);overflow:hidden}
-    #card{width:92vw;max-width:400px;height:62dvh;margin-top:8dvh;position:relative;perspective:1200px;user-select:none;transition:transform 1s,opacity 1s}
-    .inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .6s}
+    body{
+      background:var(--bg);
+      color:#c9d1d9;
+      font-family:'Inter',sans-serif;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      min-height:100dvh;
+      padding:max(env(safe-area-inset-top), 1rem) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      overflow-x:hidden;
+      overflow-y:auto;
+    }
+    #card{
+      width:92vw;
+      max-width:400px;
+      height:min(62dvh, 500px);
+      margin-top:4dvh;
+      position:relative;
+      perspective:1200px;
+      user-select:none;
+      transition:transform .8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity .8s;
+      cursor:pointer;
+    }
+    .inner{
+      position:absolute;
+      inset:0;
+      transform-style:preserve-3d;
+      transition:transform .6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
     .flipped .inner{transform:rotateY(180deg)}
-    .face{inset:0;position:absolute;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;padding:1.5rem;font-size:clamp(1.8rem,6vw,2.4rem);text-align:center;border-radius:20px;background:var(--glass);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);box-shadow:var(--shadow)}
-    .front{color:var(--green)}
-    .back{color:var(--blue);transform:rotateY(180deg)}
-    .btns{display:flex;gap:1rem;margin:2rem 0;flex-wrap:wrap;justify-content:center}
-    button{padding:1rem 2rem;font-weight:700;border:none;border-radius:50px;cursor:pointer;transition:.3s;backdrop-filter:blur(10px);font-size:1rem;min-width:140px}
+    .face{
+      inset:0;
+      position:absolute;
+      backface-visibility:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:2rem;
+      font-size:clamp(1.6rem, 5vw, 2.2rem);
+      line-height:1.4;
+      text-align:center;
+      border-radius:24px;
+      background:var(--glass);
+      backdrop-filter:blur(16px);
+      border:1px solid rgba(255,255,255,.15);
+      box-shadow:var(--card-shadow);
+      word-wrap:break-word;
+      overflow-wrap:break-word;
+      hyphens:auto;
+    }
+    .front{color:var(--green);font-weight:700}
+    .back{color:var(--blue);transform:rotateY(180deg);font-weight:600}
+    .btns{
+      display:flex;
+      gap:1rem;
+      margin:2rem 0 1rem;
+      flex-wrap:wrap;
+      justify-content:center;
+      width:100%;
+      max-width:500px;
+      padding:0 1rem;
+    }
+    button{
+      padding:1rem 1.5rem;
+      font-weight:700;
+      border:none;
+      border-radius:50px;
+      cursor:pointer;
+      transition:all .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      backdrop-filter:blur(10px);
+      font-size:1rem;
+      min-width:120px;
+      flex:1;
+      max-width:180px;
+      box-shadow:0 4px 12px rgba(0,0,0,.2);
+    }
     #next{background:var(--green);color:#111}
     #swap{background:var(--blue);color:#111}
     #menu{background:#333;color:#fff;border:1px solid #555}
-    button:hover{transform:scale(1.05)}
-    #status{margin:.5rem 0;opacity:.7;font-size:.9rem}
-    #preload{position:fixed;inset:0;background:var(--bg);z-index:99;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem}
-    #progress{width:80vw;height:8px;background:#333;border-radius:4px;overflow:hidden}
-    #bar{height:100%;background:var(--green);width:0%;transition:width .3s}
+    button:hover{transform:scale(1.08) translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
+    button:active{transform:scale(0.95)}
+    button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    #status{
+      margin:.5rem 0;
+      opacity:.7;
+      font-size:.9rem;
+      text-align:center;
+      padding:0 1rem;
+    }
+    #preload{
+      position:fixed;
+      inset:0;
+      background:var(--bg);
+      z-index:99;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:1.5rem;
+      animation:fadeIn .3s;
+    }
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes fadeOut{from{opacity:1}to{opacity:0}}
+    .fadeout{animation:fadeOut .3s forwards}
+    #progress{
+      width:min(80vw, 300px);
+      height:8px;
+      background:#333;
+      border-radius:8px;
+      overflow:hidden;
+      box-shadow:inset 0 2px 4px rgba(0,0,0,.3);
+    }
+    #bar{
+      height:100%;
+      background:linear-gradient(90deg, var(--green), var(--blue));
+      width:0%;
+      transition:width .3s ease-out;
+      border-radius:8px;
+    }
+    #hint{
+      position:absolute;
+      bottom:-3rem;
+      left:50%;
+      transform:translateX(-50%);
+      opacity:.5;
+      font-size:.8rem;
+      animation:pulse 2s infinite;
+      white-space:nowrap;
+    }
+    @keyframes pulse{
+      0%, 100%{opacity:.5}
+      50%{opacity:.8}
+    }
+    .finished{
+      font-size:3rem !important;
+      animation:celebrate .6s ease-out;
+    }
+    @keyframes celebrate{
+      0%{transform:scale(0.5) rotate(-10deg)}
+      50%{transform:scale(1.1) rotate(5deg)}
+      100%{transform:scale(1) rotate(0)}
+    }
+    @media (max-width: 480px){
+      .btns{gap:.75rem}
+      button{min-width:100px;font-size:.9rem;padding:.9rem 1.2rem}
+    }
   </style>
 </head>
 <body>
   <div id="preload">
-    <div>Гружу колоду…</div>
+    <div style="font-size:1.2rem;font-weight:700">Загружаю колоду…</div>
     <div id="progress"><div id="bar"></div></div>
-    <div id="ptext">0%</div>
+    <div id="ptext" style="font-weight:600">0%</div>
   </div>
 
-  <div id="card"><div class="inner">
-    <div class="front face">KW0RS</div>
-    <div class="back face">ready</div>
-  </div></div>
+  <div id="card">
+    <div class="inner">
+      <div class="front face">KW0RS</div>
+      <div class="back face">готово</div>
+    </div>
+    <div id="hint">👆 Тапни для переворота</div>
+  </div>
 
   <div class="btns">
     <button id="next">Ещё →</button>
     <button id="swap">Ru→De</button>
-    <button id="menu">В МЕНЮ</button>
+    <button id="menu">Меню</button>
   </div>
-  <div id="status">Гружу…</div>
+  <div id="status">Загрузка…</div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script>
     const SHEET_ID = '1-ZE-5MEjbv95xm2RmGdkJfKZ7UXPaUDpwAMykUf793I';
     const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
-    const CACHE_KEY = 'kw0rs_cache';
-    const CACHE_TTL = 5*60*1000;
-    let raw=[], deck=[], ptr=0, dir=0, remaining=[];
+    const CACHE_KEY = 'kw0rs_cache_v2';
+    const CACHE_TTL = 5 * 60 * 1000;
+    
+    let raw = [], deck = [], ptr = 0, dir = 0, remaining = [];
+    let isAnimating = false;
 
-    function setProgress(p, txt){
-      document.getElementById('bar').style.width = p+'%';
-      document.getElementById('ptext').textContent = txt || p+'%';
+    function setProgress(p, txt) {
+      const bar = document.getElementById('bar');
+      const ptext = document.getElementById('ptext');
+      if (bar) bar.style.width = Math.min(100, Math.max(0, p)) + '%';
+      if (ptext) ptext.textContent = txt || Math.round(p) + '%';
     }
 
-    async function load(){
-      const cached = localStorage.getItem(CACHE_KEY);
-      if(cached){
-        try {
+    async function load() {
+      try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
           const {data, ts} = JSON.parse(cached);
-          if(Date.now()-ts < CACHE_TTL){
-            raw = data; 
-            setProgress(100, 'Из кэша');
-            setTimeout(()=>{document.getElementById('preload').remove(); done();}, 300);
+          if (Date.now() - ts < CACHE_TTL && Array.isArray(data) && data.length > 0) {
+            raw = data;
+            setProgress(100, 'Из кэша ✓');
+            await sleep(300);
+            removePreloader();
             return;
           }
-        } catch(e) {
-          localStorage.removeItem(CACHE_KEY);
         }
+      } catch (e) {
+        console.warn('Cache error:', e);
+        localStorage.removeItem(CACHE_KEY);
       }
 
-      setProgress(10, 'Скачиваю…');
+      setProgress(10, 'Скачиваю CSV…');
+      
       try {
-        const r = await fetch(CSV_URL);
-        const txt = await r.text();
-        setProgress(40, 'Парсю…');
+        const response = await fetch(CSV_URL);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
+        const text = await response.text();
+        setProgress(40, 'Обрабатываю…');
 
-        Papa.parse(txt, {
+        Papa.parse(text, {
           header: true,
+          skipEmptyLines: true,
           complete: result => {
-            raw = result.data.filter(x=>x.Ru&&x.De).map(x=>({ru:x.Ru.trim(),de:x.De.trim()}));
-            localStorage.setItem(CACHE_KEY, JSON.stringify({data:raw, ts:Date.now()}));
-            setProgress(100, 'Готово');
-            setTimeout(()=>{document.getElementById('preload').remove(); done();}, 300);
+            raw = result.data
+              .filter(x => x.Ru && x.De)
+              .map(x => ({
+                ru: x.Ru.trim(),
+                de: x.De.trim()
+              }));
+            
+            if (raw.length === 0) {
+              throw new Error('Пустые данные');
+            }
+
+            try {
+              localStorage.setItem(CACHE_KEY, JSON.stringify({
+                data: raw,
+                ts: Date.now()
+              }));
+            } catch (e) {
+              console.warn('Не удалось сохранить в кэш:', e);
+            }
+
+            setProgress(100, `Загружено ${raw.length} карточек ✓`);
+            setTimeout(removePreloader, 400);
+          },
+          error: err => {
+            throw new Error('Ошибка парсинга: ' + err.message);
           }
         });
-      } catch(e) {
-        setProgress(0, 'Ошибка загрузки');
-        console.error(e);
+      } catch (e) {
+        console.error('Load error:', e);
+        setProgress(0, '❌ ' + e.message);
+        document.getElementById('ptext').style.color = '#ff6b6b';
       }
     }
 
-    function done(){
-      remaining = raw.slice();
-      addBatch(20);
-      show();
+    function removePreloader() {
+      const preload = document.getElementById('preload');
+      if (preload) {
+        preload.classList.add('fadeout');
+        setTimeout(() => {
+          preload.remove();
+          init();
+        }, 300);
+      }
     }
 
-    function addBatch(n){
-      const batch = remaining.splice(0, n);
-      const newCards = batch.map(c => dir ? {f:c.de, b:c.ru} : {f:c.ru, b:c.de});
+    function init() {
+      remaining = [...raw];
+      shuffle(remaining);
+      addBatch(20);
+      show();
+      updateStatus();
+    }
+
+    function addBatch(n) {
+      if (remaining.length === 0) return;
+      
+      const batch = remaining.splice(0, Math.min(n, remaining.length));
+      const newCards = batch.map(c => 
+        dir ? {f: c.de, b: c.ru} : {f: c.ru, b: c.de}
+      );
       shuffle(newCards);
       deck.push(...newCards);
     }
 
-    function checkAdd(){
-      if(remaining.length && ptr % 5 === 0 && ptr > 0){
+    function checkAddMore() {
+      if (remaining.length > 0 && ptr > 0 && ptr % 5 === 0) {
         addBatch(5);
+        updateStatus();
       }
     }
 
-    function swapDeck(){
-      deck = deck.map(c => ({f:c.b, b:c.f}));
+    function swapAllCards() {
+      deck = deck.map(c => ({f: c.b, b: c.f}));
     }
 
-    function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}}
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
 
-    function show(){
-      if(ptr >= deck.length){
-        document.querySelector('.front').textContent = 'В С Ё';
+    function show() {
+      const card = document.getElementById('card');
+      const hint = document.getElementById('hint');
+      
+      card.classList.remove('flipped');
+      
+      if (ptr >= deck.length) {
+        document.querySelector('.front').textContent = 'ВСЁ!';
         document.querySelector('.back').textContent = '🎉';
-        document.getElementById('card').classList.remove('flipped');
-        status();
+        document.querySelector('.front').classList.add('finished');
+        document.querySelector('.back').classList.add('finished');
+        if (hint) hint.style.display = 'none';
+        document.getElementById('next').disabled = true;
+        updateStatus();
         return;
       }
-      document.querySelector('.front').textContent=deck[ptr].f;
-      document.querySelector('.back').textContent=deck[ptr].b;
-      document.getElementById('card').classList.remove('flipped');
-      status();
+
+      const front = document.querySelector('.front');
+      const back = document.querySelector('.back');
+      
+      front.textContent = deck[ptr].f;
+      back.textContent = deck[ptr].b;
+      front.classList.remove('finished');
+      back.classList.remove('finished');
+      
+      if (hint) hint.style.display = ptr === 0 ? 'block' : 'none';
+      
+      updateStatus();
     }
 
-    function fly(){
-      const rot = (Math.random()-0.5)*30;
+    function nextCard() {
+      if (isAnimating || ptr >= deck.length) return;
+      
+      isAnimating = true;
       const card = document.getElementById('card');
-      card.style.transform = `translateY(-120dvh) rotate(${rot}deg)`;
+      const rotation = (Math.random() - 0.5) * 40;
+      
+      card.style.transform = `translateY(-120dvh) rotate(${rotation}deg) scale(0.8)`;
       card.style.opacity = '0';
-      setTimeout(()=>{
+      
+      setTimeout(() => {
         ptr++;
-        checkAdd();
+        checkAddMore();
         show();
+        
         card.style.transition = 'none';
-        card.style.transform=''; 
-        card.style.opacity='';
-        setTimeout(()=>{card.style.transition='transform 1s,opacity 1s';},50);
-      },600);
+        card.style.transform = 'translateY(20px) scale(0.9)';
+        card.style.opacity = '0';
+        
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            card.style.transition = 'transform .8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity .8s';
+            card.style.transform = '';
+            card.style.opacity = '';
+            
+            setTimeout(() => {
+              isAnimating = false;
+            }, 800);
+          });
+        });
+      }, 800);
     }
 
-    function swap(){
-      dir=1-dir;
-      document.getElementById('swap').textContent=dir?'De→Ru':'Ru→De';
-      swapDeck();
+    function swapDirection() {
+      dir = 1 - dir;
+      document.getElementById('swap').textContent = dir ? 'De→Ru' : 'Ru→De';
+      swapAllCards();
       show();
     }
 
-    function status(){
-      document.getElementById('status').textContent=`Загружено: ${deck.length} / ${raw.length} | ${ptr+1}/${deck.length} | ${dir?'De→Ru':'Ru→De'}`;
+    function updateStatus() {
+      const loaded = deck.length;
+      const total = raw.length;
+      const current = Math.min(ptr + 1, deck.length);
+      const dirText = dir ? 'De→Ru' : 'Ru→De';
+      
+      document.getElementById('status').textContent = 
+        `Карточка ${current} из ${deck.length} | Всего: ${total} | ${dirText}`;
     }
 
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // События
     const card = document.getElementById('card');
-    card.addEventListener('click',()=>card.classList.toggle('flipped'));
-    document.getElementById('next').onclick=fly;
-    document.getElementById('swap').onclick=swap;
-    document.getElementById('menu').onclick=()=>location='https://kw0rs.uno';
+    
+    card.addEventListener('click', () => {
+      if (!isAnimating && ptr < deck.length) {
+        card.classList.toggle('flipped');
+      }
+    });
 
-    let tx=0;
-    card.addEventListener('touchstart',e=>{e.stopPropagation(); tx=e.touches[0].clientX;}, {passive:true});
-    card.addEventListener('touchend',e=>{e.stopPropagation(); if(Math.abs(tx-e.changedTouches[0].clientX)>50) fly();});
+    document.getElementById('next').onclick = nextCard;
+    document.getElementById('swap').onclick = swapDirection;
+    document.getElementById('menu').onclick = () => {
+      if (confirm('Вернуться в меню?')) {
+        window.location.href = 'https://kw0rs.uno';
+      }
+    };
 
+    // Свайпы
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+
+    card.addEventListener('touchstart', e => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchStartTime = Date.now();
+    }, {passive: true});
+
+    card.addEventListener('touchend', e => {
+      const deltaX = e.changedTouches[0].clientX - touchStartX;
+      const deltaY = e.changedTouches[0].clientY - touchStartY;
+      const deltaTime = Date.now() - touchStartTime;
+      
+      if (Math.abs(deltaX) > 80 && Math.abs(deltaY) < 50 && deltaTime < 300) {
+        nextCard();
+      }
+    }, {passive: true});
+
+    // Клавиатура
+    document.addEventListener('keydown', e => {
+      if (isAnimating) return;
+      
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextCard();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        card.classList.toggle('flipped');
+      } else if (e.key === 's' || e.key === 'ы') {
+        e.preventDefault();
+        swapDirection();
+      }
+    });
+
+    // Запуск
     load();
   </script>
 </body>
