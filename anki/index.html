@@ -44,8 +44,10 @@
       inset:0;
       transform-style:preserve-3d;
       transition:transform .6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      transform:rotateY(0deg);
     }
     .flipped .inner{transform:rotateY(180deg)}
+    #card.hide-back .back{opacity:0;pointer-events:none}
     .face{
       inset:0;
       position:absolute;
@@ -136,14 +138,11 @@
       border-radius:8px;
     }
     #hint{
-      position:absolute;
-      bottom:-3rem;
-      left:50%;
-      transform:translateX(-50%);
+      margin-top:1rem;
       opacity:.5;
-      font-size:.8rem;
+      font-size:.85rem;
       animation:pulse 2s infinite;
-      white-space:nowrap;
+      text-align:center;
     }
     @keyframes pulse{
       0%, 100%{opacity:.5}
@@ -176,8 +175,9 @@
       <div class="front face">KW0RS</div>
       <div class="back face">готово</div>
     </div>
-    <div id="hint">👆 Тапни для переворота</div>
   </div>
+
+  <div id="hint">👆 Тапни для переворота</div>
 
   <div class="btns">
     <button id="next">Ещё →</button>
@@ -321,7 +321,9 @@
       const card = document.getElementById('card');
       const hint = document.getElementById('hint');
       
+      // Принудительно показываем лицевую сторону
       card.classList.remove('flipped');
+      card.classList.add('hide-back');
       
       if (ptr >= deck.length) {
         document.querySelector('.front').textContent = 'ВСЁ!';
@@ -330,6 +332,7 @@
         document.querySelector('.back').classList.add('finished');
         if (hint) hint.style.display = 'none';
         document.getElementById('next').disabled = true;
+        card.classList.remove('hide-back');
         updateStatus();
         return;
       }
@@ -345,6 +348,11 @@
       if (hint) hint.style.display = ptr === 0 ? 'block' : 'none';
       
       updateStatus();
+      
+      // Убираем блокировку задней стороны после завершения анимации
+      setTimeout(() => {
+        card.classList.remove('hide-back');
+      }, 800);
     }
 
     function nextCard() {
