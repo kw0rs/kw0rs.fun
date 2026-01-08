@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Оплата консультації — Черняк Геннадій Володимирович</title>
+  <style>
+    :root{
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --text:#1a2332;
+      --muted:#5a6b7f;
+      --line:#e1e8f0;
+      --shadow: 0 4px 16px rgba(26,35,50,.08);
+      --shadow-hover: 0 8px 24px rgba(26,35,50,.12);
+      --radius: 16px;
+      --max: 680px;
+      --accent: #2b7bc9;
+      --accent-light: #e8f3fc;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      background: linear-gradient(180deg, #f0f5fa 0%, var(--bg) 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      letter-spacing:.2px;
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:40px 20px 60px}
+    
+    .back-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      font-size:14px;
+      margin-bottom:20px;
+      transition: color .2s ease;
+    }
+    .back-link:hover{
+      color:var(--accent);
+    }
+    
+    .card{
+      padding:32px;
+      border-radius: var(--radius);
+      background: var(--card);
+      border: 2px solid var(--line);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    h1{
+      margin:0 0 8px 0;
+      font-size: 28px;
+      line-height: 1.2;
+      letter-spacing: .2px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    
+    .subtitle{
+      color:var(--muted);
+      font-size:15px;
+      margin:0 0 28px 0;
+    }
+    
+    .price-block{
+      background:var(--accent-light);
+      border:2px solid var(--accent);
+      border-radius:12px;
+      padding:20px;
+      margin-bottom:28px;
+      text-align:center;
+    }
+    
+    .price-label{
+      font-size:14px;
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+    
+    .price{
+      font-size:42px;
+      font-weight:700;
+      color:var(--accent);
+      line-height:1;
+    }
+    
+    .price-note{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:8px;
+    }
+    
+    .form-group{
+      margin-bottom:20px;
+    }
+    
+    label{
+      display:block;
+      font-weight:600;
+      font-size:14px;
+      margin-bottom:8px;
+      color:var(--text);
+    }
+    
+    input, textarea, select{
+      width:100%;
+      padding:12px 16px;
+      border:2px solid var(--line);
+      border-radius:10px;
+      font-size:15px;
+      font-family:inherit;
+      transition: all .2s ease;
+      background:var(--bg);
+    }
+    
+    input:focus, textarea:focus, select:focus{
+      outline:none;
+      border-color:var(--accent);
+      background:var(--card);
+    }
+    
+    textarea{
+      resize:vertical;
+      min-height:100px;
+    }
+    
+    .checkbox-group{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      margin:24px 0;
+    }
+    
+    .checkbox-group input[type="checkbox"]{
+      width:20px;
+      height:20px;
+      margin-top:2px;
+      cursor:pointer;
+      flex-shrink:0;
+    }
+    
+    .checkbox-group label{
+      margin:0;
+      font-weight:400;
+      font-size:13px;
+      cursor:pointer;
+    }
+    
+    .btn-submit{
+      width:100%;
+      padding:16px;
+      background: linear-gradient(135deg, #2b7bc9 0%, #1e5a99 100%);
+      color:#fff;
+      font-size:17px;
+      font-weight:600;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      transition: all .2s ease;
+      box-shadow: 0 4px 12px rgba(43,123,201,.3);
+    }
+    
+    .btn-submit:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(43,123,201,.4);
+    }
+    
+    .btn-submit:active{
+      transform: translateY(0);
+    }
+    
+    .info-box{
+      background:#fef9f3;
+      border:1px solid #f4e4d4;
+      border-radius:10px;
+      padding:16px;
+      margin-top:24px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.6;
+    }
+    
+    .payment-methods{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap:12px;
+      margin-bottom:24px;
+    }
+    
+    .payment-method{
+      border:2px solid var(--line);
+      border-radius:10px;
+      padding:16px;
+      text-align:center;
+      cursor:pointer;
+      transition: all .2s ease;
+      background:var(--bg);
+    }
+    
+    .payment-method:hover{
+      border-color:var(--accent);
+      background:var(--card);
+    }
+    
+    .payment-method.selected{
+      border-color:var(--accent);
+      background:var(--accent-light);
+    }
+    
+    .payment-icon{
+      font-size:32px;
+      margin-bottom:8px;
+    }
+    
+    .payment-name{
+      font-size:13px;
+      font-weight:600;
+      color:var(--text);
+    }
+    
+    @media (max-width: 640px){
+      .card{padding:24px 20px}
+      h1{font-size:24px}
+      .price{font-size:36px}
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <a href="#" class="back-link" onclick="window.history.back(); return false;">
+      ← Повернутися назад
+    </a>
+    
+    <div class="card">
+      <h1>Оплата консультації</h1>
+      <p class="subtitle">Заповніть форму, щоб записатися на онлайн-консультацію</p>
+      
+      <div class="price-block">
+        <div class="price-label">Вартість консультації</div>
+        <div class="price">1500 грн</div>
+        <div class="price-note">Тривалість 60 хвилин</div>
+      </div>
+      
+      <form id="paymentForm">
+        <div class="form-group">
+          <label for="name">Ваше ім'я *</label>
+          <input type="text" id="name" name="name" required placeholder="Введіть ваше повне ім'я">
+        </div>
+        
+        <div class="form-group">
+          <label for="phone">Телефон *</label>
+          <input type="tel" id="phone" name="phone" required placeholder="+380 XX XXX XX XX">
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input type="email" id="email" name="email" required placeholder="example@mail.com">
+        </div>
+        
+        <div class="form-group">
+          <label for="child-age">Вік дитини</label>
+          <input type="text" id="child-age" name="child-age" placeholder="Наприклад: 5 років">
+        </div>
+        
+        <div class="form-group">
+          <label for="questions">Ваші питання або опис ситуації (необов'язково)</label>
+          <textarea id="questions" name="questions" placeholder="Опишіть коротко ситуацію, щоб консультація була максимально корисною..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label>Оберіть спосіб оплати</label>
+          <div class="payment-methods">
+            <div class="payment-method selected" data-method="card">
+              <div class="payment-icon">💳</div>
+              <div class="payment-name">Картка</div>
+            </div>
+            <div class="payment-method" data-method="paypal">
+              <div class="payment-icon">🅿️</div>
+              <div class="payment-name">PayPal</div>
+            </div>
+            <div class="payment-method" data-method="mono">
+              <div class="payment-icon">🏦</div>
+              <div class="payment-name">Monobank</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="checkbox-group">
+          <input type="checkbox" id="agree" name="agree" required>
+          <label for="agree">
+            Я погоджуюсь з умовами надання послуг і розумію, що онлайн-консультація носить інформаційно-консультативний характер
+          </label>
+        </div>
+        
+        <button type="submit" class="btn-submit">Оплатити 1500 грн</button>
+        
+        <div class="info-box">
+          <strong>Що далі?</strong><br>
+          Після оплати ви отримаєте підтвердження на email та SMS з посиланням на онлайн-зустріч. Консультація відбудеться у зручний для вас час, який ми узгодимо додатково.
+        </div>
+      </form>
+    </div>
+  </main>
+  
+  <script>
+    // Payment method selection
+    document.querySelectorAll('.payment-method').forEach(method => {
+      method.addEventListener('click', function() {
+        document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+    
+    // Form submission
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = {
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        childAge: document.getElementById('child-age').value,
+        questions: document.getElementById('questions').value,
+        paymentMethod: document.querySelector('.payment-method.selected').dataset.method,
+        amount: 1500
+      };
+      
+      // Demo: показываем данные в консоли
+      console.log('Payment data:', formData);
+      
+      // Demo: показываем уведомление
+      alert('Демо-режим: Оплата прийнята!\n\nДані:\n' + 
+            'Ім\'я: ' + formData.name + '\n' +
+            'Email: ' + formData.email + '\n' +
+            'Сума: 1500 грн\n\n' +
+            'У реальному режимі тут буде перенаправлення на платіжну систему.');
+    });
+  </script>
+</body>
+</html>
