@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="uk">
+<html lang="ru">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Оплата консультации — Черняк Геннадий Владимирович</title>
+  <title>Оплата консультации — Геннадий Черняк</title>
   <style>
     :root{
       --bg:#f8fafc;
@@ -33,7 +33,7 @@
     }
     a{color:inherit;text-decoration:none}
     .wrap{max-width:var(--max); margin:0 auto; padding:40px 20px 60px}
-    
+
     .back-link{
       display:inline-flex;
       align-items:center;
@@ -43,10 +43,8 @@
       margin-bottom:20px;
       transition: color .2s ease;
     }
-    .back-link:hover{
-      color:var(--accent);
-    }
-    
+    .back-link:hover{ color:var(--accent); }
+
     .card{
       padding:32px;
       border-radius: var(--radius);
@@ -54,7 +52,7 @@
       border: 2px solid var(--line);
       box-shadow: var(--shadow-hover);
     }
-    
+
     h1{
       margin:0 0 8px 0;
       font-size: 28px;
@@ -63,13 +61,12 @@
       font-weight: 700;
       color: var(--text);
     }
-    
     .subtitle{
       color:var(--muted);
       font-size:15px;
       margin:0 0 28px 0;
     }
-    
+
     .price-block{
       background:var(--accent-light);
       border:2px solid var(--accent);
@@ -78,30 +75,25 @@
       margin-bottom:28px;
       text-align:center;
     }
-    
     .price-label{
       font-size:14px;
       color:var(--muted);
       margin-bottom:4px;
     }
-    
     .price{
       font-size:42px;
       font-weight:700;
       color:var(--accent);
       line-height:1;
     }
-    
     .price-note{
       font-size:13px;
       color:var(--muted);
       margin-top:8px;
     }
-    
-    .form-group{
-      margin-bottom:20px;
-    }
-    
+
+    .form-group{ margin-bottom:20px; }
+
     label{
       display:block;
       font-weight:600;
@@ -109,7 +101,6 @@
       margin-bottom:8px;
       color:var(--text);
     }
-    
     input, textarea, select{
       width:100%;
       padding:12px 16px;
@@ -120,25 +111,22 @@
       transition: all .2s ease;
       background:var(--bg);
     }
-    
     input:focus, textarea:focus, select:focus{
       outline:none;
       border-color:var(--accent);
       background:var(--card);
     }
-    
     textarea{
       resize:vertical;
       min-height:100px;
     }
-    
+
     .checkbox-group{
       display:flex;
       align-items:flex-start;
       gap:12px;
       margin:24px 0;
     }
-    
     .checkbox-group input[type="checkbox"]{
       width:20px;
       height:20px;
@@ -146,14 +134,13 @@
       cursor:pointer;
       flex-shrink:0;
     }
-    
     .checkbox-group label{
       margin:0;
       font-weight:400;
       font-size:13px;
       cursor:pointer;
     }
-    
+
     .btn-submit{
       width:100%;
       padding:16px;
@@ -167,16 +154,12 @@
       transition: all .2s ease;
       box-shadow: 0 4px 12px rgba(43,123,201,.3);
     }
-    
     .btn-submit:hover{
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(43,123,201,.4);
     }
-    
-    .btn-submit:active{
-      transform: translateY(0);
-    }
-    
+    .btn-submit:active{ transform: translateY(0); }
+
     .info-box{
       background:#fef9f3;
       border:1px solid #f4e4d4;
@@ -187,14 +170,13 @@
       color:var(--muted);
       line-height:1.6;
     }
-    
+
     .payment-methods{
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap:12px;
       margin-bottom:24px;
     }
-    
     .payment-method{
       border:2px solid var(--line);
       border-radius:10px;
@@ -203,29 +185,19 @@
       cursor:pointer;
       transition: all .2s ease;
       background:var(--bg);
+      user-select:none;
     }
-    
     .payment-method:hover{
       border-color:var(--accent);
       background:var(--card);
     }
-    
     .payment-method.selected{
       border-color:var(--accent);
       background:var(--accent-light);
     }
-    
-    .payment-icon{
-      font-size:32px;
-      margin-bottom:8px;
-    }
-    
-    .payment-name{
-      font-size:13px;
-      font-weight:600;
-      color:var(--text);
-    }
-    
+    .payment-icon{ font-size:32px; margin-bottom:8px; }
+    .payment-name{ font-size:13px; font-weight:600; color:var(--text); }
+
     @media (max-width: 640px){
       .card{padding:24px 20px}
       h1{font-size:24px}
@@ -239,110 +211,112 @@
     <a href="#" class="back-link" onclick="window.history.back(); return false;">
       ← Вернуться назад
     </a>
-    
+
     <div class="card">
       <h1>Оплата консультации</h1>
       <p class="subtitle">Заполните форму, чтобы записаться на онлайн-консультацию</p>
-      
+
       <div class="price-block">
         <div class="price-label">Стоимость консультации</div>
         <div class="price">1500 грн</div>
         <div class="price-note">Продолжительность 60 минут</div>
       </div>
-      
-      <form id="paymentForm">
+
+      <!-- ВАЖНО: method=POST + action на твой Apps Script -->
+      <form id="paymentForm"
+            method="POST"
+            action="https://script.google.com/macros/s/AKfycbzFd3FwE29zZzOG5700SMPx3Ve71fwVrOZPAzB9iFCP9gXUppn5YFDyUSu7ndXFR7vg/exec">
+
+        <!-- Скрытые поля, которые улетят в таблицу -->
+        <input type="hidden" id="paymentMethod" name="paymentMethod" value="card">
+        <input type="hidden" name="amount" value="1500">
+
         <div class="form-group">
           <label for="name">Ваше имя *</label>
           <input type="text" id="name" name="name" required placeholder="Введите ваше полное имя">
         </div>
-        
+
         <div class="form-group">
           <label for="phone">Телефон *</label>
           <input type="tel" id="phone" name="phone" required placeholder="+380 XX XXX XX XX">
         </div>
-        
+
         <div class="form-group">
           <label for="email">Email *</label>
           <input type="email" id="email" name="email" required placeholder="example@mail.com">
         </div>
-        
+
         <div class="form-group">
           <label for="child-age">Возраст ребёнка</label>
           <input type="text" id="child-age" name="child-age" placeholder="Например: 5 лет">
         </div>
-        
+
         <div class="form-group">
           <label for="questions">Ваши вопросы или описание ситуации (необязательно)</label>
           <textarea id="questions" name="questions" placeholder="Опишите коротко ситуацию, чтобы консультация была максимально полезной..."></textarea>
         </div>
-        
+
         <div class="form-group">
           <label>Выберите способ оплаты</label>
-          <div class="payment-methods">
-            <div class="payment-method selected" data-method="card">
+          <div class="payment-methods" role="radiogroup" aria-label="Способ оплаты">
+            <div class="payment-method selected" data-method="card" role="radio" aria-checked="true" tabindex="0">
               <div class="payment-icon">💳</div>
               <div class="payment-name">Карта</div>
             </div>
-            <div class="payment-method" data-method="paypal">
+            <div class="payment-method" data-method="paypal" role="radio" aria-checked="false" tabindex="0">
               <div class="payment-icon">🅿️</div>
               <div class="payment-name">PayPal</div>
             </div>
-            <div class="payment-method" data-method="mono">
+            <div class="payment-method" data-method="mono" role="radio" aria-checked="false" tabindex="0">
               <div class="payment-icon">🏦</div>
               <div class="payment-name">Monobank</div>
             </div>
           </div>
         </div>
-        
+
         <div class="checkbox-group">
-          <input type="checkbox" id="agree" name="agree" required>
+          <input type="checkbox" id="agree" name="agree" required value="yes">
           <label for="agree">
             Я соглашаюсь с условиями предоставления услуг и понимаю, что онлайн-консультация носит информационно-консультативный характер
           </label>
         </div>
-        
-        <button type="submit" class="btn-submit">Оплатить 1500 грн</button>
-        
+
+        <button type="submit" class="btn-submit">Перейти к оплате</button>
+
         <div class="info-box">
           <strong>Что дальше?</strong><br>
-          После оплаты вы получите подтверждение на email и SMS со ссылкой на онлайн-встречу. Консультация состоится в удобное для вас время, которое мы согласуем дополнительно.
+          После оплаты вы получите подтверждение на email и сообщение со ссылкой на онлайн-встречу.
+          Консультация состоится в удобное для вас время, которое мы согласуем дополнительно.
         </div>
       </form>
     </div>
   </main>
-  
+
   <script>
-    // Payment method selection
+    const methodInput = document.getElementById('paymentMethod');
+
+    function selectMethod(el) {
+      document.querySelectorAll('.payment-method').forEach(m => {
+        m.classList.remove('selected');
+        m.setAttribute('aria-checked', 'false');
+      });
+      el.classList.add('selected');
+      el.setAttribute('aria-checked', 'true');
+      methodInput.value = el.dataset.method;
+    }
+
     document.querySelectorAll('.payment-method').forEach(method => {
       method.addEventListener('click', function() {
-        document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
-        this.classList.add('selected');
+        selectMethod(this);
       });
-    });
-    
-    // Form submission
-    document.getElementById('paymentForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const formData = {
-        name: document.getElementById('name').value,
-        phone: document.getElementById('phone').value,
-        email: document.getElementById('email').value,
-        childAge: document.getElementById('child-age').value,
-        questions: document.getElementById('questions').value,
-        paymentMethod: document.querySelector('.payment-method.selected').dataset.method,
-        amount: 1500
-      };
-      
-      // Demo: показываем данные в консоли
-      console.log('Payment data:', formData);
-      
-      // Demo: показываем уведомление
-      alert('Демо-режим: Оплата прийнята!\n\nДані:\n' + 
-            'Ім\'я: ' + formData.name + '\n' +
-            'Email: ' + formData.email + '\n' +
-            'Сума: 1500 грн\n\n' +
-            'У реальному режимі тут буде перенаправлення на платіжну систему.');
+
+      // клавиатура (enter/space)
+      method.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          selectMethod(this);
+        }
+      });
     });
   </script>
 </body>
