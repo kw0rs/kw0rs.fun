@@ -6,7 +6,6 @@
   <title>Геннадий Черняк — онлайн-консультации для родителей детей с ДЦП</title>
   <meta name="description" content="Онлайн-консультации и рекомендации для родителей детей с ДЦП: разбор развития ребёнка, упражнения, ошибки, страхи, реальные шаги помощи." />
 
-  <!-- Open Graph (по желанию, но полезно для шаринга в мессенджерах) -->
   <meta property="og:title" content="Геннадий Черняк — онлайн-консультации для родителей детей с ДЦП">
   <meta property="og:description" content="Разбор развития ребёнка, упражнения, ошибки, страхи родителей и реальные шаги помощи. 27+ лет практики.">
   <meta property="og:type" content="website">
@@ -23,19 +22,19 @@
       --shadow-hover: 0 10px 28px rgba(20,32,51,.14);
 
       --radius: 16px;
-      --max: 980px;
+      --max: 1080px;
 
-      /* Палитра: синий / белый / жёлтый / зелёный */
-      --accent:#1f6fb8;          /* синий */
-      --accent-2:#14538d;        /* тёмный синий */
-      --accent-light:#eaf4ff;    /* светло-синий фон */
-      --sun:#f6c744;             /* жёлтый акцент */
-      --sun-light:#fff6d6;       /* светло-жёлтый фон */
-      --success:#16a34a;         /* зелёный */
-      --success-light:#dcfce7;   /* светло-зелёный */
+      --accent:#1f6fb8;
+      --accent-2:#14538d;
+      --accent-light:#eaf4ff;
+      --sun:#f6c744;
+      --sun-light:#fff6d6;
+      --success:#16a34a;
+      --success-light:#dcfce7;
     }
 
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     html,body{height:100%}
     body{
       margin:0;
@@ -49,24 +48,38 @@
     a{color:inherit;text-decoration:none}
     .wrap{max-width:var(--max); margin:0 auto; padding:40px 20px 60px}
 
+    @keyframes fadeInUp {
+      from {opacity:0; transform:translateY(20px)}
+      to {opacity:1; transform:translateY(0)}
+    }
+    @keyframes float {
+      0%, 100% {transform:translateY(0)}
+      50% {transform:translateY(-10px)}
+    }
+    @keyframes pulse {
+      0%, 100% {transform:scale(1)}
+      50% {transform:scale(1.05)}
+    }
+
     header{
-      padding:28px;
+      padding:32px;
       background: var(--card);
       border:2px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
+      animation: fadeInUp 0.6s ease;
     }
 
     .hero{
       display:grid;
-      grid-template-columns: 140px 1fr;
-      gap:24px;
+      grid-template-columns: 160px 1fr;
+      gap:28px;
       align-items:start;
     }
 
     .avatarbox{
       display:grid;
-      gap:10px;
+      gap:12px;
     }
 
     .slogan{
@@ -74,19 +87,25 @@
       font-weight:700;
       letter-spacing:.3px;
       color: var(--accent-2);
-      background: var(--sun-light);
+      background: linear-gradient(135deg, var(--sun-light) 0%, #fff9e6 100%);
       border:1px solid #f1d88d;
-      padding:8px 10px;
+      padding:10px 12px;
       border-radius: 12px;
       text-align:center;
+      animation: pulse 3s ease-in-out infinite;
     }
 
     .avatar{
-      width:140px;height:140px;border-radius: 16px;
+      width:160px;height:160px;border-radius: 20px;
       overflow:hidden;
-      border:2px solid var(--line);
-      background: var(--accent-light);
+      border:3px solid var(--accent-light);
+      background: linear-gradient(135deg, var(--accent-light) 0%, #d4e7fa 100%);
       display:grid;place-items:center;
+      box-shadow: 0 8px 24px rgba(31,111,184,.15);
+      transition: transform .3s ease;
+    }
+    .avatar:hover{
+      transform: scale(1.02);
     }
     .avatar img{
       width:100%;height:100%;
@@ -96,66 +115,91 @@
 
     h1{
       margin:0;
-      font-size: 26px;
+      font-size: 32px;
       line-height: 1.2;
       font-weight: 800;
       color: var(--text);
+      background: linear-gradient(135deg, var(--text) 0%, var(--accent-2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .names{
-      margin-top:6px;
+      margin-top:8px;
       color:var(--muted);
       font-size: 14px;
     }
 
     .lead{
-      margin-top:14px;
+      margin-top:16px;
       color:var(--text);
-      font-size: 16px;
+      font-size: 18px;
       max-width: 75ch;
-      line-height: 1.55;
+      line-height: 1.6;
+      font-weight: 500;
     }
 
     .quote{
-      margin-top:14px;
-      padding:14px 14px;
-      border-radius: 14px;
-      border:1px solid #f1d88d;
-      background: var(--sun-light);
+      margin-top:18px;
+      padding:18px 20px;
+      border-radius: 16px;
+      border:2px solid #f1d88d;
+      background: linear-gradient(135deg, var(--sun-light) 0%, #fff9e6 100%);
       color: var(--text);
+      position: relative;
+      overflow: hidden;
+    }
+    .quote:before{
+      content:'"';
+      position:absolute;
+      top:-10px;
+      left:10px;
+      font-size:80px;
+      color:rgba(246,199,68,.2);
+      font-family: Georgia, serif;
+      font-weight:bold;
     }
     .quote b{
       color: var(--accent-2);
+      position:relative;
     }
     .quote .author{
       display:block;
-      margin-top:8px;
+      margin-top:10px;
       font-size: 13px;
       color: var(--muted);
+      position:relative;
     }
 
     .bullets{
-      margin-top:14px;
+      margin-top:18px;
       display:grid;
-      gap:10px;
+      gap:12px;
       padding-left:0;
       list-style:none;
       max-width: 78ch;
     }
     .bullets li{
       display:flex;
-      gap:12px;
+      gap:14px;
       align-items:flex-start;
-      padding:12px;
-      border:1px solid var(--line);
-      border-radius: 12px;
-      background: #f7fbff;
+      padding:16px;
+      border:2px solid var(--line);
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f7fbff 0%, #ffffff 100%);
+      transition: all .3s ease;
+    }
+    .bullets li:hover{
+      border-color: var(--accent-light);
+      transform: translateX(4px);
+      box-shadow: 0 4px 12px rgba(31,111,184,.1);
     }
     .check{
-      width:24px;height:24px;
+      width:26px;height:26px;
       border-radius: 999px;
       display:grid;place-items:center;
-      flex: 0 0 24px;
+      flex: 0 0 26px;
       background: var(--success-light);
       border: 2px solid var(--success);
       color: var(--success);
@@ -166,22 +210,27 @@
     }
 
     .method-grid{
-      margin-top:16px;
+      margin-top:20px;
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap:14px;
+      gap:16px;
       max-width: 78ch;
     }
     .mini{
-      padding:14px;
-      border-radius: 14px;
-      border:1px solid var(--line);
-      background: var(--accent-light);
+      padding:18px;
+      border-radius: 16px;
+      border:2px solid var(--line);
+      background: linear-gradient(135deg, var(--accent-light) 0%, #f0f7ff 100%);
+      transition: all .3s ease;
+    }
+    .mini:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(31,111,184,.12);
     }
     .mini h3{
-      margin:0 0 8px 0;
-      font-size:14px;
-      letter-spacing:.2px;
+      margin:0 0 10px 0;
+      font-size:15px;
+      letter-spacing:.3px;
       color: var(--accent-2);
       font-weight: 800;
     }
@@ -189,46 +238,47 @@
       margin:0;
       color: var(--text);
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     .cta-section{
-      margin-top:22px;
-      padding:26px;
+      margin-top:32px;
+      padding:36px 32px;
       background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-hover);
+      border-radius: 20px;
+      box-shadow: 0 12px 32px rgba(31,111,184,.25);
       text-align:center;
       color:#fff;
       position: relative;
       overflow:hidden;
+      animation: fadeInUp 0.8s ease 0.2s both;
     }
     .cta-section:before{
       content:"";
       position:absolute;
-      inset:-80px -60px auto auto;
-      width:200px;height:200px;
+      inset:-100px -80px auto auto;
+      width:250px;height:250px;
       border-radius:999px;
-      background: rgba(246,199,68,.22); /* жёлтый блик */
-      filter: blur(2px);
-      transform: rotate(10deg);
+      background: radial-gradient(circle, rgba(246,199,68,.25) 0%, transparent 70%);
+      filter: blur(40px);
+      animation: float 6s ease-in-out infinite;
     }
     .cta-section h2{
-      margin:0 0 10px 0;
-      font-size:22px;
+      margin:0 0 12px 0;
+      font-size:28px;
       font-weight:800;
       position:relative;
     }
     .cta-section p{
-      margin:0 0 18px 0;
-      font-size:16px;
+      margin:0 0 24px 0;
+      font-size:17px;
       opacity:.95;
       position:relative;
     }
 
     .cta-actions{
       display:flex;
-      gap:10px;
+      gap:14px;
       justify-content:center;
       flex-wrap:wrap;
       position:relative;
@@ -236,56 +286,59 @@
 
     .btn{
       display:inline-block;
-      padding:14px 28px;
+      padding:16px 32px;
       border-radius:999px;
       font-size:16px;
       font-weight:700;
       border:none;
       cursor:pointer;
-      transition: all .2s ease;
+      transition: all .3s ease;
       box-shadow: 0 4px 12px rgba(0,0,0,.15);
+      text-decoration: none;
     }
     .btn-primary{
       background:#fff;
       color: var(--accent-2);
     }
     .btn-primary:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 8px 22px rgba(0,0,0,.22);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 28px rgba(0,0,0,.25);
     }
     .btn-ghost{
-      background: rgba(255,255,255,.12);
+      background: rgba(255,255,255,.15);
       color:#fff;
-      border:1px solid rgba(255,255,255,.28);
+      border:2px solid rgba(255,255,255,.35);
       box-shadow:none;
     }
     .btn-ghost:hover{
-      background: rgba(255,255,255,.18);
-      transform: translateY(-1px);
+      background: rgba(255,255,255,.25);
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.5);
     }
 
     .grid{
-      margin-top:22px;
+      margin-top:32px;
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap:20px;
+      gap:24px;
     }
     .card{
-      padding:24px;
-      border-radius: var(--radius);
+      padding:28px;
+      border-radius: 20px;
       background: var(--card);
       border: 2px solid var(--line);
       box-shadow: var(--shadow);
-      transition: box-shadow .2s ease, transform .2s ease;
+      transition: all .3s ease;
     }
     .card:hover{
       box-shadow: var(--shadow-hover);
-      transform: translateY(-1px);
+      transform: translateY(-4px);
+      border-color: var(--accent-light);
     }
     h2{
-      margin:0 0 16px 0;
-      font-size: 19px;
-      letter-spacing:.2px;
+      margin:0 0 20px 0;
+      font-size: 22px;
+      letter-spacing:.3px;
       font-weight:800;
       color:var(--text);
     }
@@ -294,83 +347,132 @@
       padding-left: 0;
       list-style:none;
       display:grid;
-      gap:12px;
+      gap:14px;
       color: var(--text);
     }
+    ul li{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
     .dot{
-      width:8px;height:8px;border-radius:999px;
-      background: var(--sun);
-      flex: 0 0 8px;
+      width:10px;height:10px;border-radius:999px;
+      background: linear-gradient(135deg, var(--sun) 0%, #f5b933 100%);
+      flex: 0 0 10px;
       margin-top:8px;
-      box-shadow: 0 0 0 3px rgba(246,199,68,.22);
+      box-shadow: 0 0 0 4px rgba(246,199,68,.2);
     }
     .muted{
       color: var(--muted);
       font-size: 14px;
-      line-height:1.5;
+      line-height:1.6;
     }
     .small{
       font-size: 13px;
       color: var(--muted);
-      line-height:1.5;
+      line-height:1.6;
     }
 
     details{
-      margin-top:22px;
+      margin-top:32px;
       border:2px solid var(--line);
       background: var(--card);
-      border-radius: var(--radius);
+      border-radius: 20px;
       box-shadow: var(--shadow);
       overflow:hidden;
+      transition: all .3s ease;
+    }
+    details:hover{
+      box-shadow: var(--shadow-hover);
     }
     summary{
       cursor:pointer;
-      padding:18px 22px;
+      padding:22px 28px;
       font-weight:800;
+      font-size: 18px;
       color: var(--accent-2);
       list-style:none;
       outline:none;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
+      gap:16px;
+      transition: background .2s ease;
+    }
+    summary:hover{
+      background: var(--accent-light);
     }
     summary::-webkit-details-marker{display:none}
     summary:after{
       content:"▼";
-      font-size:12px;
+      font-size:14px;
       color: var(--muted);
-      transition: transform .2s ease;
+      transition: transform .3s ease;
     }
     details[open] summary:after{ transform: rotate(180deg); }
 
     .offer{
-      padding:0 22px 22px 22px;
+      padding:0 28px 28px 28px;
       color: var(--text);
       font-size: 14px;
-      line-height: 1.6;
+      line-height: 1.7;
       white-space: pre-line;
     }
 
     footer{
-      margin-top:18px;
-      padding:18px 22px;
-      border-radius: var(--radius);
-      border:1px solid var(--line);
-      background: #fffdf6;
+      margin-top:28px;
+      padding:24px 28px;
+      border-radius: 20px;
+      border:2px solid #f1d88d;
+      background: linear-gradient(135deg, #fffdf6 0%, #fff9e6 100%);
       color: var(--muted);
-      font-size: 13px;
-      line-height:1.6;
+      font-size: 14px;
+      line-height:1.7;
+      text-align: center;
+    }
+
+    .stats{
+      margin-top:28px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:16px;
+    }
+    .stat{
+      padding:24px;
+      border-radius: 16px;
+      background: var(--card);
+      border:2px solid var(--line);
+      text-align:center;
+      transition: all .3s ease;
+    }
+    .stat:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(31,111,184,.12);
+      border-color: var(--accent-light);
+    }
+    .stat-number{
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-label{
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 600;
     }
 
     @media (max-width: 860px){
       .hero{grid-template-columns: 1fr; }
       .avatarbox{justify-items:center}
-      .avatar{width:120px;height:120px}
+      .avatar{width:140px;height:140px}
       .method-grid{grid-template-columns: 1fr}
       .grid{grid-template-columns: 1fr}
-      h1{font-size:22px}
-      .cta-section h2{font-size:20px}
+      .stats{grid-template-columns: 1fr}
+      h1{font-size:26px}
+      .cta-section h2{font-size:24px}
+      .cta-section{padding:28px 24px}
     }
   </style>
 </head>
@@ -421,6 +523,21 @@
       </div>
     </header>
 
+    <section class="stats">
+      <div class="stat">
+        <div class="stat-number">27+</div>
+        <div class="stat-label">лет практики</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">онлайн формат</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">1:1</div>
+        <div class="stat-label">индивидуально</div>
+      </div>
+    </section>
+
     <section class="cta-section" id="pay">
       <h2>Запишитесь на онлайн-консультацию</h2>
       <p>Получите индивидуальный план реабилитации и ответы на ваши вопросы</p>
@@ -441,7 +558,7 @@
           <li><span class="check">✓</span><span>Ответы на ваши конкретные вопросы</span></li>
           <li><span class="check">✓</span><span>Рекомендации по дальнейшей реабилитации</span></li>
         </ul>
-        <p class="muted" style="margin:16px 0 0 0;">
+        <p class="muted" style="margin:18px 0 0 0;">
           Формат — онлайн, фокус на ясности и безопасности действий.
         </p>
       </article>
@@ -456,7 +573,7 @@
           <li><span class="dot"></span><span>Если вы боитесь навредить ребёнку неправильными действиями</span></li>
           <li><span class="dot"></span><span>Если хотите понятный и пошаговый план</span></li>
         </ul>
-        <p class="small" style="margin:16px 0 0 0;">
+        <p class="small" style="margin:18px 0 0 0;">
           Можно прислать вашу ситуацию/вопросы заранее — так будет конкретнее.
         </p>
       </article>
