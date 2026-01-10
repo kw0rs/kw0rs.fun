@@ -2,547 +2,354 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>К.А.Л. Кворс Аниме Лист</title>
-  
-  <meta property="og:title" content="К.А.Л. Кворс Аниме Лист" />
-  <meta property="og:description" content="Коллекция медиа-контента с рейтингами и рецензиями" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Академия Кворса | Оценки</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Академия имени Вильяма Кворса" />
+  <meta property="og:description" content="Оценки, рецензии, база." />
+  <meta property="og:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg" />
+  <meta property="og:url" content="https://kw0rs.uno" />
   <meta property="og:type" content="website" />
-  
+  <meta property="og:site_name" content="Академия Кворса" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png" />
+  <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png" />
+  <link rel="manifest" href="/icon/site.webmanifest" />
+  <link rel="shortcut icon" href="/icon/favicon.ico" />
+
+  <!-- Tailwind & Alpine -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  
+
+  <!-- Перегонка www → без www -->
+  <script>
+    if (location.hostname === 'www.kw0rs.uno') {
+      window.location.href = 'https://kw0rs.uno' + location.pathname;
+    }
+  </script>
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-    
-    * {
-      box-sizing: border-box;
+    :root{
+      --wk-red:#e5343a;
+      --bg:#0b0d12;
+      --panel:#111624;
+      --panel2:#0f1420;
+      --stroke:rgba(255,255,255,.08);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.62);
+      --muted2:rgba(255,255,255,.40);
     }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
+    body{
+      background:
+        radial-gradient(900px 600px at 20% 20%, rgba(229,52,58,.12), transparent 60%),
+        radial-gradient(900px 600px at 80% 80%, rgba(255,255,255,.06), transparent 60%),
+        linear-gradient(180deg, var(--bg), #070910);
+      color:var(--text);
     }
-
-    /* Анимированный градиентный фон */
-    .gradient-bg {
-      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-      background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
+    .wk-card{
+      background: linear-gradient(180deg, rgba(17,22,36,.92), rgba(12,16,28,.92));
+      border:1px solid var(--stroke);
+      border-radius:18px;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      overflow:hidden;
     }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    .wk-card:hover{
+      transform: translateY(-4px);
+      border-color: rgba(229,52,58,.35);
+      box-shadow: 0 18px 50px rgba(0,0,0,.45);
     }
-
-    /* Карточки с эффектом стекла */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
+    .wk-btn{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      border-radius:14px;
+      padding:.7rem 1rem;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
     }
-
-    .glass-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    .wk-btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); }
+    .wk-btn-primary{
+      border-color: rgba(229,52,58,.55);
+      background: rgba(229,52,58,.12);
     }
-
-    /* Кастомный скроллбар */
-    ::-webkit-scrollbar {
-      width: 10px;
+    .wk-btn-primary:hover{
+      background: rgba(229,52,58,.18);
+      border-color: rgba(229,52,58,.75);
     }
-
-    ::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
+    .wk-input{
+      width:100%;
+      border-radius:14px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      padding:.9rem 1rem;
+      outline:none;
     }
-
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, #667eea, #764ba2);
-      border-radius: 10px;
+    .wk-input:focus{
+      border-color: rgba(229,52,58,.65);
+      box-shadow: 0 0 0 3px rgba(229,52,58,.12);
     }
-
-    /* Кнопки */
-    .btn-primary {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
+    .wk-chip{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius:999px;
+      padding:.25rem .55rem;
+      font-size:.78rem;
+      color:var(--muted);
+      white-space:nowrap;
     }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    .wk-modal-bg{
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(8px);
     }
-
-    .btn-secondary {
-      background: white;
-      color: #667eea;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      border: 2px solid #667eea;
-      cursor: pointer;
-    }
-
-    .btn-secondary:hover {
-      background: #667eea;
-      color: white;
-    }
-
-    /* Инпуты */
-    .custom-input {
-      background: white;
-      border: 2px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 12px 16px;
-      transition: all 0.3s ease;
-      width: 100%;
-    }
-
-    .custom-input:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    /* Селект */
-    .custom-select {
-      background: white;
-      border: 2px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 12px 16px;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23667eea'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      background-size: 20px;
-      padding-right: 40px;
-    }
-
-    .custom-select:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    /* Бейджи */
-    .badge {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-right: 8px;
-      margin-bottom: 8px;
-    }
-
-    .badge-movie { background: #fef3c7; color: #92400e; }
-    .badge-show { background: #dbeafe; color: #1e40af; }
-    .badge-anime { background: #fce7f3; color: #9f1239; }
-    .badge-game { background: #dcfce7; color: #14532d; }
-    .badge-book { background: #f3e8ff; color: #581c87; }
-    .badge-cartoon { background: #ffedd5; color: #7c2d12; }
-
-    /* Рейтинги */
-    .rating-perfect { color: #8b5cf6; font-weight: 700; }
-    .rating-good { color: #10b981; font-weight: 600; }
-    .rating-average { color: #f59e0b; font-weight: 500; }
-    .rating-poor { color: #ef4444; font-weight: 500; }
-    .rating-unknown { color: #9ca3af; font-weight: 400; }
-
-    /* Модальное окно */
-    .modal-overlay {
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(5px);
-    }
-
-    .modal-content {
-      background: white;
-      border-radius: 24px;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    /* Загрузчик */
-    .loader {
-      border: 4px solid rgba(255, 255, 255, 0.3);
-      border-top: 4px solid white;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* Placeholder для изображений */
-    .image-placeholder {
-      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Адаптивность */
-    @media (max-width: 768px) {
-      .glass-card {
-        border-radius: 16px;
-      }
-      
-      .modal-content {
-        border-radius: 20px;
-        margin: 20px;
-      }
-    }
-
-    /* Анимации появления */
-    .fade-in {
-      animation: fadeIn 0.5s ease-in;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Range slider */
-    input[type="range"] {
-      -webkit-appearance: none;
-      width: 100%;
-      height: 8px;
-      border-radius: 5px;
-      background: #e5e7eb;
-      outline: none;
-    }
-
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    input[type="range"]::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
-    }
-
-    input[type="range"]::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      cursor: pointer;
-      border: none;
-    }
+    .wk-scroll::-webkit-scrollbar{ width:10px; }
+    .wk-scroll::-webkit-scrollbar-track{ background: rgba(255,255,255,.04); border-radius:8px; }
+    .wk-scroll::-webkit-scrollbar-thumb{ background: rgba(229,52,58,.35); border-radius:8px; border:2px solid rgba(0,0,0,0); background-clip: padding-box; }
   </style>
 </head>
 
-<body class="gradient-bg" x-data="mediaApp()" x-init="loadFromGoogleSheets()">
-  <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-    
-    <!-- Шапка -->
-    <header class="glass-card p-6 sm:p-8 mb-8 fade-in">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
-            К.А.Л. Кворс Аниме Лист
+<body x-data="mediaApp()" x-init="init(); loadItems()">
+  <div class="max-w-7xl mx-auto px-5 py-8">
+    <!-- header -->
+    <header class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8">
+      <div>
+        <div class="inline-flex items-center gap-3">
+          <span class="w-3 h-3 rounded-full" style="background:var(--wk-red)"></span>
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+            Академия Кворса — Оценки
           </h1>
-          <p class="text-gray-600 text-sm sm:text-base">Коллекция медиа-контента с рейтингами и рецензиями</p>
         </div>
-        <a href="https://kw0rs.uno/" class="btn-primary flex items-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-          </svg>
-          Главная
+        <p class="mt-2 text-sm sm:text-base" style="color:rgba(255,255,255,.65)">
+          Данные живут в Google Sheets. Страница просто читает и отображает.
+        </p>
+      </div>
+
+      <div class="flex gap-3">
+        <a href="https://kw0rs.uno/" class="wk-btn inline-flex items-center gap-2">
+          <span>←</span><span>В меню</span>
         </a>
+        <button class="wk-btn wk-btn-primary inline-flex items-center gap-2" @click="pickRandomItem()">
+          <span>🎲</span><span>Мне повезёт</span>
+        </button>
       </div>
     </header>
 
-    <!-- Фильтры -->
-    <section class="glass-card p-6 sm:p-8 mb-8 fade-in">
-      <div class="space-y-6">
-        
-        <!-- Поиск и основные фильтры -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="lg:col-span-2">
-            <input 
-              type="text" 
-              x-model="search" 
-              placeholder="🔍 Поиск по названию..." 
-              class="custom-input"
-            />
-          </div>
-          
-          <div>
-            <select x-model="categoryFilter" class="custom-select w-full">
-              <option value="">🎭 Все категории</option>
-              <option value="movie">🎬 Фильмы</option>
-              <option value="show">📺 Сериалы</option>
-              <option value="anime">🎌 Аниме</option>
-              <option value="game">🎮 Игры</option>
-              <option value="book">📚 Чтиво</option>
-              <option value="cartoon">🎨 Мультики</option>
-            </select>
-          </div>
-          
-          <div>
-            <select x-model="sortKey" class="custom-select w-full">
-              <option value="rating-desc">⭐ Рейтинг ↓</option>
-              <option value="rating-asc">⭐ Рейтинг ↑</option>
-              <option value="year-desc">📅 Год ↓</option>
-              <option value="year-asc">📅 Год ↑</option>
-              <option value="title">🔤 Название A-Z</option>
-            </select>
-          </div>
+    <!-- filters -->
+    <section class="wk-card p-5 mb-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-5">
+          <input class="wk-input" type="text" x-model="search" placeholder="Поиск по названию…" autocomplete="off" />
         </div>
 
-        <!-- Слайдеры -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">
-              ⭐ Минимальный рейтинг: <span class="text-purple-600" x-text="minRating || 0"></span>
-            </label>
-            <input type="range" x-model.number="minRating" min="0" max="10" step="0.1" />
-          </div>
-          
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">
-              📅 Год от: <span class="text-purple-600" x-text="minYear || 1900"></span>
-            </label>
-            <input type="range" x-model.number="minYear" min="1900" max="2030" />
-          </div>
-          
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">
-              📅 Год до: <span class="text-purple-600" x-text="maxYear || 2030"></span>
-            </label>
-            <input type="range" x-model.number="maxYear" min="1900" max="2030" />
-          </div>
+        <div class="lg:col-span-3">
+          <select class="wk-input" x-model="categoryFilter" aria-label="Категория">
+            <option value="">Все категории</option>
+            <option value="movie">Фильмы</option>
+            <option value="show">Сериалы</option>
+            <option value="anime">Аниме</option>
+            <option value="game">Игры</option>
+            <option value="book">Чтиво</option>
+            <option value="cartoon">Мультики</option>
+            <option value="comics">Комиксы</option>
+          </select>
         </div>
 
-        <!-- Кнопки действий -->
-        <div class="flex flex-wrap gap-3">
-          <button @click="clearFilters()" class="btn-secondary flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-            Очистить
-          </button>
-          
-          <button @click="pickRandomItem()" class="btn-primary flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-            </svg>
-            Мне повезёт
-          </button>
+        <div class="lg:col-span-4">
+          <select class="wk-input" x-model="sortKey" aria-label="Сортировка">
+            <option value="rating-desc">Рейтинг: высокие → низкие</option>
+            <option value="rating-asc">Рейтинг: низкие → высокие</option>
+            <option value="year-desc">Год: новее</option>
+            <option value="year-asc">Год: старее</option>
+            <option value="title">Название: A-Z</option>
+          </select>
         </div>
 
-        <!-- Счётчик -->
-        <div class="text-center pt-4 border-t border-gray-200" x-show="!loading && !error">
-          <p class="text-gray-600 font-semibold">
-            Найдено: <span class="text-purple-600" x-text="filteredItems.length"></span> из <span class="text-purple-600" x-text="items.length"></span>
-          </p>
+        <div class="lg:col-span-4">
+          <label class="text-sm" style="color:rgba(255,255,255,.65)">
+            Минимальный рейтинг: <span class="font-semibold" x-text="minRating.toFixed(1)"></span>
+          </label>
+          <input class="w-full mt-2" type="range" x-model.number="minRating" min="0" max="10" step="0.1" />
+        </div>
+
+        <div class="lg:col-span-4">
+          <label class="text-sm" style="color:rgba(255,255,255,.65)">
+            Год от: <span class="font-semibold" x-text="minYear"></span>
+          </label>
+          <input class="w-full mt-2" type="range" x-model.number="minYear" min="1900" max="2030" step="1" />
+        </div>
+
+        <div class="lg:col-span-4">
+          <label class="text-sm" style="color:rgba(255,255,255,.65)">
+            Год до: <span class="font-semibold" x-text="maxYear"></span>
+          </label>
+          <input class="w-full mt-2" type="range" x-model.number="maxYear" min="1900" max="2030" step="1" />
+        </div>
+
+        <div class="lg:col-span-12 flex flex-wrap items-center justify-between gap-3 pt-2">
+          <button class="wk-btn" @click="clearFilters()">Сбросить фильтры</button>
+          <div class="text-sm" style="color:rgba(255,255,255,.65)" x-show="!loading && !error">
+            Найдено: <span class="font-semibold" x-text="filteredItems.length"></span>
+            из <span class="font-semibold" x-text="items.length"></span>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Загрузка -->
-    <div x-show="loading" class="text-center py-20">
-      <div class="loader mx-auto mb-6"></div>
-      <p class="text-white text-xl font-semibold">Загрузка данных из Google Sheets...</p>
+    <!-- states -->
+    <div x-show="loading" class="py-16 text-center">
+      <div class="inline-flex items-center gap-3 px-4 py-2 rounded-xl" style="border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.04)">
+        <span class="animate-pulse">⏳</span>
+        <span style="color:rgba(255,255,255,.75)">Загрузка данных из Google Sheets…</span>
+      </div>
     </div>
 
-    <!-- Ошибка -->
-    <div x-show="error" class="glass-card p-8 text-center mb-8">
-      <svg class="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-      </svg>
-      <h3 class="text-xl font-bold text-gray-800 mb-2">Ошибка загрузки</h3>
-      <p class="text-gray-600 mb-6" x-text="error"></p>
-      <button @click="loadFromGoogleSheets()" class="btn-primary">
-        Повторить попытку
-      </button>
+    <div x-show="error" class="py-10">
+      <div class="wk-card p-5" style="border-color: rgba(229,52,58,.45)">
+        <div class="flex flex-col gap-2">
+          <div class="text-lg font-bold" style="color:var(--wk-red)">Ошибка загрузки</div>
+          <div class="text-sm" style="color:rgba(255,255,255,.70)" x-text="error"></div>
+          <div class="flex gap-3 mt-3">
+            <button class="wk-btn wk-btn-primary" @click="loadItems()">Повторить</button>
+          </div>
+          <div class="text-xs mt-3" style="color:rgba(255,255,255,.45)">
+            Проверь: таблица должна быть доступна “Anyone with the link can view”.
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Сетка карточек -->
-    <main x-show="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      <template x-for="item in filteredAndSortedItems" :key="item.title + '-' + item.year">
-        <article 
-          @click="openModal(item)" 
-          class="glass-card p-4 cursor-pointer fade-in"
-        >
-          <!-- Изображение -->
-          <div class="aspect-[2/3] rounded-xl overflow-hidden mb-4 image-placeholder">
+    <!-- grid -->
+    <main x-show="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <template x-for="item in filteredAndSortedItems" :key="item._key">
+        <article class="wk-card cursor-pointer"
+                 tabindex="0"
+                 role="button"
+                 @click="openModal(item)"
+                 @keydown.enter="openModal(item)"
+                 @keydown.space.prevent="openModal(item)">
+          <div class="aspect-[2/3] bg-black/20 overflow-hidden">
             <template x-if="item.image">
-              <img 
-                :src="item.image" 
-                :alt="item.title"
-                class="w-full h-full object-cover"
-                loading="lazy"
-                @error="item.image = null"
-              />
+              <img class="w-full h-full object-cover"
+                   :alt="`Постер ${item.title}`"
+                   :data-src="item.image"
+                   loading="lazy"
+                   @error="handleImageError($event, item)" />
             </template>
             <template x-if="!item.image">
-              <div class="w-full h-full flex items-center justify-center text-gray-400">
-                <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
+              <div class="w-full h-full flex items-center justify-center text-sm" style="color:rgba(255,255,255,.45)">
+                🖼️ нет картинки
               </div>
             </template>
           </div>
 
-          <!-- Информация -->
-          <div class="space-y-2">
-            <h3 class="font-bold text-gray-800 text-lg line-clamp-2" x-text="item.title"></h3>
-            <p class="text-sm text-gray-600" x-text="`${item.typeDisplay} • ${item.year}`"></p>
-            <div class="flex items-center justify-between">
-              <span :class="getRatingClass(item) + ' text-lg font-bold'">
+          <div class="p-4 flex flex-col gap-2">
+            <div class="flex items-start justify-between gap-3">
+              <h2 class="font-bold leading-snug line-clamp-2" x-text="item.title"></h2>
+              <div class="shrink-0 text-sm font-bold" :class="getRatingClass(item)">
                 ⭐ <span x-text="getRatingText(item)"></span>
-              </span>
-              <span 
-                :class="'badge badge-' + item.type" 
-                x-text="item.typeDisplay"
-              ></span>
+              </div>
+            </div>
+
+            <div class="text-xs flex flex-wrap gap-2" style="color:rgba(255,255,255,.60)">
+              <span class="wk-chip" x-text="item.typeDisplay"></span>
+              <span class="wk-chip" x-text="item.yearDisplay"></span>
+              <span class="wk-chip" x-show="item.genres.length" x-text="item.genres.slice(0,2).join(' • ')"></span>
+              <span class="wk-chip" x-show="item.genres.length > 2" x-text="`+${item.genres.length - 2}`"></span>
+            </div>
+
+            <div class="text-xs mt-1 line-clamp-2" style="color:rgba(255,255,255,.55)" x-show="item.description">
+              <span x-text="item.description"></span>
             </div>
           </div>
         </article>
       </template>
     </main>
 
-    <!-- Пустой результат -->
-    <div x-show="!loading && !error && filteredAndSortedItems.length === 0" class="glass-card p-12 text-center">
-      <svg class="w-20 h-20 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
-      </svg>
-      <h3 class="text-2xl font-bold text-gray-800 mb-2">Ничего не найдено</h3>
-      <p class="text-gray-600 mb-6">Попробуйте изменить параметры поиска</p>
-      <button @click="clearFilters()" class="btn-secondary">Очистить фильтры</button>
+    <div x-show="!loading && !error && filteredAndSortedItems.length === 0" class="py-16 text-center">
+      <div class="text-2xl font-extrabold mb-2">Ничего не найдено</div>
+      <div class="text-sm mb-4" style="color:rgba(255,255,255,.65)">Поменяй фильтры или поиск.</div>
+      <button class="wk-btn wk-btn-primary" @click="clearFilters()">Сбросить</button>
     </div>
   </div>
 
-  <!-- Модальное окно -->
-  <div 
-    x-show="modalItem" 
-    x-transition
-    class="fixed inset-0 z-50 flex items-center justify-center modal-overlay p-4"
-    @click.self="closeModal()"
-  >
-    <div class="modal-content max-w-4xl w-full p-6 sm:p-8" @click.stop>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        
-        <!-- Изображение -->
-        <div class="flex justify-center">
-          <template x-if="modalItem && modalItem.image">
-            <img 
-              :src="modalItem.image" 
-              :alt="modalItem.title"
-              class="w-full max-h-[500px] object-contain rounded-2xl"
-            />
+  <!-- modal -->
+  <div x-show="modalItem"
+       class="fixed inset-0 z-50 flex items-center justify-center wk-modal-bg"
+       @click.self="closeModal()"
+       @keydown.escape.window="closeModal()"
+       x-transition.opacity>
+    <div class="wk-card w-[95%] max-w-6xl max-h-[90vh] overflow-hidden" @click.stop>
+      <div class="grid grid-cols-1 lg:grid-cols-2">
+        <!-- poster -->
+        <div class="bg-black/25 flex items-center justify-center p-4">
+          <template x-if="modalItem?.image">
+            <img :src="modalItem.image"
+                 class="max-h-[78vh] w-auto object-contain rounded-2xl"
+                 :alt="`Постер ${modalItem.title}`"
+                 @error="modalItem.image = null" />
           </template>
           <template x-if="modalItem && !modalItem.image">
-            <div class="w-full h-96 image-placeholder rounded-2xl">
-              <svg class="w-20 h-20 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-              </svg>
-            </div>
+            <div class="text-sm" style="color:rgba(255,255,255,.45)">🖼️ нет картинки</div>
           </template>
         </div>
 
-        <!-- Информация -->
-        <div class="space-y-6">
+        <!-- content -->
+        <div class="p-6 flex flex-col gap-4">
           <div>
-            <h2 class="text-3xl font-bold text-gray-800 mb-3" x-text="modalItem && modalItem.title"></h2>
-            <p class="text-gray-600 mb-4" x-text="modalItem && `${modalItem.typeDisplay} • ${modalItem.year}`"></p>
-            <div class="flex items-center gap-4 mb-4">
-              <span :class="modalItem && getRatingClass(modalItem) + ' text-2xl font-bold'">
-                ⭐ <span x-text="modalItem && getRatingText(modalItem)"></span>/10
+            <h2 class="text-2xl sm:text-3xl font-extrabold leading-tight" x-text="modalItem?.title"></h2>
+            <div class="mt-2 flex flex-wrap gap-2">
+              <span class="wk-chip" x-text="modalItem?.typeDisplay"></span>
+              <span class="wk-chip" x-text="modalItem?.yearDisplay"></span>
+              <span class="wk-chip" :class="getRatingClass(modalItem)">
+                ⭐ <span x-text="getRatingText(modalItem)"></span>/10
               </span>
-              <span 
-                :class="modalItem && 'badge badge-' + modalItem.type" 
-                x-text="modalItem && modalItem.typeDisplay"
-              ></span>
             </div>
-            
-            <!-- Жанры -->
-            <template x-if="modalItem && modalItem.genres && modalItem.genres.length">
-              <div class="flex flex-wrap gap-2 mb-6">
-                <template x-for="genre in modalItem.genres" :key="genre">
-                  <span class="badge" style="background: #f3f4f6; color: #374151;" x-text="genre"></span>
-                </template>
-              </div>
-            </template>
-          </div>
 
-          <!-- Табы -->
-          <div class="border-b border-gray-200">
-            <div class="flex gap-4">
-              <button 
-                @click="showReview = true"
-                :class="showReview ? 'border-purple-600 text-purple-600' : 'border-transparent text-gray-500'"
-                class="pb-3 border-b-2 font-semibold transition"
-                :disabled="!modalItem?.review"
-              >
-                📝 Рецензия
-              </button>
-              <button 
-                @click="showReview = false"
-                :class="!showReview ? 'border-purple-600 text-purple-600' : 'border-transparent text-gray-500'"
-                class="pb-3 border-b-2 font-semibold transition"
-                :disabled="!modalItem?.description"
-              >
-                📄 Описание
-              </button>
+            <div class="mt-3 flex flex-wrap gap-2" x-show="modalItem?.genres?.length">
+              <template x-for="g in modalItem.genres" :key="g">
+                <span class="wk-chip" x-text="g"></span>
+              </template>
             </div>
           </div>
 
-          <!-- Контент -->
-          <div class="max-h-60 overflow-y-auto">
-            <div x-show="showReview && modalItem?.review">
-              <p class="text-gray-700 leading-relaxed" x-text="modalItem?.review"></p>
-            </div>
-            <div x-show="!showReview && modalItem?.description">
-              <p class="text-gray-700 leading-relaxed" x-text="modalItem?.description"></p>
-            </div>
-            <div x-show="(showReview && !modalItem?.review) || (!showReview && !modalItem?.description)" class="text-center py-8">
-              <p class="text-gray-400 italic">Информация отсутствует</p>
-            </div>
-          </div>
-
-          <!-- Кнопки -->
-          <div class="flex gap-3 pt-6 border-t border-gray-200">
-            <button @click="closeModal()" class="btn-secondary flex-1">
-              Закрыть
+          <!-- tabs -->
+          <div class="flex gap-2" x-show="hasAnyContent">
+            <button class="wk-btn"
+                    :class="showReview ? 'wk-btn-primary' : ''"
+                    @click="showReview = true"
+                    :disabled="!modalItem?.review">
+              Рецензия
             </button>
-            <button @click="pickRandomItem()" class="btn-primary">
-              🎲 Ещё
+            <button class="wk-btn"
+                    :class="(!showReview) ? 'wk-btn-primary' : ''"
+                    @click="showReview = false"
+                    :disabled="!modalItem?.description">
+              Описание
             </button>
+          </div>
+
+          <!-- text -->
+          <div class="wk-scroll rounded-2xl p-4 flex-1 overflow-auto"
+               style="border:1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03)"
+               x-show="hasAnyContent">
+            <div x-show="showReview">
+              <div class="text-sm font-bold mb-2" style="color:rgba(229,52,58,.95)">📝 Рецензия</div>
+              <div class="text-sm leading-relaxed whitespace-pre-wrap" style="color:rgba(255,255,255,.78)" x-text="modalItem?.review || '—'"></div>
+            </div>
+            <div x-show="!showReview">
+              <div class="text-sm font-bold mb-2" style="color:rgba(255,255,255,.75)">📄 Описание</div>
+              <div class="text-sm leading-relaxed whitespace-pre-wrap" style="color:rgba(255,255,255,.78)" x-text="modalItem?.description || '—'"></div>
+            </div>
+          </div>
+
+          <div x-show="!hasAnyContent" class="text-sm" style="color:rgba(255,255,255,.55)">
+            Тут пусто: ни рецензии, ни описания.
+          </div>
+
+          <!-- actions -->
+          <div class="flex gap-3 pt-3">
+            <button class="wk-btn flex-1" @click="closeModal()">Закрыть</button>
+            <button class="wk-btn wk-btn-primary" @click="pickRandomItem()">🎲 Ещё</button>
           </div>
         </div>
       </div>
@@ -552,6 +359,12 @@
   <script>
     function mediaApp() {
       return {
+        // ==== CONFIG: Google Sheets ====
+        SHEET_ID: '108822Zn_50UNHrdA1WgnsQAf8nroCI2QZh4RlrIhhR0',
+        SHEET_NAME: 'Всё и сразу', // название вкладки (tab) внизу таблицы
+        // если переименуешь вкладку — поменяй тут строку
+
+        // ==== STATE ====
         search: '',
         categoryFilter: '',
         sortKey: 'rating-desc',
@@ -559,63 +372,345 @@
         items: [],
         loading: true,
         error: null,
+
         minRating: 0,
         minYear: 1900,
         maxYear: 2030,
+
+        imageObserver: null,
         showReview: true,
 
-        // ID вашей таблицы
-        SHEET_ID: '108822Zn_50UNHrdA1WgnsQAf8nroCI2QZh4RlrIhhR0',
+        // ==== UI MAPPINGS ====
+        getTypeDisplay(typeValue) {
+          const map = {
+            movie: 'Фильм',
+            show: 'Сериал',
+            anime: 'Аниме',
+            game: 'Игра',
+            book: 'Книга',
+            cartoon: 'Мульт',
+            comics: 'Комикс'
+          };
+          return map[typeValue] || (typeValue || '—');
+        },
 
-        // Загрузка данных из Google Sheets
-        async loadFromGoogleSheets() {
+        getRatingText(item) {
+          if (item?.rating == null || Number.isNaN(item.rating)) return '?';
+          return Number(item.rating).toFixed(1);
+        },
+
+        getRatingClass(item) {
+          const r = item?.rating;
+          if (r == null || Number.isNaN(r)) return 'text-white/50';
+          if (r >= 9.5) return 'text-purple-300';
+          if (r >= 7.0) return 'text-emerald-300';
+          if (r >= 4.0) return 'text-amber-300';
+          return 'text-rose-300';
+        },
+
+        // ==== CSV PARSER (нормальный) ====
+        // поддерживает: кавычки, запятые внутри кавычек, переносы строк внутри кавычек
+        parseCSV(text) {
+          const rows = [];
+          let row = [];
+          let cur = '';
+          let i = 0;
+          let inQuotes = false;
+
+          while (i < text.length) {
+            const c = text[i];
+
+            if (c === '"') {
+              // двойные кавычки внутри quoted поля
+              if (inQuotes && text[i + 1] === '"') {
+                cur += '"';
+                i += 2;
+                continue;
+              }
+              inQuotes = !inQuotes;
+              i += 1;
+              continue;
+            }
+
+            if (!inQuotes && (c === ',')) {
+              row.push(cur);
+              cur = '';
+              i += 1;
+              continue;
+            }
+
+            if (!inQuotes && (c === '\n' || c === '\r')) {
+              // поддержка CRLF / LF
+              if (c === '\r' && text[i + 1] === '\n') i += 2;
+              else i += 1;
+
+              row.push(cur);
+              cur = '';
+              if (row.length > 1 || (row.length === 1 && row[0].trim() !== '')) rows.push(row);
+              row = [];
+              continue;
+            }
+
+            cur += c;
+            i += 1;
+          }
+
+          // last cell
+          row.push(cur);
+          if (row.length > 1 || (row.length === 1 && row[0].trim() !== '')) rows.push(row);
+
+          // trim BOM on first cell header if any
+          if (rows.length && rows[0].length) rows[0][0] = rows[0][0].replace(/^\uFEFF/, '');
+          return rows;
+        },
+
+        // ==== LOADING from Google Sheets ====
+        getSheetCsvUrl() {
+          // gviz CSV export by sheet name
+          const sheet = encodeURIComponent(this.SHEET_NAME);
+          return `https://docs.google.com/spreadsheets/d/${this.SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${sheet}`;
+        },
+
+        normalizeGenres(raw) {
+          // В твоей форме жанры часто как: `"Меха", "Научная фантастика", ...`
+          // Приводим это к массиву.
+          if (!raw) return [];
+          let s = String(raw).trim();
+
+          // если это уже "a|b|c"
+          if (s.includes('|')) return s.split('|').map(x => x.trim()).filter(Boolean);
+
+          // если это выглядит как список через запятую, иногда с кавычками
+          // убираем внешние кавычки и режем
+          s = s.replace(/^\s*"+|"+\s*$/g, '');
+          // уберём повторные кавычки вокруг слов
+          s = s.replace(/"\s*,\s*"/g, ',');
+          s = s.replace(/"\s*$/g,'').replace(/^\s*"/g,'');
+
+          // режем по запятой
+          return s.split(',').map(x => x.replace(/^"+|"+$/g,'').trim()).filter(Boolean);
+        },
+
+        guessYearFromRow(obj) {
+          // В твоей текущей форме ГОДА НЕТ.
+          // Если в будущем добавишь колонку "Год" — автоматом подхватится ниже.
+          // Пока: null.
+          return null;
+        },
+
+        async loadItems() {
           this.loading = true;
           this.error = null;
-          
+
           try {
-            // Публичный CSV URL для Google Sheets
-            const csvUrl = `https://docs.google.com/spreadsheets/d/${this.SHEET_ID}/export?format=csv`;
-            
-            console.log('Загрузка данных из Google Sheets...');
-            
-            const response = await fetch(csvUrl);
-            
-            if (!response.ok) {
-              throw new Error(`Ошибка загрузки: ${response.status} ${response.statusText}`);
+            const url = this.getSheetCsvUrl();
+            const resp = await fetch(url, { cache: 'no-store' });
+            if (!resp.ok) throw new Error(`HTTP ${resp.status}: не смог получить CSV. Проверь доступ к таблице.`);
+
+            const csvText = await resp.text();
+            const table = this.parseCSV(csvText);
+
+            if (!table.length || table.length < 2) {
+              throw new Error('CSV пустой или нет данных. Проверь, что в таблице есть строки ниже заголовка.');
             }
-            
-            const csvText = await response.text();
-            console.log('CSV данные получены, размер:', csvText.length);
-            
-            // Парсинг CSV
-            const rows = this.parseCSV(csvText);
-            
-            if (rows.length < 2) {
-              throw new Error('Таблица пуста или содержит только заголовки');
+
+            const headers = table[0].map(h => (h || '').trim());
+
+            // маппинг по русским заголовкам формы
+            const col = (name) => headers.indexOf(name);
+
+            const idxTimestamp = col('Позначка часу');
+            const idxTitle     = col('Название');
+            const idxType      = col('Тип');
+            const idxRating    = col('Оценка');
+            const idxGenres    = col('Жанры');
+            const idxDesc      = col('Описание тайтла');
+            const idxReview    = col('Рецензия');
+            const idxImage     = col('Картинка(ссылка)');
+            const idxYearRu    = col('Год');
+            const idxYearEn    = col('year'); // если вдруг сделаешь нормализованный хедер
+
+            if (idxTitle === -1 || idxType === -1) {
+              throw new Error(
+                'Не вижу нужные колонки. Ожидаю заголовки: "Название", "Тип", "Оценка", "Жанры", "Описание тайтла", "Рецензия", "Картинка(ссылка)".'
+              );
             }
-            
-            // Первая строка - заголовки
-            const headers = rows[0].map(h => h.trim().toLowerCase());
-            console.log('Заголовки:', headers);
-            
-            // Преобразуем строки в объекты
-            this.items = rows.slice(1)
-              .filter(row => row.some(cell => cell && cell.trim())) // Пропускаем пустые строки
-              .map((row, index) => {
-                const item = {};
-                headers.forEach((header, i) => {
-                  item[header] = row[i] || '';
-                });
-                
-                // Обработка данных
-                const rating = parseFloat(item.rating || item['рейтинг']);
-                
+
+            const rows = table.slice(1);
+
+            const all = rows
+              .map((r, i) => {
+                const title = (r[idxTitle] ?? '').trim();
+                if (!title) return null;
+
+                const type = (r[idxType] ?? '').trim();
+
+                const ratingRaw = (idxRating !== -1) ? (r[idxRating] ?? '').trim() : '';
+                const ratingNum = parseFloat(String(ratingRaw).replace(',', '.'));
+                const rating = Number.isFinite(ratingNum) ? ratingNum : null;
+
+                const genresRaw = (idxGenres !== -1) ? (r[idxGenres] ?? '') : '';
+                const genres = this.normalizeGenres(genresRaw);
+
+                const description = (idxDesc !== -1) ? (r[idxDesc] ?? '') : '';
+                const review = (idxReview !== -1) ? (r[idxReview] ?? '') : '';
+                const image = (idxImage !== -1) ? (r[idxImage] ?? '').trim() : '';
+
+                const yearRaw =
+                  (idxYearRu !== -1 ? (r[idxYearRu] ?? '').trim() : '') ||
+                  (idxYearEn !== -1 ? (r[idxYearEn] ?? '').trim() : '');
+
+                let yearNum = parseInt(yearRaw, 10);
+                if (!Number.isFinite(yearNum)) yearNum = this.guessYearFromRow({ title, type });
+
+                const createdAt = (idxTimestamp !== -1) ? (r[idxTimestamp] ?? '').trim() : '';
+
                 return {
-                  title: item.title || item['название'] || `Без названия ${index + 1}`,
-                  type: (item.type || item['тип'] || '').toLowerCase(),
-                  typeDisplay: this.getTypeDisplay(item.type || item['тип'] || ''),
-                  year: item.year || item['год'] || 'Н/Д',
-                  rating: !isNaN(rating) ? rating : null,
-                  genres: this.parseGenres(item.genres || item['жанры'] || ''),
-                  description: item.description || item['описание'] || '',
-                  review
+                  title,
+                  type,
+                  typeDisplay: this.getTypeDisplay(type),
+                  year: Number.isFinite(yearNum) ? yearNum : null,
+                  yearDisplay: Number.isFinite(yearNum) ? String(yearNum) : '—',
+                  rating,
+                  genres,
+                  description,
+                  review,
+                  image: image || null,
+                  createdAt,
+                  imageLoaded: false,
+                  _key: `${title}-${createdAt || i}`
+                };
+              })
+              .filter(Boolean);
+
+            if (!all.length) throw new Error('Данные не распарсились. Проверь, что строки заполнены нормально.');
+
+            this.items = all;
+
+            this.$nextTick(() => this.initLazyLoading());
+
+          } catch (e) {
+            console.error(e);
+            this.items = [];
+            this.error = e?.message || 'Не удалось загрузить данные.';
+          } finally {
+            this.loading = false;
+          }
+        },
+
+        // ==== lazy loading images ====
+        initLazyLoading() {
+          if (this.imageObserver) this.imageObserver.disconnect();
+
+          this.imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (!entry.isIntersecting) return;
+              const img = entry.target;
+              const src = img.getAttribute('data-src');
+              if (src) {
+                img.src = src;
+                img.removeAttribute('data-src');
+              }
+              this.imageObserver.unobserve(img);
+            });
+          }, { rootMargin: '200px 0px', threshold: 0.01 });
+
+          document.querySelectorAll('img[data-src]').forEach(img => this.imageObserver.observe(img));
+        },
+
+        handleImageError(e, item) {
+          item.image = null;
+          try { e.target.remove(); } catch {}
+        },
+
+        // ==== modal ====
+        openModal(item) {
+          this.modalItem = { ...item };
+          this.showReview = !!item.review; // если нет review — сразу на description
+          if (!item.review && item.description) this.showReview = false;
+          document.body.style.overflow = 'hidden';
+        },
+
+        closeModal() {
+          this.modalItem = null;
+          document.body.style.overflow = '';
+        },
+
+        // ==== actions ====
+        pickRandomItem() {
+          const pool = this.filteredItems;
+          if (!pool.length) return;
+          const idx = Math.floor(Math.random() * pool.length);
+          this.openModal(pool[idx]);
+        },
+
+        clearFilters() {
+          this.search = '';
+          this.categoryFilter = '';
+          this.sortKey = 'rating-desc';
+          this.minRating = 0;
+          this.minYear = 1900;
+          this.maxYear = 2030;
+        },
+
+        // ==== computed ====
+        get hasAnyContent() {
+          return this.modalItem && (this.modalItem.review || this.modalItem.description);
+        },
+
+        get filteredItems() {
+          const q = (this.search || '').trim().toLowerCase();
+
+          return this.items
+            .filter(it => !q || (it.title || '').toLowerCase().includes(q))
+            .filter(it => !this.categoryFilter || it.type === this.categoryFilter)
+            .filter(it => (this.minRating <= 0) || (it.rating != null && it.rating >= this.minRating))
+            // Фильтр по году: если года нет — НЕ режем (иначе у тебя всё отвалится, потому что в форме года нет)
+            .filter(it => {
+              if (it.year == null) return true;
+              if (this.minYear !== 1900 && it.year < this.minYear) return false;
+              if (this.maxYear !== 2030 && it.year > this.maxYear) return false;
+              return true;
+            });
+        },
+
+        get filteredAndSortedItems() {
+          const arr = [...this.filteredItems].sort((a, b) => {
+            const ra = (a.rating == null ? -1 : a.rating);
+            const rb = (b.rating == null ? -1 : b.rating);
+
+            switch (this.sortKey) {
+              case 'rating-asc':  return ra - rb;
+              case 'rating-desc': return rb - ra;
+
+              case 'year-asc': {
+                const ya = (a.year == null ? 9999 : a.year);
+                const yb = (b.year == null ? 9999 : b.year);
+                return ya - yb;
+              }
+              case 'year-desc': {
+                const ya = (a.year == null ? -1 : a.year);
+                const yb = (b.year == null ? -1 : b.year);
+                return yb - ya;
+              }
+
+              case 'title':
+                return (a.title || '').localeCompare((b.title || ''), 'ru');
+
+              default:
+                return 0;
+            }
+          });
+
+          this.$nextTick(() => this.initLazyLoading());
+          return arr;
+        },
+
+        init() {
+          // ничего обязательного, но оставляем как якорь
+        }
+      };
+    }
+  </script>
+</body>
+</html>
