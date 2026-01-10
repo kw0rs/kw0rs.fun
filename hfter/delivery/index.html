@@ -1,781 +1,746 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Лисиця Олег Іванович - Резюме</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Академия Кворса | Оценки</title>
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #e2e8f0;
-            background: #0f172a;
-            min-height: 100vh;
-            padding: 20px;
-            overflow-x: hidden;
-        }
+  <!-- Open Graph -->
+  <meta property="og:title" content="Академия имени Вильяма Кворса" />
+  <meta property="og:description" content="Оценки, рецензии, база." />
+  <meta property="og:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg" />
+  <meta property="og:url" content="https://kw0rs.uno" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Академия Кворса" />
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.1) 0%, transparent 50%);
-            z-index: -1;
-            animation: floatBg 20s ease-in-out infinite;
-        }
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png" />
+  <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png" />
+  <link rel="manifest" href="/icon/site.webmanifest" />
+  <link rel="shortcut icon" href="/icon/favicon.ico" />
 
-        @keyframes floatBg {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(1deg); }
-        }
+  <!-- Tailwind & Alpine -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 
-                0 25px 50px -12px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.05);
-        }
+  <!-- Перегонка www → без www -->
+  <script>
+    if (location.hostname === 'www.kw0rs.uno') {
+      window.location.href = 'https://kw0rs.uno' + location.pathname;
+    }
+  </script>
 
-        .header {
-            background: linear-gradient(135deg, 
-                rgba(79, 70, 229, 0.9) 0%, 
-                rgba(139, 92, 246, 0.9) 50%, 
-                rgba(236, 72, 153, 0.9) 100%);
-            padding: 60px 40px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><defs><pattern id="dots" width="60" height="60" patternUnits="userSpaceOnUse"><circle cx="30" cy="30" r="2" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="60" height="60" fill="url(%23dots)"/></svg>');
-            animation: drift 30s linear infinite;
-            opacity: 0.3;
-        }
-
-        @keyframes drift {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-60px, -60px); }
-        }
-
-        .header-content {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 40px;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .profile-section {
-            text-align: center;
-        }
-
-        .profile-img {
-            width: 160px;
-            height: 160px;
-            border-radius: 20px;
-            overflow: hidden;
-            margin: 0 auto 20px;
-            border: 4px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .profile-img:hover {
-            transform: scale(1.05) rotate(2deg);
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
-        }
-
-        .profile-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .profile-img-placeholder {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            color: rgba(255,255,255,0.7);
-            backdrop-filter: blur(10px);
-        }
-
-        .info-section h1 {
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            font-weight: 700;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #fff, #e2e8f0);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1.1;
-        }
-
-        .subtitle {
-            font-size: 1.3em;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 30px;
-            font-weight: 300;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .contact-item {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .contact-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .contact-icon {
-            font-size: 18px;
-            width: 24px;
-            text-align: center;
-        }
-
-        .main-content {
-            padding: 60px 40px;
-        }
-
-        .section {
-            margin-bottom: 50px;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section-title {
-            font-size: clamp(1.5rem, 3vw, 2.2rem);
-            font-weight: 700;
-            margin-bottom: 30px;
-            position: relative;
-            display: inline-block;
-            background: linear-gradient(135deg, #4f46e5, #8b5cf6, #ec4899);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, #4f46e5, #8b5cf6);
-            border-radius: 2px;
-        }
-
-        .objective {
-            background: linear-gradient(135deg, 
-                rgba(79, 70, 229, 0.1), 
-                rgba(139, 92, 246, 0.1));
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            padding: 30px;
-            border-radius: 16px;
-            font-size: 1.1em;
-            line-height: 1.8;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .objective::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(180deg, #4f46e5, #8b5cf6);
-            border-radius: 0 2px 2px 0;
-        }
-
-        .card {
-            background: rgba(30, 41, 59, 0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            margin-bottom: 25px;
-            border-radius: 16px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, #4f46e5, #8b5cf6, #ec4899);
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(139, 92, 246, 0.3);
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.3),
-                0 0 0 1px rgba(139, 92, 246, 0.1);
-        }
-
-        .job-period {
-            font-weight: 600;
-            color: #8b5cf6;
-            font-size: 1.1em;
-            margin-bottom: 8px;
-            display: inline-block;
-            background: rgba(139, 92, 246, 0.1);
-            padding: 4px 12px;
-            border-radius: 20px;
-            border: 1px solid rgba(139, 92, 246, 0.2);
-        }
-
-        .job-title {
-            font-size: 1.3em;
-            font-weight: 600;
-            margin: 15px 0 8px 0;
-            color: #f1f5f9;
-        }
-
-        .job-company {
-            color: #94a3b8;
-            font-style: italic;
-            margin-bottom: 15px;
-            font-size: 1.05em;
-        }
-
-        .job-description {
-            color: #cbd5e1;
-            line-height: 1.6;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-        }
-
-        .skill-category {
-            background: linear-gradient(135deg, 
-                rgba(30, 41, 59, 0.8), 
-                rgba(15, 23, 42, 0.8));
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .skill-category:hover {
-            border-color: rgba(139, 92, 246, 0.3);
-            transform: translateY(-3px);
-        }
-
-        .skill-category h4 {
-            color: #8b5cf6;
-            font-size: 1.3em;
-            font-weight: 600;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .skill-item {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(5px);
-            padding: 12px 18px;
-            margin: 10px 0;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .skill-item:hover {
-            background: rgba(139, 92, 246, 0.1);
-            border-color: rgba(139, 92, 246, 0.3);
-            transform: translateX(8px);
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2);
-        }
-
-        .achievements {
-            background: linear-gradient(135deg, 
-                rgba(245, 158, 11, 0.1), 
-                rgba(251, 146, 60, 0.1));
-            border: 1px solid rgba(245, 158, 11, 0.2);
-            padding: 30px;
-            border-radius: 16px;
-            position: relative;
-        }
-
-        .achievements::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(180deg, #f59e0b, #fb923c);
-            border-radius: 0 2px 2px 0;
-        }
-
-        .achievement-item {
-            margin-bottom: 18px;
-            padding-left: 30px;
-            position: relative;
-            font-size: 1.05em;
-            line-height: 1.6;
-        }
-
-        .achievement-item::before {
-            content: '✨';
-            position: absolute;
-            left: 0;
-            top: 2px;
-            font-size: 16px;
-        }
-
-        .personal-qualities {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .quality-item {
-            background: linear-gradient(135deg, 
-                rgba(34, 197, 94, 0.1), 
-                rgba(16, 185, 129, 0.1));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(34, 197, 94, 0.2);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: 500;
-            color: #a7f3d0;
-            transition: all 0.3s ease;
-        }
-
-        .quality-item:hover {
-            background: rgba(34, 197, 94, 0.15);
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.2);
-        }
-
-        .signature {
-            text-align: right;
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #94a3b8;
-            font-style: italic;
-        }
-
-        .floating-nav {
-            position: fixed;
-            right: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 100;
-        }
-
-        .nav-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(139, 92, 246, 0.3);
-            border: 2px solid rgba(139, 92, 246, 0.5);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nav-dot.active {
-            background: #8b5cf6;
-            border-color: #8b5cf6;
-            transform: scale(1.3);
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
-        }
-
-        .print-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: linear-gradient(135deg, #4f46e5, #8b5cf6);
-            color: white;
-            border: none;
-            padding: 16px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(10px);
-        }
-
-        .print-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 12px 35px rgba(79, 70, 229, 0.4);
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            .header {
-                padding: 40px 20px;
-            }
-
-            .header-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 30px;
-            }
-
-            .profile-img {
-                width: 120px;
-                height: 120px;
-            }
-
-            .main-content {
-                padding: 40px 20px;
-            }
-
-            .floating-nav {
-                display: none;
-            }
-
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .personal-qualities {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            }
-        }
-
-        @media print {
-            body {
-                background: white;
-                color: black;
-                padding: 0;
-            }
-            
-            body::before {
-                display: none;
-            }
-            
-            .container {
-                background: white;
-                box-shadow: none;
-                border: none;
-            }
-            
-            .header {
-                background: #4f46e5 !important;
-                -webkit-print-color-adjust: exact;
-            }
-            
-            .print-btn, .floating-nav {
-                display: none;
-            }
-            
-            .section {
-                opacity: 1 !important;
-                transform: none !important;
-            }
-        }
-    </style>
+  <style>
+    :root{
+      --wk-red:#e5343a;
+      --bg:#0b0d12;
+      --panel:#111624;
+      --panel2:#0f1420;
+      --stroke:rgba(255,255,255,.08);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.62);
+      --muted2:rgba(255,255,255,.40);
+    }
+    body{
+      background:
+        radial-gradient(900px 600px at 20% 20%, rgba(229,52,58,.12), transparent 60%),
+        radial-gradient(900px 600px at 80% 80%, rgba(255,255,255,.06), transparent 60%),
+        linear-gradient(180deg, var(--bg), #070910);
+      background-attachment: fixed;
+      color:var(--text);
+      min-height: 100vh;
+    }
+    .wk-card{
+      background: linear-gradient(180deg, rgba(17,22,36,.92), rgba(12,16,28,.92));
+      border:1px solid var(--stroke);
+      border-radius:18px;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      overflow:hidden;
+    }
+    .wk-card.hoverable:hover{
+      transform: translateY(-4px);
+      border-color: rgba(229,52,58,.35);
+      box-shadow: 0 18px 50px rgba(0,0,0,.45);
+    }
+    .wk-btn{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      border-radius:14px;
+      padding:.7rem 1rem;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .wk-btn:hover:not(:disabled){ 
+      transform: translateY(-1px); 
+      background: rgba(255,255,255,.06); 
+    }
+    .wk-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .wk-btn-primary{
+      border-color: rgba(229,52,58,.55);
+      background: rgba(229,52,58,.12);
+    }
+    .wk-btn-primary:hover:not(:disabled){
+      background: rgba(229,52,58,.18);
+      border-color: rgba(229,52,58,.75);
+    }
+    .wk-input{
+      width:100%;
+      border-radius:14px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.08);
+      padding:.9rem 1rem;
+      outline:none;
+      color: var(--text);
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .wk-input option {
+      background: #1a1f2e;
+      color: var(--text);
+    }
+    .wk-input:focus{
+      border-color: rgba(229,52,58,.65);
+      box-shadow: 0 0 0 3px rgba(229,52,58,.12);
+    }
+    .wk-chip{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius:999px;
+      padding:.25rem .55rem;
+      font-size:.78rem;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .wk-modal-bg{
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(8px);
+    }
+    .wk-scroll::-webkit-scrollbar{ width:10px; }
+    .wk-scroll::-webkit-scrollbar-track{ background: rgba(255,255,255,.04); border-radius:8px; }
+    .wk-scroll::-webkit-scrollbar-thumb{ background: rgba(229,52,58,.35); border-radius:8px; border:2px solid rgba(0,0,0,0); background-clip: padding-box; }
+    
+    /* Lazy loading placeholder */
+    img[data-src] {
+      background: linear-gradient(90deg, rgba(255,255,255,.02) 25%, rgba(255,255,255,.04) 50%, rgba(255,255,255,.02) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    
+    img.loaded {
+      animation: fadeIn 0.3s ease-in;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
 </head>
-<body>
-    <div class="container">
-        <header class="header">
-            <div class="header-content">
-                <div class="profile-section">
-                    <div class="profile-img">
-                        <!-- Замените src на ссылку на ваше фото -->
-                        <img src="https://i.imgur.com/CXzhGa2.png" alt="Лисиця Олег Іванович" onerror="this.parentElement.innerHTML='<div class=\'profile-img-placeholder\'>👨‍💼</div>'">
-                    </div>
-                </div>
-                <div class="info-section">
-                    <h1>Лисиця Олег Іванович</h1>
-                    <div class="subtitle">Інженер • Керівник проєктів • Експерт з альтернативної енергетики</div>
-                    <div class="contact-grid">
-                        <div class="contact-item">
-                            <span class="contact-icon">🎂</span>
-                            <span>22.06.1976, Бершадь</span>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-icon">📍</span>
-                            <span>Буча, Київська обл.</span>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-icon">📱</span>
-                            <span>067-442-83-44</span>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-icon">✉️</span>
-                            <span>foxttt76@gmail.com</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
 
-        <main class="main-content">
-            <section class="section" id="objective">
-                <h2 class="section-title">Професійні цілі</h2>
-                <div class="objective">
-                    <strong>Мета:</strong> Реалізація енергоефективних, інженерних проєктів, розвиток альтернативної енергетики, будівництво промислових об'єктів, торгівельних комплексів, складських приміщень, тепличних і рибних господарств.
-                    <br><br>
-                    <strong>Бажана позиція:</strong> Інженер, керівник проєктів
-                </div>
-            </section>
+<body x-data="mediaApp()" x-init="init()">
+  <div class="max-w-7xl mx-auto px-5 py-8">
+    <!-- header -->
+    <header class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8">
+      <div>
+        <div class="inline-flex items-center gap-3">
+          <span class="w-3 h-3 rounded-full" style="background:var(--wk-red)"></span>
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+            Академия Кворса — Оценки
+          </h1>
+        </div>
+        <p class="mt-2 text-sm sm:text-base" style="color:rgba(255,255,255,.65)">
+          Данные живут в Google Sheets. Страница просто читает и отображает.
+        </p>
+      </div>
 
-            <section class="section" id="education">
-                <h2 class="section-title">Освіта</h2>
-                <div class="card">
-                    <div class="job-period">1991-1995</div>
-                    <div class="job-title">Уманський технікум сільського господарства</div>
-                    <div class="job-company">Середньо-технічна освіта</div>
-                    <div class="job-description">Кваліфікація: технік-механік</div>
-                </div>
-            </section>
+      <div class="flex gap-3">
+        <a href="https://kw0rs.uno/" class="wk-btn inline-flex items-center gap-2">
+          <span>←</span><span>В меню</span>
+        </a>
+        <button class="wk-btn wk-btn-primary inline-flex items-center gap-2" @click="pickRandomItem()" :disabled="loading || error">
+          <span>🎲</span><span>Мне повезёт</span>
+        </button>
+      </div>
+    </header>
 
-            <section class="section" id="experience">
-                <h2 class="section-title">Досвід роботи</h2>
-                
-                <div class="card">
-                    <div class="job-period">2022 - дотепер</div>
-                    <div class="job-title">Директор</div>
-                    <div class="job-company">ТОВ «ВКФ ЕКОБУДСИСТЕМ»</div>
-                    <div class="job-description">Керування комплексними інженерними проєктами, розвиток альтернативної енергетики</div>
-                </div>
+    <!-- filters -->
+    <section class="wk-card p-5 mb-8" style="pointer-events: auto;">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-5">
+          <input class="wk-input" type="text" x-model="search" placeholder="Поиск по названию…" autocomplete="off" />
+        </div>
 
-                <div class="card">
-                    <div class="job-period">2014 - дотепер</div>
-                    <div class="job-title">Директор</div>
-                    <div class="job-company">ТОВ «ЕКОБУДСИСТЕМ»</div>
-                    <div class="job-description">Монтаж, обслуговування інженерних систем: опалення, вентиляція, кондиціонування, водопостачання, каналізація, теплопункти та котельні різної складності</div>
-                </div>
+        <div class="lg:col-span-3">
+          <select class="wk-input" x-model="categoryFilter" aria-label="Категория">
+            <option value="">Все категории</option>
+            <option value="movie">Фильмы</option>
+            <option value="show">Сериалы</option>
+            <option value="anime">Аниме</option>
+            <option value="game">Игры</option>
+            <option value="book">Чтиво</option>
+            <option value="cartoon">Мультики</option>
+            <option value="comics">Комиксы</option>
+          </select>
+        </div>
 
-                <div class="card">
-                    <div class="job-period">2008-2014</div>
-                    <div class="job-title">Приватний підприємець</div>
-                    <div class="job-company">ФОП «Лисиця О.І.»</div>
-                    <div class="job-description">Проєктування, монтаж, обслуговування інженерних систем всіх типів</div>
-                </div>
+        <div class="lg:col-span-4">
+          <select class="wk-input" x-model="sortKey" aria-label="Сортировка">
+            <option value="rating-desc">Рейтинг: высокие → низкие</option>
+            <option value="rating-asc">Рейтинг: низкие → высокие</option>
+            <option value="year-desc">Год: новее</option>
+            <option value="year-asc">Год: старее</option>
+            <option value="title">Название: A-Z</option>
+          </select>
+        </div>
 
-                <div class="card">
-                    <div class="job-period">2002-2008</div>
-                    <div class="job-title">Керівник проєктів, головний інженер</div>
-                    <div class="job-company">ТОВ «Технології Третього Тисячоліття», Київ</div>
-                    <div class="job-description">Системи опалення, водопостачання, альтернативна енергетика, сонячні системи</div>
-                </div>
+        <div class="lg:col-span-4">
+          <label class="text-sm block mb-2" style="color:rgba(255,255,255,.75)">
+            Минимальный рейтинг: <span class="font-semibold" x-text="minRating.toFixed(1)"></span>
+          </label>
+          <input class="w-full" type="range" x-model.number="minRating" min="0" max="10" step="0.1" 
+                 style="accent-color: var(--wk-red);" />
+        </div>
 
-                <div class="card">
-                    <div class="job-period">1995-2002</div>
-                    <div class="job-title">Начальник лабораторії ПММ</div>
-                    <div class="job-company">Збройні Сили України</div>
-                    <div class="job-description">Звання: прапорщик</div>
-                </div>
-            </section>
+        <div class="lg:col-span-4">
+          <label class="text-sm block mb-2" style="color:rgba(255,255,255,.75)">
+            Год от: <span class="font-semibold" x-text="minYear"></span>
+          </label>
+          <input class="w-full" type="range" x-model.number="minYear" min="1900" max="2030" step="1" 
+                 style="accent-color: var(--wk-red);" />
+        </div>
 
-            <section class="section" id="skills">
-                <h2 class="section-title">Професійні навички</h2>
-                <div class="skills-grid">
-                    <div class="skill-category">
-                        <h4>🔧 Інженерні системи</h4>
-                        <div class="skill-item">Теплопункти (газові, електричні, твердопаливні)</div>
-                        <div class="skill-item">Теплові насоси (повітряні та геотермальні)</div>
-                        <div class="skill-item">Системи вентиляції та кондиціонування</div>
-                        <div class="skill-item">Насосні станції та автоматика</div>
-                        <div class="skill-item">Електричні системи</div>
-                        <div class="skill-item">Водопостачання та каналізація</div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <h4>⚡ Альтернативна енергетика</h4>
-                        <div class="skill-item">Сонячні електростанції (понад 50 проєктів)</div>
-                        <div class="skill-item">Геліосистеми для нагріву води</div>
-                        <div class="skill-item">Системи акумулювання енергії</div>
-                        <div class="skill-item">Енергоефективні рішення</div>
-                    </div>
+        <div class="lg:col-span-4">
+          <label class="text-sm block mb-2" style="color:rgba(255,255,255,.75)">
+            Год до: <span class="font-semibold" x-text="maxYear"></span>
+          </label>
+          <input class="w-full" type="range" x-model.number="maxYear" min="1900" max="2030" step="1" 
+                 style="accent-color: var(--wk-red);" />
+        </div>
 
-                    <div class="skill-category">
-                        <h4>💻 Цифрові навички</h4>
-                        <div class="skill-item">Microsoft Office Suite</div>
-                        <div class="skill-item">Проєктна документація</div>
-                        <div class="skill-item">Інтернет технології</div>
-                        <div class="skill-item">Аналіз технічних даних</div>
-                    </div>
+        <div class="lg:col-span-12 flex flex-wrap items-center justify-between gap-3 pt-2">
+          <button class="wk-btn" @click="clearFilters()">Сбросить фильтры</button>
+          <div class="text-sm" style="color:rgba(255,255,255,.65)" x-show="!loading && !error">
+            Найдено: <span class="font-semibold" x-text="filteredItems.length"></span>
+            из <span class="font-semibold" x-text="items.length"></span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-                    <div class="skill-category">
-                        <h4>🗣️ Комунікації</h4>
-                        <div class="skill-item">Українська мова (професійний)</div>
-                        <div class="skill-item">Російська мова (професійний)</div>
-                        <div class="skill-item">Технічний переклад</div>
-                        <div class="skill-item">Презентації проєктів</div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section" id="achievements">
-                <h2 class="section-title">Ключові досягнення</h2>
-                <div class="achievements">
-                    <div class="achievement-item">Реалізовано понад 300 проєктів систем опалення, водопостачання, каналізації</div>
-                    <div class="achievement-item">Побудовано понад 50 сонячних електростанцій та геліосистем</div>
-                    <div class="achievement-item">2015: Промислова котельня у Видубицькому монастирі - номінація на "Кращу котельню року" від Vaillant</div>
-                    <div class="achievement-item">2015-2021: ЖК "ЗОЛОЧЕ" - 7 будинків, ресторан 2500м², централізоване теплопостачання (300кВт теплові насоси)</div>
-                    <div class="achievement-item">2017: Новий корпус ТЕЦ-5 у Харькові</div>
-                    <div class="achievement-item">2022-2023: Відбудова 300+ приватних будинків у Бучі та Ірпені після військових дій</div>
-                    <div class="achievement-item">2024: Комбікормовий завод у Монастирищі + сонячна електростанція 515кВт</div>
-                </div>
-            </section>
-
-            <section class="section" id="qualities">
-                <h2 class="section-title">Особисті якості</h2>
-                <div class="personal-qualities">
-                    <div class="quality-item">Лідерство (20-100 осіб)</div>
-                    <div class="quality-item">Аналітичне мислення</div>
-                    <div class="quality-item">Стратегічне планування</div>
-                    <div class="quality-item">Комунікабельність</div>
-                    <div class="quality-item">Відповідальність</div>
-                    <div class="quality-item">Командна робота</div>
-                    <div class="quality-item">Інноваційність</div>
-                    <div class="quality-item">Стресостійкість</div>
-                </div>
-            </section>
-
-            <div class="signature">
-                22.04.2025<br>
-                <strong>О.І. Лисиця</strong>
-            </div>
-        </main>
+    <!-- states -->
+    <div x-show="loading" class="py-16 text-center">
+      <div class="inline-flex items-center gap-3 px-4 py-2 rounded-xl" style="border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.04)">
+        <span class="animate-pulse">⏳</span>
+        <span style="color:rgba(255,255,255,.75)">Загрузка данных из Google Sheets…</span>
+      </div>
     </div>
 
-    <nav class="floating-nav">
-        <div class="nav-dot active" data-section="objective"></div>
-        <div class="nav-dot" data-section="education"></div>
-        <div class="nav-dot" data-section="experience"></div>
-        <div class="nav-dot" data-section="skills"></div>
-        <div class="nav-dot" data-section="achievements"></div>
-        <div class="nav-dot" data-section="qualities"></div>
-    </nav>
+    <div x-show="error" class="py-10">
+      <div class="wk-card p-5" style="border-color: rgba(229,52,58,.45)">
+        <div class="flex flex-col gap-2">
+          <div class="text-lg font-bold" style="color:var(--wk-red)">Ошибка загрузки</div>
+          <div class="text-sm" style="color:rgba(255,255,255,.70)" x-text="error"></div>
+          <div class="flex gap-3 mt-3">
+            <button class="wk-btn wk-btn-primary" @click="loadItems()">Повторить</button>
+          </div>
+          <div class="text-xs mt-3" style="color:rgba(255,255,255,.45)">
+            Проверь: таблица должна быть доступна "Anyone with the link can view".
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <button class="print-btn" onclick="window.print()">
-        <span>🖨️</span>
-        <span>Друк</span>
-    </button>
+    <!-- grid -->
+    <main x-show="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <template x-for="item in filteredAndSortedItems" :key="item._key">
+        <article class="wk-card hoverable cursor-pointer"
+                 tabindex="0"
+                 role="button"
+                 @click="openModal(item)"
+                 @keydown.enter="openModal(item)"
+                 @keydown.space.prevent="openModal(item)">
+          <div class="aspect-[2/3] bg-black/20 overflow-hidden">
+            <template x-if="item.image">
+              <img class="w-full h-full object-cover"
+                   :alt="`Постер ${item.title}`"
+                   :data-src="item.image"
+                   @load="$el.classList.add('loaded')"
+                   @error="handleImageError($event, item)" />
+            </template>
+            <template x-if="!item.image">
+              <div class="w-full h-full flex items-center justify-center text-sm" style="color:rgba(255,255,255,.45)">
+                🖼️ нет картинки
+              </div>
+            </template>
+          </div>
 
-    <script>
-        // Анимация появления секций
-        const observerOptions = {
-            threshold: 0.2,
-            rootMargin: '0px 0px -100px 0px'
-        };
+          <div class="p-4 flex flex-col gap-2">
+            <div class="flex items-start justify-between gap-3">
+              <h2 class="font-bold leading-snug line-clamp-2" x-text="item.title"></h2>
+              <div class="shrink-0 text-sm font-bold" :class="getRatingClass(item)">
+                ⭐ <span x-text="getRatingText(item)"></span>
+              </div>
+            </div>
 
-        const observer = new IntersectionObserver(function(entries) {
+            <div class="text-xs flex flex-wrap gap-2" style="color:rgba(255,255,255,.60)">
+              <span class="wk-chip" x-text="item.typeDisplay"></span>
+              <span class="wk-chip" x-text="item.yearDisplay"></span>
+              <span class="wk-chip" x-show="item.genres.length" x-text="item.genres.slice(0,2).join(' • ')"></span>
+              <span class="wk-chip" x-show="item.genres.length > 2" x-text="`+${item.genres.length - 2}`"></span>
+            </div>
+
+            <div class="text-xs mt-1 line-clamp-2" style="color:rgba(255,255,255,.55)" x-show="item.description">
+              <span x-text="item.description"></span>
+            </div>
+          </div>
+        </article>
+      </template>
+    </main>
+
+    <div x-show="!loading && !error && filteredAndSortedItems.length === 0" class="py-16 text-center">
+      <div class="text-2xl font-extrabold mb-2">Ничего не найдено</div>
+      <div class="text-sm mb-4" style="color:rgba(255,255,255,.65)">Поменяй фильтры или поиск.</div>
+      <button class="wk-btn wk-btn-primary" @click="clearFilters()">Сбросить</button>
+    </div>
+  </div>
+
+  <!-- modal -->
+  <div x-show="modalItem"
+       class="fixed inset-0 z-50 flex items-center justify-center wk-modal-bg p-4"
+       @click.self="closeModal()"
+       @keydown.escape.window="closeModal()"
+       x-transition.opacity
+       style="display: none;">
+    <div class="wk-card w-full max-w-6xl max-h-[90vh] overflow-hidden" @click.stop>
+      <div class="grid grid-cols-1 lg:grid-cols-2">
+        <!-- poster -->
+        <div class="bg-black/25 flex items-center justify-center p-4">
+          <template x-if="modalItem?.image">
+            <img :src="modalItem.image"
+                 class="max-h-[78vh] w-auto object-contain rounded-2xl"
+                 :alt="`Постер ${modalItem.title}`"
+                 @error="modalItem.image = null" />
+          </template>
+          <template x-if="modalItem && !modalItem.image">
+            <div class="text-sm" style="color:rgba(255,255,255,.45)">🖼️ нет картинки</div>
+          </template>
+        </div>
+
+        <!-- content -->
+        <div class="p-6 flex flex-col gap-4 max-h-[90vh] overflow-y-auto wk-scroll">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold leading-tight" x-text="modalItem?.title"></h2>
+            <div class="mt-2 flex flex-wrap gap-2">
+              <span class="wk-chip" x-text="modalItem?.typeDisplay"></span>
+              <span class="wk-chip" x-text="modalItem?.yearDisplay"></span>
+              <span class="wk-chip" :class="getRatingClass(modalItem)">
+                ⭐ <span x-text="getRatingText(modalItem)"></span>/10
+              </span>
+            </div>
+
+            <div class="mt-3 flex flex-wrap gap-2" x-show="modalItem?.genres?.length">
+              <template x-for="g in modalItem?.genres" :key="g">
+                <span class="wk-chip" x-text="g"></span>
+              </template>
+            </div>
+          </div>
+
+          <!-- tabs -->
+          <div class="flex gap-2" x-show="hasAnyContent">
+            <button class="wk-btn"
+                    :class="showReview ? 'wk-btn-primary' : ''"
+                    @click="showReview = true"
+                    :disabled="!modalItem?.review">
+              Рецензия
+            </button>
+            <button class="wk-btn"
+                    :class="(!showReview) ? 'wk-btn-primary' : ''"
+                    @click="showReview = false"
+                    :disabled="!modalItem?.description">
+              Описание
+            </button>
+          </div>
+
+          <!-- text -->
+          <div class="rounded-2xl p-4 flex-1 max-h-96 overflow-auto wk-scroll"
+               style="border:1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03)"
+               x-show="hasAnyContent">
+            <div x-show="showReview && modalItem?.review">
+              <div class="text-sm font-bold mb-3" style="color:rgba(229,52,58,.95)">📝 Рецензия</div>
+              <div class="text-sm leading-relaxed whitespace-pre-wrap" style="color:rgba(255,255,255,.85)" x-text="modalItem?.review"></div>
+            </div>
+            <div x-show="!showReview && modalItem?.description">
+              <div class="text-sm font-bold mb-3" style="color:rgba(255,255,255,.75)">📄 Описание</div>
+              <div class="text-sm leading-relaxed whitespace-pre-wrap" style="color:rgba(255,255,255,.85)" x-text="modalItem?.description"></div>
+            </div>
+          </div>
+
+          <div x-show="!hasAnyContent" class="text-sm" style="color:rgba(255,255,255,.55)">
+            Тут пусто: ни рецензии, ни описания.
+          </div>
+
+          <!-- actions -->
+          <div class="flex gap-3 pt-3">
+            <button class="wk-btn flex-1" @click="closeModal()">Закрыть</button>
+            <button class="wk-btn wk-btn-primary" @click="pickRandomItem()">🎲 Ещё</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function mediaApp() {
+      return {
+        // ==== CONFIG: Google Sheets ====
+        SHEET_ID: '108822Zn_50UNHrdA1WgnsQAf8nroCI2QZh4RlrIhhR0',
+        SHEET_NAME: 'Всё и сразу',
+
+        // ==== STATE ====
+        search: '',
+        categoryFilter: '',
+        sortKey: 'rating-desc',
+        modalItem: null,
+        items: [],
+        loading: true,
+        error: null,
+
+        minRating: 0,
+        minYear: 1900,
+        maxYear: 2030,
+
+        imageObserver: null,
+        showReview: true,
+
+        // ==== UI MAPPINGS ====
+        getTypeDisplay(typeValue) {
+          const map = {
+            movie: 'Фильм',
+            show: 'Сериал',
+            anime: 'Аниме',
+            game: 'Игра',
+            book: 'Книга',
+            cartoon: 'Мульт',
+            comics: 'Комикс'
+          };
+          return map[typeValue] || (typeValue || '—');
+        },
+
+        getRatingText(item) {
+          if (!item || item.rating == null || Number.isNaN(item.rating)) return '?';
+          return Number(item.rating).toFixed(1);
+        },
+
+        getRatingClass(item) {
+          if (!item) return 'text-white/50';
+          const r = item.rating;
+          if (r == null || Number.isNaN(r)) return 'text-white/50';
+          if (r >= 9.5) return 'text-purple-300';
+          if (r >= 7.0) return 'text-emerald-300';
+          if (r >= 4.0) return 'text-amber-300';
+          return 'text-rose-300';
+        },
+
+        // ==== CSV PARSER ====
+        parseCSV(text) {
+          const rows = [];
+          let row = [];
+          let cur = '';
+          let i = 0;
+          let inQuotes = false;
+
+          while (i < text.length) {
+            const c = text[i];
+
+            if (c === '"') {
+              if (inQuotes && text[i + 1] === '"') {
+                cur += '"';
+                i += 2;
+                continue;
+              }
+              inQuotes = !inQuotes;
+              i += 1;
+              continue;
+            }
+
+            if (!inQuotes && (c === ',')) {
+              row.push(cur);
+              cur = '';
+              i += 1;
+              continue;
+            }
+
+            if (!inQuotes && (c === '\n' || c === '\r')) {
+              if (c === '\r' && text[i + 1] === '\n') i += 2;
+              else i += 1;
+
+              row.push(cur);
+              cur = '';
+              if (row.length > 1 || (row.length === 1 && row[0].trim() !== '')) rows.push(row);
+              row = [];
+              continue;
+            }
+
+            cur += c;
+            i += 1;
+          }
+
+          row.push(cur);
+          if (row.length > 1 || (row.length === 1 && row[0].trim() !== '')) rows.push(row);
+
+          if (rows.length && rows[0].length) rows[0][0] = rows[0][0].replace(/^\uFEFF/, '');
+          return rows;
+        },
+
+        // ==== LOADING from Google Sheets ====
+        getSheetCsvUrl() {
+          const sheet = encodeURIComponent(this.SHEET_NAME);
+          return `https://docs.google.com/spreadsheets/d/${this.SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${sheet}`;
+        },
+
+        normalizeGenres(raw) {
+          if (!raw) return [];
+          let s = String(raw).trim();
+
+          if (s.includes('|')) return s.split('|').map(x => x.trim()).filter(Boolean);
+
+          s = s.replace(/^\s*"+|"+\s*$/g, '');
+          s = s.replace(/"\s*,\s*"/g, ',');
+          s = s.replace(/"\s*$/g,'').replace(/^\s*"/g,'');
+
+          return s.split(',').map(x => x.replace(/^"+|"+$/g,'').trim()).filter(Boolean);
+        },
+
+        async loadItems() {
+          this.loading = true;
+          this.error = null;
+
+          try {
+            const url = this.getSheetCsvUrl();
+            const resp = await fetch(url, { cache: 'no-store' });
+            if (!resp.ok) throw new Error(`HTTP ${resp.status}: не смог получить CSV. Проверь доступ к таблице.`);
+
+            const csvText = await resp.text();
+            const table = this.parseCSV(csvText);
+
+            if (!table.length || table.length < 2) {
+              throw new Error('CSV пустой или нет данных. Проверь, что в таблице есть строки ниже заголовка.');
+            }
+
+            const headers = table[0].map(h => (h || '').trim());
+
+            const col = (name) => headers.indexOf(name);
+
+            const idxTimestamp = col('Позначка часу');
+            const idxTitle     = col('Название');
+            const idxType      = col('Тип');
+            const idxRating    = col('Оценка');
+            const idxGenres    = col('Жанры');
+            const idxDesc      = col('Описание тайтла');
+            const idxReview    = col('Рецензия');
+            const idxImage     = col('Картинка(ссылка)');
+            const idxYearRu    = col('Год');
+
+            if (idxTitle === -1 || idxType === -1) {
+              throw new Error(
+                'Не вижу нужные колонки. Ожидаю заголовки: "Название", "Тип".'
+              );
+            }
+
+            const rows = table.slice(1);
+
+            const all = rows
+              .map((r, i) => {
+                const title = (r[idxTitle] ?? '').trim();
+                if (!title) return null;
+
+                const type = (r[idxType] ?? '').trim();
+
+                const ratingRaw = (idxRating !== -1) ? (r[idxRating] ?? '').trim() : '';
+                const ratingNum = parseFloat(String(ratingRaw).replace(',', '.'));
+                const rating = Number.isFinite(ratingNum) ? ratingNum : null;
+
+                const genresRaw = (idxGenres !== -1) ? (r[idxGenres] ?? '') : '';
+                const genres = this.normalizeGenres(genresRaw);
+
+                const description = (idxDesc !== -1) ? (r[idxDesc] ?? '').trim() : '';
+                const review = (idxReview !== -1) ? (r[idxReview] ?? '').trim() : '';
+                const image = (idxImage !== -1) ? (r[idxImage] ?? '').trim() : '';
+
+                const yearRaw = (idxYearRu !== -1) ? (r[idxYearRu] ?? '').trim() : '';
+                let yearNum = parseInt(yearRaw, 10);
+                if (!Number.isFinite(yearNum)) yearNum = null;
+
+                const createdAt = (idxTimestamp !== -1) ? (r[idxTimestamp] ?? '').trim() : '';
+
+                return {
+                  title,
+                  type,
+                  typeDisplay: this.getTypeDisplay(type),
+                  year: yearNum,
+                  yearDisplay: yearNum ? String(yearNum) : '—',
+                  rating,
+                  genres,
+                  description,
+                  review,
+                  image: image || null,
+                  createdAt,
+                  _key: `${title}-${createdAt || i}`
+                };
+              })
+              .filter(Boolean);
+
+            if (!all.length) throw new Error('Данные не распарсились. Проверь, что строки заполнены нормально.');
+
+            this.items = all;
+
+            this.$nextTick(() => {
+              this.initLazyLoading();
+            });
+
+          } catch (e) {
+            console.error(e);
+            this.items = [];
+            this.error = e?.message || 'Не удалось загрузить данные.';
+          } finally {
+            this.loading = false;
+          }
+        },
+
+        // ==== lazy loading images ====
+        initLazyLoading() {
+          if (this.imageObserver) {
+            this.imageObserver.disconnect();
+          }
+
+          this.imageObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    
-                    // Обновляем навигацию
-                    const sectionId = entry.target.id;
-                    document.querySelectorAll('.nav-dot').forEach(dot => {
-                        dot.classList.remove('active');
-                    });
-                    const activeDot = document.querySelector(`[data-section="${sectionId}"]`);
-                    if (activeDot) {
-                        activeDot.classList.add('active');
-                    }
-                }
+              if (!entry.isIntersecting) return;
+              const img = entry.target;
+              const src = img.getAttribute('data-src');
+              if (src && !img.src) {
+                img.src = src;
+                img.removeAttribute('data-src');
+              }
+              this.imageObserver.unobserve(img);
             });
-        }, observerOptions);
+          }, { rootMargin: '100px 0px', threshold: 0.01 });
 
-        // Наблюдаем за всеми секциями
-        document.querySelectorAll('.section').forEach(section => {
-            observer.observe(section);
-        });
-
-        // Навигация по точкам
-        document.querySelectorAll('.nav-dot').forEach(dot => {
-            dot.addEventListener('click', function() {
-                const sectionId = this.dataset.section;
-                const section = document.getElementById(sectionId);
-                if (section) {
-                    section.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+          setTimeout(() => {
+            document.querySelectorAll('img[data-src]').forEach(img => {
+              this.imageObserver.observe(img);
             });
-        });
+          }, 50);
+        },
 
-        // Плавное появление при загрузке
-        window.addEventListener('load', function() {
-            document.querySelector('#objective').classList.add('visible');
-        });
-    </script>
+        handleImageError(e, item) {
+          if (item) item.image = null;
+          try { e.target.style.display = 'none'; } catch {}
+        },
+
+        // ==== modal ====
+        openModal(item) {
+          if (!item) return;
+          this.modalItem = { ...item };
+          this.showReview = !!item.review;
+          if (!item.review && item.description) this.showReview = false;
+          document.body.style.overflow = 'hidden';
+        },
+
+        closeModal() {
+          this.modalItem = null;
+          document.body.style.overflow = '';
+        },
+
+        // ==== actions ====
+        pickRandomItem() {
+          const pool = this.filteredItems;
+          if (!pool.length) {
+            alert('Нет доступных элементов для случайного выбора');
+            return;
+          }
+          const idx = Math.floor(Math.random() * pool.length);
+          this.openModal(pool[idx]);
+        },
+
+        clearFilters() {
+          this.search = '';
+          this.categoryFilter = '';
+          this.sortKey = 'rating-desc';
+          this.minRating = 0;
+          this.minYear = 1900;
+          this.maxYear = 2030;
+        },
+
+        // ==== computed ====
+        get hasAnyContent() {
+          return this.modalItem && (this.modalItem.review || this.modalItem.description);
+        },
+
+        get filteredItems() {
+          const q = (this.search || '').trim().toLowerCase();
+
+          return this.items
+            .filter(it => !q || (it.title || '').toLowerCase().includes(q))
+            .filter(it => !this.categoryFilter || it.type === this.categoryFilter)
+            .filter(it => (this.minRating <= 0) || (it.rating != null && it.rating >= this.minRating))
+            .filter(it => {
+              if (it.year == null) return true;
+              if (this.minYear !== 1900 && it.year < this.minYear) return false;
+              if (this.maxYear !== 2030 && it.year > this.maxYear) return false;
+              return true;
+            });
+        },
+
+        get filteredAndSortedItems() {
+          const arr = [...this.filteredItems].sort((a, b) => {
+            const ra = (a.rating == null ? -1 : a.rating);
+            const rb = (b.rating == null ? -1 : b.rating);
+
+            switch (this.sortKey) {
+              case 'rating-asc':  return ra - rb;
+              case 'rating-desc': return rb - ra;
+
+              case 'year-asc': {
+                const ya = (a.year == null ? 9999 : a.year);
+                const yb = (b.year == null ? 9999 : b.year);
+                return ya - yb;
+              }
+              case 'year-desc': {
+                const ya = (a.year == null ? -1 : a.year);
+                const yb = (b.year == null ? -1 : b.year);
+                return yb - ya;
+              }
+
+              case 'title':
+                return (a.title || '').localeCompare((b.title || ''), 'ru');
+
+              default:
+                return 0;
+            }
+          });
+
+          this.$nextTick(() => {
+            this.initLazyLoading();
+          });
+          
+          return arr;
+        },
+
+        init() {
+          this.loadItems();
+        }
+      };
+    }
+  </script>
 </body>
 </html>
