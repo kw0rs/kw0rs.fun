@@ -111,6 +111,7 @@
             font-size: 24px;
             font-weight: 700;
             width: 60px;
+            min-width: 60px;
             text-align: center;
             padding: 8px 16px;
             border-radius: 8px;
@@ -123,6 +124,7 @@
         .tier-C .tier-label { background: #7bed9f; color: #000; }
         .tier-D .tier-label { background: #70a1ff; color: #fff; }
         .tier-F .tier-label { background: #747d8c; color: #fff; }
+        .tier-\? .tier-label { background: #2d3436; color: #fff; }
         
         .tier-items {
             display: grid;
@@ -193,9 +195,11 @@
             }
             
             .tier-label {
-                font-size: 20px;
-                width: 50px;
+                font-size: 16px;
+                width: auto;
+                min-width: 50px;
                 margin-right: 12px;
+                padding: 6px 12px;
             }
         }
     </style>
@@ -218,7 +222,7 @@
     <script>
         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1_Z97l6DZHq57gYrk_LiQTDc3Qr60yNxSznQQeA_EzEQ/export?format=csv';
         
-        const tierOrder = ['S', 'A', 'B', 'C', 'D', 'F'];
+        const tierOrder = ['S', 'A', 'B', 'C', 'D', 'F', '?'];
         
         function loadData() {
             Papa.parse(SHEET_URL, {
@@ -246,14 +250,16 @@
                 // Колонки: Название, Бренд, Оценка, Картинка
                 const name = row['Название'] || row['название'] || row['Name'] || '';
                 const brand = row['Бренд'] || row['бренд'] || row['Brand'] || '';
-                const rating = row['Оценка'] || row['оценка'] || row['Rating'] || '';
+                let rating = row['Оценка'] || row['оценка'] || row['Rating'] || '';
                 const image = row['Картинка'] || row['картинка'] || row['Image'] || '';
                 
                 if (name && rating) {
-                    const tier = rating.toUpperCase();
-                    if (tiers[tier]) {
-                        tiers[tier].push({ name, brand, rating: tier, image });
+                    rating = rating.toString().trim().toUpperCase();
+                    // Если тира нет в списке, добавляем в "?"
+                    if (!tiers[rating]) {
+                        rating = '?';
                     }
+                    tiers[rating].push({ name, brand, rating: rating, image });
                 }
             });
             
@@ -261,10 +267,13 @@
             let html = '<div class="tier-container">';
             
             tierOrder.forEach(tier => {
+                const displayLabel = tier === '?' ? 'Не оценено' : tier;
+                const tierClass = tier === '?' ? '?' : tier;
+                
                 html += `
-                    <div class="tier tier-${tier}">
+                    <div class="tier tier-${tierClass}">
                         <div class="tier-header">
-                            <div class="tier-label">${tier}</div>
+                            <div class="tier-label">${displayLabel}</div>
                         </div>
                         <div class="tier-items">
                 `;
