@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -37,11 +38,12 @@
       --bg:#0b0d12;
       --panel:#111624;
       --panel2:#0f1420;
-      --stroke:rgba(255,255,255,.08);
+      --stroke:rgba(255,255,255,.10);
       --text:rgba(255,255,255,.92);
       --muted:rgba(255,255,255,.62);
-      --muted2:rgba(255,255,255,.40);
+      --muted2:rgba(255,255,255,.42);
     }
+
     body{
       background:
         radial-gradient(900px 600px at 20% 20%, rgba(229,52,58,.12), transparent 60%),
@@ -49,6 +51,7 @@
         linear-gradient(180deg, var(--bg), #070910);
       color:var(--text);
     }
+
     .wk-card{
       background: linear-gradient(180deg, rgba(17,22,36,.92), rgba(12,16,28,.92));
       border:1px solid var(--stroke);
@@ -61,14 +64,23 @@
       border-color: rgba(229,52,58,.35);
       box-shadow: 0 18px 50px rgba(0,0,0,.45);
     }
+
+    /* КНОПКИ: без прыжков */
     .wk-btn{
       border:1px solid var(--stroke);
       background: rgba(255,255,255,.04);
       border-radius:14px;
       padding:.7rem 1rem;
-      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      transition: background .18s ease, border-color .18s ease, opacity .18s ease;
+      user-select:none;
     }
-    .wk-btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); }
+    .wk-btn:hover{
+      background: rgba(255,255,255,.06);
+    }
+    .wk-btn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
     .wk-btn-primary{
       border-color: rgba(229,52,58,.55);
       background: rgba(229,52,58,.12);
@@ -77,18 +89,42 @@
       background: rgba(229,52,58,.18);
       border-color: rgba(229,52,58,.75);
     }
+
+    /* ИНПУТЫ / СЕЛЕКТЫ: контраст + нормальные option */
     .wk-input{
       width:100%;
       border-radius:14px;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.92);
       padding:.9rem 1rem;
       outline:none;
     }
-    .wk-input:focus{
-      border-color: rgba(229,52,58,.65);
-      box-shadow: 0 0 0 3px rgba(229,52,58,.12);
+    .wk-input::placeholder{
+      color: rgba(255,255,255,.45);
     }
+    .wk-input:focus{
+      border-color: rgba(229,52,58,.75);
+      box-shadow: 0 0 0 3px rgba(229,52,58,.14);
+      background: rgba(255,255,255,.075);
+    }
+    select.wk-input{
+      appearance:none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, rgba(255,255,255,.55) 50%),
+        linear-gradient(135deg, rgba(255,255,255,.55) 50%, transparent 50%);
+      background-position:
+        calc(100% - 18px) 55%,
+        calc(100% - 12px) 55%;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat:no-repeat;
+      padding-right:2.2rem;
+    }
+    select.wk-input option{
+      background: #0f1420;
+      color: rgba(255,255,255,.92);
+    }
+
     .wk-chip{
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
@@ -98,13 +134,31 @@
       color:var(--muted);
       white-space:nowrap;
     }
+
     .wk-modal-bg{
       background: rgba(0,0,0,.72);
       backdrop-filter: blur(8px);
     }
+
     .wk-scroll::-webkit-scrollbar{ width:10px; }
     .wk-scroll::-webkit-scrollbar-track{ background: rgba(255,255,255,.04); border-radius:8px; }
-    .wk-scroll::-webkit-scrollbar-thumb{ background: rgba(229,52,58,.35); border-radius:8px; border:2px solid rgba(0,0,0,0); background-clip: padding-box; }
+    .wk-scroll::-webkit-scrollbar-thumb{
+      background: rgba(229,52,58,.35);
+      border-radius:8px;
+      border:2px solid rgba(0,0,0,0);
+      background-clip: padding-box;
+    }
+
+    /* clamp без tailwind-plugin */
+    .clamp-2{
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* range */
+    input[type="range"]{ accent-color: var(--wk-red); }
   </style>
 </head>
 
@@ -115,9 +169,7 @@
       <div>
         <div class="inline-flex items-center gap-3">
           <span class="w-3 h-3 rounded-full" style="background:var(--wk-red)"></span>
-          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Академия Кворса — Оценки
-          </h1>
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Академия Кворса — Оценки</h1>
         </div>
         <p class="mt-2 text-sm sm:text-base" style="color:rgba(255,255,255,.65)">
           Данные живут в Google Sheets. Страница просто читает и отображает.
@@ -165,21 +217,21 @@
         </div>
 
         <div class="lg:col-span-4">
-          <label class="text-sm" style="color:rgba(255,255,255,.65)">
+          <label class="text-sm" style="color:rgba(255,255,255,.70)">
             Минимальный рейтинг: <span class="font-semibold" x-text="minRating.toFixed(1)"></span>
           </label>
           <input class="w-full mt-2" type="range" x-model.number="minRating" min="0" max="10" step="0.1" />
         </div>
 
         <div class="lg:col-span-4">
-          <label class="text-sm" style="color:rgba(255,255,255,.65)">
+          <label class="text-sm" style="color:rgba(255,255,255,.70)">
             Год от: <span class="font-semibold" x-text="minYear"></span>
           </label>
           <input class="w-full mt-2" type="range" x-model.number="minYear" min="1900" max="2030" step="1" />
         </div>
 
         <div class="lg:col-span-4">
-          <label class="text-sm" style="color:rgba(255,255,255,.65)">
+          <label class="text-sm" style="color:rgba(255,255,255,.70)">
             Год до: <span class="font-semibold" x-text="maxYear"></span>
           </label>
           <input class="w-full mt-2" type="range" x-model.number="maxYear" min="1900" max="2030" step="1" />
@@ -187,7 +239,7 @@
 
         <div class="lg:col-span-12 flex flex-wrap items-center justify-between gap-3 pt-2">
           <button class="wk-btn" @click="clearFilters()">Сбросить фильтры</button>
-          <div class="text-sm" style="color:rgba(255,255,255,.65)" x-show="!loading && !error">
+          <div class="text-sm" style="color:rgba(255,255,255,.70)" x-show="!loading && !error">
             Найдено: <span class="font-semibold" x-text="filteredItems.length"></span>
             из <span class="font-semibold" x-text="items.length"></span>
           </div>
@@ -207,11 +259,11 @@
       <div class="wk-card p-5" style="border-color: rgba(229,52,58,.45)">
         <div class="flex flex-col gap-2">
           <div class="text-lg font-bold" style="color:var(--wk-red)">Ошибка загрузки</div>
-          <div class="text-sm" style="color:rgba(255,255,255,.70)" x-text="error"></div>
+          <div class="text-sm" style="color:rgba(255,255,255,.80)" x-text="error"></div>
           <div class="flex gap-3 mt-3">
             <button class="wk-btn wk-btn-primary" @click="loadItems()">Повторить</button>
           </div>
-          <div class="text-xs mt-3" style="color:rgba(255,255,255,.45)">
+          <div class="text-xs mt-3" style="color:rgba(255,255,255,.55)">
             Проверь: таблица должна быть доступна “Anyone with the link can view”.
           </div>
         </div>
@@ -236,7 +288,7 @@
                    @error="handleImageError($event, item)" />
             </template>
             <template x-if="!item.image">
-              <div class="w-full h-full flex items-center justify-center text-sm" style="color:rgba(255,255,255,.45)">
+              <div class="w-full h-full flex items-center justify-center text-sm" style="color:rgba(255,255,255,.50)">
                 🖼️ нет картинки
               </div>
             </template>
@@ -244,20 +296,21 @@
 
           <div class="p-4 flex flex-col gap-2">
             <div class="flex items-start justify-between gap-3">
-              <h2 class="font-bold leading-snug line-clamp-2" x-text="item.title"></h2>
+              <h2 class="font-bold leading-snug clamp-2" x-text="item.title"></h2>
               <div class="shrink-0 text-sm font-bold" :class="getRatingClass(item)">
                 ⭐ <span x-text="getRatingText(item)"></span>
               </div>
             </div>
 
-            <div class="text-xs flex flex-wrap gap-2" style="color:rgba(255,255,255,.60)">
+            <div class="text-xs flex flex-wrap gap-2" style="color:rgba(255,255,255,.70)">
               <span class="wk-chip" x-text="item.typeDisplay"></span>
               <span class="wk-chip" x-text="item.yearDisplay"></span>
               <span class="wk-chip" x-show="item.genres.length" x-text="item.genres.slice(0,2).join(' • ')"></span>
               <span class="wk-chip" x-show="item.genres.length > 2" x-text="`+${item.genres.length - 2}`"></span>
             </div>
 
-            <div class="text-xs mt-1 line-clamp-2" style="color:rgba(255,255,255,.55)" x-show="item.description">
+            <!-- ОПИСАНИЕ В КАРТОЧКЕ -->
+            <div class="text-xs mt-1 clamp-2" style="color:rgba(255,255,255,.65)" x-show="item.description">
               <span x-text="item.description"></span>
             </div>
           </div>
@@ -267,7 +320,7 @@
 
     <div x-show="!loading && !error && filteredAndSortedItems.length === 0" class="py-16 text-center">
       <div class="text-2xl font-extrabold mb-2">Ничего не найдено</div>
-      <div class="text-sm mb-4" style="color:rgba(255,255,255,.65)">Поменяй фильтры или поиск.</div>
+      <div class="text-sm mb-4" style="color:rgba(255,255,255,.70)">Поменяй фильтры или поиск.</div>
       <button class="wk-btn wk-btn-primary" @click="clearFilters()">Сбросить</button>
     </div>
   </div>
@@ -289,7 +342,7 @@
                  @error="modalItem.image = null" />
           </template>
           <template x-if="modalItem && !modalItem.image">
-            <div class="text-sm" style="color:rgba(255,255,255,.45)">🖼️ нет картинки</div>
+            <div class="text-sm" style="color:rgba(255,255,255,.55)">🖼️ нет картинки</div>
           </template>
         </div>
 
@@ -330,19 +383,21 @@
 
           <!-- text -->
           <div class="wk-scroll rounded-2xl p-4 flex-1 overflow-auto"
-               style="border:1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03)"
+               style="border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04)"
                x-show="hasAnyContent">
+            <!-- РЕЦЕНЗИЯ -->
             <div x-show="showReview">
               <div class="text-sm font-bold mb-2" style="color:rgba(229,52,58,.95)">📝 Рецензия</div>
-              <div class="text-sm leading-relaxed whitespace-pre-wrap" style="color:rgba(255,255,255,.78)" x-text="modalItem?.review || '—'"></div>
+              <div class="text-sm leading-relaxed whitespace-pre-wrap" style="color:rgba(255,255,255,.82)" x-text="modalItem?.review || '—'"></div>
             </div>
+            <!-- ОПИСАНИЕ -->
             <div x-show="!showReview">
-              <div class="text-sm font-bold mb-2" style="color:rgba(255,255,255,.75)">📄 Описание</div>
-              <div class="text-sm leading-relaxed whitespace-pre-wrap" style="color:rgba(255,255,255,.78)" x-text="modalItem?.description || '—'"></div>
+              <div class="text-sm font-bold mb-2" style="color:rgba(255,255,255,.82)">📄 Описание</div>
+              <div class="text-sm leading-relaxed whitespace-pre-wrap" style="color:rgba(255,255,255,.82)" x-text="modalItem?.description || '—'"></div>
             </div>
           </div>
 
-          <div x-show="!hasAnyContent" class="text-sm" style="color:rgba(255,255,255,.55)">
+          <div x-show="!hasAnyContent" class="text-sm" style="color:rgba(255,255,255,.65)">
             Тут пусто: ни рецензии, ни описания.
           </div>
 
@@ -359,10 +414,8 @@
   <script>
     function mediaApp() {
       return {
-        // ==== CONFIG: Google Sheets ====
+        // ==== CONFIG ====
         SHEET_ID: '108822Zn_50UNHrdA1WgnsQAf8nroCI2QZh4RlrIhhR0',
-        SHEET_NAME: 'Всё и сразу', // название вкладки (tab) внизу таблицы
-        // если переименуешь вкладку — поменяй тут строку
 
         // ==== STATE ====
         search: '',
@@ -380,7 +433,7 @@
         imageObserver: null,
         showReview: true,
 
-        // ==== UI MAPPINGS ====
+        // ==== UI ====
         getTypeDisplay(typeValue) {
           const map = {
             movie: 'Фильм',
@@ -401,15 +454,14 @@
 
         getRatingClass(item) {
           const r = item?.rating;
-          if (r == null || Number.isNaN(r)) return 'text-white/50';
+          if (r == null || Number.isNaN(r)) return 'text-white/60';
           if (r >= 9.5) return 'text-purple-300';
           if (r >= 7.0) return 'text-emerald-300';
           if (r >= 4.0) return 'text-amber-300';
           return 'text-rose-300';
         },
 
-        // ==== CSV PARSER (нормальный) ====
-        // поддерживает: кавычки, запятые внутри кавычек, переносы строк внутри кавычек
+        // ==== CSV PARSER (quotes + commas + newlines) ====
         parseCSV(text) {
           const rows = [];
           let row = [];
@@ -421,7 +473,6 @@
             const c = text[i];
 
             if (c === '"') {
-              // двойные кавычки внутри quoted поля
               if (inQuotes && text[i + 1] === '"') {
                 cur += '"';
                 i += 2;
@@ -432,7 +483,7 @@
               continue;
             }
 
-            if (!inQuotes && (c === ',')) {
+            if (!inQuotes && c === ',') {
               row.push(cur);
               cur = '';
               i += 1;
@@ -440,7 +491,6 @@
             }
 
             if (!inQuotes && (c === '\n' || c === '\r')) {
-              // поддержка CRLF / LF
               if (c === '\r' && text[i + 1] === '\n') i += 2;
               else i += 1;
 
@@ -455,49 +505,36 @@
             i += 1;
           }
 
-          // last cell
           row.push(cur);
           if (row.length > 1 || (row.length === 1 && row[0].trim() !== '')) rows.push(row);
 
-          // trim BOM on first cell header if any
           if (rows.length && rows[0].length) rows[0][0] = rows[0][0].replace(/^\uFEFF/, '');
           return rows;
         },
 
-        // ==== LOADING from Google Sheets ====
+        // ==== SHEETS URL (без sheet=, чтобы не зависеть от имени вкладки) ====
         getSheetCsvUrl() {
-          // gviz CSV export by sheet name
-          const sheet = encodeURIComponent(this.SHEET_NAME);
-          return `https://docs.google.com/spreadsheets/d/${this.SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${sheet}`;
+          return `https://docs.google.com/spreadsheets/d/${this.SHEET_ID}/gviz/tq?tqx=out:csv`;
         },
 
         normalizeGenres(raw) {
-          // В твоей форме жанры часто как: `"Меха", "Научная фантастика", ...`
-          // Приводим это к массиву.
           if (!raw) return [];
           let s = String(raw).trim();
+          if (!s) return [];
 
-          // если это уже "a|b|c"
           if (s.includes('|')) return s.split('|').map(x => x.trim()).filter(Boolean);
 
-          // если это выглядит как список через запятую, иногда с кавычками
-          // убираем внешние кавычки и режем
+          // убираем внешние кавычки и грязь вида: "a", "b"
           s = s.replace(/^\s*"+|"+\s*$/g, '');
-          // уберём повторные кавычки вокруг слов
           s = s.replace(/"\s*,\s*"/g, ',');
           s = s.replace(/"\s*$/g,'').replace(/^\s*"/g,'');
 
-          // режем по запятой
-          return s.split(',').map(x => x.replace(/^"+|"+$/g,'').trim()).filter(Boolean);
+          return s.split(',')
+            .map(x => x.replace(/^"+|"+$/g,'').trim())
+            .filter(Boolean);
         },
 
-        guessYearFromRow(obj) {
-          // В твоей текущей форме ГОДА НЕТ.
-          // Если в будущем добавишь колонку "Год" — автоматом подхватится ниже.
-          // Пока: null.
-          return null;
-        },
-
+        // ==== LOAD ====
         async loadItems() {
           this.loading = true;
           this.error = null;
@@ -516,23 +553,28 @@
 
             const headers = table[0].map(h => (h || '').trim());
 
-            // маппинг по русским заголовкам формы
-            const col = (name) => headers.indexOf(name);
+            // умный поиск колонок по нескольким вариантам названий
+            const findCol = (...names) => {
+              for (const n of names) {
+                const i = headers.indexOf(n);
+                if (i !== -1) return i;
+              }
+              return -1;
+            };
 
-            const idxTimestamp = col('Позначка часу');
-            const idxTitle     = col('Название');
-            const idxType      = col('Тип');
-            const idxRating    = col('Оценка');
-            const idxGenres    = col('Жанры');
-            const idxDesc      = col('Описание тайтла');
-            const idxReview    = col('Рецензия');
-            const idxImage     = col('Картинка(ссылка)');
-            const idxYearRu    = col('Год');
-            const idxYearEn    = col('year'); // если вдруг сделаешь нормализованный хедер
+            const idxTimestamp = findCol('Позначка часу', 'Timestamp', 'timestamp', 'Время');
+            const idxTitle     = findCol('Название', 'Title', 'title');
+            const idxType      = findCol('Тип', 'Type', 'type');
+            const idxRating    = findCol('Оценка', 'Rating', 'rating');
+            const idxGenres    = findCol('Жанры', 'Genres', 'genres');
+            const idxDesc      = findCol('Описание тайтла', 'Описание', 'Description', 'description');
+            const idxReview    = findCol('Рецензия', 'Review', 'review');
+            const idxImage     = findCol('Картинка(ссылка)', 'Картинка', 'Постер', 'Image', 'image');
+            const idxYear      = findCol('Год', 'Year', 'year');
 
             if (idxTitle === -1 || idxType === -1) {
               throw new Error(
-                'Не вижу нужные колонки. Ожидаю заголовки: "Название", "Тип", "Оценка", "Жанры", "Описание тайтла", "Рецензия", "Картинка(ссылка)".'
+                'Не вижу нужные колонки. Нужно минимум: "Название" и "Тип". (Остальное — опционально)'
               );
             }
 
@@ -552,43 +594,38 @@
                 const genresRaw = (idxGenres !== -1) ? (r[idxGenres] ?? '') : '';
                 const genres = this.normalizeGenres(genresRaw);
 
-                const description = (idxDesc !== -1) ? (r[idxDesc] ?? '') : '';
-                const review = (idxReview !== -1) ? (r[idxReview] ?? '') : '';
-                const image = (idxImage !== -1) ? (r[idxImage] ?? '').trim() : '';
+                const description = (idxDesc !== -1) ? String(r[idxDesc] ?? '') : '';
+                const review = (idxReview !== -1) ? String(r[idxReview] ?? '') : '';
+                const image = (idxImage !== -1) ? String(r[idxImage] ?? '').trim() : '';
 
-                const yearRaw =
-                  (idxYearRu !== -1 ? (r[idxYearRu] ?? '').trim() : '') ||
-                  (idxYearEn !== -1 ? (r[idxYearEn] ?? '').trim() : '');
+                const yearRaw = (idxYear !== -1) ? String(r[idxYear] ?? '').trim() : '';
+                const yearNum = parseInt(yearRaw, 10);
+                const year = Number.isFinite(yearNum) ? yearNum : null;
 
-                let yearNum = parseInt(yearRaw, 10);
-                if (!Number.isFinite(yearNum)) yearNum = this.guessYearFromRow({ title, type });
-
-                const createdAt = (idxTimestamp !== -1) ? (r[idxTimestamp] ?? '').trim() : '';
+                const createdAt = (idxTimestamp !== -1) ? String(r[idxTimestamp] ?? '').trim() : '';
 
                 return {
                   title,
                   type,
                   typeDisplay: this.getTypeDisplay(type),
-                  year: Number.isFinite(yearNum) ? yearNum : null,
-                  yearDisplay: Number.isFinite(yearNum) ? String(yearNum) : '—',
+                  year,
+                  yearDisplay: (year != null) ? String(year) : '—',
                   rating,
                   genres,
-                  description,
-                  review,
+                  description: description.trim(),
+                  review: review.trim(),
                   image: image || null,
                   createdAt,
-                  imageLoaded: false,
                   _key: `${title}-${createdAt || i}`
                 };
               })
               .filter(Boolean);
 
-            if (!all.length) throw new Error('Данные не распарсились. Проверь, что строки заполнены нормально.');
+            if (!all.length) throw new Error('Данные не распарсились. Проверь, что строки заполнены.');
 
             this.items = all;
 
             this.$nextTick(() => this.initLazyLoading());
-
           } catch (e) {
             console.error(e);
             this.items = [];
@@ -598,7 +635,7 @@
           }
         },
 
-        // ==== lazy loading images ====
+        // ==== lazy images ====
         initLazyLoading() {
           if (this.imageObserver) this.imageObserver.disconnect();
 
@@ -626,8 +663,11 @@
         // ==== modal ====
         openModal(item) {
           this.modalItem = { ...item };
-          this.showReview = !!item.review; // если нет review — сразу на description
+
+          // если нет review — открываем описание (если оно есть)
+          this.showReview = !!item.review;
           if (!item.review && item.description) this.showReview = false;
+
           document.body.style.overflow = 'hidden';
         },
 
@@ -665,7 +705,7 @@
             .filter(it => !q || (it.title || '').toLowerCase().includes(q))
             .filter(it => !this.categoryFilter || it.type === this.categoryFilter)
             .filter(it => (this.minRating <= 0) || (it.rating != null && it.rating >= this.minRating))
-            // Фильтр по году: если года нет — НЕ режем (иначе у тебя всё отвалится, потому что в форме года нет)
+            // если года нет — не режем
             .filter(it => {
               if (it.year == null) return true;
               if (this.minYear !== 1900 && it.year < this.minYear) return false;
@@ -706,11 +746,10 @@
           return arr;
         },
 
-        init() {
-          // ничего обязательного, но оставляем как якорь
-        }
+        init() {}
       };
     }
   </script>
 </body>
 </html>
+```
