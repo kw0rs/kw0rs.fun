@@ -160,6 +160,12 @@
             font-size: 14px;
             font-weight: 500;
             color: #ffffff;
+            margin-bottom: 2px;
+        }
+        
+        .item-brand {
+            font-size: 11px;
+            color: #666;
             margin-bottom: 4px;
         }
         
@@ -237,15 +243,16 @@
             });
             
             data.forEach(row => {
-                // Предполагаемые названия колонок: Название, Оценка, Картинка
+                // Колонки: Название, Бренд, Оценка, Картинка
                 const name = row['Название'] || row['название'] || row['Name'] || '';
+                const brand = row['Бренд'] || row['бренд'] || row['Brand'] || '';
                 const rating = row['Оценка'] || row['оценка'] || row['Rating'] || '';
                 const image = row['Картинка'] || row['картинка'] || row['Image'] || '';
                 
                 if (name && rating) {
                     const tier = rating.toUpperCase();
                     if (tiers[tier]) {
-                        tiers[tier].push({ name, rating: tier, image });
+                        tiers[tier].push({ name, brand, rating: tier, image });
                     }
                 }
             });
@@ -271,6 +278,7 @@
                                      class="item-image"
                                      onerror="this.src='https://via.placeholder.com/120x120?text=No+Image'">
                                 <div class="item-name">${item.name}</div>
+                                ${item.brand ? `<div class="item-brand">${item.brand}</div>` : ''}
                                 <div class="item-rating">Tier ${item.rating}</div>
                             </div>
                         `;
