@@ -1,175 +1,621 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Custom QR Code Generator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>К.А.Л. Кворс Аниме Лист</title>
+  
+  <meta property="og:title" content="К.А.Л. Кворс Аниме Лист" />
+  <meta property="og:description" content="Коллекция медиа-контента с рейтингами и рецензиями" />
+  <meta property="og:type" content="website" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
   <style>
-    :root{--bg:#0f1724;--card:#0b1220;--accent:#10b981;--muted:#9aa4b2}
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
-    body{background:linear-gradient(180deg,var(--bg),#071022);color:#e6eef6;display:flex;align-items:center;justify-content:center;padding:28px}
-    .app{width:960px;max-width:96vw;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;padding:18px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
-    .grid{display:grid;grid-template-columns:1fr 420px;gap:18px;align-items:start}
-    .panel{background:transparent;padding:12px}
-    h1{margin:6px 0 12px;font-size:18px}
-    label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px}
-    input[type=text], textarea, select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;font-size:14px}
-    textarea{min-height:120px;resize:vertical}
-    .row{display:flex;gap:8px}
-    .col{flex:1}
-    .small{font-size:13px;color:var(--muted)}
-    .preview-card{background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.02));border-radius:10px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:12px}
-    .qr-wrap{width:360px;height:360px;display:flex;align-items:center;justify-content:center;background:transparent;border-radius:8px}
-    img.qr{width:100%;height:100%;object-fit:contain;background:transparent}
-    .controls{display:flex;gap:8px;flex-wrap:wrap}
-    button{background:var(--accent);border:none;padding:10px 12px;border-radius:8px;color:#031018;font-weight:600;cursor:pointer}
-    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
-    .foot{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-top:8px}
-    .muted{color:var(--muted);font-size:13px}
-    .field{margin-bottom:12px}
-    .inline{display:flex;gap:8px;align-items:center}
-    input[type=color]{width:44px;height:36px;padding:0;border:none;background:transparent}
-    input[type=range]{width:160px}
-    @media (max-width:880px){.grid{grid-template-columns:1fr;}.qr-wrap{width:280px;height:280px}}
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    /* Анимированный градиентный фон */
+    .gradient-bg {
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Карточки с эффектом стекла */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Кастомный скроллбар */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #667eea, #764ba2);
+      border-radius: 10px;
+    }
+
+    /* Кнопки */
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #667eea;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: 2px solid #667eea;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    /* Инпуты */
+    .custom-input {
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 12px 16px;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .custom-input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    /* Селект */
+    .custom-select {
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 12px 16px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23667eea'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 20px;
+      padding-right: 40px;
+    }
+
+    .custom-select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    /* Бейджи */
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .badge-movie { background: #fef3c7; color: #92400e; }
+    .badge-show { background: #dbeafe; color: #1e40af; }
+    .badge-anime { background: #fce7f3; color: #9f1239; }
+    .badge-game { background: #dcfce7; color: #14532d; }
+    .badge-book { background: #f3e8ff; color: #581c87; }
+    .badge-cartoon { background: #ffedd5; color: #7c2d12; }
+
+    /* Рейтинги */
+    .rating-perfect { color: #8b5cf6; font-weight: 700; }
+    .rating-good { color: #10b981; font-weight: 600; }
+    .rating-average { color: #f59e0b; font-weight: 500; }
+    .rating-poor { color: #ef4444; font-weight: 500; }
+    .rating-unknown { color: #9ca3af; font-weight: 400; }
+
+    /* Модальное окно */
+    .modal-overlay {
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 24px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    /* Загрузчик */
+    .loader {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Placeholder для изображений */
+    .image-placeholder {
+      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+      .glass-card {
+        border-radius: 16px;
+      }
+      
+      .modal-content {
+        border-radius: 20px;
+        margin: 20px;
+      }
+    }
+
+    /* Анимации появления */
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Range slider */
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 5px;
+      background: #e5e7eb;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      cursor: pointer;
+      border: none;
+    }
   </style>
 </head>
-<body>
-  <main class="app" role="main">
-    <div class="grid">
-      <section class="panel">
-        <h1>Custom QR Code Generator</h1>
-        <div class="field">
-          <label for="text">Текст или URL</label>
-          <textarea id="text" placeholder="https://example.com или любой текст">https://example.com</textarea>
+
+<body class="gradient-bg" x-data="mediaApp()" x-init="loadFromGoogleSheets()">
+  <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+    
+    <!-- Шапка -->
+    <header class="glass-card p-6 sm:p-8 mb-8 fade-in">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+            К.А.Л. Кворс Аниме Лист
+          </h1>
+          <p class="text-gray-600 text-sm sm:text-base">Коллекция медиа-контента с рейтингами и рецензиями</p>
+        </div>
+        <a href="https://kw0rs.uno/" class="btn-primary flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+          </svg>
+          Главная
+        </a>
+      </div>
+    </header>
+
+    <!-- Фильтры -->
+    <section class="glass-card p-6 sm:p-8 mb-8 fade-in">
+      <div class="space-y-6">
+        
+        <!-- Поиск и основные фильтры -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="lg:col-span-2">
+            <input 
+              type="text" 
+              x-model="search" 
+              placeholder="🔍 Поиск по названию..." 
+              class="custom-input"
+            />
+          </div>
+          
+          <div>
+            <select x-model="categoryFilter" class="custom-select w-full">
+              <option value="">🎭 Все категории</option>
+              <option value="movie">🎬 Фильмы</option>
+              <option value="show">📺 Сериалы</option>
+              <option value="anime">🎌 Аниме</option>
+              <option value="game">🎮 Игры</option>
+              <option value="book">📚 Чтиво</option>
+              <option value="cartoon">🎨 Мультики</option>
+            </select>
+          </div>
+          
+          <div>
+            <select x-model="sortKey" class="custom-select w-full">
+              <option value="rating-desc">⭐ Рейтинг ↓</option>
+              <option value="rating-asc">⭐ Рейтинг ↑</option>
+              <option value="year-desc">📅 Год ↓</option>
+              <option value="year-asc">📅 Год ↑</option>
+              <option value="title">🔤 Название A-Z</option>
+            </select>
+          </div>
         </div>
 
-        <div class="row">
-          <div class="col field">
-            <label for="fg">Цвет (передний план)</label>
-            <div class="inline"><input id="fg" type="color" value="#0a0a0a"><span class="small muted">#0a0a0a</span></div>
+        <!-- Слайдеры -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              ⭐ Минимальный рейтинг: <span class="text-purple-600" x-text="minRating || 0"></span>
+            </label>
+            <input type="range" x-model.number="minRating" min="0" max="10" step="0.1" />
           </div>
-          <div class="col field">
-            <label for="bg">Фон</label>
-            <div class="inline"><input id="bg" type="color" value="#ffffff"><span class="small muted">#ffffff</span></div>
+          
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              📅 Год от: <span class="text-purple-600" x-text="minYear || 1900"></span>
+            </label>
+            <input type="range" x-model.number="minYear" min="1900" max="2030" />
+          </div>
+          
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              📅 Год до: <span class="text-purple-600" x-text="maxYear || 2030"></span>
+            </label>
+            <input type="range" x-model.number="maxYear" min="1900" max="2030" />
           </div>
         </div>
 
-        <div class="row">
-          <div class="col field">
-            <label for="size">Размер (px)</label>
-            <div class="inline"><input id="size" type="range" min="128" max="1024" value="360"><span class="small muted" id="sizeVal">360</span></div>
-          </div>
-          <div class="col field">
-            <label for="ecc">Уровень защиты (ECC)</label>
-            <select id="ecc"><option value="L">L (7%)</option><option value="M">M (15%)</option><option value="Q">Q (25%)</option><option value="H" selected>H (30%)</option></select>
-          </div>
+        <!-- Кнопки действий -->
+        <div class="flex flex-wrap gap-3">
+          <button @click="clearFilters()" class="btn-secondary flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            Очистить
+          </button>
+          
+          <button @click="pickRandomItem()" class="btn-primary flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            Мне повезёт
+          </button>
         </div>
 
-        <div class="controls">
-          <button id="generate">Сгенерировать</button>
-          <button id="download" class="ghost">Скачать PNG</button>
-          <button id="copy" class="ghost">Копировать URL</button>
+        <!-- Счётчик -->
+        <div class="text-center pt-4 border-t border-gray-200" x-show="!loading && !error">
+          <p class="text-gray-600 font-semibold">
+            Найдено: <span class="text-purple-600" x-text="filteredItems.length"></span> из <span class="text-purple-600" x-text="items.length"></span>
+          </p>
         </div>
+      </div>
+    </section>
 
-        <div class="foot">
-          <div class="muted">Простое, минимальное. Большой предпросмотр справа.</div>
-          <div class="muted">Offline: требует подключение к интернету (генератор через QR API)</div>
-        </div>
-      </section>
+    <!-- Загрузка -->
+    <div x-show="loading" class="text-center py-20">
+      <div class="loader mx-auto mb-6"></div>
+      <p class="text-white text-xl font-semibold">Загрузка данных из Google Sheets...</p>
+    </div>
 
-      <aside class="panel">
-        <div class="preview-card">
-          <div class="muted small">Preview</div>
-          <div class="qr-wrap">
-            <img id="qrImg" class="qr" alt="QR preview">
+    <!-- Ошибка -->
+    <div x-show="error" class="glass-card p-8 text-center mb-8">
+      <svg class="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">Ошибка загрузки</h3>
+      <p class="text-gray-600 mb-6" x-text="error"></p>
+      <button @click="loadFromGoogleSheets()" class="btn-primary">
+        Повторить попытку
+      </button>
+    </div>
+
+    <!-- Сетка карточек -->
+    <main x-show="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <template x-for="item in filteredAndSortedItems" :key="item.title + '-' + item.year">
+        <article 
+          @click="openModal(item)" 
+          class="glass-card p-4 cursor-pointer fade-in"
+        >
+          <!-- Изображение -->
+          <div class="aspect-[2/3] rounded-xl overflow-hidden mb-4 image-placeholder">
+            <template x-if="item.image">
+              <img 
+                :src="item.image" 
+                :alt="item.title"
+                class="w-full h-full object-cover"
+                loading="lazy"
+                @error="item.image = null"
+              />
+            </template>
+            <template x-if="!item.image">
+              <div class="w-full h-full flex items-center justify-center text-gray-400">
+                <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+            </template>
           </div>
-          <div style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px">
-            <div class="small muted">PNG будет скачан с теми же цветами и размером.</div>
-            <div style="display:flex;gap:8px">
-              <button id="refresh" class="ghost">Обновить</button>
+
+          <!-- Информация -->
+          <div class="space-y-2">
+            <h3 class="font-bold text-gray-800 text-lg line-clamp-2" x-text="item.title"></h3>
+            <p class="text-sm text-gray-600" x-text="`${item.typeDisplay} • ${item.year}`"></p>
+            <div class="flex items-center justify-between">
+              <span :class="getRatingClass(item) + ' text-lg font-bold'">
+                ⭐ <span x-text="getRatingText(item)"></span>
+              </span>
+              <span 
+                :class="'badge badge-' + item.type" 
+                x-text="item.typeDisplay"
+              ></span>
             </div>
           </div>
-        </div>
-      </aside>
+        </article>
+      </template>
+    </main>
+
+    <!-- Пустой результат -->
+    <div x-show="!loading && !error && filteredAndSortedItems.length === 0" class="glass-card p-12 text-center">
+      <svg class="w-20 h-20 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
+      </svg>
+      <h3 class="text-2xl font-bold text-gray-800 mb-2">Ничего не найдено</h3>
+      <p class="text-gray-600 mb-6">Попробуйте изменить параметры поиска</p>
+      <button @click="clearFilters()" class="btn-secondary">Очистить фильтры</button>
     </div>
-  </main>
+  </div>
+
+  <!-- Модальное окно -->
+  <div 
+    x-show="modalItem" 
+    x-transition
+    class="fixed inset-0 z-50 flex items-center justify-center modal-overlay p-4"
+    @click.self="closeModal()"
+  >
+    <div class="modal-content max-w-4xl w-full p-6 sm:p-8" @click.stop>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- Изображение -->
+        <div class="flex justify-center">
+          <template x-if="modalItem && modalItem.image">
+            <img 
+              :src="modalItem.image" 
+              :alt="modalItem.title"
+              class="w-full max-h-[500px] object-contain rounded-2xl"
+            />
+          </template>
+          <template x-if="modalItem && !modalItem.image">
+            <div class="w-full h-96 image-placeholder rounded-2xl">
+              <svg class="w-20 h-20 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+          </template>
+        </div>
+
+        <!-- Информация -->
+        <div class="space-y-6">
+          <div>
+            <h2 class="text-3xl font-bold text-gray-800 mb-3" x-text="modalItem && modalItem.title"></h2>
+            <p class="text-gray-600 mb-4" x-text="modalItem && `${modalItem.typeDisplay} • ${modalItem.year}`"></p>
+            <div class="flex items-center gap-4 mb-4">
+              <span :class="modalItem && getRatingClass(modalItem) + ' text-2xl font-bold'">
+                ⭐ <span x-text="modalItem && getRatingText(modalItem)"></span>/10
+              </span>
+              <span 
+                :class="modalItem && 'badge badge-' + modalItem.type" 
+                x-text="modalItem && modalItem.typeDisplay"
+              ></span>
+            </div>
+            
+            <!-- Жанры -->
+            <template x-if="modalItem && modalItem.genres && modalItem.genres.length">
+              <div class="flex flex-wrap gap-2 mb-6">
+                <template x-for="genre in modalItem.genres" :key="genre">
+                  <span class="badge" style="background: #f3f4f6; color: #374151;" x-text="genre"></span>
+                </template>
+              </div>
+            </template>
+          </div>
+
+          <!-- Табы -->
+          <div class="border-b border-gray-200">
+            <div class="flex gap-4">
+              <button 
+                @click="showReview = true"
+                :class="showReview ? 'border-purple-600 text-purple-600' : 'border-transparent text-gray-500'"
+                class="pb-3 border-b-2 font-semibold transition"
+                :disabled="!modalItem?.review"
+              >
+                📝 Рецензия
+              </button>
+              <button 
+                @click="showReview = false"
+                :class="!showReview ? 'border-purple-600 text-purple-600' : 'border-transparent text-gray-500'"
+                class="pb-3 border-b-2 font-semibold transition"
+                :disabled="!modalItem?.description"
+              >
+                📄 Описание
+              </button>
+            </div>
+          </div>
+
+          <!-- Контент -->
+          <div class="max-h-60 overflow-y-auto">
+            <div x-show="showReview && modalItem?.review">
+              <p class="text-gray-700 leading-relaxed" x-text="modalItem?.review"></p>
+            </div>
+            <div x-show="!showReview && modalItem?.description">
+              <p class="text-gray-700 leading-relaxed" x-text="modalItem?.description"></p>
+            </div>
+            <div x-show="(showReview && !modalItem?.review) || (!showReview && !modalItem?.description)" class="text-center py-8">
+              <p class="text-gray-400 italic">Информация отсутствует</p>
+            </div>
+          </div>
+
+          <!-- Кнопки -->
+          <div class="flex gap-3 pt-6 border-t border-gray-200">
+            <button @click="closeModal()" class="btn-secondary flex-1">
+              Закрыть
+            </button>
+            <button @click="pickRandomItem()" class="btn-primary">
+              🎲 Ещё
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
-    // Простой SPA: собираем параметры и подставляем в публичный API QR кодов.
-    // API: https://api.qrserver.com/v1/create-qr-code/ — бесплатный, простая интеграция.
+    function mediaApp() {
+      return {
+        search: '',
+        categoryFilter: '',
+        sortKey: 'rating-desc',
+        modalItem: null,
+        items: [],
+        loading: true,
+        error: null,
+        minRating: 0,
+        minYear: 1900,
+        maxYear: 2030,
+        showReview: true,
 
-    const $ = id => document.getElementById(id);
-    const text = $('text');
-    const fg = $('fg');
-    const bg = $('bg');
-    const size = $('size');
-    const sizeVal = $('sizeVal');
-    const ecc = $('ecc');
-    const generate = $('generate');
-    const download = $('download');
-    const copy = $('copy');
-    const qrImg = $('qrImg');
-    const refresh = $('refresh');
+        // ID вашей таблицы
+        SHEET_ID: '108822Zn_50UNHrdA1WgnsQAf8nroCI2QZh4RlrIhhR0',
 
-    function encodeParam(s){ return encodeURIComponent(s); }
-
-    function buildQRUrl(){
-      const data = text.value.trim() || '';
-      const pixels = parseInt(size.value,10) || 360;
-      const color = fg.value.replace('#','');
-      const bgcolor = bg.value.replace('#','');
-      const level = ecc.value;
-      // api supports color and bgcolor as hex (without #)
-      const params = new URLSearchParams({data, size: pixels+'x'+pixels, color, bgcolor, ecc: level});
-      return 'https://api.qrserver.com/v1/create-qr-code/?' + params.toString();
-    }
-
-    function updatePreview(){
-      const url = buildQRUrl();
-      qrImg.src = url + '&.cachebuster=' + Date.now();
-    }
-
-    function downloadPNG(){
-      const url = buildQRUrl();
-      // fetch blob and trigger download
-      fetch(url).then(r=>{ if(!r.ok) throw new Error('network'); return r.blob() }).then(blob=>{
-        const a = document.createElement('a');
-        const u = URL.createObjectURL(blob);
-        a.href = u;
-        const safeName = (text.value.trim().slice(0,40) || 'qr') .replace(/[^a-z0-9\-_.]/ig,'_');
-        a.download = safeName + '.png';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(()=>URL.revokeObjectURL(u), 3000);
-      }).catch(err=>{ alert('Не удалось скачать PNG. Проверь подключение.'); console.error(err) });
-    }
-
-    // events
-    size.addEventListener('input', ()=>{ sizeVal.textContent = size.value; updatePreview(); });
-    fg.addEventListener('input', ()=> updatePreview());
-    bg.addEventListener('input', ()=> updatePreview());
-    ecc.addEventListener('change', ()=> updatePreview());
-    text.addEventListener('input', ()=> updatePreview());
-
-    generate.addEventListener('click', ()=> updatePreview());
-    refresh.addEventListener('click', ()=> updatePreview());
-    download.addEventListener('click', ()=> downloadPNG());
-
-    copy.addEventListener('click', async ()=>{
-      const url = buildQRUrl();
-      try{
-        await navigator.clipboard.writeText(url);
-        copy.textContent = 'Ссылка скопирована';
-        setTimeout(()=> copy.textContent = 'Копировать URL', 1200);
-      }catch(e){
-        alert('Не удалось скопировать. Скопируй вручную: ' + url);
-      }
-    });
-
-    // initial
-    updatePreview();
-  </script>
-</body>
-</html>
+        // Загрузка данных из Google Sheets
+        async loadFromGoogleSheets() {
+          this.loading = true;
+          this.error = null;
+          
+          try {
+            // Публичный CSV URL для Google Sheets
+            const csvUrl = `https://docs.google.com/spreadsheets/d/${this.SHEET_ID}/export?format=csv`;
+            
+            console.log('Загрузка данных из Google Sheets...');
+            
+            const response = await fetch(csvUrl);
+            
+            if (!response.ok) {
+              throw new Error(`Ошибка загрузки: ${response.status} ${response.statusText}`);
+            }
+            
+            const csvText = await response.text();
+            console.log('CSV данные получены, размер:', csvText.length);
+            
+            // Парсинг CSV
+            const rows = this.parseCSV(csvText);
+            
+            if (rows.length < 2) {
+              throw new Error('Таблица пуста или содержит только заголовки');
+            }
+            
+            // Первая строка - заголовки
+            const headers = rows[0].map(h => h.trim().toLowerCase());
+            console.log('Заголовки:', headers);
+            
+            // Преобразуем строки в объекты
+            this.items = rows.slice(1)
+              .filter(row => row.some(cell => cell && cell.trim())) // Пропускаем пустые строки
+              .map((row, index) => {
+                const item = {};
+                headers.forEach((header, i) => {
+                  item[header] = row[i] || '';
+                });
+                
+                // Обработка данных
+                const rating = parseFloat(item.rating || item['рейтинг']);
+                
+                return {
+                  title: item.title || item['название'] || `Без названия ${index + 1}`,
+                  type: (item.type || item['тип'] || '').toLowerCase(),
+                  typeDisplay: this.getTypeDisplay(item.type || item['тип'] || ''),
+                  year: item.year || item['год'] || 'Н/Д',
+                  rating: !isNaN(rating) ? rating : null,
+                  genres: this.parseGenres(item.genres || item['жанры'] || ''),
+                  description: item.description || item['описание'] || '',
+                  review
