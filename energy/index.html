@@ -110,12 +110,16 @@
         .tier-label {
             font-size: 24px;
             font-weight: 700;
-            width: 60px;
+            width: auto;
             min-width: 60px;
+            max-width: 150px;
             text-align: center;
             padding: 8px 16px;
             border-radius: 8px;
             margin-right: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .tier-S .tier-label { background: #ff4757; color: #fff; }
@@ -267,13 +271,14 @@
             let html = '<div class="tier-container">';
             
             tierOrder.forEach(tier => {
-                const displayLabel = tier === '?' ? 'Не оценено' : tier;
+                const displayLabel = tier === '?' ? '?' : tier;
                 const tierClass = tier === '?' ? '?' : tier;
                 
                 html += `
                     <div class="tier tier-${tierClass}">
                         <div class="tier-header">
-                            <div class="tier-label">${displayLabel}</div>
+                            <div class="tier-label" title="${tier === '?' ? 'Не оценено' : 'Tier ' + tier}">${displayLabel}</div>
+                            ${tier === '?' ? '<span style="color: #888; font-size: 14px;">Не оценено</span>' : ''}
                         </div>
                         <div class="tier-items">
                 `;
