@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -50,6 +49,7 @@
         radial-gradient(900px 600px at 80% 80%, rgba(255,255,255,.06), transparent 60%),
         linear-gradient(180deg, var(--bg), #070910);
       color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
     }
 
     .wk-card{
@@ -157,8 +157,39 @@
       overflow: hidden;
     }
 
-    /* range */
     input[type="range"]{ accent-color: var(--wk-red); }
+
+    /* ====== СТАБИЛЬНАЯ МОДАЛКА (фикс “прыгающего” размера) ====== */
+    .wk-modal-card{
+      width: min(95vw, 1100px);
+      height: clamp(560px, 86vh, 760px);
+      max-height: 90vh;
+      overflow: hidden;
+    }
+    @media (max-width: 1024px){
+      .wk-modal-card{
+        width: min(95vw, 980px);
+        height: min(90vh, 820px);
+      }
+    }
+    .wk-modal-grid{ height: 100%; }
+    .wk-modal-left, .wk-modal-right{ height: 100%; }
+
+    .wk-poster-wrap{
+      height: 100%;
+      width: 100%;
+    }
+    .wk-poster-placeholder{
+      height: 100%;
+      width: 100%;
+      border-radius: 18px;
+      border: 1px dashed rgba(255,255,255,.16);
+      background: rgba(255,255,255,.03);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color: rgba(255,255,255,.55);
+    }
   </style>
 </head>
 
@@ -331,23 +362,27 @@
        @click.self="closeModal()"
        @keydown.escape.window="closeModal()"
        x-transition.opacity>
-    <div class="wk-card w-[95%] max-w-6xl max-h-[90vh] overflow-hidden" @click.stop>
-      <div class="grid grid-cols-1 lg:grid-cols-2">
+    <div class="wk-card wk-modal-card" @click.stop>
+      <div class="grid grid-cols-1 lg:grid-cols-2 wk-modal-grid">
         <!-- poster -->
-        <div class="bg-black/25 flex items-center justify-center p-4">
-          <template x-if="modalItem?.image">
-            <img :src="modalItem.image"
-                 class="max-h-[78vh] w-auto object-contain rounded-2xl"
-                 :alt="`Постер ${modalItem.title}`"
-                 @error="modalItem.image = null" />
-          </template>
-          <template x-if="modalItem && !modalItem.image">
-            <div class="text-sm" style="color:rgba(255,255,255,.55)">🖼️ нет картинки</div>
-          </template>
+        <div class="bg-black/25 p-4 wk-modal-left">
+          <div class="wk-poster-wrap flex items-center justify-center">
+            <template x-if="modalItem?.image">
+              <img :src="modalItem.image"
+                   class="max-h-[78vh] w-auto object-contain rounded-2xl"
+                   :alt="`Постер ${modalItem.title}`"
+                   @error="modalItem.image = null" />
+            </template>
+            <template x-if="modalItem && !modalItem.image">
+              <div class="wk-poster-placeholder">
+                🖼️ нет картинки
+              </div>
+            </template>
+          </div>
         </div>
 
         <!-- content -->
-        <div class="p-6 flex flex-col gap-4">
+        <div class="p-6 flex flex-col gap-4 wk-modal-right">
           <div>
             <h2 class="text-2xl sm:text-3xl font-extrabold leading-tight" x-text="modalItem?.title"></h2>
             <div class="mt-2 flex flex-wrap gap-2">
@@ -381,28 +416,34 @@
             </button>
           </div>
 
-          <!-- text -->
+          <!-- text (всегда есть, чтобы модалка не “схлопывалась”) -->
           <div class="wk-scroll rounded-2xl p-4 flex-1 overflow-auto"
-               style="border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04)"
-               x-show="hasAnyContent">
-            <!-- РЕЦЕНЗИЯ -->
-            <div x-show="showReview">
-              <div class="text-sm font-bold mb-2" style="color:rgba(229,52,58,.95)">📝 Рецензия</div>
-              <div class="text-sm leading-relaxed whitespace-pre-wrap" style="color:rgba(255,255,255,.82)" x-text="modalItem?.review || '—'"></div>
-            </div>
-            <!-- ОПИСАНИЕ -->
-            <div x-show="!showReview">
-              <div class="text-sm font-bold mb-2" style="color:rgba(255,255,255,.82)">📄 Описание</div>
-              <div class="text-sm leading-relaxed whitespace-pre-wrap" style="color:rgba(255,255,255,.82)" x-text="modalItem?.description || '—'"></div>
-            </div>
-          </div>
+               style="border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04)">
+            <template x-if="hasAnyContent">
+              <div>
+                <!-- РЕЦЕНЗИЯ -->
+                <div x-show="showReview">
+                  <div class="text-sm font-bold mb-2" style="color:rgba(229,52,58,.95)">📝 Рецензия</div>
+                  <div class="text-sm leading-relaxed whitespace-pre-wrap" style="color:rgba(255,255,255,.82)" x-text="modalItem?.review || '—'"></div>
+                </div>
 
-          <div x-show="!hasAnyContent" class="text-sm" style="color:rgba(255,255,255,.65)">
-            Тут пусто: ни рецензии, ни описания.
+                <!-- ОПИСАНИЕ -->
+                <div x-show="!showReview">
+                  <div class="text-sm font-bold mb-2" style="color:rgba(255,255,255,.82)">📄 Описание</div>
+                  <div class="text-sm leading-relaxed whitespace-pre-wrap" style="color:rgba(255,255,255,.82)" x-text="modalItem?.description || '—'"></div>
+                </div>
+              </div>
+            </template>
+
+            <template x-if="!hasAnyContent">
+              <div class="h-full flex items-center justify-center text-sm" style="color:rgba(255,255,255,.65)">
+                Тут пусто: ни рецензии, ни описания.
+              </div>
+            </template>
           </div>
 
           <!-- actions -->
-          <div class="flex gap-3 pt-3">
+          <div class="flex gap-3 pt-1">
             <button class="wk-btn flex-1" @click="closeModal()">Закрыть</button>
             <button class="wk-btn wk-btn-primary" @click="pickRandomItem()">🎲 Ещё</button>
           </div>
@@ -524,7 +565,6 @@
 
           if (s.includes('|')) return s.split('|').map(x => x.trim()).filter(Boolean);
 
-          // убираем внешние кавычки и грязь вида: "a", "b"
           s = s.replace(/^\s*"+|"+\s*$/g, '');
           s = s.replace(/"\s*,\s*"/g, ',');
           s = s.replace(/"\s*$/g,'').replace(/^\s*"/g,'');
@@ -553,7 +593,6 @@
 
             const headers = table[0].map(h => (h || '').trim());
 
-            // умный поиск колонок по нескольким вариантам названий
             const findCol = (...names) => {
               for (const n of names) {
                 const i = headers.indexOf(n);
@@ -573,9 +612,7 @@
             const idxYear      = findCol('Год', 'Year', 'year');
 
             if (idxTitle === -1 || idxType === -1) {
-              throw new Error(
-                'Не вижу нужные колонки. Нужно минимум: "Название" и "Тип". (Остальное — опционально)'
-              );
+              throw new Error('Не вижу нужные колонки. Нужно минимум: "Название" и "Тип".');
             }
 
             const rows = table.slice(1);
@@ -664,7 +701,6 @@
         openModal(item) {
           this.modalItem = { ...item };
 
-          // если нет review — открываем описание (если оно есть)
           this.showReview = !!item.review;
           if (!item.review && item.description) this.showReview = false;
 
@@ -705,7 +741,6 @@
             .filter(it => !q || (it.title || '').toLowerCase().includes(q))
             .filter(it => !this.categoryFilter || it.type === this.categoryFilter)
             .filter(it => (this.minRating <= 0) || (it.rating != null && it.rating >= this.minRating))
-            // если года нет — не режем
             .filter(it => {
               if (it.year == null) return true;
               if (this.minYear !== 1900 && it.year < this.minYear) return false;
@@ -752,4 +787,3 @@
   </script>
 </body>
 </html>
-```
