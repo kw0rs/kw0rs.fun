@@ -369,7 +369,7 @@
           <div class="wk-poster-wrap flex items-center justify-center">
             <template x-if="modalItem?.image">
               <img :src="modalItem.image"
-                   class="max-h-[78vh] w-auto object-contain rounded-2xl"
+                   class="h-full w-full object-cover rounded-2xl"
                    :alt="`Постер ${modalItem.title}`"
                    @error="modalItem.image = null" />
             </template>
