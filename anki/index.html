@@ -215,25 +215,18 @@
       width: 92vw;
       max-width: 400px;
       height: min(60vh, 460px);
+      height: min(60dvh, 460px);
       position: relative;
-      perspective: 1200px;
       cursor: pointer;
       margin-bottom: 1.2rem;
     }
     .inner {
       position: absolute;
       top: 0; right: 0; bottom: 0; left: 0;
-      transform-style: preserve-3d;
-      transition: transform .55s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     }
-    .flipped .inner { transform: rotateY(180deg); }
-    #card.hide-back .back { opacity: 0; pointer-events: none; }
-
     .face {
       position: absolute;
       top: 0; right: 0; bottom: 0; left: 0;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -243,7 +236,14 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       box-shadow: 0 20px 60px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
+      transition: opacity .3s ease, transform .3s ease;
     }
+    /* Firefox-safe flip using opacity + scale (no 3D transforms) */
+    .face.front { opacity: 1; transform: scale(1);    z-index: 2; pointer-events: auto; }
+    .face.back  { opacity: 0; transform: scale(0.95); z-index: 1; pointer-events: none; }
+    .flipped .face.front { opacity: 0; transform: scale(0.95); pointer-events: none; }
+    .flipped .face.back  { opacity: 1; transform: scale(1);    pointer-events: auto; }
+    #card.hide-back .face.back { opacity: 0 !important; pointer-events: none !important; }
     @supports not (backdrop-filter: blur(1px)) {
       .face { background: rgba(15,21,32,.95); }
     }
@@ -269,7 +269,7 @@
     }
     .front .card-word { color: var(--green); }
     .back .card-word { color: var(--blue); }
-    .back { transform: rotateY(180deg); }
+    /* rotateY removed: using opacity flip instead */
 
     .flip-hint {
       font-size: .72rem;
