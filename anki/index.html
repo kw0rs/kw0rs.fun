@@ -236,14 +236,30 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       box-shadow: 0 20px 60px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
-      transition: opacity .3s ease, transform .3s ease;
+      /* Each face rotates individually — no preserve-3d needed, works in Firefox */
+      -webkit-backface-visibility: hidden;
+      -moz-backface-visibility: hidden;
+      backface-visibility: hidden;
+      transition: transform .5s cubic-bezier(0.4, 0.2, 0.2, 1);
     }
-    /* Firefox-safe flip using opacity + scale (no 3D transforms) */
-    .face.front { opacity: 1; transform: scale(1);    z-index: 2; pointer-events: auto; }
-    .face.back  { opacity: 0; transform: scale(0.95); z-index: 1; pointer-events: none; }
-    .flipped .face.front { opacity: 0; transform: scale(0.95); pointer-events: none; }
-    .flipped .face.back  { opacity: 1; transform: scale(1);    pointer-events: auto; }
-    #card.hide-back .face.back { opacity: 0 !important; pointer-events: none !important; }
+    /* Front face: visible by default */
+    .face.front {
+      transform: rotateY(0deg);
+      z-index: 2;
+    }
+    /* Back face: hidden behind (rotated 180deg) */
+    .face.back {
+      transform: rotateY(180deg);
+      z-index: 1;
+    }
+    /* Flipped state: front hides, back shows */
+    .flipped .face.front {
+      transform: rotateY(-180deg);
+    }
+    .flipped .face.back {
+      transform: rotateY(0deg);
+    }
+    #card.hide-back .face.back { visibility: hidden; }
     @supports not (backdrop-filter: blur(1px)) {
       .face { background: rgba(15,21,32,.95); }
     }
