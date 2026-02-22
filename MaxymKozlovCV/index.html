@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maksym Kozlov — Sound Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: #2a2a2a;
+    --accent: #c8a96e;
+    --accent2: #7eb8a4;
+    --text: #e8e3da;
+    --muted: #7a7570;
+    --tag-bg: #1e1e1e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.6;
+  }
+
+  /* Lang toggle */
+  .lang-toggle {
+    position: fixed;
+    top: 24px;
+    right: 28px;
+    z-index: 100;
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+  }
+
+  .lang-btn {
+    background: var(--surface);
+    color: var(--muted);
+    border: none;
+    padding: 8px 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .lang-btn.active {
+    background: var(--accent);
+    color: #0e0e0e;
+  }
+
+  .lang-btn:hover:not(.active) {
+    color: var(--text);
+    background: var(--surface2);
+  }
+
+  /* Layout */
+  .wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 32px 80px;
+  }
+
+  /* Header */
+  header {
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 56px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 4.8rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-top: 16px;
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .meta-item span.dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent2);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Sections */
+  section {
+    margin-bottom: 56px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  section:nth-child(2) { animation-delay: 0.1s; }
+  section:nth-child(3) { animation-delay: 0.15s; }
+  section:nth-child(4) { animation-delay: 0.2s; }
+  section:nth-child(5) { animation-delay: 0.25s; }
+  section:nth-child(6) { animation-delay: 0.3s; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Profile */
+  .profile-text {
+    font-size: 15px;
+    color: #b8b2a8;
+    line-height: 1.8;
+    max-width: 680px;
+    border-left: 2px solid var(--accent);
+    padding-left: 20px;
+  }
+
+  /* Education */
+  .edu-block {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px 24px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .edu-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--text);
+  }
+
+  .edu-degree {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .edu-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    text-align: right;
+    align-self: start;
+    padding-top: 4px;
+    white-space: nowrap;
+  }
+
+  /* Experience */
+  .job {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .job-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: start;
+  }
+
+  .job-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  .job-role {
+    font-size: 12px;
+    color: var(--accent2);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+
+  .job-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .job-duties {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .job-duties li {
+    font-size: 13.5px;
+    color: #9e9890;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .job-duties li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  /* Skills grid */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .skill-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+  }
+
+  .skill-group-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .skill-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .skill-list li {
+    font-size: 13px;
+    color: #aba59e;
+  }
+
+  /* Equipment */
+  .equip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .equip-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+  }
+
+  .equip-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 12px;
+  }
+
+  .equip-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .equip-list li {
+    font-size: 12.5px;
+    color: #8a8480;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* Languages & Soft Skills */
+  .langs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  @media (min-width: 600px) {
+    .langs-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .lang-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .lang-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .lang-level {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .soft-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .tag {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 7px 16px;
+    font-size: 12.5px;
+    color: #aba59e;
+    transition: all 0.2s;
+  }
+
+  .tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding-top: 32px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Hidden elements for language switching */
+  [data-lang="de"] { display: none; }
+
+  body.de [data-lang="en"] { display: none; }
+  body.de [data-lang="de"] { display: revert; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .wrapper { padding: 72px 20px 60px; }
+    .job-header { grid-template-columns: 1fr; }
+    .job-date { text-align: left; }
+    .edu-block { grid-template-columns: 1fr; }
+    .edu-date { text-align: left; }
+    .header-meta { gap: 16px; }
+    footer { flex-direction: column; }
+  }
+
+  @media print {
+    body::before { display: none; }
+    .lang-toggle { display: none; }
+    body { background: white; color: black; }
+  }
+</style>
+</head>
+<body>
+
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+  <button class="lang-btn" onclick="setLang('de')" id="btn-de">DE</button>
+</div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="eyebrow">
+      <span data-lang="en">Curriculum Vitae</span>
+      <span data-lang="de">Lebenslauf</span>
+    </div>
+    <h1>Maksym <em>Kozlov</em></h1>
+    <div class="subtitle">
+      <span data-lang="en">Boom Operator &amp; Assistant Sound Engineer</span>
+      <span data-lang="de">Boom-Operator &amp; Assistenz-Tonmeister</span>
+    </div>
+    <div class="header-meta">
+      <div class="meta-item"><span class="dot"></span>
+        <span data-lang="en">Based in Germany</span>
+        <span data-lang="de">Standort: Deutschland</span>
+      </div>
+      <div class="meta-item"><span class="dot"></span>
+        <span data-lang="en">Available for travel</span>
+        <span data-lang="de">Reisebereit</span>
+      </div>
+      <div class="meta-item"><span class="dot"></span>
+        <span data-lang="en">Short-notice shoots</span>
+        <span data-lang="de">Kurzfristig verfügbar</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- PROFILE -->
+  <section>
+    <div class="section-label">
+      <span data-lang="en">Profile</span>
+      <span data-lang="de">Profil</span>
+    </div>
+    <p class="profile-text" data-lang="en">
+      Boom Operator and Assistant Sound Engineer with on-set experience in TV series, film and documentary production. Strong background in dialogue capture, wireless workflows and fast-paced shooting environments. Based in Germany and available for travel and short-notice shoots.
+    </p>
+    <p class="profile-text" data-lang="de">
+      Boom-Operator und Assistenz-Tonmeister mit Erfahrung am Set in TV-Serien, Film- und Dokumentarfilmproduktionen. Fundierte Kenntnisse in Dialogaufnahme, drahtlosen Workflows und schnelllebigen Drehumgebungen. Wohnhaft in Deutschland, reise- und kurzfristig einsatzbereit.
+    </p>
+  </section>
+
+  <!-- EDUCATION -->
+  <section>
+    <div class="section-label">
+      <span data-lang="en">Education</span>
+      <span data-lang="de">Ausbildung</span>
+    </div>
+    <div class="edu-block">
+      <div>
+        <div class="edu-name">
+          <span data-lang="en">Kyiv National University of Culture and Arts</span>
+          <span data-lang="de">Nationale Universität für Kultur und Künste Kyiv</span>
+        </div>
+        <div class="edu-degree">
+          <span data-lang="en">Bachelor's Degree — Sound Engineering in Film and Television</span>
+          <span data-lang="de">Bachelor — Tontechnik in Film und Fernsehen</span>
+        </div>
+      </div>
+      <div class="edu-date">09.2021 – 06.2025</div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section>
+    <div class="section-label">
+      <span data-lang="en">Work Experience</span>
+      <span data-lang="de">Berufserfahrung</span>
+    </div>
+
+    <!-- Job 1 -->
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <div class="job-title">KW0RS Records</div>
+          <div class="job-role">
+            <span data-lang="en">Sound Recordist / Post-Production (Student Works)</span>
+            <span data-lang="de">Tonaufnahme / Post-Produktion (Studentenprojekte)</span>
+          </div>
+        </div>
+        <div class="job-date">09.2022 – 06.2025</div>
+      </div>
+      <ul class="job-duties">
+        <li data-lang="en">Recorded voice-over sessions for student film projects</li>
+        <li data-lang="en">Edited and cleaned dialogue in post-production</li>
+        <li data-lang="en">Prepared and delivered audio sessions for further post workflow</li>
+        <li data-lang="de">Aufnahme von Voiceover-Sessions für studentische Filmprojekte</li>
+        <li data-lang="de">Bearbeitung und Bereinigung von Dialogen in der Post-Produktion</li>
+        <li data-lang="de">Vorbereitung und Lieferung von Audiosessions für den Post-Workflow</li>
+      </ul>
+    </div>
+
+    <!-- Job 2 -->
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <div class="job-title" style="font-style:normal;">„Zhinochyi Likar. Nove Zhyttia"</div>
+          <div class="job-role">
+            <span data-lang="en">Assistant Sound Engineer / Boom Operator</span>
+            <span data-lang="de">Assistenz-Tonmeister / Boom-Operator</span>
+          </div>
+        </div>
+        <div class="job-date">06.2023 – 10.2023</div>
+      </div>
+      <ul class="job-duties">
+        <li data-lang="en">Operated boom microphone during dialogue scenes</li>
+        <li data-lang="en">Independently handled a portion of lavalier microphone placement and wiring</li>
+        <li data-lang="en">Maintained consistent dialogue quality under supervision of the production sound mixer</li>
+        <li data-lang="de">Bedienung des Boom-Mikrofons bei Dialogszenen</li>
+        <li data-lang="de">Eigenständige Platzierung und Verkabelung von Lavalier-Mikrofonen</li>
+        <li data-lang="de">Gleichbleibende Dialogqualität unter Aufsicht des Produktionstontechnikers</li>
+      </ul>
+    </div>
+
+    <!-- Job 3 -->
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <div class="job-title" style="font-style:normal;">„Dron"</div>
+          <div class="job-role">
+            <span data-lang="en">Assistant Sound Engineer / Boom Operator</span>
+            <span data-lang="de">Assistenz-Tonmeister / Boom-Operator</span>
+          </div>
+        </div>
+        <div class="job-date">06.2024 – 12.2024</div>
+      </div>
+      <ul class="job-duties">
+        <li data-lang="en">Handled multi-channel location recording on assigned shooting days</li>
+        <li data-lang="en">Coordinated wireless systems and monitored RF stability</li>
+        <li data-lang="en">Maintained reliable boom coverage throughout dialogue scenes</li>
+        <li data-lang="de">Mehrkanalige Tonaufnahme an zugewiesenen Drehtagen</li>
+        <li data-lang="de">Koordination drahtloser Systeme und Überwachung der HF-Stabilität</li>
+        <li data-lang="de">Zuverlässige Boom-Abdeckung während der gesamten Dialogszenen</li>
+      </ul>
+    </div>
+
+    <!-- Job 4 -->
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <div class="job-title" style="font-style:normal;">„Bez Problem"</div>
+          <div class="job-role">
+            <span data-lang="en">Assistant Sound Engineer / Boom Operator</span>
+            <span data-lang="de">Assistenz-Tonmeister / Boom-Operator</span>
+          </div>
+        </div>
+        <div class="job-date">12.2024 – 02.2025</div>
+      </div>
+      <ul class="job-duties">
+        <li data-lang="en">Boom operation in multi-camera setups</li>
+        <li data-lang="en">Lavalier concealment for dialogue scenes</li>
+        <li data-lang="en">Ensured clean dialogue capture in fast-paced production environment</li>
+        <li data-lang="de">Boom-Betrieb in Multi-Kamera-Setups</li>
+        <li data-lang="de">Verdeckte Lavalier-Platzierung für Dialogszenen</li>
+        <li data-lang="de">Saubere Dialogaufnahme in schnelllebigen Produktionsumgebungen</li>
+      </ul>
+    </div>
+
+    <!-- Job 5 -->
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <div class="job-title" style="font-style:normal;">„Fortetsia"</div>
+          <div class="job-role">
+            <span data-lang="en">Assistant Sound Engineer / Boom Operator</span>
+            <span data-lang="de">Assistenz-Tonmeister / Boom-Operator</span>
+          </div>
+        </div>
+        <div class="job-date">02.2025</div>
+      </div>
+      <ul class="job-duties">
+        <li data-lang="en">Provided boom coverage for interior and exterior scenes</li>
+        <li data-lang="en">Supported on-set audio setup and basic troubleshooting</li>
+        <li data-lang="de">Boom-Abdeckung für Innen- und Außenszenen</li>
+        <li data-lang="de">Unterstützung beim Audio-Setup und bei der Fehlersuche am Set</li>
+      </ul>
+    </div>
+
+    <!-- Job 6 -->
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <div class="job-title" style="font-style:normal;">„Kokhannia, yak vono ye"</div>
+          <div class="job-role">
+            <span data-lang="en">Assistant Sound Engineer / Boom Operator</span>
+            <span data-lang="de">Assistenz-Tonmeister / Boom-Operator</span>
+          </div>
+        </div>
+        <div class="job-date">02.2025 – 03.2025</div>
+      </div>
+      <ul class="job-duties">
+        <li data-lang="en">Maintained clean dialogue capture in tight shooting schedules</li>
+        <li data-lang="en">Assisted with wireless mic deployment and RF checks</li>
+        <li data-lang="de">Saubere Dialogaufnahme unter engen Drehplänen</li>
+        <li data-lang="de">Unterstützung bei drahtlosem Mikrofoneinsatz und HF-Prüfungen</li>
+      </ul>
+    </div>
+
+    <!-- Job 7 -->
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <div class="job-title" style="font-style:normal;">„Chy ye u vas khvylynka…" <span style="font-size:13px;color:var(--muted);">(Documentary)</span></div>
+          <div class="job-role">
+            <span data-lang="en">Sound Recordist (Location)</span>
+            <span data-lang="de">Ton-Recordist (Dreh vor Ort)</span>
+          </div>
+        </div>
+        <div class="job-date">04.2025 – 06.2025</div>
+      </div>
+      <ul class="job-duties">
+        <li data-lang="en">Recorded location sound in documentary production environment</li>
+        <li data-lang="en">Prepared and maintained a reliable all-day wireless and recording setup</li>
+        <li data-lang="en">Delivered organized multitrack audio for post-production</li>
+        <li data-lang="de">Aufnahme von O-Ton in Dokumentarfilmproduktion</li>
+        <li data-lang="de">Aufbau und Wartung eines zuverlässigen ganztägigen Drahtlos- und Aufnahme-Setups</li>
+        <li data-lang="de">Lieferung von organisiertem Multispur-Audio für die Post-Produktion</li>
+      </ul>
+    </div>
+
+    <!-- Job 8 -->
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <div class="job-title" style="font-style:normal;">„Molfar"</div>
+          <div class="job-role">
+            <span data-lang="en">Sound Recordist (Location)</span>
+            <span data-lang="de">Ton-Recordist (Dreh vor Ort)</span>
+          </div>
+        </div>
+        <div class="job-date">07.2025 – 08.2025</div>
+      </div>
+      <ul class="job-duties">
+        <li data-lang="en">Managed on-location dialogue recording</li>
+        <li data-lang="en">Monitored multi-microphone setups during takes</li>
+        <li data-lang="en">Collaborated with director and camera department on set</li>
+        <li data-lang="de">Verwaltung der Dialog-Aufnahme vor Ort</li>
+        <li data-lang="de">Überwachung von Multi-Mikrofon-Setups während der Aufnahmen</li>
+        <li data-lang="de">Zusammenarbeit mit Regie und Kameraabteilung am Set</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- TECHNICAL SKILLS -->
+  <section>
+    <div class="section-label">
+      <span data-lang="en">Technical Skills</span>
+      <span data-lang="de">Technische Fähigkeiten</span>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-title">
+          <span data-lang="en">Location Sound</span>
+          <span data-lang="de">Ton am Set</span>
+        </div>
+        <ul class="skill-list">
+          <li data-lang="en">Dialogue-focused boom operation</li>
+          <li data-lang="en">Wireless microphone workflows</li>
+          <li data-lang="en">On-set audio routing</li>
+          <li data-lang="de">Dialogorientierter Boom-Betrieb</li>
+          <li data-lang="de">Drahtlose Mikrofon-Workflows</li>
+          <li data-lang="de">Audio-Routing am Set</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">
+          <span data-lang="en">Microphones</span>
+          <span data-lang="de">Mikrofone</span>
+        </div>
+        <ul class="skill-list">
+          <li data-lang="en">Boom operation</li>
+          <li data-lang="en">Lavalier setup &amp; concealment</li>
+          <li data-lang="en">Plant mic placement</li>
+          <li data-lang="de">Boom-Bedienung</li>
+          <li data-lang="de">Lavalier-Setup &amp; Verstecken</li>
+          <li data-lang="de">Verstecktes Mikrofon platzieren</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Software</div>
+        <ul class="skill-list">
+          <li>Pro Tools</li>
+          <li>Reaper</li>
+          <li>Nuendo</li>
+          <li>DaVinci Resolve (Fairlight)</li>
+          <li>iZotope RX</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPMENT -->
+  <section>
+    <div class="section-label">
+      <span data-lang="en">Equipment Experience</span>
+      <span data-lang="de">Ausrüstungserfahrung</span>
+    </div>
+    <div class="equip-grid">
+      <div class="equip-group">
+        <div class="equip-title">
+          <span data-lang="en">Recorders / Mixers</span>
+          <span data-lang="de">Recorder / Mischer</span>
+        </div>
+        <ul class="equip-list">
+          <li>Sound Devices 633</li>
+          <li>Sound Devices 664</li>
+          <li>Sound Devices 788</li>
+          <li>Sound Devices MixPre-10</li>
+          <li>Zoom F8</li>
+        </ul>
+      </div>
+      <div class="equip-group">
+        <div class="equip-title">
+          <span data-lang="en">Wireless Systems</span>
+          <span data-lang="de">Drahtlossysteme</span>
+        </div>
+        <ul class="equip-list">
+          <li>Lectrosonics SMDB</li>
+          <li>Lectrosonics SMA</li>
+          <li>Sennheiser G4 500</li>
+          <li>Sennheiser G3 2000</li>
+        </ul>
+      </div>
+      <div class="equip-group">
+        <div class="equip-title">
+          <span data-lang="en">Boom / Shotgun</span>
+          <span data-lang="de">Boom / Richtrohr</span>
+        </div>
+        <ul class="equip-list">
+          <li>Sennheiser MKH 416</li>
+          <li>Neumann KMR 82</li>
+        </ul>
+      </div>
+      <div class="equip-group">
+        <div class="equip-title">Lavalier / Plant</div>
+        <ul class="equip-list">
+          <li>Sennheiser MKE 1</li>
+          <li>Sennheiser MKE 2 Gold</li>
+          <li>Sanken COS-11</li>
+          <li>Sanken CUB-01</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANGUAGES -->
+  <section>
+    <div class="section-label">
+      <span data-lang="en">Languages</span>
+      <span data-lang="de">Sprachen</span>
+    </div>
+    <div class="langs-grid">
+      <div class="lang-card">
+        <div class="lang-name" data-lang="en">Ukrainian</div>
+        <div class="lang-name" data-lang="de">Ukrainisch</div>
+        <div class="lang-level" data-lang="en">Fluent</div>
+        <div class="lang-level" data-lang="de">Fließend</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-name" data-lang="en">Russian</div>
+        <div class="lang-name" data-lang="de">Russisch</div>
+        <div class="lang-level" data-lang="en">Fluent</div>
+        <div class="lang-level" data-lang="de">Fließend</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-name">English</div>
+        <div class="lang-level">B2</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-name" data-lang="en">German</div>
+        <div class="lang-name" data-lang="de">Deutsch</div>
+        <div class="lang-level">A1</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOFT SKILLS -->
+  <section>
+    <div class="section-label">
+      <span data-lang="en">Soft Skills</span>
+      <span data-lang="de">Soziale Kompetenzen</span>
+    </div>
+    <div class="soft-skills" data-lang="en">
+      <span class="tag">Clear on-set communication</span>
+      <span class="tag">Fast technical troubleshooting</span>
+      <span class="tag">Attention to dialogue clarity</span>
+      <span class="tag">Reliable in fast production schedules</span>
+      <span class="tag">Team coordination with camera &amp; AD</span>
+      <span class="tag">Calm during live takes</span>
+    </div>
+    <div class="soft-skills" data-lang="de">
+      <span class="tag">Klare Kommunikation am Set</span>
+      <span class="tag">Schnelle technische Fehlerbehebung</span>
+      <span class="tag">Aufmerksamkeit für Dialogklarheit</span>
+      <span class="tag">Zuverlässig bei schnellen Drehplänen</span>
+      <span class="tag">Teamkoordination mit Kamera &amp; Regie</span>
+      <span class="tag">Ruhe bei Live-Aufnahmen</span>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>Maksym Kozlov &copy; 2025</span>
+    <span>
+      <span data-lang="en">Boom Operator &amp; Assistant Sound Engineer — Germany</span>
+      <span data-lang="de">Boom-Operator &amp; Assistenz-Tonmeister — Deutschland</span>
+    </span>
+  </footer>
+
+</div>
+
+<script>
+  function setLang(lang) {
+    document.body.className = lang === 'de' ? 'de' : '';
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-de').classList.toggle('active', lang === 'de');
+    document.documentElement.lang = lang;
+  }
+</script>
+</body>
+</html>
