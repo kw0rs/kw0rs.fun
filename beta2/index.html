@@ -1,701 +1,1097 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Геннадий Черняк — онлайн-консультации для родителей детей с ДЦП</title>
-  <meta name="description" content="Онлайн-консультации и рекомендации для родителей детей с ДЦП: разбор развития ребёнка, упражнения, ошибки, страхи, реальные шаги помощи." />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deutsch Rad — Тренажёр немецкого</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --surface2: #1a1a26;
+  --accent-past: #e85d4a;
+  --accent-present: #4ae8a0;
+  --accent-future: #4a9de8;
+  --accent-gold: #e8c34a;
+  --text: #e8e8f0;
+  --text-dim: #7a7a9a;
+  --ring1: rgba(255,255,255,0.04);
+  --ring2: rgba(255,255,255,0.08);
+}
 
-  <meta property="og:title" content="Геннадий Черняк — онлайн-консультации для родителей детей с ДЦП">
-  <meta property="og:description" content="Разбор развития ребёнка, упражнения, ошибки, страхи родителей и реальные шаги помощи. 27+ лет практики.">
-  <meta property="og:type" content="website">
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <style>
-    :root{
-      --bg:#e8f4fd;
-      --card:#ffffff;
-      --text:#0d2847;
-      --muted:#4a6b8a;
-      --line:#c5e0f7;
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-      --shadow: 0 4px 16px rgba(13,40,71,.1);
-      --shadow-hover: 0 10px 28px rgba(13,40,71,.16);
+/* ── Header ─────────────────────────────────────── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--ring2);
+  backdrop-filter: blur(10px);
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,15,0.85);
+}
+header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.05em;
+  background: linear-gradient(135deg, var(--accent-past), var(--accent-present), var(--accent-future));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.header-legend {
+  display: flex; gap: 20px; font-size: 0.65rem; color: var(--text-dim);
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-      --radius: 16px;
-      --max: 1080px;
+/* ── Main layout ─────────────────────────────────── */
+main {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 0;
+  min-height: calc(100vh - 70px);
+}
 
-      --accent:#1a8cff;
-      --accent-2:#0066cc;
-      --accent-bright:#00a8ff;
-      --accent-light:#e3f3ff;
-      --accent-ultra:#ccebff;
-      --sky:#4db8ff;
-      --sky-light:#d6f0ff;
-      --success:#00c853;
-      --success-light:#ccffe5;
-    }
+/* ── Wheel area ──────────────────────────────────── */
+.wheel-area {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 40px;
+  position: relative;
+}
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    html,body{height:100%}
-    body{
-      margin:0;
-      color:var(--text);
-      background: linear-gradient(180deg, #d6f0ff 0%, var(--bg) 100%);
-      background-attachment: fixed;
-      min-height: 100vh;
-      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
-      letter-spacing:.2px;
-    }
-    a{color:inherit;text-decoration:none}
-    .wrap{max-width:var(--max); margin:0 auto; padding:40px 20px 60px}
+.wheel-container {
+  position: relative;
+  width: 560px; height: 560px;
+}
 
-    @keyframes fadeInUp {
-      from {opacity:0; transform:translateY(20px)}
-      to {opacity:1; transform:translateY(0)}
-    }
-    @keyframes float {
-      0%, 100% {transform:translateY(0)}
-      50% {transform:translateY(-10px)}
-    }
-    @keyframes pulse {
-      0%, 100% {transform:scale(1)}
-      50% {transform:scale(1.05)}
-    }
+canvas#wheelCanvas {
+  position: absolute; top: 0; left: 0;
+  cursor: pointer;
+}
 
-    header{
-      padding:32px;
-      background: var(--card);
-      border:2px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      animation: fadeInUp 0.6s ease;
-    }
+.wheel-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--ring2);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-size: 0.55rem; color: var(--text-dim);
+  text-align: center; line-height: 1.4;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 10;
+}
 
-    .hero{
-      display:grid;
-      grid-template-columns: 160px 1fr;
-      gap:28px;
-      align-items:start;
-    }
+/* Breadcrumb path */
+.breadcrumb {
+  margin-top: 24px;
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  font-size: 0.65rem; color: var(--text-dim);
+  min-height: 24px;
+}
+.breadcrumb span {
+  padding: 4px 10px; border-radius: 20px;
+  background: var(--surface2); cursor: pointer;
+  transition: all 0.2s;
+}
+.breadcrumb span:hover { color: var(--text); }
+.breadcrumb .sep { opacity: 0.4; }
 
-    .avatarbox{
-      display:grid;
-      gap:12px;
-    }
+/* Reset button */
+.btn-reset {
+  margin-top: 16px;
+  padding: 8px 20px;
+  background: transparent;
+  border: 1px solid var(--ring2);
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.btn-reset:hover { border-color: var(--text-dim); color: var(--text); }
 
-    .slogan{
-      font-size:13px;
-      font-weight:700;
-      letter-spacing:.3px;
-      color: #ffffff;
-      background: linear-gradient(135deg, var(--accent-bright) 0%, var(--sky) 100%);
-      border:none;
-      padding:10px 12px;
-      border-radius: 12px;
-      text-align:center;
-      animation: pulse 3s ease-in-out infinite;
-      box-shadow: 0 4px 16px rgba(0,168,255,.25);
-    }
+/* ── Right panel ─────────────────────────────────── */
+.panel {
+  background: var(--surface);
+  border-left: 1px solid var(--ring2);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
 
-    .avatar{
-      width:160px;height:160px;border-radius: 20px;
-      overflow:hidden;
-      border:3px solid var(--accent-bright);
-      background: linear-gradient(135deg, var(--accent-ultra) 0%, var(--sky-light) 100%);
-      display:grid;place-items:center;
-      box-shadow: 0 8px 24px rgba(26,140,255,.2);
-      transition: transform .3s ease;
-    }
-    .avatar:hover{
-      transform: scale(1.02);
-    }
-    .avatar img{
-      width:100%;height:100%;
-      object-fit:cover;
-      display:block;
-    }
+.panel-header {
+  padding: 28px 32px 20px;
+  border-bottom: 1px solid var(--ring2);
+}
+.panel-header .tense-tag {
+  font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 8px;
+}
+.panel-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem; font-weight: 700;
+  color: var(--text);
+}
+.panel-header .subtitle {
+  font-size: 0.7rem; color: var(--text-dim);
+  margin-top: 4px; font-style: italic;
+}
 
-    h1{
-      margin:0;
-      font-size: 32px;
-      line-height: 1.2;
-      font-weight: 800;
-      color: var(--text);
-      background: linear-gradient(135deg, var(--text) 0%, var(--accent-2) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+.panel-body {
+  flex: 1; overflow-y: auto; padding: 24px 32px;
+}
+.panel-body::-webkit-scrollbar { width: 4px; }
+.panel-body::-webkit-scrollbar-thumb { background: var(--ring2); border-radius: 2px; }
 
-    .names{
-      margin-top:8px;
-      color:var(--muted);
-      font-size: 14px;
-    }
+/* Info card */
+.info-card {
+  background: var(--surface2);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  border-left: 3px solid transparent;
+}
+.info-card.past { border-color: var(--accent-past); }
+.info-card.present { border-color: var(--accent-present); }
+.info-card.future { border-color: var(--accent-future); }
+.info-card.neutral { border-color: var(--accent-gold); }
 
-    .lead{
-      margin-top:16px;
-      color:var(--text);
-      font-size: 18px;
-      max-width: 75ch;
-      line-height: 1.6;
-      font-weight: 500;
-    }
+.info-card h3 {
+  font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 8px;
+}
+.info-card .formula {
+  font-size: 0.9rem; color: var(--text);
+  font-weight: 600; margin-bottom: 8px;
+  font-family: 'Playfair Display', serif;
+}
+.info-card p { font-size: 0.72rem; line-height: 1.6; color: var(--text-dim); }
 
-    .quote{
-      margin-top:18px;
-      padding:18px 20px;
-      border-radius: 16px;
-      border:2px solid var(--accent-bright);
-      background: linear-gradient(135deg, var(--accent-ultra) 0%, #e3f3ff 100%);
-      color: var(--text);
-      position: relative;
-      overflow: hidden;
-    }
-    .quote:before{
-      content:'"';
-      position:absolute;
-      top:-10px;
-      left:10px;
-      font-size:80px;
-      color:rgba(77,184,255,.15);
-      font-family: Georgia, serif;
-      font-weight:bold;
-    }
-    .quote b{
-      color: var(--accent-2);
-      position:relative;
-    }
-    .quote .author{
-      display:block;
-      margin-top:10px;
-      font-size: 13px;
-      color: var(--muted);
-      position:relative;
-    }
+/* Examples */
+.example-block { margin: 8px 0; }
+.example-de {
+  font-size: 0.85rem; color: var(--text);
+  font-weight: 600; font-family: 'Playfair Display', serif;
+  line-height: 1.4;
+}
+.example-ru { font-size: 0.7rem; color: var(--text-dim); margin-top: 2px; }
 
-    .bullets{
-      margin-top:18px;
-      display:grid;
-      gap:12px;
-      padding-left:0;
-      list-style:none;
-      max-width: 78ch;
-    }
-    .bullets li{
-      display:flex;
-      gap:14px;
-      align-items:flex-start;
-      padding:16px;
-      border:2px solid var(--line);
-      border-radius: 14px;
-      background: linear-gradient(135deg, #ffffff 0%, var(--accent-light) 100%);
-      transition: all .3s ease;
-    }
-    .bullets li:hover{
-      border-color: var(--accent-bright);
-      transform: translateX(4px);
-      box-shadow: 0 4px 16px rgba(26,140,255,.15);
-    }
-    .check{
-      width:26px;height:26px;
-      border-radius: 999px;
-      display:grid;place-items:center;
-      flex: 0 0 26px;
-      background: var(--success-light);
-      border: 2px solid var(--success);
-      color: var(--success);
-      font-weight: 900;
-      font-size:14px;
-      line-height: 1;
-      margin-top:1px;
-    }
+/* Exercise area */
+.exercise-area {
+  margin-top: 20px;
+  background: var(--surface2);
+  border-radius: 8px;
+  padding: 20px;
+}
+.exercise-area h3 {
+  font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 14px;
+}
+.exercise-question {
+  font-size: 0.85rem; color: var(--text);
+  line-height: 1.6; margin-bottom: 14px;
+  font-family: 'Playfair Display', serif;
+}
+.exercise-question .blank {
+  display: inline-block;
+  border-bottom: 2px solid var(--accent-gold);
+  min-width: 80px; color: var(--accent-gold);
+}
+.answer-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--ring2);
+  color: var(--text);
+  padding: 10px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.answer-input:focus { border-color: var(--accent-gold); }
+.answer-input.correct { border-color: var(--accent-present); color: var(--accent-present); }
+.answer-input.wrong { border-color: var(--accent-past); color: var(--accent-past); }
 
-    .method-grid{
-      margin-top:20px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:16px;
-      max-width: 78ch;
-    }
-    .mini{
-      padding:18px;
-      border-radius: 16px;
-      border:2px solid var(--accent-bright);
-      background: linear-gradient(135deg, var(--sky-light) 0%, #ffffff 100%);
-      transition: all .3s ease;
-    }
-    .mini:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(26,140,255,.2);
-      background: linear-gradient(135deg, var(--accent-bright) 0%, var(--sky) 100%);
-    }
-    .mini:hover h3,
-    .mini:hover p{
-      color: #ffffff;
-    }
-    .mini h3{
-      margin:0 0 10px 0;
-      font-size:15px;
-      letter-spacing:.3px;
-      color: var(--accent-2);
-      font-weight: 800;
-      transition: color .3s ease;
-    }
-    .mini p{
-      margin:0;
-      color: var(--text);
-      font-size: 14px;
-      line-height: 1.6;
-      transition: color .3s ease;
-    }
+.btn-check {
+  margin-top: 10px;
+  padding: 9px 20px;
+  background: var(--accent-gold);
+  color: var(--bg);
+  border: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; border-radius: 4px;
+  transition: opacity 0.2s;
+}
+.btn-check:hover { opacity: 0.85; }
+.btn-next {
+  margin-top: 10px; margin-left: 8px;
+  padding: 9px 20px;
+  background: transparent;
+  border: 1px solid var(--ring2);
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; border-radius: 4px;
+  transition: all 0.2s;
+}
+.btn-next:hover { border-color: var(--text-dim); color: var(--text); }
 
-    .cta-section{
-      margin-top:32px;
-      padding:36px 32px;
-      background: linear-gradient(135deg, var(--accent-bright) 0%, var(--accent) 50%, var(--accent-2) 100%);
-      border-radius: 20px;
-      box-shadow: 0 12px 40px rgba(26,140,255,.35);
-      text-align:center;
-      color:#fff;
-      position: relative;
-      overflow:hidden;
-      animation: fadeInUp 0.8s ease 0.2s both;
-    }
-    .cta-section:before{
-      content:"";
-      position:absolute;
-      inset:-100px -80px auto auto;
-      width:250px;height:250px;
-      border-radius:999px;
-      background: radial-gradient(circle, rgba(255,255,255,.3) 0%, transparent 70%);
-      filter: blur(40px);
-      animation: float 6s ease-in-out infinite;
-    }
-    .cta-section h2{
-      margin:0 0 12px 0;
-      font-size:28px;
-      font-weight:800;
-      position:relative;
-    }
-    .cta-section p{
-      margin:0 0 24px 0;
-      font-size:17px;
-      opacity:.95;
-      position:relative;
-    }
+.feedback {
+  margin-top: 10px; font-size: 0.72rem;
+  min-height: 18px; line-height: 1.5;
+}
+.feedback.correct { color: var(--accent-present); }
+.feedback.wrong { color: var(--accent-past); }
 
-    .cta-actions{
-      display:flex;
-      gap:14px;
-      justify-content:center;
-      flex-wrap:wrap;
-      position:relative;
-    }
+/* Score */
+.score-row {
+  display: flex; gap: 16px; margin-top: 16px; padding-top: 16px;
+  border-top: 1px solid var(--ring2);
+}
+.score-item { text-align: center; }
+.score-item .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; color: var(--text);
+}
+.score-item .lbl {
+  font-size: 0.55rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-dim);
+}
 
-    .btn{
-      display:inline-block;
-      padding:16px 32px;
-      border-radius:999px;
-      font-size:16px;
-      font-weight:700;
-      border:none;
-      cursor:pointer;
-      transition: all .3s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,.15);
-      text-decoration: none;
-    }
-    .btn-primary{
-      background:#fff;
-      color: var(--accent-2);
-    }
-    .btn-primary:hover{
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 28px rgba(0,0,0,.25);
-    }
-    .btn-ghost{
-      background: rgba(255,255,255,.15);
-      color:#fff;
-      border:2px solid rgba(255,255,255,.35);
-      box-shadow:none;
-    }
-    .btn-ghost:hover{
-      background: rgba(255,255,255,.25);
-      transform: translateY(-2px);
-      border-color: rgba(255,255,255,.5);
-    }
+/* Placeholder state */
+.placeholder {
+  text-align: center; padding: 60px 20px;
+  color: var(--text-dim);
+}
+.placeholder .big {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem; opacity: 0.15; margin-bottom: 12px;
+}
+.placeholder p { font-size: 0.72rem; line-height: 1.7; }
 
-    .grid{
-      margin-top:32px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:24px;
-    }
-    .card{
-      padding:28px;
-      border-radius: 20px;
-      background: var(--card);
-      border: 2px solid var(--line);
-      box-shadow: var(--shadow);
-      transition: all .3s ease;
-    }
-    .card:hover{
-      box-shadow: var(--shadow-hover);
-      transform: translateY(-4px);
-      border-color: var(--accent-bright);
-    }
-    h2{
-      margin:0 0 20px 0;
-      font-size: 22px;
-      letter-spacing:.3px;
-      font-weight:800;
-      color:var(--text);
-    }
-    ul{
-      margin:0;
-      padding-left: 0;
-      list-style:none;
-      display:grid;
-      gap:14px;
-      color: var(--text);
-    }
-    ul li{
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-    }
-    .dot{
-      width:10px;height:10px;border-radius:999px;
-      background: linear-gradient(135deg, var(--accent-bright) 0%, var(--sky) 100%);
-      flex: 0 0 10px;
-      margin-top:8px;
-      box-shadow: 0 0 0 4px rgba(77,184,255,.25);
-    }
-    .muted{
-      color: var(--muted);
-      font-size: 14px;
-      line-height:1.6;
-    }
-    .small{
-      font-size: 13px;
-      color: var(--muted);
-      line-height:1.6;
-    }
-
-    details{
-      margin-top:32px;
-      border:2px solid var(--line);
-      background: var(--card);
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      transition: all .3s ease;
-    }
-    details:hover{
-      box-shadow: var(--shadow-hover);
-    }
-    summary{
-      cursor:pointer;
-      padding:22px 28px;
-      font-weight:800;
-      font-size: 18px;
-      color: var(--accent-2);
-      list-style:none;
-      outline:none;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      transition: background .2s ease;
-    }
-    summary:hover{
-      background: var(--accent-light);
-    }
-    summary::-webkit-details-marker{display:none}
-    summary:after{
-      content:"▼";
-      font-size:14px;
-      color: var(--muted);
-      transition: transform .3s ease;
-    }
-    details[open] summary:after{ transform: rotate(180deg); }
-
-    .offer{
-      padding:0 28px 28px 28px;
-      color: var(--text);
-      font-size: 14px;
-      line-height: 1.7;
-      white-space: pre-line;
-    }
-
-    footer{
-      margin-top:28px;
-      padding:24px 28px;
-      border-radius: 20px;
-      border:2px solid var(--accent-bright);
-      background: linear-gradient(135deg, var(--sky-light) 0%, #ffffff 100%);
-      color: var(--muted);
-      font-size: 14px;
-      line-height:1.7;
-      text-align: center;
-    }
-
-    .stats{
-      margin-top:28px;
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:16px;
-    }
-    .stat{
-      padding:24px;
-      border-radius: 16px;
-      background: var(--card);
-      border:2px solid var(--line);
-      text-align:center;
-      transition: all .3s ease;
-    }
-    .stat:hover{
-      transform: translateY(-4px);
-      box-shadow: 0 8px 28px rgba(26,140,255,.18);
-      border-color: var(--accent-bright);
-    }
-    .stat-number{
-      font-size: 36px;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--accent-bright) 0%, var(--accent-2) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-    .stat-label{
-      font-size: 14px;
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    @media (max-width: 860px){
-      .hero{grid-template-columns: 1fr; }
-      .avatarbox{justify-items:center}
-      .avatar{width:140px;height:140px}
-      .method-grid{grid-template-columns: 1fr}
-      .grid{grid-template-columns: 1fr}
-      .stats{grid-template-columns: 1fr}
-      h1{font-size:26px}
-      .cta-section h2{font-size:24px}
-      .cta-section{padding:28px 24px}
-    }
-  </style>
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-in { animation: fadeIn 0.35s ease forwards; }
+</style>
 </head>
-
 <body>
-  <main class="wrap">
-    <header>
-      <div class="hero">
-        <div class="avatarbox">
-          <div class="slogan">Рядом с ребёнком — шаг за шагом</div>
-          <div class="avatar">
-            <img src="https://kw0rs.uno/AI/chernyak.jpg" alt="Геннадий Черняк" loading="lazy" />
-          </div>
-        </div>
 
-        <div>
-          <h1>Геннадий Черняк</h1>
-          <div class="names">
-            Черняк Геннадий Владимирович · Cherniak Hennadii
-          </div>
+<header>
+  <h1>Deutsch Rad</h1>
+  <div class="header-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--accent-past)"></div>Vergangenheit</div>
+    <div class="legend-dot" style="background:var(--accent-present)"></div>Gegenwart</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--accent-future)"></div>Zukunft</div>
+  </div>
+</header>
 
-          <p class="lead">
-            Онлайн-консультации и рекомендации для родителей детей с ДЦП.
-          </p>
-
-          <div class="quote">
-            <b>«Постоянство, систематичность, последовательность</b> — три ключевых принципа при тренировке и достижении результата.»
-            <span class="author">— Геннадий Черняк</span>
-          </div>
-
-          <ul class="bullets" aria-label="О чём консультация">
-            <li><span class="check">✓</span><span>Разбираем развитие ребёнка, упражнения, ошибки, страхи родителей и реальные шаги помощи.</span></li>
-            <li><span class="check">✓</span><span>Более чем с 27-летним практическим опытом работы с детьми.</span></li>
-            <li><span class="check">✓</span><span>За годы практики Геннадий Черняк работал с детьми разного возраста и с различными формами ДЦП, помогая родителям выстраивать реалистичную и безопасную реабилитацию.</span></li>
-          </ul>
-
-          <div class="method-grid" aria-label="Подход и методики">
-            <div class="mini">
-              <h3>Авторы / школа</h3>
-              <p>Анатолий Смолянинов, Мизина, Семёнова К. А.</p>
-            </div>
-            <div class="mini">
-              <h3>Методики</h3>
-              <p>Войта-терапия, йога, Боба-терапия, рефлексотерапия, кинезиотерапия, спортивные элементы + педагогический и тренерский подход.</p>
-            </div>
-          </div>
-        </div>
+<main>
+  <div class="wheel-area">
+    <div class="wheel-container">
+      <canvas id="wheelCanvas" width="560" height="560"></canvas>
+      <div class="wheel-center" id="centerLabel">
+        <div>Deutsch</div>
+        <div>Rad</div>
       </div>
-    </header>
+    </div>
+    <div class="breadcrumb" id="breadcrumb"></div>
+    <button class="btn-reset" id="btnReset">↺ Сбросить</button>
+  </div>
 
-    <section class="stats">
-      <div class="stat">
-        <div class="stat-number">27+</div>
-        <div class="stat-label">лет практики</div>
+  <div class="panel">
+    <div class="panel-header" id="panelHeader">
+      <div class="tense-tag" id="tenseTag">Выберите сегмент</div>
+      <h2 id="panelTitle">Немецкий язык</h2>
+      <div class="subtitle" id="panelSubtitle">Нажмите на любой сегмент колеса</div>
+    </div>
+    <div class="panel-body" id="panelBody">
+      <div class="placeholder">
+        <div class="big">⊙</div>
+        <p>Колесо времён и форм.<br>Кликните на сегмент — откроется уровень с правилами, примерами и упражнениями.<br><br>
+        Правая половина — будущее.<br>Левая — прошедшее.<br>Верх / низ — настоящее.</p>
       </div>
-      <div class="stat">
-        <div class="stat-number">100%</div>
-        <div class="stat-label">онлайн формат</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">1:1</div>
-        <div class="stat-label">индивидуально</div>
-      </div>
-    </section>
+    </div>
+  </div>
+</main>
 
-    <section class="cta-section" id="pay">
-      <h2>Запишитесь на онлайн-консультацию</h2>
-      <p>Получите индивидуальный план реабилитации и ответы на ваши вопросы</p>
+<script>
+// ══════════════════════════════════════════════════
+//  DATA  ─ все уровни фракталного колеса
+// ══════════════════════════════════════════════════
+const WHEEL_DATA = {
+  // ROOT — 8 главных сегментов
+  root: [
+    { id: 'prasens',     label: 'Präsens',      sub: 'Настоящее',    color: '#4ae8a0', zone: 'present',  angle: -90 },
+    { id: 'futur1',      label: 'Futur I',       sub: 'Будущее I',    color: '#4a9de8', zone: 'future',   angle: -45 },
+    { id: 'futur2',      label: 'Futur II',      sub: 'Будущее II',   color: '#2d6fa8', zone: 'future',   angle:   0 },
+    { id: 'perfekt',     label: 'Perfekt',        sub: 'Прошедшее',   color: '#e85d4a', zone: 'past',     angle:  45 },
+    { id: 'prateritum',  label: 'Präteritum',    sub: 'Нарратив',     color: '#b83a2a', zone: 'past',     angle:  90 },
+    { id: 'plusquamp',   label: 'Plusquamperf.', sub: 'Давнопр.',     color: '#882010', zone: 'past',     angle: 135 },
+    { id: 'konjunktiv',  label: 'Konjunktiv',    sub: 'Сослагат.',    color: '#a04ae8', zone: 'present',  angle: 180 },
+    { id: 'imperativ',   label: 'Imperativ',     sub: 'Повелит.',     color: '#e8a04a', zone: 'present',  angle: 225 },
+  ],
 
-      <div class="cta-actions">
-        <a href="https://kw0rs.uno/beta2/pay" class="btn btn-primary" role="button">Записаться и оплатить</a>
-        <a href="#offer" class="btn btn-ghost" role="button">Публичная оферта</a>
-      </div>
-    </section>
+  // LEVEL 2 — дочерние сегменты для каждого времени
+  children: {
+    prasens: [
+      { id: 'prasens_verb',  label: 'Verb',      sub: 'Глагол' },
+      { id: 'prasens_subj',  label: 'Subjekt',   sub: 'Подлежащее' },
+      { id: 'prasens_obj',   label: 'Objekt',    sub: 'Дополнение' },
+      { id: 'prasens_adj',   label: 'Adjektiv',  sub: 'Прилагательное' },
+      { id: 'prasens_neg',   label: 'Negation',  sub: 'Отрицание' },
+      { id: 'prasens_frage', label: 'Frage',     sub: 'Вопрос' },
+    ],
+    futur1: [
+      { id: 'futur1_werden', label: 'werden',    sub: 'Вспомогательный' },
+      { id: 'futur1_inf',    label: 'Infinitiv', sub: 'Инфинитив' },
+      { id: 'futur1_modal',  label: 'Modal',     sub: 'Модальные' },
+      { id: 'futur1_frage',  label: 'Frage',     sub: 'Вопрос' },
+    ],
+    futur2: [
+      { id: 'futur2_werden', label: 'werden',    sub: 'Вспомогат.' },
+      { id: 'futur2_part',   label: 'Partizip II', sub: 'Причастие II' },
+      { id: 'futur2_haben',  label: 'haben/sein', sub: 'Aux.' },
+    ],
+    perfekt: [
+      { id: 'perfekt_haben',  label: 'haben',    sub: 'haben-глаголы' },
+      { id: 'perfekt_sein',   label: 'sein',     sub: 'sein-глаголы' },
+      { id: 'perfekt_part2',  label: 'Partizip II', sub: 'Образование' },
+      { id: 'perfekt_unreg',  label: 'Unregel.',  sub: 'Неправильные' },
+      { id: 'perfekt_frage',  label: 'Frage',    sub: 'Вопрос' },
+    ],
+    prateritum: [
+      { id: 'prat_schwach',  label: 'Schwach',   sub: 'Слабые глаголы' },
+      { id: 'prat_stark',    label: 'Stark',     sub: 'Сильные глаголы' },
+      { id: 'prat_modal',    label: 'Modalverb', sub: 'Модальные' },
+      { id: 'prat_sein_hab', label: 'sein/haben', sub: 'Быть/иметь' },
+    ],
+    plusquamp: [
+      { id: 'plq_haben',  label: 'hatte/war',  sub: 'Вспомогат. прош.' },
+      { id: 'plq_part2',  label: 'Partizip II', sub: 'Причастие' },
+    ],
+    konjunktiv: [
+      { id: 'konj2_form',   label: 'Konj. II',   sub: 'Форма' },
+      { id: 'konj2_wuerden',label: 'würden',     sub: 'Вежливость' },
+      { id: 'konj1_form',   label: 'Konj. I',    sub: 'Косвенная речь' },
+    ],
+    imperativ: [
+      { id: 'imp_du',    label: 'du-Form',  sub: 'Ты' },
+      { id: 'imp_ihr',   label: 'ihr-Form', sub: 'Вы (мн.)' },
+      { id: 'imp_sie',   label: 'Sie-Form', sub: 'Вы (вежл.)' },
+    ],
+  }
+};
 
-    <section class="grid">
-      <article class="card">
-        <h2>Что вы получите в результате консультации</h2>
-        <ul>
-          <li><span class="check">✓</span><span>Понимание текущего состояния ребёнка</span></li>
-          <li><span class="check">✓</span><span>Индивидуальные рекомендации, а не общие советы</span></li>
-          <li><span class="check">✓</span><span>Чёткое понимание, что можно делать дома, а что нельзя</span></li>
-          <li><span class="check">✓</span><span>Ответы на ваши конкретные вопросы</span></li>
-          <li><span class="check">✓</span><span>Рекомендации по дальнейшей реабилитации</span></li>
-        </ul>
-        <p class="muted" style="margin:18px 0 0 0;">
-          Формат — онлайн, фокус на ясности и безопасности действий.
-        </p>
-      </article>
+// ══════════════════════════════════════════════════
+//  CONTENT  ─ правила, примеры, упражнения
+// ══════════════════════════════════════════════════
+const CONTENT = {
+  prasens: {
+    title: 'Präsens', tense: 'Настоящее время', color: '#4ae8a0', zone: 'present',
+    formula: 'Subjekt + Verb(konjugiert) + ...',
+    rule: 'Präsens используется для действий, происходящих сейчас или регулярно. Глагол спрягается по лицу и числу.',
+    examples: [
+      { de: 'Ich lerne Deutsch.', ru: 'Я учу немецкий.' },
+      { de: 'Er arbeitet jeden Tag.', ru: 'Он работает каждый день.' },
+      { de: 'Wir gehen ins Kino.', ru: 'Мы идём в кино.' },
+    ],
+    exercises: [
+      { q: 'Ich ___ (lernen) Deutsch.', a: 'lerne', hint: 'ich → -e' },
+      { q: 'Er ___ (arbeiten) viel.', a: 'arbeitet', hint: 'er → -et (при основе на -t)' },
+      { q: 'Wir ___ (gehen) ins Kino.', a: 'gehen', hint: 'wir → основа' },
+      { q: 'Du ___ (sprechen) Russisch.', a: 'sprichst', hint: 'stark: sprechen → sprichst' },
+      { q: 'Sie ___ (haben) Zeit.', a: 'hat', hint: 'unregelmäßig: hat' },
+    ]
+  },
+  prasens_verb: {
+    title: 'Verb — Konjugation', tense: 'Спряжение глагола', color: '#4ae8a0', zone: 'present',
+    formula: 'Stamm + Endung (-e, -st, -t, -en, -t, -en)',
+    rule: 'Регулярное спряжение: ich -e / du -st / er -t / wir -en / ihr -t / sie -en. Сильные глаголы меняют корневую гласную во 2-м и 3-м лице.',
+    examples: [
+      { de: 'ich lerne — du lernst — er lernt', ru: 'я учу — ты учишь — он учит' },
+      { de: 'ich fahre — du fährst — er fährt', ru: 'я еду — ты едешь — он едет' },
+      { de: 'ich lese — du liest — er liest', ru: 'я читаю — ты читаешь — он читает' },
+    ],
+    exercises: [
+      { q: 'du ___ (fahren)', a: 'fährst', hint: 'a→ä во 2-м лице' },
+      { q: 'er ___ (lesen)', a: 'liest', hint: 'e→ie в 3-м лице' },
+      { q: 'ihr ___ (spielen)', a: 'spielt', hint: 'ihr → -t' },
+    ]
+  },
+  prasens_subj: {
+    title: 'Subjekt — Nominativ', tense: 'Подлежащее', color: '#4ae8a0', zone: 'present',
+    formula: 'wer? / was? → Nominativ',
+    rule: 'Подлежащее всегда стоит в Nominativ. Артикль: der/die/das → Nom. не изменяется.',
+    examples: [
+      { de: 'Der Mann arbeitet.', ru: 'Мужчина работает. (m)' },
+      { de: 'Die Frau schläft.', ru: 'Женщина спит. (f)' },
+      { de: 'Das Kind spielt.', ru: 'Ребёнок играет. (n)' },
+    ],
+    exercises: [
+      { q: '___ Mann (der/die/das) kommt.', a: 'Der', hint: 'Mann — мужской род' },
+      { q: '___ Frau (der/die/das) lernt.', a: 'Die', hint: 'Frau — женский род' },
+      { q: '___ Kind (der/die/das) lacht.', a: 'Das', hint: 'Kind — средний род' },
+    ]
+  },
+  prasens_obj: {
+    title: 'Objekt — Akkusativ', tense: 'Прямое дополнение', color: '#4ae8a0', zone: 'present',
+    formula: 'wen? / was? → Akkusativ',
+    rule: 'Прямое дополнение стоит в Akkusativ. der → den (только m!), die/das не изменяются.',
+    examples: [
+      { de: 'Ich sehe den Mann.', ru: 'Я вижу мужчину. (den!)' },
+      { de: 'Er kauft die Zeitung.', ru: 'Он покупает газету.' },
+      { de: 'Wir essen das Brot.', ru: 'Мы едим хлеб.' },
+    ],
+    exercises: [
+      { q: 'Ich sehe ___ Mann (den/die/das).', a: 'den', hint: 'der → den в Akkusativ' },
+      { q: 'Er kauft ___ Buch.', a: 'das', hint: 'Buch — средний род, Akk. = das' },
+    ]
+  },
+  prasens_adj: {
+    title: 'Adjektiv — Deklination', tense: 'Склонение прилагательного', color: '#4ae8a0', zone: 'present',
+    formula: 'Art. + Adj.(-e/-en/-em/-er) + Subst.',
+    rule: 'После определённого артикля: Nom. -e (Sg.) / -en (Pl.), все остальные падежи -en. После неопределённого артикля — смешанное склонение.',
+    examples: [
+      { de: 'der alte Mann (Nom.)', ru: 'старый мужчина' },
+      { de: 'eine alte Frau (Nom.)', ru: 'старая женщина' },
+      { de: 'ein altes Kind (Nom.)', ru: 'старый ребёнок' },
+    ],
+    exercises: [
+      { q: 'der alt___ Mann (Nom.)', a: 'e', hint: 'посл. опред. артикля Nom.m → -e' },
+      { q: 'ein alt___ Kind (Nom.)', a: 'es', hint: 'посл. неопред. Nom.n → -es' },
+    ]
+  },
+  prasens_neg: {
+    title: 'Negation', tense: 'Отрицание', color: '#4ae8a0', zone: 'present',
+    formula: 'nicht (глаголы) / kein- (существительные)',
+    rule: '"nicht" отрицает глагол/прилагательное/наречие — стоит перед отрицаемым элементом. "kein" = nicht ein — отрицает существительные.',
+    examples: [
+      { de: 'Ich arbeite nicht.', ru: 'Я не работаю.' },
+      { de: 'Er ist nicht müde.', ru: 'Он не устал.' },
+      { de: 'Ich habe keine Zeit.', ru: 'У меня нет времени.' },
+    ],
+    exercises: [
+      { q: 'Ich arbeite ___.', a: 'nicht', hint: 'отрицание глагола → nicht' },
+      { q: 'Ich habe ___ Zeit.', a: 'keine', hint: 'Zeit (f) → keine' },
+    ]
+  },
+  prasens_frage: {
+    title: 'Frage im Präsens', tense: 'Вопрос в настоящем', color: '#4ae8a0', zone: 'present',
+    formula: 'Verb + Subjekt + ...? / W-Wort + Verb + Subjekt?',
+    rule: 'Общий вопрос: глагол на 1-е место. Специальный вопрос: W-Wort + глагол + субъект.',
+    examples: [
+      { de: 'Lernst du Deutsch?', ru: 'Ты учишь немецкий?' },
+      { de: 'Was machst du?', ru: 'Что ты делаешь?' },
+      { de: 'Wo wohnst du?', ru: 'Где ты живёшь?' },
+    ],
+    exercises: [
+      { q: '___ du Deutsch? (lernst/lerne/lernt)', a: 'Lernst', hint: 'глагол на 1-е место, du → -st' },
+      { q: 'Was ___ du? (macht/machst/machen)', a: 'machst', hint: 'du → -st' },
+    ]
+  },
+  futur1: {
+    title: 'Futur I', tense: 'Будущее время I', color: '#4a9de8', zone: 'future',
+    formula: 'werden (konj.) + Infinitiv',
+    rule: 'Futur I образуется с помощью глагола "werden" + инфинитив в конце предложения. Также используется с наречиями типа morgen, bald, nächste Woche.',
+    examples: [
+      { de: 'Ich werde morgen lernen.', ru: 'Я буду учиться завтра.' },
+      { de: 'Er wird nach Berlin fahren.', ru: 'Он поедет в Берлин.' },
+      { de: 'Wir werden das schaffen!', ru: 'Мы справимся!' },
+    ],
+    exercises: [
+      { q: 'Ich ___ morgen lernen. (werde/wird/werden)', a: 'werde', hint: 'ich → werde' },
+      { q: 'Er ___ nach Berlin fahren.', a: 'wird', hint: 'er → wird' },
+      { q: 'Wir ___ das schaffen.', a: 'werden', hint: 'wir → werden' },
+    ]
+  },
+  futur1_werden: {
+    title: 'werden — Konjugation', tense: 'Futur I → werden', color: '#4a9de8', zone: 'future',
+    formula: 'ich werde / du wirst / er wird / wir werden / ihr werdet / sie werden',
+    rule: '"werden" — вспомогательный глагол для Futur I. Сильно неправильный: du wirst, er wird.',
+    examples: [
+      { de: 'ich werde — du wirst — er wird', ru: 'спряжение werden' },
+      { de: 'wir werden — ihr werdet — sie werden', ru: 'мн. число' },
+    ],
+    exercises: [
+      { q: 'du ___ (werden)', a: 'wirst', hint: 'неправильная форма' },
+      { q: 'sie (они) ___ (werden)', a: 'werden', hint: 'мн.ч. = инфинитив' },
+    ]
+  },
+  futur2: {
+    title: 'Futur II', tense: 'Будущее время II', color: '#2d6fa8', zone: 'future',
+    formula: 'werden + Partizip II + haben/sein',
+    rule: 'Futur II выражает действие, которое завершится к определённому моменту в будущем. Редкое время, чаще в письменном языке.',
+    examples: [
+      { de: 'Ich werde das Buch gelesen haben.', ru: 'Я буду (уже) прочитал книгу.' },
+      { de: 'Er wird angekommen sein.', ru: 'Он, должно быть, уже прибыл.' },
+    ],
+    exercises: [
+      { q: 'Ich werde das Buch gelesen ___.', a: 'haben', hint: 'lesen → haben-глагол' },
+      { q: 'Er wird angekommen ___.', a: 'sein', hint: 'ankommen → sein-глагол' },
+    ]
+  },
+  perfekt: {
+    title: 'Perfekt', tense: 'Прошедшее время (разговорное)', color: '#e85d4a', zone: 'past',
+    formula: 'haben/sein (konj.) + Partizip II',
+    rule: 'Perfekt — основное прошедшее время в разговорной речи. Глагол "haben" или "sein" + Partizip II в конце.',
+    examples: [
+      { de: 'Ich habe Deutsch gelernt.', ru: 'Я учил немецкий. (learn)' },
+      { de: 'Er ist nach Hause gegangen.', ru: 'Он пошёл домой. (go)' },
+      { de: 'Wir haben gegessen.', ru: 'Мы поели.' },
+    ],
+    exercises: [
+      { q: 'Ich ___ Deutsch gelernt. (habe/bin)', a: 'habe', hint: 'lernen → haben' },
+      { q: 'Er ___ nach Hause gegangen. (hat/ist)', a: 'ist', hint: 'gehen → sein' },
+      { q: 'Wir ___ gegessen. (haben/sind)', a: 'haben', hint: 'essen → haben' },
+    ]
+  },
+  perfekt_haben: {
+    title: 'haben-Verben', tense: 'Perfekt с haben', color: '#e85d4a', zone: 'past',
+    formula: 'haben + Partizip II',
+    rule: 'С "haben": переходные глаголы (с Akkusativ), большинство глаголов. Примеры: lernen, kaufen, essen, sehen, machen.',
+    examples: [
+      { de: 'Ich habe ein Buch gekauft.', ru: 'Я купил книгу.' },
+      { de: 'Sie hat einen Film gesehen.', ru: 'Она посмотрела фильм.' },
+      { de: 'Wir haben viel gearbeitet.', ru: 'Мы много работали.' },
+    ],
+    exercises: [
+      { q: 'Ich habe ein Buch ___ (kaufen → Part.II).', a: 'gekauft', hint: 'schwach: ge-+Stamm+-t' },
+      { q: 'Sie hat einen Film ___ (sehen → Part.II).', a: 'gesehen', hint: 'stark: ge-+Stamm(-e→e)-en' },
+    ]
+  },
+  perfekt_sein: {
+    title: 'sein-Verben', tense: 'Perfekt с sein', color: '#e85d4a', zone: 'past',
+    formula: 'sein + Partizip II',
+    rule: 'С "sein": глаголы движения (gehen, fahren, laufen, fliegen), смены состояния (aufwachen, sterben, werden), а также bleiben и sein.',
+    examples: [
+      { de: 'Er ist nach Berlin gefahren.', ru: 'Он поехал в Берлин.' },
+      { de: 'Ich bin aufgewacht.', ru: 'Я проснулся.' },
+      { de: 'Sie ist geblieben.', ru: 'Она осталась.' },
+    ],
+    exercises: [
+      { q: 'Er ist nach Berlin ___ (fahren → Part.II).', a: 'gefahren', hint: 'stark: ge-+fuhr-+en' },
+      { q: 'Ich bin ___ (aufwachen → Part.II).', a: 'aufgewacht', hint: 'trennbar: auf-ge-wach-t' },
+    ]
+  },
+  perfekt_part2: {
+    title: 'Partizip II — Bildung', tense: 'Образование Partizip II', color: '#e85d4a', zone: 'past',
+    formula: 'schwach: ge-+Stamm+-t | stark: ge-+Ablaut+-en',
+    rule: 'Слабые (правильные): ge- + основа + -t (lernen→gelernt). Сильные: ge- + изменённая основа + -en (schreiben→geschrieben). Неотделяемые приставки (be-, ver-, er-): без ge- (besucht). Отделяемые: ge- вставляется (aufgemacht).',
+    examples: [
+      { de: 'lernen → gelernt', ru: 'учить → выучил (слабый)' },
+      { de: 'schreiben → geschrieben', ru: 'писать → написал (сильный)' },
+      { de: 'besuchen → besucht', ru: 'посещать → посетил (без ge-)' },
+    ],
+    exercises: [
+      { q: 'machen → ge___t', a: 'gemacht', hint: 'ge-+mach-+t' },
+      { q: 'fahren → ge___en', a: 'gefahren', hint: 'ge-+fahr-+en (Ablaut: a→a)' },
+      { q: 'aufmachen → auf___t', a: 'aufgemacht', hint: 'auf+ge+mach+t' },
+    ]
+  },
+  prateritum: {
+    title: 'Präteritum', tense: 'Нарративное прошедшее', color: '#b83a2a', zone: 'past',
+    formula: 'Stamm + Präteritum-Endung',
+    rule: 'Präteritum используется в письменной речи, рассказах, газетах. В разговоре — только sein/haben/Modalverben.',
+    examples: [
+      { de: 'Er arbeitete jeden Tag.', ru: 'Он работал каждый день.' },
+      { de: 'Ich war müde.', ru: 'Я был усталым.' },
+      { de: 'Wir hatten keine Zeit.', ru: 'У нас не было времени.' },
+    ],
+    exercises: [
+      { q: 'Ich ___ müde. (sein → Prät.)', a: 'war', hint: 'sein → war' },
+      { q: 'Wir ___ keine Zeit. (haben → Prät.)', a: 'hatten', hint: 'haben → hatten' },
+      { q: 'Er ___ viel. (arbeiten → Prät.)', a: 'arbeitete', hint: 'schwach: Stamm+-te' },
+    ]
+  },
+  prat_stark: {
+    title: 'Starke Verben', tense: 'Сильные глаголы в Präteritum', color: '#b83a2a', zone: 'past',
+    formula: 'Ablaut-Stamm + (-/st/–/en/t/en)',
+    rule: 'Сильные глаголы меняют корневую гласную (Ablaut). Ich/er без окончания!',
+    examples: [
+      { de: 'fahren: ich fuhr, du fuhrst, er fuhr', ru: 'ехал' },
+      { de: 'schreiben: ich schrieb, du schriebst', ru: 'писал' },
+      { de: 'gehen: ich ging, du gingst', ru: 'шёл' },
+    ],
+    exercises: [
+      { q: 'Ich ___ (fahren → Prät.)', a: 'fuhr', hint: 'a→u: fuhr' },
+      { q: 'Er ___ (gehen → Prät.)', a: 'ging', hint: 'e→i: ging' },
+    ]
+  },
+  prat_modal: {
+    title: 'Modalverben im Präteritum', tense: 'Модальные в прошедшем', color: '#b83a2a', zone: 'past',
+    formula: 'Modal-Stamm + -te-Endung',
+    rule: 'Модальные глаголы в Präteritum: теряют умлаут и получают -te- (können→konnte, müssen→musste, dürfen→durfte, wollen→wollte, sollen→sollte, mögen→mochte).',
+    examples: [
+      { de: 'Ich konnte nicht schlafen.', ru: 'Я не мог спать.' },
+      { de: 'Er musste arbeiten.', ru: 'Ему нужно было работать.' },
+      { de: 'Wir wollten helfen.', ru: 'Мы хотели помочь.' },
+    ],
+    exercises: [
+      { q: 'Ich ___ nicht schlafen. (können → Prät.)', a: 'konnte', hint: 'können → konnte' },
+      { q: 'Er ___ arbeiten. (müssen → Prät.)', a: 'musste', hint: 'müssen → musste' },
+    ]
+  },
+  plusquamp: {
+    title: 'Plusquamperfekt', tense: 'Давнопрошедшее', color: '#882010', zone: 'past',
+    formula: 'hatte/war + Partizip II',
+    rule: 'Plusquamperfekt — действие, предшествующее другому прошедшему. Образуется как Perfekt, но вспомогат. глагол в Präteritum (hatte/war).',
+    examples: [
+      { de: 'Ich hatte gegessen, bevor er kam.', ru: 'Я поел до того, как он пришёл.' },
+      { de: 'Sie war schon weg, als ich ankam.', ru: 'Она уже ушла, когда я пришёл.' },
+    ],
+    exercises: [
+      { q: 'Ich ___ gegessen, bevor er kam. (hatte/war)', a: 'hatte', hint: 'essen → haben → hatte' },
+      { q: 'Sie ___ schon weggegangen. (hatte/war)', a: 'war', hint: 'weggehen → sein → war' },
+    ]
+  },
+  konjunktiv: {
+    title: 'Konjunktiv', tense: 'Сослагательное наклонение', color: '#a04ae8', zone: 'present',
+    formula: 'Konj. II: würde+Inf. / Konj. I: Verb+Endung',
+    rule: 'Konjunktiv II — для вежливых просьб, условий, нереальных ситуаций. Konjunktiv I — для косвенной речи.',
+    examples: [
+      { de: 'Ich würde gerne helfen.', ru: 'Я бы с удовольствием помог.' },
+      { de: 'Wenn ich Zeit hätte, würde ich kommen.', ru: 'Если бы у меня было время, я бы пришёл.' },
+      { de: 'Er sagt, er habe keine Zeit. (Konj. I)', ru: 'Он говорит, что у него нет времени.' },
+    ],
+    exercises: [
+      { q: 'Ich ___ gerne helfen. (Konj. II = würde+Inf)', a: 'würde', hint: 'würde + Infinitiv' },
+      { q: 'Wenn ich Zeit ___, würde ich kommen. (haben → Konj.II)', a: 'hätte', hint: 'haben → hätte' },
+    ]
+  },
+  imperativ: {
+    title: 'Imperativ', tense: 'Повелительное наклонение', color: '#e8a04a', zone: 'present',
+    formula: 'du: Stamm(+e) | ihr: Stamm+t | Sie: Inf.+Sie',
+    rule: 'du-форма: основа (часто без окончания), сильные глаголы сохраняют Ablaut. ihr-форма: как Präsens. Sie-форма: инфинитив + Sie.',
+    examples: [
+      { de: 'Lern! / Lerne! (du)', ru: 'Учи! (ты)' },
+      { de: 'Lernt! (ihr)', ru: 'Учите! (вы мн.)' },
+      { de: 'Lernen Sie! (Sie)', ru: 'Учите! (вежл.)' },
+    ],
+    exercises: [
+      { q: '___ ! (du, lernen → Imperativ)', a: 'Lern', hint: 'du: основа (lern-)' },
+      { q: '___ ! (ihr, lernen → Imperativ)', a: 'Lernt', hint: 'ihr: Stamm+t' },
+      { q: '___ Sie! (lernen → Imperativ)', a: 'Lernen', hint: 'Sie: Infinitiv + Sie' },
+    ]
+  },
+  imp_du: {
+    title: 'Imperativ du-Form', tense: 'Команда для "ты"', color: '#e8a04a', zone: 'present',
+    formula: 'Grundform (Stamm) + (e)',
+    rule: 'Основа глагола. Сильные глаголы с e→i/ie сохраняют это изменение (lesen → Lies!). Глаголы на -d/-t/-ig добавляют -e (arbeite!). Модные добавляют -е по желанию.',
+    examples: [
+      { de: 'Geh! (gehen)', ru: 'Иди!' },
+      { de: 'Lies! (lesen)', ru: 'Читай!' },
+      { de: 'Arbeite! (arbeiten)', ru: 'Работай!' },
+    ],
+    exercises: [
+      { q: '___ ! (schlafen → du-Imp.)', a: 'Schlaf', hint: 'основа: schlaf-' },
+      { q: '___ ! (sprechen → du-Imp.)', a: 'Sprich', hint: 'e→i: sprich' },
+    ]
+  },
+};
 
-      <article class="card">
-        <h2>Кому подойдёт онлайн-консультация</h2>
-        <ul>
-          <li><span class="dot"></span><span>Родителям детей с диагнозом ДЦП</span></li>
-          <li><span class="dot"></span><span>Если вы не понимаете, какие упражнения безопасны</span></li>
-          <li><span class="dot"></span><span>Если нет хороших специалистов рядом</span></li>
-          <li><span class="dot"></span><span>Если реабилитация в клиниках слишком дорогая</span></li>
-          <li><span class="dot"></span><span>Если вы боитесь навредить ребёнку неправильными действиями</span></li>
-          <li><span class="dot"></span><span>Если хотите понятный и пошаговый план</span></li>
-        </ul>
-        <p class="small" style="margin:18px 0 0 0;">
-          Можно прислать вашу ситуацию/вопросы заранее — так будет конкретнее.
-        </p>
-      </article>
-    </section>
+// ══════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════
+let state = {
+  level: 'root',         // 'root' | parent_id
+  selected: null,        // current segment id
+  path: [],              // breadcrumb
+  score: { correct: 0, wrong: 0 },
+  exIdx: 0,
+  answered: false,
+};
 
-    <details id="offer">
-      <summary>Публичная оферта</summary>
-      <div class="offer">ПУБЛИЧНАЯ ОФЕРТА
+// ══════════════════════════════════════════════════
+//  CANVAS WHEEL
+// ══════════════════════════════════════════════════
+const canvas = document.getElementById('wheelCanvas');
+const ctx = canvas.getContext('2d');
+const CX = 280, CY = 280, R_OUTER = 260, R_INNER = 50;
 
-на оказание онлайн-консультационных услуг
+function getSegments() {
+  if (state.level === 'root') {
+    return WHEEL_DATA.root.map((s, i) => ({
+      ...s,
+      startAngle: (i / WHEEL_DATA.root.length) * Math.PI * 2 - Math.PI / 2,
+      endAngle: ((i + 1) / WHEEL_DATA.root.length) * Math.PI * 2 - Math.PI / 2,
+      depth: 0,
+    }));
+  } else {
+    const children = WHEEL_DATA.children[state.level] || [];
+    const parent = WHEEL_DATA.root.find(r => r.id === state.level);
+    const baseColor = parent ? parent.color : '#888';
+    return children.map((s, i) => ({
+      ...s,
+      color: adjustColor(baseColor, i, children.length),
+      startAngle: (i / children.length) * Math.PI * 2 - Math.PI / 2,
+      endAngle: ((i + 1) / children.length) * Math.PI * 2 - Math.PI / 2,
+      depth: 1,
+    }));
+  }
+}
 
-1. Общие положения
+function adjustColor(hex, i, n) {
+  // vary lightness
+  const factor = 0.6 + 0.4 * (i / Math.max(n - 1, 1));
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  const toHex = v => Math.round(Math.max(0,Math.min(255,v * factor))).toString(16).padStart(2,'0');
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
 
-1.1. Настоящий документ является официальным предложением (публичной офертой) Геннадия Черняка (далее — Исполнитель) заключить договор на оказание онлайн-консультационных услуг с любым дееспособным лицом (далее — Клиент).
+function drawWheel() {
+  ctx.clearRect(0, 0, 560, 560);
 
-1.2. Оплата услуг означает полное и безоговорочное принятие Клиентом условий настоящей оферты.
+  // Background rings
+  for (let r = R_OUTER; r > R_INNER; r -= 40) {
+    ctx.beginPath();
+    ctx.arc(CX, CY, r, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
 
-1.3. Услуги оказываются исключительно в дистанционном формате (онлайн) с использованием средств видеосвязи и/или мессенджеров.
+  const segs = getSegments();
+  segs.forEach(seg => {
+    const isHovered = seg.id === hoveredSeg;
+    const isSelected = seg.id === state.selected;
+    const gap = 0.015;
 
-2. Предмет договора
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(CX, CY);
+    ctx.arc(CX, CY, R_OUTER - 4, seg.startAngle + gap, seg.endAngle - gap);
+    ctx.closePath();
 
-2.1. Исполнитель оказывает информационно-консультационные услуги для родителей (законных представителей) детей с особенностями развития, включая детский церебральный паралич (ДЦП).
+    // gradient fill
+    const midAngle = (seg.startAngle + seg.endAngle) / 2;
+    const gx1 = CX + (R_INNER) * Math.cos(midAngle);
+    const gy1 = CY + (R_INNER) * Math.sin(midAngle);
+    const gx2 = CX + (R_OUTER - 4) * Math.cos(midAngle);
+    const gy2 = CY + (R_OUTER - 4) * Math.sin(midAngle);
+    const grad = ctx.createLinearGradient(gx1, gy1, gx2, gy2);
+    const alpha = isSelected ? '33' : isHovered ? '22' : '14';
+    grad.addColorStop(0, seg.color + alpha);
+    grad.addColorStop(1, seg.color + (isSelected ? '55' : isHovered ? '33' : '20'));
+    ctx.fillStyle = grad;
+    ctx.fill();
 
-2.2. Консультации направлены на:
-— информирование родителей;
-— разъяснение возможных подходов к развитию ребёнка;
-— обсуждение вопросов, связанных с организацией занятий, активности и поддержки ребёнка в повседневной жизни.
+    // border
+    ctx.strokeStyle = isSelected ? seg.color : isHovered ? seg.color + '88' : seg.color + '44';
+    ctx.lineWidth = isSelected ? 2 : 1;
+    ctx.stroke();
+    ctx.restore();
 
-2.3. Услуги не являются медицинскими, не относятся к лечению, диагностике или назначению терапии и не заменяют очный осмотр медицинских специалистов.
+    // Text
+    const midR = (R_INNER + R_OUTER) / 2 - 10;
+    const tx = CX + midR * Math.cos(midAngle);
+    const ty = CY + midR * Math.sin(midAngle);
 
-3. ВАЖНЫЙ ДИСКЛЕЙМЕР
+    ctx.save();
+    ctx.translate(tx, ty);
+    let rot = midAngle;
+    if (rot > Math.PI / 2 && rot < Math.PI * 1.5) rot += Math.PI;
+    ctx.rotate(rot);
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
 
-3.1. Онлайн-консультации носят исключительно информационно-консультативный характер.
+    ctx.font = `bold 11px 'JetBrains Mono'`;
+    ctx.fillStyle = isSelected || isHovered ? '#fff' : seg.color + 'cc';
+    ctx.fillText(seg.label, 0, -7);
 
-3.2. Исполнитель:
-— не ставит медицинских диагнозов;
-— не назначает лечение или медикаменты;
-— не корректирует назначенную врачами терапию;
-— не гарантирует конкретных медицинских результатов.
+    ctx.font = `9px 'JetBrains Mono'`;
+    ctx.fillStyle = isSelected ? '#ffffff99' : '#ffffff44';
+    ctx.fillText(seg.sub, 0, 7);
 
-3.3. Все решения, касающиеся здоровья и развития ребёнка, Клиент принимает самостоятельно и/или совместно с профильными медицинскими специалистами.
+    // has-children indicator
+    if (WHEEL_DATA.children[seg.id]) {
+      ctx.font = '8px monospace';
+      ctx.fillStyle = seg.color + '88';
+      ctx.fillText('▼', 0, 20);
+    }
+    ctx.restore();
+  });
 
-4. Порядок оказания услуг
+  // Inner ring
+  ctx.beginPath();
+  ctx.arc(CX, CY, R_INNER + 4, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+}
 
-4.1. Консультации проводятся по предварительной записи.
+// ── Hover & Click ─────────────────────────────────
+let hoveredSeg = null;
 
-4.2. Дата, время и формат консультации согласовываются с Клиентом индивидуально.
+function getSegAtPoint(x, y) {
+  const dx = x - CX, dy = y - CY;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  if (dist < R_INNER + 4 || dist > R_OUTER) return null;
+  let angle = Math.atan2(dy, dx);
+  if (angle < -Math.PI / 2) angle += Math.PI * 2;
+  const segs = getSegments();
+  for (const s of segs) {
+    let sa = s.startAngle, ea = s.endAngle;
+    if (sa < -Math.PI / 2) { sa += Math.PI * 2; ea += Math.PI * 2; }
+    if (angle >= sa && angle <= ea) return s;
+  }
+  return null;
+}
 
-4.3. Формат консультации:
-— видеосвязь (Zoom, WhatsApp, Telegram или аналогичные платформы);
-— продолжительность консультации указывается на сайте либо сообщается Клиенту до оплаты.
+canvas.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  const seg = getSegAtPoint(e.clientX - rect.left, e.clientY - rect.top);
+  const newId = seg ? seg.id : null;
+  if (newId !== hoveredSeg) { hoveredSeg = newId; drawWheel(); }
+  canvas.style.cursor = seg ? 'pointer' : 'default';
+});
 
-4.4. Клиент обязуется предоставить достоверную и корректную информацию, необходимую для проведения консультации.
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const seg = getSegAtPoint(e.clientX - rect.left, e.clientY - rect.top);
+  if (!seg) return;
+  handleSegmentClick(seg);
+});
 
-5. Стоимость и порядок оплаты
+canvas.addEventListener('mouseleave', () => { hoveredSeg = null; drawWheel(); });
 
-5.1. Стоимость консультационных услуг указывается на сайте Исполнителя либо сообщается Клиенту до момента оплаты.
+function handleSegmentClick(seg) {
+  state.selected = seg.id;
 
-5.2. Оплата производится:
-— через платёжную систему PayPal;
-— либо иными способами, указанными на сайте (например, банковский перевод).
+  if (WHEEL_DATA.children[seg.id]) {
+    // drill down
+    state.path.push({ id: seg.id, label: seg.label, level: state.level });
+    state.level = seg.id;
+    state.selected = null;
+    updateCenterLabel(seg.label);
+  }
 
-5.3. Оплата осуществляется до начала консультации.
+  renderPanel(seg.id);
+  updateBreadcrumb();
+  drawWheel();
+}
 
-5.4. Рекомендуемое назначение платежа:
-«Консультационные (информационные) услуги»
+function updateCenterLabel(text) {
+  const el = document.getElementById('centerLabel');
+  el.innerHTML = `<div style="font-size:0.45rem;color:var(--text-dim)">${text}</div><div style="font-size:0.5rem;margin-top:2px;opacity:0.5">↺ reset</div>`;
+}
 
-6. Условия отмены и возврата средств
+// ── Reset ─────────────────────────────────────────
+document.getElementById('btnReset').addEventListener('click', resetWheel);
+document.getElementById('centerLabel').addEventListener('click', () => {
+  if (state.path.length > 0) {
+    const prev = state.path.pop();
+    state.level = prev.level;
+    state.selected = null;
+    updateCenterLabel(state.path.length ? state.path[state.path.length-1].label : 'Deutsch Rad');
+    updateBreadcrumb();
+    drawWheel();
+  }
+});
 
-6.1. Клиент вправе отменить или перенести консультацию, уведомив Исполнителя не позднее чем за 24 часа до согласованного времени.
+function resetWheel() {
+  state.level = 'root'; state.selected = null; state.path = [];
+  document.getElementById('centerLabel').innerHTML = `<div>Deutsch</div><div>Rad</div>`;
+  updateBreadcrumb();
+  drawWheel();
+  renderPlaceholder();
+}
 
-6.2. В случае неявки Клиента на консультацию без предварительного уведомления услуга считается оказанной, и денежные средства не подлежат возврату.
+// ── Breadcrumb ─────────────────────────────────────
+function updateBreadcrumb() {
+  const bc = document.getElementById('breadcrumb');
+  if (state.path.length === 0) { bc.innerHTML = ''; return; }
+  let html = `<span onclick="resetWheel()">Root</span>`;
+  state.path.forEach((p, i) => {
+    html += `<span class="sep">›</span><span onclick="navTo(${i})">${p.label}</span>`;
+  });
+  bc.innerHTML = html;
+}
 
-6.3. После проведения консультации возврат денежных средств не осуществляется, так как услуга считается оказанной в полном объёме.
+window.navTo = function(idx) {
+  state.path = state.path.slice(0, idx + 1);
+  state.level = state.path[idx].id;
+  state.selected = null;
+  updateBreadcrumb();
+  drawWheel();
+};
 
-7. Ответственность сторон
+window.resetWheel = resetWheel;
 
-7.1. Исполнитель не несёт ответственности за решения, принятые Клиентом на основании информации, полученной в ходе консультации.
+// ══════════════════════════════════════════════════
+//  PANEL RENDERING
+// ══════════════════════════════════════════════════
+function renderPlaceholder() {
+  document.getElementById('tenseTag').textContent = 'Выберите сегмент';
+  document.getElementById('panelTitle').textContent = 'Немецкий язык';
+  document.getElementById('panelSubtitle').textContent = 'Нажмите на любой сегмент колеса';
+  document.getElementById('panelBody').innerHTML = `
+    <div class="placeholder">
+      <div class="big">⊙</div>
+      <p>Колесо времён и форм.<br>Кликните на сегмент — откроется уровень с правилами, примерами и упражнениями.<br><br>
+      Правая половина — будущее.<br>Левая — прошедшее.<br>Верх / низ — настоящее.</p>
+    </div>`;
+}
 
-7.2. Исполнитель не несёт ответственности за технические сбои, возникшие по причинам, не зависящим от него (проблемы интернет-соединения, сбои платформ).
+function renderPanel(id) {
+  const c = CONTENT[id];
+  if (!c) {
+    // No content yet — show "coming soon"
+    document.getElementById('tenseTag').textContent = 'В разработке';
+    document.getElementById('panelTitle').textContent = id;
+    document.getElementById('panelSubtitle').textContent = '';
+    document.getElementById('panelBody').innerHTML = `
+      <div class="placeholder">
+        <div class="big" style="font-size:1.5rem">🚧</div>
+        <p>Этот раздел скоро будет добавлен.<br>Выберите другой сегмент.</p>
+      </div>`;
+    return;
+  }
 
-7.3. Клиент несёт полную ответственность за использование полученной информации.
+  const zoneColors = { past: 'past', present: 'present', future: 'future' };
+  document.getElementById('tenseTag').textContent = c.tense;
+  document.getElementById('panelTitle').style.color = c.color;
+  document.getElementById('panelTitle').textContent = c.title;
+  document.getElementById('panelSubtitle').textContent = c.formula;
 
-8. Персональные данные
+  state.exIdx = 0;
+  state.answered = false;
 
-8.1. Принимая условия настоящей оферты, Клиент даёт согласие на обработку своих персональных данных исключительно в целях оказания консультационных услуг.
+  let html = `<div class="animate-in">`;
 
-8.2. Персональные данные не передаются третьим лицам и не используются в иных целях.
+  // Rule card
+  html += `<div class="info-card ${zoneColors[c.zone] || 'neutral'}">
+    <h3>Правило</h3>
+    <div class="formula">${c.formula}</div>
+    <p>${c.rule}</p>
+  </div>`;
 
-9. Заключительные положения
+  // Examples
+  html += `<div class="info-card neutral">
+    <h3>Примеры</h3>
+    ${c.examples.map(e => `
+      <div class="example-block">
+        <div class="example-de">${e.de}</div>
+        <div class="example-ru">${e.ru}</div>
+      </div>`).join('')}
+  </div>`;
 
-9.1. Настоящая оферта вступает в силу с момента её публикации на сайте и действует бессрочно.
+  // Exercise
+  html += renderExercise(c, 0);
 
-9.2. Исполнитель вправе вносить изменения в условия оферты без предварительного уведомления Клиента.
+  html += `</div>`;
+  document.getElementById('panelBody').innerHTML = html;
 
-9.3. Актуальная версия оферты всегда доступна на сайте.
+  // Score
+  renderScore();
+  bindExerciseEvents(c);
+}
 
-10. Контактная информация Исполнителя
+function renderExercise(c, idx) {
+  const ex = c.exercises[idx];
+  return `<div class="exercise-area" id="exerciseArea">
+    <h3>Упражнение ${idx+1} / ${c.exercises.length}</h3>
+    <div class="exercise-question">${ex.q.replace('___', '<span class="blank" id="blankSpan">___</span>')}</div>
+    <input class="answer-input" id="answerInput" type="text" placeholder="Ваш ответ..." autocomplete="off" spellcheck="false" />
+    <div>
+      <button class="btn-check" id="btnCheck">Проверить</button>
+      <button class="btn-next" id="btnNext">→ Далее</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <div class="score-row" id="scoreRow"></div>
+  </div>`;
+}
 
-Исполнитель: Геннадий Черняк
-Формат оказания услуг: онлайн
-Контактные данные: указываются на сайте
-Email: указывается на сайте</div>
-    </details>
+function renderScore() {
+  const row = document.getElementById('scoreRow');
+  if (!row) return;
+  row.innerHTML = `
+    <div class="score-item">
+      <div class="num" style="color:var(--accent-present)">${state.score.correct}</div>
+      <div class="lbl">верно</div>
+    </div>
+    <div class="score-item">
+      <div class="num" style="color:var(--accent-past)">${state.score.wrong}</div>
+      <div class="lbl">ошибок</div>
+    </div>`;
+}
 
-    <footer>
-      Онлайн-консультации носят информационно-консультативный характер и не заменяют очный осмотр врача.
-      Все рекомендации даются с учётом предоставленной информации родителей/опекунов.
-    </footer>
-  </main>
+function bindExerciseEvents(c) {
+  const input = document.getElementById('answerInput');
+  const btnCheck = document.getElementById('btnCheck');
+  const btnNext = document.getElementById('btnNext');
+
+  if (!input || !btnCheck || !btnNext) return;
+
+  input.focus();
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') btnCheck.click(); });
+
+  btnCheck.addEventListener('click', () => {
+    if (state.answered) return;
+    const ex = c.exercises[state.exIdx];
+    const val = input.value.trim();
+    const correct = val.toLowerCase() === ex.a.toLowerCase();
+    state.answered = true;
+
+    if (correct) {
+      state.score.correct++;
+      input.classList.add('correct');
+      document.getElementById('feedback').className = 'feedback correct';
+      document.getElementById('feedback').textContent = '✓ Верно! ' + (ex.hint || '');
+    } else {
+      state.score.wrong++;
+      input.classList.add('wrong');
+      document.getElementById('feedback').className = 'feedback wrong';
+      document.getElementById('feedback').innerHTML = `✗ Неверно. Правильный ответ: <strong>${ex.a}</strong> — ${ex.hint || ''}`;
+    }
+    renderScore();
+  });
+
+  btnNext.addEventListener('click', () => {
+    const nextIdx = (state.exIdx + 1) % c.exercises.length;
+    state.exIdx = nextIdx;
+    state.answered = false;
+    const ea = document.getElementById('exerciseArea');
+    if (ea) {
+      ea.outerHTML = renderExercise(c, nextIdx);
+      // re-bind after DOM update
+      setTimeout(() => bindExerciseEvents(c), 0);
+      renderScore();
+    }
+  });
+}
+
+// ══════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════
+drawWheel();
+</script>
 </body>
 </html>
