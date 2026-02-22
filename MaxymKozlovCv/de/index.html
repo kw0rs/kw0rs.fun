@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maksym Kozlov — Tonmeister</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f0e;
+    --surface: #141716;
+    --surface2: #1c1f1d;
+    --border: #272b28;
+    --accent: #b8f07c;
+    --accent2: #6ee2b8;
+    --muted: #5a6359;
+    --text: #e8ede9;
+    --text2: #a8b5a9;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.5;
+  }
+
+  .wrapper {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  header {
+    position: relative;
+    padding: 5rem 0 4rem;
+    overflow: hidden;
+  }
+
+  header::after {
+    content: 'TON';
+    position: absolute;
+    right: -1rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(5rem, 14vw, 11rem);
+    color: var(--surface2);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .header-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    background: rgba(184,240,124,0.08);
+    border: 1px solid rgba(184,240,124,0.2);
+    padding: 0.25rem 0.75rem;
+    border-radius: 2px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 400;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: var(--text2);
+    font-weight: 400;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .contact-item:hover { color: var(--accent); }
+
+  .contact-item .icon {
+    width: 16px;
+    height: 16px;
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, var(--accent), transparent);
+    margin: 0 0 4rem;
+    opacity: 0.3;
+  }
+
+  section {
+    margin-bottom: 4rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 200px;
+  }
+
+  .profile-text {
+    font-size: 1.05rem;
+    color: var(--text2);
+    max-width: 680px;
+    line-height: 1.8;
+  }
+
+  .job {
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    position: relative;
+    transition: border-color 0.2s, background 0.2s;
+    overflow: hidden;
+  }
+
+  .job::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .job:hover { border-color: rgba(184,240,124,0.2); background: var(--surface2); }
+  .job:hover::before { opacity: 1; }
+
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .job-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .job-company {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 1.0rem;
+    color: var(--accent2);
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .job-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .job ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .job ul li {
+    font-size: 0.88rem;
+    color: var(--text2);
+    padding: 0.2rem 0 0.2rem 1.2rem;
+    position: relative;
+  }
+
+  .job ul li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    opacity: 0.6;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.25rem 1.5rem;
+    transition: border-color 0.2s;
+  }
+
+  .skill-card:hover { border-color: rgba(110,226,184,0.3); }
+
+  .skill-card-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 0.75rem;
+  }
+
+  .skill-card ul {
+    list-style: none;
+  }
+
+  .skill-card ul li {
+    font-size: 0.87rem;
+    color: var(--text2);
+    padding: 0.15rem 0;
+  }
+
+  .edu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .edu-item:last-child { border-bottom: none; }
+
+  .edu-name {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text);
+    display: block;
+  }
+
+  .edu-degree {
+    font-size: 0.85rem;
+    color: var(--accent2);
+    margin-top: 0.2rem;
+    font-style: italic;
+  }
+
+  .edu-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+  }
+
+  .lang-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .lang-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .lang-name { color: var(--text); font-weight: 500; }
+
+  .lang-level {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+  }
+
+  .soft-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .soft-tag {
+    background: rgba(184,240,124,0.06);
+    border: 1px solid rgba(184,240,124,0.15);
+    border-radius: 2px;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.82rem;
+    color: var(--text2);
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .lang-switch {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 100;
+  }
+
+  .lang-switch a {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(184,240,124,0.08);
+    border: 1px solid rgba(184,240,124,0.25);
+    padding: 0.4rem 0.9rem;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .lang-switch a:hover { background: rgba(184,240,124,0.16); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 3rem 0 2.5rem; }
+    header::after { display: none; }
+    .skills-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="lang-switch">
+  <a href="https://kw0rs.uno/MaxymKozlovCV/eng">EN 🇬🇧</a>
+</div>
+
+<div class="wrapper">
+
+  <header>
+    <div class="header-tag">Tonmeister · Film &amp; Fernsehen</div>
+    <h1>Maksym<br><em>Kozlov</em></h1>
+    <p class="subtitle">Produktionstonmeister &amp; Boom Operator</p>
+    <div class="contact-row">
+      <span class="contact-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        22844 Norderstedt, Deutschland
+      </span>
+      <a class="contact-item" href="tel:+491757065132">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.82a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+        +49 175 7065132
+      </a>
+      <a class="contact-item" href="mailto:maksym441k@gmail.com">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        maksym441k@gmail.com
+      </a>
+      <span class="contact-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        14. Januar 2004
+      </span>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <section>
+    <div class="section-label">Profil</div>
+    <p class="profile-text">Produktionstonmeister und Boom Operator mit praktischer Erfahrung in TV-Serien-, Film- und Dokumentarfilmproduktionen. Sicher im Umgang mit Location-Sound-Workflows, Funksystemen und schnellen Set-Umgebungen. Wohnhaft in Deutschland, verfügbar für Reisen und kurzfristige Drehs.</p>
+  </section>
+
+  <section>
+    <div class="section-label">Berufserfahrung</div>
+
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <span class="job-company">"Molfar"</span>
+          <span class="job-title">Produktionstonmeister</span>
+        </div>
+        <span class="job-date">07.2025 – 08.2025</span>
+      </div>
+      <ul>
+        <li>Verantwortlich für den gesamten Location-Sound-Workflow</li>
+        <li>Mischung von Dialogen und Überwachung von Multi-Mikrofon-Setups</li>
+        <li>Enge Zusammenarbeit mit Regie und Kamerateam</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <span class="job-company">"Chy ye u vas khvylynka…" (Dokumentarfilm)</span>
+          <span class="job-title">Produktionstonmeister</span>
+        </div>
+        <span class="job-date">04.2025 – 06.2025</span>
+      </div>
+      <ul>
+        <li>Leitung der Tonaufnahmen am Drehort im Dokumentarfilm-Umfeld</li>
+        <li>Aufbau und Wartung eines zuverlässigen Funk- und Aufnahme-Setups für den gesamten Drehtag</li>
+        <li>Verwaltung des vollständigen Funk-Workflows und Frequenzkoordination</li>
+        <li>Lieferung organisierter Mehrspuraufnahmen für die Postproduktion</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <span class="job-company">"Kokhannia, yak vono ye"</span>
+          <span class="job-title">Tonassistent / Boom Operator</span>
+        </div>
+        <span class="job-date">02.2025 – 03.2025</span>
+      </div>
+      <ul>
+        <li>Saubere Dialogaufnahme bei schnellen Drehabläufen</li>
+        <li>Unterstützung beim Einsatz von Funkmikrofonen und RF-Checks</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <span class="job-company">"Fortetsia"</span>
+          <span class="job-title">Tonassistent / Boom Operator</span>
+        </div>
+        <span class="job-date">02.2025</span>
+      </div>
+      <ul>
+        <li>Boom-Abdeckung bei Innen- und Außenszenen</li>
+        <li>Unterstützung beim Audio-Setup und bei der Fehlerbehebung am Set</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <span class="job-company">"Bez Problem"</span>
+          <span class="job-title">Tonassistent / Boom Operator</span>
+        </div>
+        <span class="job-date">12.2024 – 02.2025</span>
+      </div>
+      <ul>
+        <li>Boom-Betrieb bei Multi-Kamera-Setups</li>
+        <li>Lavaliermikrofon-Verbergung für Dialogszenen</li>
+        <li>Assistenz bei der Audio-Vorbereitung am Set</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <span class="job-company">"Dron"</span>
+          <span class="job-title">Tonassistent / Boom Operator / Produktionstonmeister</span>
+        </div>
+        <span class="job-date">06.2024 – 12.2024</span>
+      </div>
+      <ul>
+        <li>Mehrkanalige Location-Aufnahmen</li>
+        <li>Koordination von Funksystemen und Überwachung der RF-Stabilität</li>
+        <li>Boom-Abdeckung bei komplexen Dialogszenen</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <span class="job-company">"Zhinochyi Likar. Nove Zhyttia"</span>
+          <span class="job-title">Tonassistent / Boom Operator</span>
+        </div>
+        <span class="job-date">06.2023 – 10.2023</span>
+      </div>
+      <ul>
+        <li>Bedienung des Boom-Mikrofons bei Dialogszenen</li>
+        <li>Eigenständige Platzierung und Verkabelung von Lavaliermikrofonen</li>
+        <li>Unterstützung des Tonmeisters beim Audio-Workflow am Set</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div>
+          <span class="job-company">KW0RS Records</span>
+          <span class="job-title">Produktionstonmeister / Postproduktion (Studentenprojekte)</span>
+        </div>
+        <span class="job-date">09.2022 – 06.2025</span>
+      </div>
+      <ul>
+        <li>Aufnahme von Sprachaufzeichnungen für studentische Filmprojekte</li>
+        <li>Bearbeitung und Bereinigung von Dialogen in der Postproduktion</li>
+        <li>Vorbereitung und Übergabe von Audiosessions für weitere Post-Workflows</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">Technische Fähigkeiten &amp; Equipment</div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-card-title">Location Sound</div>
+        <ul>
+          <li>Spielfilme und Dokumentarfilme</li>
+          <li>Produktionstonmischung</li>
+          <li>Audio-Routing und Workflow am Set</li>
+          <li>Boom-Betrieb</li>
+          <li>Lavalier-Setup und Verbergung</li>
+          <li>Plant-Mikrofon-Platzierung</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-title">Software</div>
+        <ul>
+          <li>Pro Tools</li>
+          <li>Reaper</li>
+          <li>Nuendo</li>
+          <li>DaVinci Resolve (Fairlight)</li>
+          <li>iZotope RX</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-title">Recorder / Mischpulte</div>
+        <ul>
+          <li>Sound Devices 633, 664, 788, MixPre-10</li>
+          <li>Zoom F8</li>
+          <li>Sowie weiteres professionelles Equipment</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-title">Funksysteme</div>
+        <ul>
+          <li>Lectrosonics SMDB, SMA</li>
+          <li>Sennheiser G4 500 Serie</li>
+          <li>Sennheiser G3 2000 Serie</li>
+          <li>Sowie weitere Funksysteme</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-title">Mikrofone</div>
+        <ul>
+          <li>Sennheiser MKH 416</li>
+          <li>Neumann KMR 82</li>
+          <li>Sanken CUB-01</li>
+          <li>Sennheiser MKE 1, MKE 2 Gold</li>
+          <li>Sanken COS-11</li>
+          <li>Sowie weitere Lavaliermikrofone</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">Ausbildung</div>
+    <div class="edu-item">
+      <div>
+        <span class="edu-name">Nationale Universität für Kultur und Künste Kiew</span>
+        <span class="edu-degree">Bachelor — Tontechnik in Film und Fernsehen</span>
+      </div>
+      <span class="edu-date">09.2021 – 06.2025</span>
+    </div>
+    <div class="edu-item">
+      <div>
+        <span class="edu-name">Gymnasium Nr. 5 Irpin</span>
+      </div>
+      <span class="edu-date">09.2018 – 05.2021</span>
+    </div>
+    <div class="edu-item">
+      <div>
+        <span class="edu-name">Schule Nr. 4 Butscha (Klassen 1–3)</span>
+      </div>
+      <span class="edu-date">09.2010 – 05.2018</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">Sprachen</div>
+    <div class="lang-row">
+      <div class="lang-tag"><span class="lang-name">Ukrainisch</span><span class="lang-level">Muttersprache</span></div>
+      <div class="lang-tag"><span class="lang-name">Russisch</span><span class="lang-level">Fließend</span></div>
+      <div class="lang-tag"><span class="lang-name">Englisch</span><span class="lang-level">B2</span></div>
+      <div class="lang-tag"><span class="lang-name">Deutsch</span><span class="lang-level">A1</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">Soft Skills</div>
+    <div class="soft-grid">
+      <span class="soft-tag">Klare Kommunikation am Set</span>
+      <span class="soft-tag">Schnelle technische Fehlerbehebung</span>
+      <span class="soft-tag">Sorgfalt bei der Dialogqualität</span>
+      <span class="soft-tag">Zuverlässig bei schnellen Produktionsplänen</span>
+      <span class="soft-tag">Teamkoordination mit Kamera &amp; AD</span>
+      <span class="soft-tag">Ruhig und konzentriert bei Live-Takes</span>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrapper">Maksym Kozlov · Produktionstonmeister · Norderstedt, Deutschland</div>
+</footer>
+
+</body>
+</html>
