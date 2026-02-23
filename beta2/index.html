@@ -3,1094 +3,3266 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deutsch Rad — Тренажёр немецкого</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Deutsch Rad — Полный тренажёр</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0a0a0f;
-  --surface: #12121a;
-  --surface2: #1a1a26;
-  --accent-past: #e85d4a;
-  --accent-present: #4ae8a0;
-  --accent-future: #4a9de8;
-  --accent-gold: #e8c34a;
-  --text: #e8e8f0;
-  --text-dim: #7a7a9a;
-  --ring1: rgba(255,255,255,0.04);
-  --ring2: rgba(255,255,255,0.08);
+  --bg: #080810;
+  --s1: #0f0f1c;
+  --s2: #161625;
+  --s3: #1e1e32;
+  --border: rgba(255,255,255,0.07);
+  --text: #dde0f0;
+  --dim: #6a6a90;
+  --dim2: #9090b8;
+  --past: #d94f3a;
+  --past2: #a33020;
+  --past3: #7a1a10;
+  --present: #3ad9a0;
+  --present2: #20a368;
+  --future: #3a8fd9;
+  --future2: #206aa3;
+  --special: #c97ae0;
+  --gold: #e0c46a;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
+html, body { height: 100%; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'JetBrains Mono', monospace;
-  min-height: 100vh;
-  overflow-x: hidden;
+  font-family: 'DM Mono', monospace;
+  display: flex; flex-direction: column;
+  height: 100vh; overflow: hidden;
 }
 
-/* ── Header ─────────────────────────────────────── */
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 40px;
-  border-bottom: 1px solid var(--ring2);
-  backdrop-filter: blur(10px);
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(10,10,15,0.85);
+/* ── NAV ── */
+nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 32px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,8,16,0.9);
+  flex-shrink: 0; z-index: 50;
 }
-header h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
-  letter-spacing: 0.05em;
-  background: linear-gradient(135deg, var(--accent-past), var(--accent-present), var(--accent-future));
+.logo {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.4rem; font-weight: 700;
+  letter-spacing: 0.08em;
+  background: linear-gradient(120deg, var(--past), var(--present), var(--future));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
-.header-legend {
-  display: flex; gap: 20px; font-size: 0.65rem; color: var(--text-dim);
-}
-.legend-item { display: flex; align-items: center; gap: 6px; }
-.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+.nav-legend { display: flex; gap: 20px; align-items: center; }
+.nl { display: flex; align-items: center; gap: 6px; font-size: 0.6rem; color: var(--dim); letter-spacing: 0.08em; text-transform: uppercase; }
+.nd { width: 10px; height: 10px; border-radius: 50%; }
+.nav-score { display: flex; gap: 14px; }
+.ns { text-align: center; }
+.ns-n { font-family: 'EB Garamond', serif; font-size: 1.2rem; }
+.ns-l { font-size: 0.5rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; }
 
-/* ── Main layout ─────────────────────────────────── */
-main {
+/* ── LAYOUT ── */
+.layout {
   display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: 0;
-  min-height: calc(100vh - 70px);
+  grid-template-columns: 1fr 420px;
+  flex: 1; overflow: hidden;
 }
 
-/* ── Wheel area ──────────────────────────────────── */
-.wheel-area {
+/* ── WHEEL PANEL ── */
+.wheel-panel {
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  padding: 40px;
-  position: relative;
+  padding: 20px; gap: 16px;
+  position: relative; overflow: hidden;
 }
-
-.wheel-container {
-  position: relative;
-  width: 560px; height: 560px;
-}
-
-canvas#wheelCanvas {
-  position: absolute; top: 0; left: 0;
-  cursor: pointer;
-}
-
-.wheel-center {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90px; height: 90px;
-  border-radius: 50%;
-  background: var(--bg);
-  border: 2px solid var(--ring2);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  font-size: 0.55rem; color: var(--text-dim);
-  text-align: center; line-height: 1.4;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+.wheel-panel::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(58,137,217,0.04) 0%, transparent 70%);
   pointer-events: none;
-  z-index: 10;
+}
+.wheel-wrap { position: relative; width: 520px; height: 520px; flex-shrink: 0; }
+#wc { position: absolute; top: 0; left: 0; cursor: pointer; }
+.w-center {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 80px; height: 80px; border-radius: 50%;
+  background: var(--bg); border: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-size: 0.5rem; color: var(--dim); text-align: center;
+  line-height: 1.5; letter-spacing: 0.06em; text-transform: uppercase;
+  pointer-events: none; z-index: 5;
+  transition: all 0.3s;
 }
 
-/* Breadcrumb path */
-.breadcrumb {
-  margin-top: 24px;
-  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
-  font-size: 0.65rem; color: var(--text-dim);
-  min-height: 24px;
+/* breadcrumb */
+.bc {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.6rem; color: var(--dim); flex-wrap: wrap;
+  min-height: 20px;
 }
-.breadcrumb span {
-  padding: 4px 10px; border-radius: 20px;
-  background: var(--surface2); cursor: pointer;
-  transition: all 0.2s;
+.bc-item { cursor: pointer; transition: color 0.2s; padding: 2px 6px; border-radius: 3px; }
+.bc-item:hover { color: var(--text); background: var(--s2); }
+.bc-sep { opacity: 0.35; }
+.btn-back {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 6px 16px; background: transparent;
+  border: 1px solid var(--border); color: var(--dim);
+  cursor: pointer; border-radius: 4px; transition: all 0.2s;
 }
-.breadcrumb span:hover { color: var(--text); }
-.breadcrumb .sep { opacity: 0.4; }
+.btn-back:hover { border-color: var(--dim2); color: var(--text); }
 
-/* Reset button */
-.btn-reset {
-  margin-top: 16px;
-  padding: 8px 20px;
-  background: transparent;
-  border: 1px solid var(--ring2);
-  color: var(--text-dim);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s;
-}
-.btn-reset:hover { border-color: var(--text-dim); color: var(--text); }
-
-/* ── Right panel ─────────────────────────────────── */
-.panel {
-  background: var(--surface);
-  border-left: 1px solid var(--ring2);
+/* ── INFO PANEL ── */
+.info-panel {
+  background: var(--s1);
+  border-left: 1px solid var(--border);
   display: flex; flex-direction: column;
   overflow: hidden;
 }
+.ip-head {
+  padding: 22px 28px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.ip-tag { font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); margin-bottom: 6px; }
+.ip-title { font-family: 'EB Garamond', serif; font-size: 2rem; font-weight: 700; line-height: 1.1; }
+.ip-sub { font-size: 0.65rem; color: var(--dim); margin-top: 5px; font-style: italic; }
+.ip-body { flex: 1; overflow-y: auto; padding: 20px 28px; }
+.ip-body::-webkit-scrollbar { width: 3px; }
+.ip-body::-webkit-scrollbar-thumb { background: var(--s3); }
 
-.panel-header {
-  padding: 28px 32px 20px;
-  border-bottom: 1px solid var(--ring2);
-}
-.panel-header .tense-tag {
-  font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--text-dim); margin-bottom: 8px;
-}
-.panel-header h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.8rem; font-weight: 700;
-  color: var(--text);
-}
-.panel-header .subtitle {
-  font-size: 0.7rem; color: var(--text-dim);
-  margin-top: 4px; font-style: italic;
-}
-
-.panel-body {
-  flex: 1; overflow-y: auto; padding: 24px 32px;
-}
-.panel-body::-webkit-scrollbar { width: 4px; }
-.panel-body::-webkit-scrollbar-thumb { background: var(--ring2); border-radius: 2px; }
-
-/* Info card */
-.info-card {
-  background: var(--surface2);
-  border-radius: 8px;
-  padding: 16px 20px;
-  margin-bottom: 16px;
+/* Cards */
+.card {
+  background: var(--s2); border-radius: 6px;
+  padding: 14px 18px; margin-bottom: 12px;
   border-left: 3px solid transparent;
+  animation: fadeUp 0.3s ease;
 }
-.info-card.past { border-color: var(--accent-past); }
-.info-card.present { border-color: var(--accent-present); }
-.info-card.future { border-color: var(--accent-future); }
-.info-card.neutral { border-color: var(--accent-gold); }
+.card.past   { border-color: var(--past); }
+.card.present{ border-color: var(--present); }
+.card.future { border-color: var(--future); }
+.card.special{ border-color: var(--special); }
+.card.gold   { border-color: var(--gold); }
+.card h4 { font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
+.formula { font-family: 'EB Garamond', serif; font-size: 1rem; color: var(--text); font-weight: 600; margin-bottom: 6px; }
+.rule-text { font-size: 0.68rem; line-height: 1.7; color: var(--dim2); }
 
-.info-card h3 {
-  font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--text-dim); margin-bottom: 8px;
+/* Sentence display */
+.sent-block { margin: 6px 0; }
+.sent-de {
+  font-family: 'EB Garamond', serif; font-size: 1rem;
+  color: var(--text); font-weight: 600; line-height: 1.4;
 }
-.info-card .formula {
-  font-size: 0.9rem; color: var(--text);
-  font-weight: 600; margin-bottom: 8px;
-  font-family: 'Playfair Display', serif;
+.sent-parts { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0; }
+.part-chip {
+  font-size: 0.55rem; padding: 2px 7px; border-radius: 3px;
+  background: var(--s3); border: 1px solid var(--border);
+  white-space: nowrap;
 }
-.info-card p { font-size: 0.72rem; line-height: 1.6; color: var(--text-dim); }
+.sent-ru { font-size: 0.65rem; color: var(--dim); margin-top: 2px; }
 
-/* Examples */
-.example-block { margin: 8px 0; }
-.example-de {
-  font-size: 0.85rem; color: var(--text);
-  font-weight: 600; font-family: 'Playfair Display', serif;
-  line-height: 1.4;
+/* Table */
+.gram-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 0.65rem; margin: 4px 0;
 }
-.example-ru { font-size: 0.7rem; color: var(--text-dim); margin-top: 2px; }
+.gram-table th {
+  background: var(--s3); color: var(--dim);
+  font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 6px 8px; text-align: left;
+}
+.gram-table td { padding: 5px 8px; border-top: 1px solid var(--border); }
+.gram-table tr:hover td { background: var(--s3); }
+.gram-table .hl { color: var(--gold); font-weight: 500; }
+.gram-table .de { font-family: 'EB Garamond', serif; font-size: 0.8rem; color: var(--text); }
 
-/* Exercise area */
-.exercise-area {
-  margin-top: 20px;
-  background: var(--surface2);
-  border-radius: 8px;
-  padding: 20px;
+/* Exercise */
+.ex-area { background: var(--s2); border-radius: 6px; padding: 16px 18px; margin-top: 8px; animation: fadeUp 0.3s ease; }
+.ex-area h4 { font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin-bottom: 12px; }
+.ex-q { font-family: 'EB Garamond', serif; font-size: 1rem; color: var(--text); line-height: 1.6; margin-bottom: 12px; }
+.blank { border-bottom: 2px solid var(--gold); color: var(--gold); padding: 0 4px; }
+.ex-inp {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  color: var(--text); padding: 9px 12px;
+  font-family: 'DM Mono', monospace; font-size: 0.78rem;
+  border-radius: 4px; outline: none; transition: border-color 0.2s;
 }
-.exercise-area h3 {
-  font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--text-dim); margin-bottom: 14px;
-}
-.exercise-question {
-  font-size: 0.85rem; color: var(--text);
-  line-height: 1.6; margin-bottom: 14px;
-  font-family: 'Playfair Display', serif;
-}
-.exercise-question .blank {
-  display: inline-block;
-  border-bottom: 2px solid var(--accent-gold);
-  min-width: 80px; color: var(--accent-gold);
-}
-.answer-input {
-  width: 100%;
-  background: var(--bg);
-  border: 1px solid var(--ring2);
-  color: var(--text);
-  padding: 10px 14px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
-  border-radius: 4px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-.answer-input:focus { border-color: var(--accent-gold); }
-.answer-input.correct { border-color: var(--accent-present); color: var(--accent-present); }
-.answer-input.wrong { border-color: var(--accent-past); color: var(--accent-past); }
-
+.ex-inp:focus { border-color: var(--gold); }
+.ex-inp.ok { border-color: var(--present); color: var(--present); }
+.ex-inp.bad { border-color: var(--past); color: var(--past); }
+.ex-btns { display: flex; gap: 8px; margin-top: 8px; }
 .btn-check {
-  margin-top: 10px;
-  padding: 9px 20px;
-  background: var(--accent-gold);
-  color: var(--bg);
-  border: none;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem; font-weight: 600;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  cursor: pointer; border-radius: 4px;
-  transition: opacity 0.2s;
+  padding: 8px 18px; background: var(--gold); color: var(--bg);
+  border: none; font-family: 'DM Mono', monospace; font-size: 0.62rem;
+  font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; border-radius: 4px; transition: opacity 0.2s;
 }
 .btn-check:hover { opacity: 0.85; }
 .btn-next {
-  margin-top: 10px; margin-left: 8px;
-  padding: 9px 20px;
-  background: transparent;
-  border: 1px solid var(--ring2);
-  color: var(--text-dim);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
+  padding: 8px 16px; background: transparent;
+  border: 1px solid var(--border); color: var(--dim);
+  font-family: 'DM Mono', monospace; font-size: 0.62rem;
   letter-spacing: 0.1em; text-transform: uppercase;
-  cursor: pointer; border-radius: 4px;
-  transition: all 0.2s;
+  cursor: pointer; border-radius: 4px; transition: all 0.2s;
 }
-.btn-next:hover { border-color: var(--text-dim); color: var(--text); }
+.btn-next:hover { border-color: var(--dim2); color: var(--text); }
+.ex-fb { margin-top: 8px; font-size: 0.68rem; min-height: 16px; line-height: 1.5; }
+.ex-fb.ok { color: var(--present); }
+.ex-fb.bad { color: var(--past); }
+.ex-progress { display: flex; gap: 3px; margin-bottom: 10px; }
+.ep-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--s3); transition: background 0.3s; }
+.ep-dot.ok { background: var(--present); }
+.ep-dot.bad { background: var(--past); }
+.ep-dot.cur { background: var(--gold); }
 
-.feedback {
-  margin-top: 10px; font-size: 0.72rem;
-  min-height: 18px; line-height: 1.5;
-}
-.feedback.correct { color: var(--accent-present); }
-.feedback.wrong { color: var(--accent-past); }
+/* Tabs */
+.tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+.tab { padding: 8px 16px; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s; }
+.tab.active { color: var(--text); border-color: var(--gold); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 
-/* Score */
-.score-row {
-  display: flex; gap: 16px; margin-top: 16px; padding-top: 16px;
-  border-top: 1px solid var(--ring2);
-}
-.score-item { text-align: center; }
-.score-item .num {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.4rem; color: var(--text);
-}
-.score-item .lbl {
-  font-size: 0.55rem; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--text-dim);
-}
+/* Placeholder */
+.ph { text-align: center; padding: 50px 20px; color: var(--dim); }
+.ph-icon { font-family: 'EB Garamond', serif; font-size: 3rem; opacity: 0.12; margin-bottom: 16px; }
+.ph p { font-size: 0.68rem; line-height: 1.8; }
 
-/* Placeholder state */
-.placeholder {
-  text-align: center; padding: 60px 20px;
-  color: var(--text-dim);
-}
-.placeholder .big {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.5rem; opacity: 0.15; margin-bottom: 12px;
-}
-.placeholder p { font-size: 0.72rem; line-height: 1.7; }
-
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.animate-in { animation: fadeIn 0.35s ease forwards; }
+
+/* Chips for part-of-speech */
+.chip-s { color: #3ad9a0; } /* Subjekt */
+.chip-v { color: #e0c46a; } /* Verb */
+.chip-o { color: #3a8fd9; } /* Objekt */
+.chip-a { color: #c97ae0; } /* Adjektiv */
+.chip-ad{ color: #d94f3a; } /* Adverb */
+.chip-p { color: #e08c3a; } /* Präposition */
+.chip-n { color: #aaa; }    /* Negation */
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Deutsch Rad</h1>
-  <div class="header-legend">
-    <div class="legend-item"><div class="legend-dot" style="background:var(--accent-past)"></div>Vergangenheit</div>
-    <div class="legend-dot" style="background:var(--accent-present)"></div>Gegenwart</div>
-    <div class="legend-item"><div class="legend-dot" style="background:var(--accent-future)"></div>Zukunft</div>
+<nav>
+  <div class="logo">Deutsch Rad</div>
+  <div class="nav-legend">
+    <div class="nl"><div class="nd" style="background:var(--past)"></div>Vergangenheit</div>
+    <div class="nl"><div class="nd" style="background:var(--present)"></div>Gegenwart</div>
+    <div class="nl"><div class="nd" style="background:var(--future)"></div>Zukunft</div>
+    <div class="nl"><div class="nd" style="background:var(--special)"></div>Naklonenie</div>
   </div>
-</header>
+  <div class="nav-score">
+    <div class="ns"><div class="ns-n" id="sc-ok" style="color:var(--present)">0</div><div class="ns-l">верно</div></div>
+    <div class="ns"><div class="ns-n" id="sc-bad" style="color:var(--past)">0</div><div class="ns-l">ошибок</div></div>
+  </div>
+</nav>
 
-<main>
-  <div class="wheel-area">
-    <div class="wheel-container">
-      <canvas id="wheelCanvas" width="560" height="560"></canvas>
-      <div class="wheel-center" id="centerLabel">
-        <div>Deutsch</div>
-        <div>Rad</div>
+<div class="layout">
+  <div class="wheel-panel">
+    <div class="wheel-wrap">
+      <canvas id="wc" width="520" height="520"></canvas>
+      <div class="w-center" id="wCenter">Deutsch<br>Rad</div>
+    </div>
+    <div class="bc" id="bc"></div>
+    <button class="btn-back" id="btnBack" style="display:none">← Назад</button>
+  </div>
+
+  <div class="info-panel">
+    <div class="ip-head">
+      <div class="ip-tag" id="ipTag">Нажмите на сегмент</div>
+      <div class="ip-title" id="ipTitle">Deutsches Rad</div>
+      <div class="ip-sub" id="ipSub">Колесо немецкой грамматики — все времена, части речи, типы предложений</div>
+    </div>
+    <div class="ip-body" id="ipBody">
+      <div class="ph">
+        <div class="ph-icon">⊙</div>
+        <p>
+          Кликните любой сегмент колеса.<br>
+          Каждый раскрывается дальше — фрактально.<br><br>
+          <b style="color:var(--past)">Левая</b> сторона — прошедшее.<br>
+          <b style="color:var(--future)">Правая</b> — будущее.<br>
+          <b style="color:var(--present)">Верх/низ</b> — настоящее.<br>
+          <b style="color:var(--special)">Фиолетовое</b> — наклонения.<br><br>
+          Каждый узел содержит:<br>
+          формулу · правило · примеры с разбором · упражнения
+        </p>
       </div>
     </div>
-    <div class="breadcrumb" id="breadcrumb"></div>
-    <button class="btn-reset" id="btnReset">↺ Сбросить</button>
   </div>
-
-  <div class="panel">
-    <div class="panel-header" id="panelHeader">
-      <div class="tense-tag" id="tenseTag">Выберите сегмент</div>
-      <h2 id="panelTitle">Немецкий язык</h2>
-      <div class="subtitle" id="panelSubtitle">Нажмите на любой сегмент колеса</div>
-    </div>
-    <div class="panel-body" id="panelBody">
-      <div class="placeholder">
-        <div class="big">⊙</div>
-        <p>Колесо времён и форм.<br>Кликните на сегмент — откроется уровень с правилами, примерами и упражнениями.<br><br>
-        Правая половина — будущее.<br>Левая — прошедшее.<br>Верх / низ — настоящее.</p>
-      </div>
-    </div>
-  </div>
-</main>
+</div>
 
 <script>
-// ══════════════════════════════════════════════════
-//  DATA  ─ все уровни фракталного колеса
-// ══════════════════════════════════════════════════
-const WHEEL_DATA = {
-  // ROOT — 8 главных сегментов
-  root: [
-    { id: 'prasens',     label: 'Präsens',      sub: 'Настоящее',    color: '#4ae8a0', zone: 'present',  angle: -90 },
-    { id: 'futur1',      label: 'Futur I',       sub: 'Будущее I',    color: '#4a9de8', zone: 'future',   angle: -45 },
-    { id: 'futur2',      label: 'Futur II',      sub: 'Будущее II',   color: '#2d6fa8', zone: 'future',   angle:   0 },
-    { id: 'perfekt',     label: 'Perfekt',        sub: 'Прошедшее',   color: '#e85d4a', zone: 'past',     angle:  45 },
-    { id: 'prateritum',  label: 'Präteritum',    sub: 'Нарратив',     color: '#b83a2a', zone: 'past',     angle:  90 },
-    { id: 'plusquamp',   label: 'Plusquamperf.', sub: 'Давнопр.',     color: '#882010', zone: 'past',     angle: 135 },
-    { id: 'konjunktiv',  label: 'Konjunktiv',    sub: 'Сослагат.',    color: '#a04ae8', zone: 'present',  angle: 180 },
-    { id: 'imperativ',   label: 'Imperativ',     sub: 'Повелит.',     color: '#e8a04a', zone: 'present',  angle: 225 },
+// ═══════════════════════════════════════════════════════════════════
+// DATA LAYER — полная фрактальная структура
+// ═══════════════════════════════════════════════════════════════════
+
+// Цветовые зоны
+const Z = {
+  PAST:'past', PRESENT:'present', FUTURE:'future', SPECIAL:'special'
+};
+
+// Основные 8 сегментов корня
+const ROOT_SEGS = [
+  { id:'prasens',     label:'Präsens',       sub:'Настоящее',      color:'#3ad9a0', zone:Z.PRESENT },
+  { id:'futur1',      label:'Futur I',        sub:'Будущее I',       color:'#3a8fd9', zone:Z.FUTURE  },
+  { id:'futur2',      label:'Futur II',       sub:'Будущее II',      color:'#206aa3', zone:Z.FUTURE  },
+  { id:'perfekt',     label:'Perfekt',         sub:'Прошедшее (речь)',color:'#d94f3a', zone:Z.PAST   },
+  { id:'prateritum',  label:'Präteritum',     sub:'Нарратив',        color:'#b03020', zone:Z.PAST   },
+  { id:'plusquamp',   label:'Plusquamperf.',  sub:'Давнопрошедшее',  color:'#7a1a10', zone:Z.PAST   },
+  { id:'konjunktiv',  label:'Konjunktiv',     sub:'Сослагательное',  color:'#c97ae0', zone:Z.SPECIAL},
+  { id:'imperativ',   label:'Imperativ',      sub:'Повелительное',   color:'#e08c3a', zone:Z.SPECIAL},
+];
+
+// Дочерние узлы — части речи / типы предложений
+const CHILDREN = {
+  prasens: [
+    { id:'pra_aussage',  label:'Aussagesatz',  sub:'Утвердительное' },
+    { id:'pra_frage_j',  label:'Ja/Nein-Frage',sub:'Общий вопрос'  },
+    { id:'pra_frage_w',  label:'W-Frage',      sub:'Специальный'   },
+    { id:'pra_neg',      label:'Negation',     sub:'Отрицание'     },
+    { id:'pra_verb',     label:'Verb',         sub:'Спряжение'     },
+    { id:'pra_nomen',    label:'Nomen',        sub:'Падежи'        },
+    { id:'pra_adj',      label:'Adjektiv',     sub:'Склонение'     },
+    { id:'pra_prap',     label:'Präposition',  sub:'Предлоги'      },
   ],
-
-  // LEVEL 2 — дочерние сегменты для каждого времени
-  children: {
-    prasens: [
-      { id: 'prasens_verb',  label: 'Verb',      sub: 'Глагол' },
-      { id: 'prasens_subj',  label: 'Subjekt',   sub: 'Подлежащее' },
-      { id: 'prasens_obj',   label: 'Objekt',    sub: 'Дополнение' },
-      { id: 'prasens_adj',   label: 'Adjektiv',  sub: 'Прилагательное' },
-      { id: 'prasens_neg',   label: 'Negation',  sub: 'Отрицание' },
-      { id: 'prasens_frage', label: 'Frage',     sub: 'Вопрос' },
-    ],
-    futur1: [
-      { id: 'futur1_werden', label: 'werden',    sub: 'Вспомогательный' },
-      { id: 'futur1_inf',    label: 'Infinitiv', sub: 'Инфинитив' },
-      { id: 'futur1_modal',  label: 'Modal',     sub: 'Модальные' },
-      { id: 'futur1_frage',  label: 'Frage',     sub: 'Вопрос' },
-    ],
-    futur2: [
-      { id: 'futur2_werden', label: 'werden',    sub: 'Вспомогат.' },
-      { id: 'futur2_part',   label: 'Partizip II', sub: 'Причастие II' },
-      { id: 'futur2_haben',  label: 'haben/sein', sub: 'Aux.' },
-    ],
-    perfekt: [
-      { id: 'perfekt_haben',  label: 'haben',    sub: 'haben-глаголы' },
-      { id: 'perfekt_sein',   label: 'sein',     sub: 'sein-глаголы' },
-      { id: 'perfekt_part2',  label: 'Partizip II', sub: 'Образование' },
-      { id: 'perfekt_unreg',  label: 'Unregel.',  sub: 'Неправильные' },
-      { id: 'perfekt_frage',  label: 'Frage',    sub: 'Вопрос' },
-    ],
-    prateritum: [
-      { id: 'prat_schwach',  label: 'Schwach',   sub: 'Слабые глаголы' },
-      { id: 'prat_stark',    label: 'Stark',     sub: 'Сильные глаголы' },
-      { id: 'prat_modal',    label: 'Modalverb', sub: 'Модальные' },
-      { id: 'prat_sein_hab', label: 'sein/haben', sub: 'Быть/иметь' },
-    ],
-    plusquamp: [
-      { id: 'plq_haben',  label: 'hatte/war',  sub: 'Вспомогат. прош.' },
-      { id: 'plq_part2',  label: 'Partizip II', sub: 'Причастие' },
-    ],
-    konjunktiv: [
-      { id: 'konj2_form',   label: 'Konj. II',   sub: 'Форма' },
-      { id: 'konj2_wuerden',label: 'würden',     sub: 'Вежливость' },
-      { id: 'konj1_form',   label: 'Konj. I',    sub: 'Косвенная речь' },
-    ],
-    imperativ: [
-      { id: 'imp_du',    label: 'du-Form',  sub: 'Ты' },
-      { id: 'imp_ihr',   label: 'ihr-Form', sub: 'Вы (мн.)' },
-      { id: 'imp_sie',   label: 'Sie-Form', sub: 'Вы (вежл.)' },
-    ],
-  }
+  futur1: [
+    { id:'fut1_aussage', label:'Aussagesatz',  sub:'Утвердительное' },
+    { id:'fut1_frage',   label:'Frage',        sub:'Вопрос'        },
+    { id:'fut1_neg',     label:'Negation',     sub:'Отрицание'     },
+    { id:'fut1_werden',  label:'werden',       sub:'Спряжение'     },
+  ],
+  futur2: [
+    { id:'fut2_aussage', label:'Aussagesatz',  sub:'Утвердительное' },
+    { id:'fut2_neg',     label:'Negation',     sub:'Отрицание'     },
+  ],
+  perfekt: [
+    { id:'pf_aussage',   label:'Aussagesatz',  sub:'Утвердительное' },
+    { id:'pf_frage',     label:'Frage',        sub:'Вопрос'        },
+    { id:'pf_neg',       label:'Negation',     sub:'Отрицание'     },
+    { id:'pf_haben',     label:'haben',        sub:'haben-Verben'  },
+    { id:'pf_sein',      label:'sein',         sub:'sein-Verben'   },
+    { id:'pf_part2',     label:'Partizip II',  sub:'Образование'   },
+  ],
+  prateritum: [
+    { id:'prat_aussage', label:'Aussagesatz',  sub:'Утвердительное' },
+    { id:'prat_frage',   label:'Frage',        sub:'Вопрос'        },
+    { id:'prat_neg',     label:'Negation',     sub:'Отрицание'     },
+    { id:'prat_schwach', label:'Schwache V.',  sub:'Слабые'        },
+    { id:'prat_stark',   label:'Starke V.',    sub:'Сильные'       },
+    { id:'prat_modal',   label:'Modalverben',  sub:'Модальные'     },
+  ],
+  plusquamp: [
+    { id:'plq_aussage',  label:'Aussagesatz',  sub:'Утвердительное' },
+    { id:'plq_neg',      label:'Negation',     sub:'Отрицание'     },
+  ],
+  konjunktiv: [
+    { id:'konj2',        label:'Konj. II',     sub:'Нереальное'    },
+    { id:'konj2_wurd',   label:'würde+Inf',    sub:'Описательная'  },
+    { id:'konj1',        label:'Konj. I',      sub:'Косв. речь'    },
+    { id:'konj_irrealis', label:'Irrealis',    sub:'Условие'       },
+  ],
+  imperativ: [
+    { id:'imp_du',       label:'du-Form',      sub:'Ты'            },
+    { id:'imp_ihr',      label:'ihr-Form',     sub:'Вы (мн.)'      },
+    { id:'imp_sie',      label:'Sie-Form',     sub:'Вы (вежл.)'    },
+    { id:'imp_neg',      label:'Negation',     sub:'Запрет'        },
+  ],
+  // Level 3 — Aussagesatz Präsens
+  pra_aussage: [
+    { id:'pra_aus_wort',  label:'Wortstellung', sub:'Порядок слов' },
+    { id:'pra_aus_subj',  label:'Subjekt',      sub:'Подлежащее'   },
+    { id:'pra_aus_verb',  label:'Verb (Pos.2)', sub:'Глагол'       },
+    { id:'pra_aus_obj_a', label:'Akk.-Objekt',  sub:'Вин. падеж'   },
+    { id:'pra_aus_obj_d', label:'Dat.-Objekt',  sub:'Дат. падеж'   },
+    { id:'pra_aus_adv',   label:'Adverb',       sub:'Обстоятельство'},
+  ],
+  // Level 3 — Perfekt детали
+  pf_haben: [
+    { id:'pf_haben_trans',  label:'Transitiv',   sub:'Переходные'   },
+    { id:'pf_haben_refl',   label:'Reflexiv',    sub:'Возвратные'   },
+    { id:'pf_haben_modal',  label:'Modalverben', sub:'Модальные'    },
+  ],
+  // Level 3 — Verb детали
+  pra_verb: [
+    { id:'verb_schwach',  label:'Schwache V.',  sub:'Слабые'       },
+    { id:'verb_stark',    label:'Starke V.',    sub:'Сильные'      },
+    { id:'verb_modal',    label:'Modalverben',  sub:'Модальные'    },
+    { id:'verb_trenn',    label:'Trennbare V.', sub:'Отделяемые'   },
+    { id:'verb_refl',     label:'Reflexive V.', sub:'Возвратные'   },
+  ],
+  // Level 3 — Nomen детали
+  pra_nomen: [
+    { id:'nom_genus',     label:'Genus',        sub:'Род'          },
+    { id:'nom_plural',    label:'Plural',       sub:'Мн. число'    },
+    { id:'nom_kasus',     label:'4 Kasus',      sub:'Все падежи'   },
+    { id:'nom_gen',       label:'Genitiv',      sub:'Родит. падеж' },
+  ],
 };
 
-// ══════════════════════════════════════════════════
-//  CONTENT  ─ правила, примеры, упражнения
-// ══════════════════════════════════════════════════
-const CONTENT = {
-  prasens: {
-    title: 'Präsens', tense: 'Настоящее время', color: '#4ae8a0', zone: 'present',
-    formula: 'Subjekt + Verb(konjugiert) + ...',
-    rule: 'Präsens используется для действий, происходящих сейчас или регулярно. Глагол спрягается по лицу и числу.',
-    examples: [
-      { de: 'Ich lerne Deutsch.', ru: 'Я учу немецкий.' },
-      { de: 'Er arbeitet jeden Tag.', ru: 'Он работает каждый день.' },
-      { de: 'Wir gehen ins Kino.', ru: 'Мы идём в кино.' },
-    ],
-    exercises: [
-      { q: 'Ich ___ (lernen) Deutsch.', a: 'lerne', hint: 'ich → -e' },
-      { q: 'Er ___ (arbeiten) viel.', a: 'arbeitet', hint: 'er → -et (при основе на -t)' },
-      { q: 'Wir ___ (gehen) ins Kino.', a: 'gehen', hint: 'wir → основа' },
-      { q: 'Du ___ (sprechen) Russisch.', a: 'sprichst', hint: 'stark: sprechen → sprichst' },
-      { q: 'Sie ___ (haben) Zeit.', a: 'hat', hint: 'unregelmäßig: hat' },
-    ]
-  },
-  prasens_verb: {
-    title: 'Verb — Konjugation', tense: 'Спряжение глагола', color: '#4ae8a0', zone: 'present',
-    formula: 'Stamm + Endung (-e, -st, -t, -en, -t, -en)',
-    rule: 'Регулярное спряжение: ich -e / du -st / er -t / wir -en / ihr -t / sie -en. Сильные глаголы меняют корневую гласную во 2-м и 3-м лице.',
-    examples: [
-      { de: 'ich lerne — du lernst — er lernt', ru: 'я учу — ты учишь — он учит' },
-      { de: 'ich fahre — du fährst — er fährt', ru: 'я еду — ты едешь — он едет' },
-      { de: 'ich lese — du liest — er liest', ru: 'я читаю — ты читаешь — он читает' },
-    ],
-    exercises: [
-      { q: 'du ___ (fahren)', a: 'fährst', hint: 'a→ä во 2-м лице' },
-      { q: 'er ___ (lesen)', a: 'liest', hint: 'e→ie в 3-м лице' },
-      { q: 'ihr ___ (spielen)', a: 'spielt', hint: 'ihr → -t' },
-    ]
-  },
-  prasens_subj: {
-    title: 'Subjekt — Nominativ', tense: 'Подлежащее', color: '#4ae8a0', zone: 'present',
-    formula: 'wer? / was? → Nominativ',
-    rule: 'Подлежащее всегда стоит в Nominativ. Артикль: der/die/das → Nom. не изменяется.',
-    examples: [
-      { de: 'Der Mann arbeitet.', ru: 'Мужчина работает. (m)' },
-      { de: 'Die Frau schläft.', ru: 'Женщина спит. (f)' },
-      { de: 'Das Kind spielt.', ru: 'Ребёнок играет. (n)' },
-    ],
-    exercises: [
-      { q: '___ Mann (der/die/das) kommt.', a: 'Der', hint: 'Mann — мужской род' },
-      { q: '___ Frau (der/die/das) lernt.', a: 'Die', hint: 'Frau — женский род' },
-      { q: '___ Kind (der/die/das) lacht.', a: 'Das', hint: 'Kind — средний род' },
-    ]
-  },
-  prasens_obj: {
-    title: 'Objekt — Akkusativ', tense: 'Прямое дополнение', color: '#4ae8a0', zone: 'present',
-    formula: 'wen? / was? → Akkusativ',
-    rule: 'Прямое дополнение стоит в Akkusativ. der → den (только m!), die/das не изменяются.',
-    examples: [
-      { de: 'Ich sehe den Mann.', ru: 'Я вижу мужчину. (den!)' },
-      { de: 'Er kauft die Zeitung.', ru: 'Он покупает газету.' },
-      { de: 'Wir essen das Brot.', ru: 'Мы едим хлеб.' },
-    ],
-    exercises: [
-      { q: 'Ich sehe ___ Mann (den/die/das).', a: 'den', hint: 'der → den в Akkusativ' },
-      { q: 'Er kauft ___ Buch.', a: 'das', hint: 'Buch — средний род, Akk. = das' },
-    ]
-  },
-  prasens_adj: {
-    title: 'Adjektiv — Deklination', tense: 'Склонение прилагательного', color: '#4ae8a0', zone: 'present',
-    formula: 'Art. + Adj.(-e/-en/-em/-er) + Subst.',
-    rule: 'После определённого артикля: Nom. -e (Sg.) / -en (Pl.), все остальные падежи -en. После неопределённого артикля — смешанное склонение.',
-    examples: [
-      { de: 'der alte Mann (Nom.)', ru: 'старый мужчина' },
-      { de: 'eine alte Frau (Nom.)', ru: 'старая женщина' },
-      { de: 'ein altes Kind (Nom.)', ru: 'старый ребёнок' },
-    ],
-    exercises: [
-      { q: 'der alt___ Mann (Nom.)', a: 'e', hint: 'посл. опред. артикля Nom.m → -e' },
-      { q: 'ein alt___ Kind (Nom.)', a: 'es', hint: 'посл. неопред. Nom.n → -es' },
-    ]
-  },
-  prasens_neg: {
-    title: 'Negation', tense: 'Отрицание', color: '#4ae8a0', zone: 'present',
-    formula: 'nicht (глаголы) / kein- (существительные)',
-    rule: '"nicht" отрицает глагол/прилагательное/наречие — стоит перед отрицаемым элементом. "kein" = nicht ein — отрицает существительные.',
-    examples: [
-      { de: 'Ich arbeite nicht.', ru: 'Я не работаю.' },
-      { de: 'Er ist nicht müde.', ru: 'Он не устал.' },
-      { de: 'Ich habe keine Zeit.', ru: 'У меня нет времени.' },
-    ],
-    exercises: [
-      { q: 'Ich arbeite ___.', a: 'nicht', hint: 'отрицание глагола → nicht' },
-      { q: 'Ich habe ___ Zeit.', a: 'keine', hint: 'Zeit (f) → keine' },
-    ]
-  },
-  prasens_frage: {
-    title: 'Frage im Präsens', tense: 'Вопрос в настоящем', color: '#4ae8a0', zone: 'present',
-    formula: 'Verb + Subjekt + ...? / W-Wort + Verb + Subjekt?',
-    rule: 'Общий вопрос: глагол на 1-е место. Специальный вопрос: W-Wort + глагол + субъект.',
-    examples: [
-      { de: 'Lernst du Deutsch?', ru: 'Ты учишь немецкий?' },
-      { de: 'Was machst du?', ru: 'Что ты делаешь?' },
-      { de: 'Wo wohnst du?', ru: 'Где ты живёшь?' },
-    ],
-    exercises: [
-      { q: '___ du Deutsch? (lernst/lerne/lernt)', a: 'Lernst', hint: 'глагол на 1-е место, du → -st' },
-      { q: 'Was ___ du? (macht/machst/machen)', a: 'machst', hint: 'du → -st' },
-    ]
-  },
-  futur1: {
-    title: 'Futur I', tense: 'Будущее время I', color: '#4a9de8', zone: 'future',
-    formula: 'werden (konj.) + Infinitiv',
-    rule: 'Futur I образуется с помощью глагола "werden" + инфинитив в конце предложения. Также используется с наречиями типа morgen, bald, nächste Woche.',
-    examples: [
-      { de: 'Ich werde morgen lernen.', ru: 'Я буду учиться завтра.' },
-      { de: 'Er wird nach Berlin fahren.', ru: 'Он поедет в Берлин.' },
-      { de: 'Wir werden das schaffen!', ru: 'Мы справимся!' },
-    ],
-    exercises: [
-      { q: 'Ich ___ morgen lernen. (werde/wird/werden)', a: 'werde', hint: 'ich → werde' },
-      { q: 'Er ___ nach Berlin fahren.', a: 'wird', hint: 'er → wird' },
-      { q: 'Wir ___ das schaffen.', a: 'werden', hint: 'wir → werden' },
-    ]
-  },
-  futur1_werden: {
-    title: 'werden — Konjugation', tense: 'Futur I → werden', color: '#4a9de8', zone: 'future',
-    formula: 'ich werde / du wirst / er wird / wir werden / ihr werdet / sie werden',
-    rule: '"werden" — вспомогательный глагол для Futur I. Сильно неправильный: du wirst, er wird.',
-    examples: [
-      { de: 'ich werde — du wirst — er wird', ru: 'спряжение werden' },
-      { de: 'wir werden — ihr werdet — sie werden', ru: 'мн. число' },
-    ],
-    exercises: [
-      { q: 'du ___ (werden)', a: 'wirst', hint: 'неправильная форма' },
-      { q: 'sie (они) ___ (werden)', a: 'werden', hint: 'мн.ч. = инфинитив' },
-    ]
-  },
-  futur2: {
-    title: 'Futur II', tense: 'Будущее время II', color: '#2d6fa8', zone: 'future',
-    formula: 'werden + Partizip II + haben/sein',
-    rule: 'Futur II выражает действие, которое завершится к определённому моменту в будущем. Редкое время, чаще в письменном языке.',
-    examples: [
-      { de: 'Ich werde das Buch gelesen haben.', ru: 'Я буду (уже) прочитал книгу.' },
-      { de: 'Er wird angekommen sein.', ru: 'Он, должно быть, уже прибыл.' },
-    ],
-    exercises: [
-      { q: 'Ich werde das Buch gelesen ___.', a: 'haben', hint: 'lesen → haben-глагол' },
-      { q: 'Er wird angekommen ___.', a: 'sein', hint: 'ankommen → sein-глагол' },
-    ]
-  },
-  perfekt: {
-    title: 'Perfekt', tense: 'Прошедшее время (разговорное)', color: '#e85d4a', zone: 'past',
-    formula: 'haben/sein (konj.) + Partizip II',
-    rule: 'Perfekt — основное прошедшее время в разговорной речи. Глагол "haben" или "sein" + Partizip II в конце.',
-    examples: [
-      { de: 'Ich habe Deutsch gelernt.', ru: 'Я учил немецкий. (learn)' },
-      { de: 'Er ist nach Hause gegangen.', ru: 'Он пошёл домой. (go)' },
-      { de: 'Wir haben gegessen.', ru: 'Мы поели.' },
-    ],
-    exercises: [
-      { q: 'Ich ___ Deutsch gelernt. (habe/bin)', a: 'habe', hint: 'lernen → haben' },
-      { q: 'Er ___ nach Hause gegangen. (hat/ist)', a: 'ist', hint: 'gehen → sein' },
-      { q: 'Wir ___ gegessen. (haben/sind)', a: 'haben', hint: 'essen → haben' },
-    ]
-  },
-  perfekt_haben: {
-    title: 'haben-Verben', tense: 'Perfekt с haben', color: '#e85d4a', zone: 'past',
-    formula: 'haben + Partizip II',
-    rule: 'С "haben": переходные глаголы (с Akkusativ), большинство глаголов. Примеры: lernen, kaufen, essen, sehen, machen.',
-    examples: [
-      { de: 'Ich habe ein Buch gekauft.', ru: 'Я купил книгу.' },
-      { de: 'Sie hat einen Film gesehen.', ru: 'Она посмотрела фильм.' },
-      { de: 'Wir haben viel gearbeitet.', ru: 'Мы много работали.' },
-    ],
-    exercises: [
-      { q: 'Ich habe ein Buch ___ (kaufen → Part.II).', a: 'gekauft', hint: 'schwach: ge-+Stamm+-t' },
-      { q: 'Sie hat einen Film ___ (sehen → Part.II).', a: 'gesehen', hint: 'stark: ge-+Stamm(-e→e)-en' },
-    ]
-  },
-  perfekt_sein: {
-    title: 'sein-Verben', tense: 'Perfekt с sein', color: '#e85d4a', zone: 'past',
-    formula: 'sein + Partizip II',
-    rule: 'С "sein": глаголы движения (gehen, fahren, laufen, fliegen), смены состояния (aufwachen, sterben, werden), а также bleiben и sein.',
-    examples: [
-      { de: 'Er ist nach Berlin gefahren.', ru: 'Он поехал в Берлин.' },
-      { de: 'Ich bin aufgewacht.', ru: 'Я проснулся.' },
-      { de: 'Sie ist geblieben.', ru: 'Она осталась.' },
-    ],
-    exercises: [
-      { q: 'Er ist nach Berlin ___ (fahren → Part.II).', a: 'gefahren', hint: 'stark: ge-+fuhr-+en' },
-      { q: 'Ich bin ___ (aufwachen → Part.II).', a: 'aufgewacht', hint: 'trennbar: auf-ge-wach-t' },
-    ]
-  },
-  perfekt_part2: {
-    title: 'Partizip II — Bildung', tense: 'Образование Partizip II', color: '#e85d4a', zone: 'past',
-    formula: 'schwach: ge-+Stamm+-t | stark: ge-+Ablaut+-en',
-    rule: 'Слабые (правильные): ge- + основа + -t (lernen→gelernt). Сильные: ge- + изменённая основа + -en (schreiben→geschrieben). Неотделяемые приставки (be-, ver-, er-): без ge- (besucht). Отделяемые: ge- вставляется (aufgemacht).',
-    examples: [
-      { de: 'lernen → gelernt', ru: 'учить → выучил (слабый)' },
-      { de: 'schreiben → geschrieben', ru: 'писать → написал (сильный)' },
-      { de: 'besuchen → besucht', ru: 'посещать → посетил (без ge-)' },
-    ],
-    exercises: [
-      { q: 'machen → ge___t', a: 'gemacht', hint: 'ge-+mach-+t' },
-      { q: 'fahren → ge___en', a: 'gefahren', hint: 'ge-+fahr-+en (Ablaut: a→a)' },
-      { q: 'aufmachen → auf___t', a: 'aufgemacht', hint: 'auf+ge+mach+t' },
-    ]
-  },
-  prateritum: {
-    title: 'Präteritum', tense: 'Нарративное прошедшее', color: '#b83a2a', zone: 'past',
-    formula: 'Stamm + Präteritum-Endung',
-    rule: 'Präteritum используется в письменной речи, рассказах, газетах. В разговоре — только sein/haben/Modalverben.',
-    examples: [
-      { de: 'Er arbeitete jeden Tag.', ru: 'Он работал каждый день.' },
-      { de: 'Ich war müde.', ru: 'Я был усталым.' },
-      { de: 'Wir hatten keine Zeit.', ru: 'У нас не было времени.' },
-    ],
-    exercises: [
-      { q: 'Ich ___ müde. (sein → Prät.)', a: 'war', hint: 'sein → war' },
-      { q: 'Wir ___ keine Zeit. (haben → Prät.)', a: 'hatten', hint: 'haben → hatten' },
-      { q: 'Er ___ viel. (arbeiten → Prät.)', a: 'arbeitete', hint: 'schwach: Stamm+-te' },
-    ]
-  },
-  prat_stark: {
-    title: 'Starke Verben', tense: 'Сильные глаголы в Präteritum', color: '#b83a2a', zone: 'past',
-    formula: 'Ablaut-Stamm + (-/st/–/en/t/en)',
-    rule: 'Сильные глаголы меняют корневую гласную (Ablaut). Ich/er без окончания!',
-    examples: [
-      { de: 'fahren: ich fuhr, du fuhrst, er fuhr', ru: 'ехал' },
-      { de: 'schreiben: ich schrieb, du schriebst', ru: 'писал' },
-      { de: 'gehen: ich ging, du gingst', ru: 'шёл' },
-    ],
-    exercises: [
-      { q: 'Ich ___ (fahren → Prät.)', a: 'fuhr', hint: 'a→u: fuhr' },
-      { q: 'Er ___ (gehen → Prät.)', a: 'ging', hint: 'e→i: ging' },
-    ]
-  },
-  prat_modal: {
-    title: 'Modalverben im Präteritum', tense: 'Модальные в прошедшем', color: '#b83a2a', zone: 'past',
-    formula: 'Modal-Stamm + -te-Endung',
-    rule: 'Модальные глаголы в Präteritum: теряют умлаут и получают -te- (können→konnte, müssen→musste, dürfen→durfte, wollen→wollte, sollen→sollte, mögen→mochte).',
-    examples: [
-      { de: 'Ich konnte nicht schlafen.', ru: 'Я не мог спать.' },
-      { de: 'Er musste arbeiten.', ru: 'Ему нужно было работать.' },
-      { de: 'Wir wollten helfen.', ru: 'Мы хотели помочь.' },
-    ],
-    exercises: [
-      { q: 'Ich ___ nicht schlafen. (können → Prät.)', a: 'konnte', hint: 'können → konnte' },
-      { q: 'Er ___ arbeiten. (müssen → Prät.)', a: 'musste', hint: 'müssen → musste' },
-    ]
-  },
-  plusquamp: {
-    title: 'Plusquamperfekt', tense: 'Давнопрошедшее', color: '#882010', zone: 'past',
-    formula: 'hatte/war + Partizip II',
-    rule: 'Plusquamperfekt — действие, предшествующее другому прошедшему. Образуется как Perfekt, но вспомогат. глагол в Präteritum (hatte/war).',
-    examples: [
-      { de: 'Ich hatte gegessen, bevor er kam.', ru: 'Я поел до того, как он пришёл.' },
-      { de: 'Sie war schon weg, als ich ankam.', ru: 'Она уже ушла, когда я пришёл.' },
-    ],
-    exercises: [
-      { q: 'Ich ___ gegessen, bevor er kam. (hatte/war)', a: 'hatte', hint: 'essen → haben → hatte' },
-      { q: 'Sie ___ schon weggegangen. (hatte/war)', a: 'war', hint: 'weggehen → sein → war' },
-    ]
-  },
-  konjunktiv: {
-    title: 'Konjunktiv', tense: 'Сослагательное наклонение', color: '#a04ae8', zone: 'present',
-    formula: 'Konj. II: würde+Inf. / Konj. I: Verb+Endung',
-    rule: 'Konjunktiv II — для вежливых просьб, условий, нереальных ситуаций. Konjunktiv I — для косвенной речи.',
-    examples: [
-      { de: 'Ich würde gerne helfen.', ru: 'Я бы с удовольствием помог.' },
-      { de: 'Wenn ich Zeit hätte, würde ich kommen.', ru: 'Если бы у меня было время, я бы пришёл.' },
-      { de: 'Er sagt, er habe keine Zeit. (Konj. I)', ru: 'Он говорит, что у него нет времени.' },
-    ],
-    exercises: [
-      { q: 'Ich ___ gerne helfen. (Konj. II = würde+Inf)', a: 'würde', hint: 'würde + Infinitiv' },
-      { q: 'Wenn ich Zeit ___, würde ich kommen. (haben → Konj.II)', a: 'hätte', hint: 'haben → hätte' },
-    ]
-  },
-  imperativ: {
-    title: 'Imperativ', tense: 'Повелительное наклонение', color: '#e8a04a', zone: 'present',
-    formula: 'du: Stamm(+e) | ihr: Stamm+t | Sie: Inf.+Sie',
-    rule: 'du-форма: основа (часто без окончания), сильные глаголы сохраняют Ablaut. ihr-форма: как Präsens. Sie-форма: инфинитив + Sie.',
-    examples: [
-      { de: 'Lern! / Lerne! (du)', ru: 'Учи! (ты)' },
-      { de: 'Lernt! (ihr)', ru: 'Учите! (вы мн.)' },
-      { de: 'Lernen Sie! (Sie)', ru: 'Учите! (вежл.)' },
-    ],
-    exercises: [
-      { q: '___ ! (du, lernen → Imperativ)', a: 'Lern', hint: 'du: основа (lern-)' },
-      { q: '___ ! (ihr, lernen → Imperativ)', a: 'Lernt', hint: 'ihr: Stamm+t' },
-      { q: '___ Sie! (lernen → Imperativ)', a: 'Lernen', hint: 'Sie: Infinitiv + Sie' },
-    ]
-  },
-  imp_du: {
-    title: 'Imperativ du-Form', tense: 'Команда для "ты"', color: '#e8a04a', zone: 'present',
-    formula: 'Grundform (Stamm) + (e)',
-    rule: 'Основа глагола. Сильные глаголы с e→i/ie сохраняют это изменение (lesen → Lies!). Глаголы на -d/-t/-ig добавляют -e (arbeite!). Модные добавляют -е по желанию.',
-    examples: [
-      { de: 'Geh! (gehen)', ru: 'Иди!' },
-      { de: 'Lies! (lesen)', ru: 'Читай!' },
-      { de: 'Arbeite! (arbeiten)', ru: 'Работай!' },
-    ],
-    exercises: [
-      { q: '___ ! (schlafen → du-Imp.)', a: 'Schlaf', hint: 'основа: schlaf-' },
-      { q: '___ ! (sprechen → du-Imp.)', a: 'Sprich', hint: 'e→i: sprich' },
-    ]
-  },
-};
+// ═══════════════════════════════════════════════════════════════════
+// CONTENT — правила, примеры, таблицы, упражнения
+// ═══════════════════════════════════════════════════════════════════
 
-// ══════════════════════════════════════════════════
-//  STATE
-// ══════════════════════════════════════════════════
-let state = {
-  level: 'root',         // 'root' | parent_id
-  selected: null,        // current segment id
-  path: [],              // breadcrumb
-  score: { correct: 0, wrong: 0 },
-  exIdx: 0,
-  answered: false,
-};
+const CONTENT = {};
 
-// ══════════════════════════════════════════════════
-//  CANVAS WHEEL
-// ══════════════════════════════════════════════════
-const canvas = document.getElementById('wheelCanvas');
-const ctx = canvas.getContext('2d');
-const CX = 280, CY = 280, R_OUTER = 260, R_INNER = 50;
+// Helpers
+const ex = (q, a, h) => ({q, a, h});
+const sent = (de, parts, ru) => ({de, parts, ru});
+// parts: [{word, role}]  role: S/V/Oa/Od/Adj/Adv/P/N
 
-function getSegments() {
-  if (state.level === 'root') {
-    return WHEEL_DATA.root.map((s, i) => ({
-      ...s,
-      startAngle: (i / WHEEL_DATA.root.length) * Math.PI * 2 - Math.PI / 2,
-      endAngle: ((i + 1) / WHEEL_DATA.root.length) * Math.PI * 2 - Math.PI / 2,
-      depth: 0,
-    }));
-  } else {
-    const children = WHEEL_DATA.children[state.level] || [];
-    const parent = WHEEL_DATA.root.find(r => r.id === state.level);
-    const baseColor = parent ? parent.color : '#888';
-    return children.map((s, i) => ({
-      ...s,
-      color: adjustColor(baseColor, i, children.length),
-      startAngle: (i / children.length) * Math.PI * 2 - Math.PI / 2,
-      endAngle: ((i + 1) / children.length) * Math.PI * 2 - Math.PI / 2,
-      depth: 1,
-    }));
-  }
+function partChip(word, role) {
+  const cls = {S:'chip-s',V:'chip-v',Oa:'chip-o',Od:'chip-o',Adj:'chip-a',Adv:'chip-ad',P:'chip-p',N:'chip-n',Aux:'chip-v'};
+  const label = {S:'Subjekt',V:'Verb',Oa:'Akk.',Od:'Dat.',Adj:'Adj.',Adv:'Adverb',P:'Präp.',N:'Neg.',Aux:'Aux.'};
+  return `<span class="part-chip ${cls[role]||''}">${word} <em>${label[role]||role}</em></span>`;
 }
 
-function adjustColor(hex, i, n) {
-  // vary lightness
-  const factor = 0.6 + 0.4 * (i / Math.max(n - 1, 1));
-  const r = parseInt(hex.slice(1,3),16);
-  const g = parseInt(hex.slice(3,5),16);
-  const b = parseInt(hex.slice(5,7),16);
-  const toHex = v => Math.round(Math.max(0,Math.min(255,v * factor))).toString(16).padStart(2,'0');
-  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+// ── PRÄSENS root ───────────────────────────────────────────────────
+CONTENT['prasens'] = {
+  zone:'present', tag:'Zeitform', title:'Präsens',
+  sub:'Настоящее время — всё уровни',
+  tabs: ['Правило','Примеры','Упражнения'],
+  rule: {
+    formula: 'Subjekt + Verb₂ + (Objekt) + (Adverb/Präp.)',
+    text: `Präsens — базовое время немецкого. Глагол всегда стоит на <strong>2-й позиции</strong> (V2-правило).
+Используется для: постоянных фактов, привычек, действий сейчас, а также вместо будущего с временны́м маркером.
+<br><br>
+Спряжение: <em>ich -e / du -st / er -t / wir -en / ihr -t / sie -en</em>.
+Сильные глаголы меняют корневую гласную в 2-3 лице: <em>e→ie/i, a→ä</em>.`,
+    table: {
+      head: ['Person','Endung','lernen','fahren','lesen'],
+      rows: [
+        ['ich','-e','lerne','fahre','lese'],
+        ['du','-st','lernst','fährst','liest'],
+        ['er/sie','-t','lernt','fährt','liest'],
+        ['wir','-en','lernen','fahren','lesen'],
+        ['ihr','-t','lernt','fahrt','lest'],
+        ['sie/Sie','-en','lernen','fahren','lesen'],
+      ]
+    }
+  },
+  examples: [
+    sent('Ich lerne jeden Tag Deutsch.',
+      [{w:'Ich',r:'S'},{w:'lerne',r:'V'},{w:'jeden Tag',r:'Adv'},{w:'Deutsch',r:'Oa'}],
+      'Я каждый день учу немецкий.'),
+    sent('Er fährt morgen nach Berlin.',
+      [{w:'Er',r:'S'},{w:'fährt',r:'V'},{w:'morgen',r:'Adv'},{w:'nach',r:'P'},{w:'Berlin',r:'Oa'}],
+      'Он едет завтра в Берлин.'),
+    sent('Die Studentin liest ein interessantes Buch.',
+      [{w:'Die Studentin',r:'S'},{w:'liest',r:'V'},{w:'ein interessantes Buch',r:'Oa'}],
+      'Студентка читает интересную книгу.'),
+  ],
+  exercises: [
+    ex('Ich ___ (lernen) jeden Tag.','lerne','ich → -e'),
+    ex('Er ___ (fahren) nach München.','fährt','fahren: a→ä, 3.Pers. -t'),
+    ex('Du ___ (lesen) ein Buch.','liest','lesen: e→ie'),
+    ex('Wir ___ (arbeiten) viel.','arbeiten','wir → основа (arbeiten)'),
+    ex('Ihr ___ (spielen) Fußball.','spielt','ihr → -t'),
+  ]
+};
+
+// ── PRÄSENS → Aussagesatz ─────────────────────────────────────────
+CONTENT['pra_aussage'] = {
+  zone:'present', tag:'Satztyp', title:'Aussagesatz',
+  sub:'Утвердительное предложение — Präsens',
+  tabs: ['Правило','Примеры','Упражнения'],
+  rule: {
+    formula: '[X] + Verb₂ + Subjekt? + ... + [Ende: Inf./Part./Präfix]',
+    text: `В немецком предложении глагол <em>всегда на 2-й позиции</em>.
+Позиция 1 может быть занята субъектом, обстоятельством, дополнением — но глагол неизменно второй.
+<br><br>
+Порядок в "рамке": <strong>Subjekt</strong> → <strong>Verb (P2)</strong> → дополнения (Dat. перед Akk.) → обстоятельства (TeKaMoLo) → [конец рамки].
+<br><br>
+<strong>TeKaMoLo</strong>: Temporal → Kausal → Modal → Lokal.`,
+    table: {
+      head: ['Pos.1','Pos.2 (Verb)','Mittelfeld','Satzklammer'],
+      rows: [
+        ['Ich','lerne','jeden Tag','–'],
+        ['Jeden Tag','lerne','ich','–'],
+        ['Er','hat','heute viel','gearbeitet'],
+        ['Morgen','wird','er nach Berlin','fahren'],
+      ]
+    }
+  },
+  examples: [
+    sent('Ich trinke morgens Kaffee.',
+      [{w:'Ich',r:'S'},{w:'trinke',r:'V'},{w:'morgens',r:'Adv'},{w:'Kaffee',r:'Oa'}],
+      'Я пью по утрам кофе.'),
+    sent('Morgens trinke ich Kaffee.',
+      [{w:'Morgens',r:'Adv'},{w:'trinke',r:'V'},{w:'ich',r:'S'},{w:'Kaffee',r:'Oa'}],
+      'По утрам я пью кофе. (инверсия)'),
+    sent('Sie gibt dem Kind ein Buch.',
+      [{w:'Sie',r:'S'},{w:'gibt',r:'V'},{w:'dem Kind',r:'Od'},{w:'ein Buch',r:'Oa'}],
+      'Она даёт ребёнку книгу. (Dat. перед Akk.)'),
+    sent('Er wohnt seit drei Jahren in Berlin.',
+      [{w:'Er',r:'S'},{w:'wohnt',r:'V'},{w:'seit drei Jahren',r:'Adv'},{w:'in Berlin',r:'Adv'}],
+      'Он живёт в Берлине три года.'),
+  ],
+  exercises: [
+    ex('[Jeden Tag] ___ ich Deutsch. (lernen)','lerne','инверсия: Verb P2, ich P3'),
+    ex('Sie ___ dem Mann das Buch. (geben)','gibt','Dat. dem Mann, Akk. das Buch'),
+    ex('[In Berlin] ___ er seit 2020. (wohnen)','wohnt','er → -t'),
+    ex('Wir ___ heute ins Kino. (gehen)','gehen','wir → -en'),
+    ex('[Gestern] ___ er früh aufgestanden. → Er ___ gestern früh aufgestanden.','ist / ist','Perfekt: Aux. P2, Part.II am Ende'),
+  ]
+};
+
+// ── PRÄSENS → Wortstellung (Level 3) ─────────────────────────────
+CONTENT['pra_aus_wort'] = {
+  zone:'present', tag:'Struktur', title:'Wortstellung',
+  sub:'Порядок слов в немецком предложении',
+  tabs: ['Правило','Примеры','Упражнения'],
+  rule: {
+    formula: 'P1 + V₂ + (S) + Dat.Obj. + Akk.Obj. + TeKaMoLo + [Klammer]',
+    text: `<strong>V2-правило:</strong> конечный глагол (инфинитив, Part.II) уходит в конец — образуется <em>Satzklammer</em> (скобка).
+<br><br>
+<strong>Mittelfeld — порядок элементов:</strong><br>
+① Dat.-Objekt перед Akk.-Objekt (при существительных)<br>
+② Но: если один местоимение — оно идёт первым<br>
+③ TeKaMoLo: Zeit → Kausal → Modalität → Lokal<br><br>
+<strong>Инверсия:</strong> любой элемент, вынесенный на P1, вызывает инверсию субъекта.`,
+    table: {
+      head:['Правило','Пример','Перевод'],
+      rows:[
+        ['Subj. на P1','Ich lerne Deutsch.','Я учу немецкий.'],
+        ['Adv. на P1','Heute lerne ich Deutsch.','Сегодня я учу немецкий.'],
+        ['Dat. → Akk.','Er gibt dem Freund das Buch.','Он даёт другу книгу.'],
+        ['Pron. 1-м','Er gibt es ihm.','Он даёт его ему.'],
+        ['TeKaMoLo','Er fährt morgens gern mit dem Bus nach Hause.','Он с удовольствием ездит на автобусе домой.'],
+      ]
+    }
+  },
+  examples: [
+    sent('Er kauft seiner Mutter heute Blumen.',
+      [{w:'Er',r:'S'},{w:'kauft',r:'V'},{w:'seiner Mutter',r:'Od'},{w:'heute',r:'Adv'},{w:'Blumen',r:'Oa'}],
+      'Он покупает своей маме сегодня цветы.'),
+    sent('Heute kauft er seiner Mutter Blumen.',
+      [{w:'Heute',r:'Adv'},{w:'kauft',r:'V'},{w:'er',r:'S'},{w:'seiner Mutter',r:'Od'},{w:'Blumen',r:'Oa'}],
+      'Сегодня он покупает своей маме цветы. (инверсия)'),
+    sent('Er fährt morgens schnell mit dem Rad zur Arbeit.',
+      [{w:'Er',r:'S'},{w:'fährt',r:'V'},{w:'morgens',r:'Adv'},{w:'schnell',r:'Adv'},{w:'mit dem Rad',r:'Adv'},{w:'zur Arbeit',r:'Adv'}],
+      'Он быстро ездит на работу на велосипеде по утрам. (T-M-L)'),
+  ],
+  exercises: [
+    ex('___ lerne ich Deutsch. (Heute/Ich heute)','Heute','Adv. на P1 → инверсия'),
+    ex('Er gibt ___ das Buch. (dem Freund / den Freund)','dem Freund','гlagen Dat. → dem'),
+    ex('Ich fahre ___ zur Arbeit. (schnell, morgens) → правильный порядок','morgens schnell','T(morgens) → M(schnell)'),
+  ]
+};
+
+// ── PRÄSENS → Ja/Nein-Frage ───────────────────────────────────────
+CONTENT['pra_frage_j'] = {
+  zone:'present', tag:'Satztyp', title:'Ja/Nein-Frage',
+  sub:'Общий вопрос — да/нет',
+  tabs: ['Правило','Примеры','Упражнения'],
+  rule: {
+    formula: 'Verb₁ + Subjekt + ... + ?',
+    text: `Общий вопрос: глагол выносится на <strong>1-ю позицию</strong>.
+Субъект идёт следом (P2). Структура остальных элементов сохраняется.
+<br><br>
+Ответы: <em>Ja, ... / Nein, ... / Doch!</em> (doch = "нет, всё-таки да" — опровержение отрицания).`,
+    table: {
+      head:['Тип','Структура','Пример'],
+      rows:[
+        ['Positiv','V + S + ...?','Lernst du Deutsch?'],
+        ['Mit Objekt','V + S + Obj. + ...?','Kaufst du das Buch?'],
+        ['Verneinung','V + S + nicht + ...?','Lernst du nicht?'],
+        ['Antwort +','Ja, ich lerne.','–'],
+        ['Antwort –','Nein, ich lerne nicht.','–'],
+        ['Doch!','Doch, ich lerne!','(опровержение "nicht")'],
+      ]
+    }
+  },
+  examples: [
+    sent('Lernst du Deutsch?',
+      [{w:'Lernst',r:'V'},{w:'du',r:'S'},{w:'Deutsch?',r:'Oa'}],
+      'Ты учишь немецкий?'),
+    sent('Hat er Zeit?',
+      [{w:'Hat',r:'V'},{w:'er',r:'S'},{w:'Zeit?',r:'Oa'}],
+      'У него есть время?'),
+    sent('Fährst du morgen nach Berlin?',
+      [{w:'Fährst',r:'V'},{w:'du',r:'S'},{w:'morgen',r:'Adv'},{w:'nach Berlin?',r:'Adv'}],
+      'Ты едешь завтра в Берлин?'),
+  ],
+  exercises: [
+    ex('___ du Deutsch? (Lernst/Lerne/Lernt)','Lernst','V1, du-форма'),
+    ex('___ er heute arbeiten? (Muss/Musst/Müssen)','Muss','er → muss'),
+    ex('___ ihr das Buch gelesen? (Habt/Haben/Hat)','Habt','ihr → habt'),
+    ex('___ sie (она) schon gegangen? (Ist/Hat/Sind)','Ist','gehen → sein-Verb'),
+  ]
+};
+
+// ── PRÄSENS → W-Frage ─────────────────────────────────────────────
+CONTENT['pra_frage_w'] = {
+  zone:'present', tag:'Satztyp', title:'W-Frage',
+  sub:'Специальный вопрос',
+  tabs: ['Правило','Примеры','Упражнения'],
+  rule: {
+    formula: 'W-Wort + Verb₂ + Subjekt + ... + ?',
+    text: `W-Fragewörter занимают P1. Глагол → P2. Субъект → P3.
+<br><br>
+W-Wörter: <em>wer (кто), was (что), wen (кого), wem (кому), wessen (чей), wo (где), wohin (куда), woher (откуда), wann (когда), wie (как), wie viel (сколько), warum (почему), wozu (зачем), welch- (который).</em>`,
+    table: {
+      head:['W-Wort','Падеж','Пример'],
+      rows:[
+        ['wer','Nom.','Wer kommt heute?'],
+        ['wen','Akk.','Wen siehst du?'],
+        ['wem','Dat.','Wem gibst du das Buch?'],
+        ['wessen','Gen.','Wessen Buch ist das?'],
+        ['was','Nom./Akk.','Was machst du?'],
+        ['wo/wohin','–','Wo wohnst du? / Wohin fährst du?'],
+        ['wann','–','Wann kommst du?'],
+        ['warum','–','Warum lernst du Deutsch?'],
+      ]
+    }
+  },
+  examples: [
+    sent('Warum lernst du Deutsch?',
+      [{w:'Warum',r:'Adv'},{w:'lernst',r:'V'},{w:'du',r:'S'},{w:'Deutsch?',r:'Oa'}],
+      'Почему ты учишь немецкий?'),
+    sent('Wem gibst du das Buch?',
+      [{w:'Wem',r:'Od'},{w:'gibst',r:'V'},{w:'du',r:'S'},{w:'das Buch?',r:'Oa'}],
+      'Кому ты даёшь книгу?'),
+    sent('Wohin fährst du im Sommer?',
+      [{w:'Wohin',r:'Adv'},{w:'fährst',r:'V'},{w:'du',r:'S'},{w:'im Sommer?',r:'Adv'}],
+      'Куда ты едешь летом?'),
+  ],
+  exercises: [
+    ex('___ machst du? (Was/Wer/Wen)','Was','что = Was (Akk.)'),
+    ex('___ wohnst du? (Wo/Wohin/Wann)','Wo','где = Wo'),
+    ex('___ gibst du das Buch? (Wem/Wen/Wer)','Wem','кому = Wem (Dat.)'),
+    ex('___ kommt heute? (Wer/Wen/Wem)','Wer','кто (Nom.) = Wer'),
+    ex('___ lernst du Deutsch? (Warum/Woher/Wohin)','Warum','почему = Warum'),
+  ]
+};
+
+// ── PRÄSENS → Negation ────────────────────────────────────────────
+CONTENT['pra_neg'] = {
+  zone:'present', tag:'Satztyp', title:'Negation',
+  sub:'Отрицание — nicht и kein',
+  tabs: ['Правило','Примеры','Упражнения'],
+  rule: {
+    formula: 'nicht (Verb/Adj/Adv) | kein- (Nomen ohne Artikel)',
+    text: `<strong>nicht</strong> — отрицает глагол, прилагательное, наречие, предложный оборот.
+Стоит: перед отрицаемым прилагательным/наречием; <em>в конце</em> перед Satzklammer; перед предложной группой.
+<br><br>
+<strong>kein-</strong> = nicht + ein — отрицает существительные с неопределённым или нулевым артиклем.
+Склоняется как ein-: kein / keine / kein / keinen / keinem / keiner...
+<br><br>
+Wichtig: отрицательный вопрос → <strong>Doch!</strong> (не Ja/Nein).`,
+    table: {
+      head:['Тип отрицания','Правило','Пример'],
+      rows:[
+        ['Глагол','nicht в конце','Ich lerne nicht.'],
+        ['Прилагательное','nicht vor Adj.','Er ist nicht müde.'],
+        ['Naречие','nicht vor Adv.','Ich komme nicht heute.'],
+        ['Prep.-Phrase','nicht vor Präp.','Er wohnt nicht in Berlin.'],
+        ['Kein (Nom.m)','kein','Das ist kein Problem.'],
+        ['Kein (Nom.f)','keine','Ich habe keine Zeit.'],
+        ['Kein (Akk.m)','keinen','Ich sehe keinen Mann.'],
+      ]
+    }
+  },
+  examples: [
+    sent('Ich arbeite heute nicht.',
+      [{w:'Ich',r:'S'},{w:'arbeite',r:'V'},{w:'heute',r:'Adv'},{w:'nicht.',r:'N'}],
+      'Я сегодня не работаю.'),
+    sent('Er ist nicht müde.',
+      [{w:'Er',r:'S'},{w:'ist',r:'V'},{w:'nicht',r:'N'},{w:'müde.',r:'Adj'}],
+      'Он не усталый.'),
+    sent('Ich habe keine Zeit.',
+      [{w:'Ich',r:'S'},{w:'habe',r:'V'},{w:'keine',r:'N'},{w:'Zeit.',r:'Oa'}],
+      'У меня нет времени.'),
+    sent('Er wohnt nicht in Berlin.',
+      [{w:'Er',r:'S'},{w:'wohnt',r:'V'},{w:'nicht',r:'N'},{w:'in Berlin.',r:'Adv'}],
+      'Он живёт не в Берлине.'),
+  ],
+  exercises: [
+    ex('Ich lerne ___. (nicht/kein)','nicht','глагол → nicht'),
+    ex('Ich habe ___ Auto. (kein/nicht)','kein','Nomen (Auto, n) → kein'),
+    ex('Er ist ___ müde. (nicht/kein)','nicht','Adjektiv → nicht'),
+    ex('Ich sehe ___ Mann. (keinen/kein/nicht)','keinen','Mann (m, Akk.) → keinen'),
+    ex('Sie wohnt ___ in München. (kein/nicht)','nicht','Präp.-Gruppe → nicht'),
+  ]
+};
+
+// ── PRÄSENS → Verb Konjugation ────────────────────────────────────
+CONTENT['pra_verb'] = {
+  zone:'present', tag:'Wortart', title:'Verb — Konjugation',
+  sub:'Спряжение глаголов в Präsens',
+  tabs: ['Правило','Примеры','Упражнения'],
+  rule: {
+    formula: 'Stamm + Endung | Starke Verben: Ablaut e→ie/i, a→ä, au→äu',
+    text: `<strong>Регулярные (schwache):</strong> основа + стандартные окончания.
+Особенности: основа на <em>-d/-t/-m/-n</em> добавляет -e- перед окончанием (<em>arbeit-e-t, öffn-e-st</em>).
+<br><br>
+<strong>Сильные (starke):</strong> изменение корневой гласной во 2-м и 3-м лице единственного числа.
+<br><br>
+<strong>Unregelmäßige:</strong> sein, haben, werden — полностью нестандартное спряжение.`,
+    table: {
+      head:['Person','schwach (lernen)','stark e→ie (lesen)','stark a→ä (fahren)','sein','haben','werden'],
+      rows:[
+        ['ich','lerne','lese','fahre','bin','habe','werde'],
+        ['du','lernst','liest','fährst','bist','hast','wirst'],
+        ['er/sie/es','lernt','liest','fährt','ist','hat','wird'],
+        ['wir','lernen','lesen','fahren','sind','haben','werden'],
+        ['ihr','lernt','lest','fahrt','seid','habt','werdet'],
+        ['sie/Sie','lernen','lesen','fahren','sind','haben','werden'],
+      ]
+    }
+  },
+  examples: [
+    sent('Du liest sehr schnell.',
+      [{w:'Du',r:'S'},{w:'liest',r:'V'},{w:'sehr schnell.',r:'Adv'}],
+      'Ты читаешь очень быстро. (e→ie)'),
+    sent('Er fährt jeden Tag mit dem Bus.',
+      [{w:'Er',r:'S'},{w:'fährt',r:'V'},{w:'jeden Tag',r:'Adv'},{w:'mit dem Bus.',r:'Adv'}],
+      'Он ездит на автобусе каждый день. (a→ä)'),
+    sent('Sie ist sehr müde.',
+      [{w:'Sie',r:'S'},{w:'ist',r:'V'},{w:'sehr müde.',r:'Adj'}],
+      'Она очень усталая. (sein)'),
+  ],
+  exercises: [
+    ex('du ___ (lesen)','liest','e→ie во 2/3 л.'),
+    ex('er ___ (schlafen)','schläft','a→ä в 3 л.'),
+    ex('du ___ (sprechen)','sprichst','e→i во 2 л.'),
+    ex('du ___ (haben)','hast','unregelmäßig'),
+    ex('ihr ___ (sein)','seid','unregelmäßig'),
+    ex('ich ___ (werden)','werde','werde/wirst/wird...'),
+  ]
+};
+
+// ── PRÄSENS → Nomen / Kasus ───────────────────────────────────────
+CONTENT['pra_nomen'] = {
+  zone:'present', tag:'Wortart', title:'Nomen — Kasus',
+  sub:'Существительные и падежи',
+  tabs: ['Правило','Примеры','Упражнения'],
+  rule: {
+    formula: 'Nom.(wer?) · Gen.(wessen?) · Dat.(wem?) · Akk.(wen/was?)',
+    text: `Немецкий имеет <strong>4 падежа</strong>. Артикль и прилагательное изменяются.
+<br><br>
+<strong>Артикли по падежам:</strong>`,
+    table: {
+      head:['Kasus','m','f','n','Pl.'],
+      rows:[
+        ['Nom.','der/ein','die/eine','das/ein','die/–'],
+        ['Gen.','des/eines','der/einer','des/eines','der/–'],
+        ['Dat.','dem/einem','der/einer','dem/einem','den/–'],
+        ['Akk.','den/einen','die/eine','das/ein','die/–'],
+      ]
+    }
+  },
+  examples: [
+    sent('Der Mann kauft ein Buch.',
+      [{w:'Der Mann',r:'S'},{w:'kauft',r:'V'},{w:'ein Buch.',r:'Oa'}],
+      'Мужчина покупает книгу. (Nom. + Akk.)'),
+    sent('Er gibt der Frau das Buch.',
+      [{w:'Er',r:'S'},{w:'gibt',r:'V'},{w:'der Frau',r:'Od'},{w:'das Buch.',r:'Oa'}],
+      'Он даёт женщине книгу. (Dat. + Akk.)'),
+    sent('Das Buch des Mannes ist interessant.',
+      [{w:'Das Buch',r:'S'},{w:'des Mannes',r:'Adj'},{w:'ist',r:'V'},{w:'interessant.',r:'Adj'}],
+      'Книга мужчины интересная. (Genitiv)'),
+  ],
+  exercises: [
+    ex('___ Mann (Nom.) kauft ___ Buch (Akk.,n).','Der / ein','Nom.m=der, Akk.n=ein'),
+    ex('Er gibt ___ Frau (Dat.) das Buch.','der','Dat.f = der'),
+    ex('Ich sehe ___ Hund (Akk.,m).','den','Akk.m = den'),
+    ex('Das ist ___ Problem (Akk.,n).','kein','kein (Negation, n Akk.)'),
+    ex('Das Auto ___ Mannes (Gen.) ist rot.','des','Gen.m = des'),
+  ]
+};
+
+// ── PRÄSENS → Adjektiv Deklination ────────────────────────────────
+CONTENT['pra_adj'] = {
+  zone:'present', tag:'Wortart', title:'Adjektiv — Deklination',
+  sub:'Склонение прилагательных',
+  tabs: ['Правило','Примеры','Упражнения'],
+  rule: {
+    formula: 'nach best.Art: -e/-en | nach unbest.Art: gemischt | ohne Art: stark',
+    text: `Три типа склонения:
+<br><strong>1. Starke Deklination</strong> (без артикля) — окончание несёт падежный сигнал.
+<br><strong>2. Schwache Deklination</strong> (после определённого артикля) — только -e и -en.
+<br><strong>3. Gemischte Deklination</strong> (после неопределённого артикля / kein / Possessivartikeln).`,
+    table: {
+      head:['Kasus','m (schwach)','f (schwach)','n (schwach)','Pl. (schwach)'],
+      rows:[
+        ['Nom.','der alt-e Mann','die alt-e Frau','das alt-e Kind','die alt-en Leute'],
+        ['Gen.','des alt-en Mannes','der alt-en Frau','des alt-en Kindes','der alt-en Leute'],
+        ['Dat.','dem alt-en Mann','der alt-en Frau','dem alt-en Kind','den alt-en Leuten'],
+        ['Akk.','den alt-en Mann','die alt-e Frau','das alt-e Kind','die alt-en Leute'],
+      ]
+    }
+  },
+  examples: [
+    sent('Der alte Mann liest ein interessantes Buch.',
+      [{w:'Der alte Mann',r:'S'},{w:'liest',r:'V'},{w:'ein interessantes Buch.',r:'Oa'}],
+      'Старый мужчина читает интересную книгу.'),
+    sent('Ich sehe eine schöne Frau.',
+      [{w:'Ich',r:'S'},{w:'sehe',r:'V'},{w:'eine schöne Frau.',r:'Oa'}],
+      'Я вижу красивую женщину. (Akk., gemischt)'),
+    sent('Er wohnt in einem kleinen Haus.',
+      [{w:'Er',r:'S'},{w:'wohnt',r:'V'},{w:'in einem kleinen Haus.',r:'Adv'}],
+      'Он живёт в маленьком доме. (Dat.n, gemischt)'),
+  ],
+  exercises: [
+    ex('der alt___ Mann (Nom., schwach)','e','-e после best.Art Nom.m'),
+    ex('einen klein___ Hund (Akk.m, gemischt)','en','-en nach unbest.Art Akk.m'),
+    ex('mit dem schön___ Auto (Dat.n, schwach)','en','-en Dat., schwach'),
+    ex('ein alt___ Kind (Nom.n, gemischt)','es','-es nach unbest.Art Nom.n'),
+    ex('ohne Art.: gut___ Wein (Nom.m, stark)','er','-er stark Nom.m'),
+  ]
+};
+
+// ── PRÄSENS → Präpositionen ───────────────────────────────────────
+CONTENT['pra_prap'] = {
+  zone:'present', tag:'Wortart', title:'Präpositionen',
+  sub:'Предлоги и управляемые падежи',
+  tabs: ['Правило','Примеры','Упражнения'],
+  rule: {
+    formula: 'Akk.: durch, für, gegen, ohne, um, bis, entlang\nDat.: aus, bei, mit, nach, seit, von, zu, gegenüber\nAkk./Dat.: an, auf, hinter, in, neben, über, unter, vor, zwischen',
+    text: `<strong>Двойные предлоги (Wechselpräpositionen)</strong>: an, auf, hinter, in, neben, über, unter, vor, zwischen.
+<br>→ <strong>Dativ</strong> = место/состояние (<em>wo?</em>): Ich sitze <em>auf dem</em> Stuhl.
+<br>→ <strong>Akkusativ</strong> = движение/направление (<em>wohin?</em>): Ich setze mich <em>auf den</em> Stuhl.`,
+    table: {
+      head:['Präp.','Kasus','Beispiel'],
+      rows:[
+        ['mit','Dat.','mit dem Auto fahren'],
+        ['in + Dat.','Wo?','im (=in dem) Zimmer sein'],
+        ['in + Akk.','Wohin?','ins (=in das) Zimmer gehen'],
+        ['für','Akk.','Das ist für dich.'],
+        ['aus','Dat.','Ich komme aus der Schweiz.'],
+        ['auf + Dat.','Wo?','auf dem Tisch liegen'],
+        ['auf + Akk.','Wohin?','auf den Tisch legen'],
+        ['seit','Dat.','seit drei Jahren'],
+        ['wegen','Gen.','wegen des Wetters'],
+      ]
+    }
+  },
+  examples: [
+    sent('Er fährt mit dem Bus zur Schule.',
+      [{w:'Er',r:'S'},{w:'fährt',r:'V'},{w:'mit dem Bus',r:'Adv'},{w:'zur Schule.',r:'Adv'}],
+      'Он едет на автобусе в школу.'),
+    sent('Das Buch liegt auf dem Tisch.',
+      [{w:'Das Buch',r:'S'},{w:'liegt',r:'V'},{w:'auf dem Tisch.',r:'Adv'}],
+      'Книга лежит на столе. (Dat. = wo?)'),
+    sent('Sie legt das Buch auf den Tisch.',
+      [{w:'Sie',r:'S'},{w:'legt',r:'V'},{w:'das Buch',r:'Oa'},{w:'auf den Tisch.',r:'Adv'}],
+      'Она кладёт книгу на стол. (Akk. = wohin?)'),
+  ],
+  exercises: [
+    ex('Das Buch liegt auf ___ Tisch. (dem/den)','dem','liegen = Wo? → Dat.'),
+    ex('Er legt das Buch auf ___ Tisch. (dem/den)','den','legen = Wohin? → Akk.'),
+    ex('Ich fahre ___ (mit/für/aus) dem Auto.','mit','mit + Dat.'),
+    ex('Er kommt ___ (aus/seit/für) Deutschland.','aus','Herkunft: aus + Dat.'),
+    ex('Ich lerne Deutsch ___ (seit/für/bis) drei Jahren.','seit','seit + Dat. (период)'),
+  ]
+};
+
+// ── FUTUR I ───────────────────────────────────────────────────────
+CONTENT['futur1'] = {
+  zone:'future', tag:'Zeitform', title:'Futur I',
+  sub:'Будущее время I',
+  tabs: ['Правило','Примеры','Упражнения'],
+  rule: {
+    formula: 'werden (P2) + ... + Infinitiv (Ende)',
+    text: `Futur I = werden + Infinitiv. "werden" конъюгируется, инфинитив — в конце (Satzklammer).
+<br><br>Часто в разговоре вместо Futur I используют <strong>Präsens + Zeitangabe</strong> (morgen, nächste Woche).
+<br><br>Futur I также выражает <strong>предположение</strong>: <em>Er wird müde sein.</em>`,
+    table: {
+      head:['Person','werden'],
+      rows:[
+        ['ich','werde'],['du','wirst'],['er/sie/es','wird'],
+        ['wir','werden'],['ihr','werdet'],['sie/Sie','werden'],
+      ]
+    }
+  },
+  examples: [
+    sent('Ich werde morgen Deutsch lernen.',
+      [{w:'Ich',r:'S'},{w:'werde',r:'Aux'},{w:'morgen',r:'Adv'},{w:'Deutsch',r:'Oa'},{w:'lernen.',r:'V'}],
+      'Я буду завтра учить немецкий.'),
+    sent('Er wird wahrscheinlich müde sein.',
+      [{w:'Er',r:'S'},{w:'wird',r:'Aux'},{w:'wahrscheinlich',r:'Adv'},{w:'müde',r:'Adj'},{w:'sein.',r:'V'}],
+      'Он, вероятно, устал. (предположение)'),
+  ],
+  exercises: [
+    ex('Ich ___ morgen lernen. (werden konj.)','werde','ich → werde'),
+    ex('Er ___ nach Berlin fahren.','wird','er → wird'),
+    ex('Wir ___ das schaffen.','werden','wir → werden'),
+    ex('___ du morgen kommen? (Futur I Frage)','Wirst','Frage: Wirst du ...?'),
+  ]
+};
+
+// ── FUTUR I → Aussage, Frage, Neg ─────────────────────────────────
+CONTENT['fut1_aussage'] = {
+  zone:'future', tag:'Satztyp', title:'Futur I — Aussagesatz',
+  sub:'Утвердительные предложения',
+  tabs: ['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'S + werden(P2) + ... + Infinitiv',
+    text:'werden на P2, инфинитив в конце. При инверсии werden P1, субъект P3.',
+    table:{head:['P1','P2','Mitte','Ende'],rows:[
+      ['Ich','werde','morgen','lernen.'],
+      ['Morgen','werde','ich','lernen.'],
+      ['Er','wird','viel Geld','verdienen.'],
+    ]}
+  },
+  examples:[
+    sent('Ich werde nächstes Jahr nach Deutschland fahren.',
+      [{w:'Ich',r:'S'},{w:'werde',r:'Aux'},{w:'nächstes Jahr',r:'Adv'},{w:'nach Deutschland',r:'Adv'},{w:'fahren.',r:'V'}],
+      'Я поеду в Германию в следующем году.'),
+  ],
+  exercises:[
+    ex('Morgen ___ ich Deutsch lernen. (werden)','werde','инверсия, ich → werde'),
+    ex('Er ___ das Examen bestehen.','wird','er → wird'),
+  ]
+};
+
+CONTENT['fut1_frage'] = {
+  zone:'future', tag:'Satztyp', title:'Futur I — Frage',
+  sub:'Вопросы в будущем',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Wirst/Wird... + S + ... + Inf.? | W-Wort + wird + S + ... + Inf.?',
+    text:'werden на P1 (Ja/Nein-Frage) или W-Wort на P1, werden на P2.',
+    table:{head:['Тип','Пример'],rows:[
+      ['Ja/Nein','Wirst du morgen kommen?'],
+      ['W-Frage','Wann wirst du kommen?'],
+      ['W-Frage','Was wirst du machen?'],
+    ]}
+  },
+  examples:[
+    sent('Wirst du morgen kommen?',
+      [{w:'Wirst',r:'Aux'},{w:'du',r:'S'},{w:'morgen',r:'Adv'},{w:'kommen?',r:'V'}],
+      'Ты придёшь завтра?'),
+    sent('Was wirst du nächstes Jahr machen?',
+      [{w:'Was',r:'Oa'},{w:'wirst',r:'Aux'},{w:'du',r:'S'},{w:'nächstes Jahr',r:'Adv'},{w:'machen?',r:'V'}],
+      'Что ты будешь делать в следующем году?'),
+  ],
+  exercises:[
+    ex('___ du morgen kommen? (Wirst/Wird/Werden)','Wirst','du → wirst'),
+    ex('Wann ___ er das machen?','wird','er → wird'),
+  ]
+};
+
+CONTENT['fut1_neg'] = {
+  zone:'future', tag:'Satztyp', title:'Futur I — Negation',
+  sub:'Отрицание в будущем',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'S + werden + ... + nicht + Infinitiv',
+    text:'nicht стоит перед инфинитивом в конце. kein- перед отрицаемым существительным.',
+    table:{head:['Правило','Пример'],rows:[
+      ['nicht vor Inf.','Ich werde morgen nicht kommen.'],
+      ['kein im Mittelfeld','Er wird kein Buch kaufen.'],
+    ]}
+  },
+  examples:[
+    sent('Ich werde morgen nicht arbeiten.',
+      [{w:'Ich',r:'S'},{w:'werde',r:'Aux'},{w:'morgen',r:'Adv'},{w:'nicht',r:'N'},{w:'arbeiten.',r:'V'}],
+      'Я завтра не буду работать.'),
+  ],
+  exercises:[
+    ex('Ich werde morgen ___ kommen. (nicht/kein)','nicht','глагол → nicht'),
+    ex('Er wird ___ Auto kaufen. (kein/nicht)','kein','Auto (n) → kein'),
+  ]
+};
+
+// ── FUTUR II ──────────────────────────────────────────────────────
+CONTENT['futur2'] = {
+  zone:'future', tag:'Zeitform', title:'Futur II',
+  sub:'Будущее завершённое / предположение о прошлом',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'werden + Partizip II + haben/sein',
+    text:`Futur II выражает: 1) действие, завершённое к моменту в будущем; 2) предположение о прошлом.
+<br><em>haben/sein</em> — в зависимости от глагола (те же правила, что в Perfekt).`,
+    table:{head:['Person','Beispiel'],rows:[
+      ['ich','Ich werde das Buch gelesen haben.'],
+      ['er','Er wird angekommen sein.'],
+      ['wir','Wir werden alles erledigt haben.'],
+    ]}
+  },
+  examples:[
+    sent('Er wird das Buch bis morgen gelesen haben.',
+      [{w:'Er',r:'S'},{w:'wird',r:'Aux'},{w:'das Buch',r:'Oa'},{w:'bis morgen',r:'Adv'},{w:'gelesen',r:'V'},{w:'haben.',r:'Aux'}],
+      'Он к завтрашнему дню прочитает книгу.'),
+    sent('Sie wird schon gegangen sein.',
+      [{w:'Sie',r:'S'},{w:'wird',r:'Aux'},{w:'schon',r:'Adv'},{w:'gegangen',r:'V'},{w:'sein.',r:'Aux'}],
+      'Она, должно быть, уже ушла.'),
+  ],
+  exercises:[
+    ex('Ich werde das erledigt ___.','haben','erledigen → haben-Verb'),
+    ex('Er wird angekommen ___.','sein','ankommen → sein-Verb'),
+  ]
+};
+
+// ── PERFEKT ───────────────────────────────────────────────────────
+CONTENT['perfekt'] = {
+  zone:'past', tag:'Zeitform', title:'Perfekt',
+  sub:'Прошедшее время (разговор)',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'haben/sein (P2) + ... + Partizip II (Ende)',
+    text:`Perfekt — основное прошедшее в <em>устной речи</em>.
+<br><br>
+<strong>haben</strong>: большинство глаголов (транзитивные, рефлексивные).
+<strong>sein</strong>: движение (gehen, fahren, fliegen...), смена состояния (aufwachen, sterben, werden), bleiben, sein.
+<br><br>
+<strong>Partizip II:</strong> schwach → ge+Stamm+t; stark → ge+Ablaut+en; trennbar → Stamm+ge+...; nicht-trennbar → без ge-.`,
+    table:{head:['Person','haben','sein'],rows:[
+      ['ich','habe','bin'],['du','hast','bist'],['er/sie','hat','ist'],
+      ['wir','haben','sind'],['ihr','habt','seid'],['sie/Sie','haben','sind'],
+    ]}
+  },
+  examples:[
+    sent('Ich habe heute viel gelernt.',
+      [{w:'Ich',r:'S'},{w:'habe',r:'Aux'},{w:'heute',r:'Adv'},{w:'viel',r:'Adv'},{w:'gelernt.',r:'V'}],
+      'Я сегодня много учился.'),
+    sent('Er ist nach Berlin gefahren.',
+      [{w:'Er',r:'S'},{w:'ist',r:'Aux'},{w:'nach Berlin',r:'Adv'},{w:'gefahren.',r:'V'}],
+      'Он поехал в Берлин.'),
+    sent('Sie hat ein Buch geschrieben.',
+      [{w:'Sie',r:'S'},{w:'hat',r:'Aux'},{w:'ein Buch',r:'Oa'},{w:'geschrieben.',r:'V'}],
+      'Она написала книгу.'),
+  ],
+  exercises:[
+    ex('Ich ___ heute viel gelernt. (habe/bin)','habe','lernen → haben'),
+    ex('Er ___ nach Berlin gefahren. (hat/ist)','ist','fahren → sein'),
+    ex('Sie ___ ein Buch geschrieben. (hat/ist)','hat','schreiben → haben'),
+    ex('Wir ___ aufgewacht. (haben/sind)','sind','aufwachen → sein'),
+    ex('Das Kind ___ eingeschlafen. (hat/ist)','ist','einschlafen → sein'),
+  ]
+};
+
+CONTENT['pf_aussage'] = {
+  zone:'past', tag:'Satztyp', title:'Perfekt — Aussagesatz',
+  sub:'Утвердительное в Perfekt',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'S + Aux.(P2) + ... + Part.II',
+    text:'haben/sein на P2, Partizip II — строго в конце. При инверсии: вынесенный элемент P1, aux. P2.',
+    table:{head:['P1','P2','Mitte','Ende'],rows:[
+      ['Ich','habe','heute','gelernt.'],
+      ['Heute','habe','ich','gelernt.'],
+      ['Er','ist','nach Berlin','gefahren.'],
+    ]}
+  },
+  examples:[
+    sent('Gestern hat er viel gearbeitet.',
+      [{w:'Gestern',r:'Adv'},{w:'hat',r:'Aux'},{w:'er',r:'S'},{w:'viel',r:'Adv'},{w:'gearbeitet.',r:'V'}],
+      'Вчера он много работал. (инверсия)'),
+  ],
+  exercises:[
+    ex('Gestern ___ ich Deutsch gelernt. (habe/bin)','habe','lernen → haben'),
+    ex('Sie ___ letzte Woche nach Paris geflogen.','ist','fliegen → sein'),
+  ]
+};
+
+CONTENT['pf_frage'] = {
+  zone:'past', tag:'Satztyp', title:'Perfekt — Frage',
+  sub:'Вопросы в Perfekt',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Hast/Bist + S + ... + Part.II? | W + hast/bist + S + ... + Part.II?',
+    text:'Вспомогательный глагол на P1 (Ja/Nein) или P2 (W-Frage).',
+    table:{head:['Тип','Пример'],rows:[
+      ['Ja/Nein','Hast du das Buch gelesen?'],
+      ['Ja/Nein (sein)','Bist du nach Berlin gefahren?'],
+      ['W-Frage','Was hast du gemacht?'],
+      ['W-Frage','Wohin bist du gefahren?'],
+    ]}
+  },
+  examples:[
+    sent('Hast du das Buch gelesen?',
+      [{w:'Hast',r:'Aux'},{w:'du',r:'S'},{w:'das Buch',r:'Oa'},{w:'gelesen?',r:'V'}],
+      'Ты прочитал книгу?'),
+  ],
+  exercises:[
+    ex('___ du das gemacht? (Hast/Bist/Habe)','Hast','du → hast'),
+    ex('___ sie nach Paris geflogen? (Hat/Ist/Sind)','Ist','fliegen → sein, sie (она) → ist'),
+    ex('Was ___ du gestern gemacht?','hast','W-Frage: Was + hast + du'),
+  ]
+};
+
+CONTENT['pf_neg'] = {
+  zone:'past', tag:'Satztyp', title:'Perfekt — Negation',
+  sub:'Отрицание в Perfekt',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Aux. + ... + nicht + Part.II | kein im Mittelfeld',
+    text:'nicht стоит непосредственно перед Partizip II. kein- — перед существительным.',
+    table:{head:['Правило','Пример'],rows:[
+      ['nicht vor Part.II','Ich habe das nicht gemacht.'],
+      ['kein Obj.','Er hat kein Buch gekauft.'],
+    ]}
+  },
+  examples:[
+    sent('Ich habe das Buch nicht gelesen.',
+      [{w:'Ich',r:'S'},{w:'habe',r:'Aux'},{w:'das Buch',r:'Oa'},{w:'nicht',r:'N'},{w:'gelesen.',r:'V'}],
+      'Я не читал эту книгу.'),
+  ],
+  exercises:[
+    ex('Ich habe das ___ gemacht. (nicht/kein)','nicht','глагол → nicht'),
+    ex('Er hat ___ Buch gekauft. (kein/nicht)','kein','Buch (n) → kein'),
+  ]
+};
+
+CONTENT['pf_haben'] = {
+  zone:'past', tag:'Struktur', title:'haben-Verben',
+  sub:'Какие глаголы берут haben',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'haben + Part.II',
+    text:`С <strong>haben</strong>: транзитивные (с Akk.); рефлексивные (sich freuen...); модальные; большинство остальных.
+<br><br>Список частых: kaufen, machen, essen, trinken, lesen, schreiben, sehen, hören, schlafen, arbeiten, studieren, sprechen, verstehen, helfen, nehmen, geben, finden.`,
+    table:{head:['Infinitiv','Partizip II','Beispiel'],rows:[
+      ['kaufen','gekauft','Ich habe ein Buch gekauft.'],
+      ['essen','gegessen','Er hat Pizza gegessen.'],
+      ['schreiben','geschrieben','Sie hat einen Brief geschrieben.'],
+      ['lesen','gelesen','Wir haben das Buch gelesen.'],
+      ['sehen','gesehen','Ich habe den Film gesehen.'],
+      ['nehmen','genommen','Er hat das Geld genommen.'],
+    ]}
+  },
+  examples:[
+    sent('Ich habe gestern einen Film gesehen.',
+      [{w:'Ich',r:'S'},{w:'habe',r:'Aux'},{w:'gestern',r:'Adv'},{w:'einen Film',r:'Oa'},{w:'gesehen.',r:'V'}],
+      'Я вчера посмотрел фильм.'),
+  ],
+  exercises:[
+    ex('Ich ___ das Buch gelesen. (habe/bin)','habe','lesen → haben'),
+    ex('Er ___ viel gearbeitet.','hat','arbeiten → haben'),
+    ex('Part.II von kaufen?','gekauft','ge+kauf+t'),
+    ex('Part.II von nehmen?','genommen','ge+nomm+en (stark)'),
+  ]
+};
+
+CONTENT['pf_sein'] = {
+  zone:'past', tag:'Struktur', title:'sein-Verben',
+  sub:'Какие глаголы берут sein',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'sein + Part.II',
+    text:`С <strong>sein</strong>: 1) <em>Движение с целью/направлением</em>: gehen, fahren, fliegen, laufen, schwimmen, reisen, kommen, steigen...
+<br>2) <em>Смена состояния</em>: aufwachen, einschlafen, aufstehen, sterben, werden, wachsen, passieren...
+<br>3) <em>bleiben, sein</em> (быть, оставаться).`,
+    table:{head:['Infinitiv','Partizip II','Aux.'],rows:[
+      ['gehen','gegangen','sein'],
+      ['fahren','gefahren','sein'],
+      ['fliegen','geflogen','sein'],
+      ['kommen','gekommen','sein'],
+      ['aufwachen','aufgewacht','sein'],
+      ['bleiben','geblieben','sein'],
+      ['sein','gewesen','sein'],
+      ['werden','geworden','sein'],
+    ]}
+  },
+  examples:[
+    sent('Er ist gestern nach Hause gegangen.',
+      [{w:'Er',r:'S'},{w:'ist',r:'Aux'},{w:'gestern',r:'Adv'},{w:'nach Hause',r:'Adv'},{w:'gegangen.',r:'V'}],
+      'Он вчера пошёл домой.'),
+    sent('Sie ist früh aufgewacht.',
+      [{w:'Sie',r:'S'},{w:'ist',r:'Aux'},{w:'früh',r:'Adv'},{w:'aufgewacht.',r:'V'}],
+      'Она рано проснулась.'),
+  ],
+  exercises:[
+    ex('Er ___ nach Berlin geflogen.','ist','fliegen → sein'),
+    ex('Sie ___ um 7 Uhr aufgestanden.','ist','aufstehen → sein'),
+    ex('Wir ___ zwei Stunden geblieben.','sind','bleiben → sein'),
+    ex('Das ___ gestern passiert.','ist','passieren → sein'),
+  ]
+};
+
+CONTENT['pf_part2'] = {
+  zone:'past', tag:'Struktur', title:'Partizip II — Bildung',
+  sub:'Образование Partizip II',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'schwach: ge+Stamm+t | stark: ge+Ablaut+en | trennbar: P+ge+Stamm | nicht-trennbar: Stamm+t/en',
+    text:`<strong>Schwache Verben</strong>: ge- + Stamm + -t (lernen→gelernt).
+<br><strong>Starke Verben</strong>: ge- + veränderte Basis + -en (schreiben→geschrieben).
+<br><strong>Trennbare</strong>: ge- вставляется между приставкой и основой (aufmachen→aufgemacht).
+<br><strong>Nicht-trennbare</strong> (be-, ver-, er-, ge-, ent-, emp-, miss-): без ge- (besuchen→besucht, verstehen→verstanden).
+<br><strong>-ieren</strong>: без ge-, +(i)ert (studieren→studiert).`,
+    table:{head:['Тип','Regel','Beispiele'],rows:[
+      ['Schwach','ge+Stamm+t','lernen→gelernt, kaufen→gekauft, arbeiten→gearbeitet'],
+      ['Stark e→ie','ge+...+en','schreiben→geschrieben, treiben→getrieben'],
+      ['Stark a→u','ge+...+en','fahren→gefahren, tragen→getragen'],
+      ['Stark i→u','ge+...+en','finden→gefunden, singen→gesungen'],
+      ['Trennbar','P+ge+t/en','aufmachen→aufgemacht, einkaufen→eingekauft'],
+      ['Nicht-trennb.','ohne ge-','besuchen→besucht, verstehen→verstanden'],
+      ['-ieren','ohne ge-+iert','studieren→studiert, fotografieren→fotografiert'],
+    ]}
+  },
+  examples:[
+    sent('Er hat die Tür aufgemacht.',
+      [{w:'Er',r:'S'},{w:'hat',r:'Aux'},{w:'die Tür',r:'Oa'},{w:'aufgemacht.',r:'V'}],
+      'Он открыл дверь. (trennbar: auf+ge+mach+t)'),
+    sent('Sie hat Medizin studiert.',
+      [{w:'Sie',r:'S'},{w:'hat',r:'Aux'},{w:'Medizin',r:'Oa'},{w:'studiert.',r:'V'}],
+      'Она изучала медицину. (-ieren: studiert)'),
+  ],
+  exercises:[
+    ex('machen → Part.II','gemacht','ge+mach+t'),
+    ex('fahren → Part.II','gefahren','ge+fahr+en (stark)'),
+    ex('aufmachen → Part.II','aufgemacht','auf+ge+mach+t'),
+    ex('besuchen → Part.II','besucht','nicht-trennbar: ohne ge-'),
+    ex('studieren → Part.II','studiert','-ieren: ohne ge-'),
+    ex('verstehen → Part.II','verstanden','nicht-trennbar, stark'),
+  ]
+};
+
+// ── PRÄTERITUM ────────────────────────────────────────────────────
+CONTENT['prateritum'] = {
+  zone:'past', tag:'Zeitform', title:'Präteritum',
+  sub:'Нарративное прошедшее (письмо/рассказ)',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'schwach: Stamm+te | stark: Ablaut-Stamm (ohne Endung in 1/3 Sg.)',
+    text:`Präteritum используется в <em>письменной речи</em> (газеты, романы, рассказы). 
+<br>В разговоре: только sein/haben/Modalverben.
+<br><br><strong>Schwach:</strong> Stamm + -te (-test/-te/-ten/-tet/-ten).
+<br><strong>Stark:</strong> новая Ablaut-основа, ich/er без окончания.`,
+    table:{head:['Person','schwach (lernen)','stark (fahren)','sein','haben','können'],rows:[
+      ['ich','lernte','fuhr','war','hatte','konnte'],
+      ['du','lerntest','fuhrst','warst','hattest','konntest'],
+      ['er/sie','lernte','fuhr','war','hatte','konnte'],
+      ['wir','lernten','fuhren','waren','hatten','konnten'],
+      ['ihr','lerntet','fuhrt','wart','hattet','konntet'],
+      ['sie/Sie','lernten','fuhren','waren','hatten','konnten'],
+    ]}
+  },
+  examples:[
+    sent('Er arbeitete jeden Tag bis spät.',
+      [{w:'Er',r:'S'},{w:'arbeitete',r:'V'},{w:'jeden Tag',r:'Adv'},{w:'bis spät.',r:'Adv'}],
+      'Он работал каждый день допоздна.'),
+    sent('Als Kind wohnte sie in München.',
+      [{w:'Als Kind',r:'Adv'},{w:'wohnte',r:'V'},{w:'sie',r:'S'},{w:'in München.',r:'Adv'}],
+      'В детстве она жила в Мюнхене.'),
+    sent('Er fuhr nach Berlin und besuchte seine Eltern.',
+      [{w:'Er',r:'S'},{w:'fuhr',r:'V'},{w:'nach Berlin',r:'Adv'},{w:'und',r:''},{w:'besuchte',r:'V'},{w:'seine Eltern.',r:'Oa'}],
+      'Он поехал в Берлин и навестил родителей.'),
+  ],
+  exercises:[
+    ex('Er ___ viel. (arbeiten → Prät.)','arbeitete','schwach: Stamm+te'),
+    ex('Ich ___ müde. (sein → Prät.)','war','sein → war'),
+    ex('Wir ___ keine Zeit. (haben → Prät.)','hatten','haben → hatten'),
+    ex('Er ___ nach Berlin. (fahren → Prät.)','fuhr','stark: fahr→fuhr'),
+    ex('Ich ___ das nicht. (können → Prät.)','konnte','können → konnte'),
+    ex('Sie ___ ein Buch. (schreiben → Prät.)','schrieb','stark: schreib→schrieb'),
+  ]
+};
+
+CONTENT['prat_schwach'] = {
+  zone:'past', tag:'Struktur', title:'Schwache Verben',
+  sub:'Слабые глаголы в Präteritum',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Stamm + te + Personalendung',
+    text:`ich lern<strong>te</strong> / du lern<strong>test</strong> / er lern<strong>te</strong> / wir lern<strong>ten</strong> / ihr lern<strong>tet</strong> / sie lern<strong>ten</strong>
+<br><br>Особенность: если основа на <em>-d/-t</em>, вставляется -e-: arbeit<strong>ete</strong>.`,
+    table:{head:['Infinitiv','Stamm','ich-Form','er-Form'],rows:[
+      ['lernen','lern-','lernte','lernte'],
+      ['kaufen','kauf-','kaufte','kaufte'],
+      ['arbeiten','arbeit-','arbeitete','arbeitete'],
+      ['wohnen','wohn-','wohnte','wohnte'],
+      ['spielen','spiel-','spielte','spielte'],
+    ]}
+  },
+  examples:[
+    sent('Sie wohnten früher in Hamburg.',
+      [{w:'Sie',r:'S'},{w:'wohnten',r:'V'},{w:'früher',r:'Adv'},{w:'in Hamburg.',r:'Adv'}],
+      'Раньше они жили в Гамбурге.'),
+  ],
+  exercises:[
+    ex('spielen → ich-Form Prät.','spielte','spiel+te'),
+    ex('arbeiten → er-Form Prät.','arbeitete','arbeit+e+te (d/t-основа)'),
+    ex('kaufen → wir-Form Prät.','kauften','kauf+ten'),
+  ]
+};
+
+CONTENT['prat_stark'] = {
+  zone:'past', tag:'Struktur', title:'Starke Verben',
+  sub:'Сильные глаголы в Präteritum',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Ablaut-Stamm (ich/er без Endung; du +st; wir/sie +en; ihr +t)',
+    text:'Сильные глаголы меняют корневую гласную (Ablaut). ich и er/sie/es — без окончания.',
+    table:{head:['Infinitiv','Präteritum-Stamm','ich/er','du','wir'],rows:[
+      ['fahren','fuhr-','fuhr','fuhrst','fuhren'],
+      ['gehen','ging-','ging','gingst','gingen'],
+      ['schreiben','schrieb-','schrieb','schriebst','schrieben'],
+      ['finden','fand-','fand','fandst','fanden'],
+      ['singen','sang-','sang','sangst','sangen'],
+      ['geben','gab-','gab','gabst','gaben'],
+      ['sehen','sah-','sah','sahst','sahen'],
+      ['kommen','kam-','kam','kamst','kamen'],
+    ]}
+  },
+  examples:[
+    sent('Er kam spät nach Hause.',
+      [{w:'Er',r:'S'},{w:'kam',r:'V'},{w:'spät',r:'Adv'},{w:'nach Hause.',r:'Adv'}],
+      'Он пришёл домой поздно. (kommen → kam)'),
+    sent('Sie schrieb einen langen Brief.',
+      [{w:'Sie',r:'S'},{w:'schrieb',r:'V'},{w:'einen langen Brief.',r:'Oa'}],
+      'Она написала длинное письмо.'),
+  ],
+  exercises:[
+    ex('gehen → ich Prät.','ging','ging'),
+    ex('sehen → er Prät.','sah','sah'),
+    ex('kommen → wir Prät.','kamen','kamen'),
+    ex('geben → du Prät.','gabst','gab+st'),
+  ]
+};
+
+CONTENT['prat_modal'] = {
+  zone:'past', tag:'Struktur', title:'Modalverben — Präteritum',
+  sub:'Модальные глаголы в прошедшем',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Modalstamm (ohne Umlaut) + te + Endung',
+    text:'Модальные теряют умлаут и спрягаются как слабые. Я/он — без окончания.',
+    table:{head:['Infinitiv','ich/er Prät.','du Prät.','wir Prät.'],rows:[
+      ['können','konnte','konntest','konnten'],
+      ['müssen','musste','musstest','mussten'],
+      ['dürfen','durfte','durftest','durften'],
+      ['wollen','wollte','wolltest','wollten'],
+      ['sollen','sollte','solltest','sollten'],
+      ['mögen','mochte','mochtest','mochten'],
+    ]}
+  },
+  examples:[
+    sent('Er konnte nicht schlafen.',
+      [{w:'Er',r:'S'},{w:'konnte',r:'V'},{w:'nicht',r:'N'},{w:'schlafen.',r:'V'}],
+      'Он не мог спать.'),
+    sent('Wir mussten früh aufstehen.',
+      [{w:'Wir',r:'S'},{w:'mussten',r:'V'},{w:'früh',r:'Adv'},{w:'aufstehen.',r:'V'}],
+      'Нам нужно было рано вставать.'),
+  ],
+  exercises:[
+    ex('können → ich Prät.','konnte','konnte (kein Umlaut)'),
+    ex('müssen → wir Prät.','mussten','mussten'),
+    ex('dürfen → er Prät.','durfte','durfte'),
+    ex('wollen → sie Prät.','wollten','wollten'),
+  ]
+};
+
+// ── PLUSQUAMPERFEKT ───────────────────────────────────────────────
+CONTENT['plusquamp'] = {
+  zone:'past', tag:'Zeitform', title:'Plusquamperfekt',
+  sub:'Давнопрошедшее — до Präteritum',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'hatte/war (konj.) + ... + Partizip II',
+    text:`Plusquamperfekt = Perfekt, но aux. в Präteritum (hatte/war).
+<br>Используется для действия, <em>предшествующего</em> другому прошедшему. Часто с nachdem/bevor/als.`,
+    table:{head:['Person','haben-Verb (lernen)','sein-Verb (gehen)'],rows:[
+      ['ich','hatte gelernt','war gegangen'],
+      ['du','hattest gelernt','warst gegangen'],
+      ['er/sie','hatte gelernt','war gegangen'],
+      ['wir','hatten gelernt','waren gegangen'],
+    ]}
+  },
+  examples:[
+    sent('Nachdem er gegessen hatte, las er ein Buch.',
+      [{w:'Nachdem',r:'P'},{w:'er',r:'S'},{w:'gegessen',r:'V'},{w:'hatte,',r:'Aux'},{w:'las',r:'V'},{w:'er',r:'S'},{w:'ein Buch.',r:'Oa'}],
+      'После того как он поел, он читал книгу.'),
+    sent('Als ich ankam, war sie schon gegangen.',
+      [{w:'Als ich ankam,',r:'Adv'},{w:'war',r:'Aux'},{w:'sie',r:'S'},{w:'schon',r:'Adv'},{w:'gegangen.',r:'V'}],
+      'Когда я пришёл, она уже ушла.'),
+  ],
+  exercises:[
+    ex('Als ich ankam, ___ sie schon gegangen. (war/hatte)','war','gehen → sein → war'),
+    ex('Er ___ gerade gegessen, als sie anrief. (hatte/war)','hatte','essen → haben → hatte'),
+    ex('Nachdem wir ___ gelernt hatten... (hatten/waren)','hatten','lernen → haben → hatten'),
+  ]
+};
+
+// ── KONJUNKTIV ────────────────────────────────────────────────────
+CONTENT['konjunktiv'] = {
+  zone:'special', tag:'Modus', title:'Konjunktiv',
+  sub:'Сослагательное наклонение',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Konj.II: Präteritum-Stamm+Umlaut+e | Konj.I: Präsens-Stamm+e',
+    text:`<strong>Konjunktiv II</strong> — нереальные условия, вежливые просьбы, предположения.
+<br>Образование: а) прямая форма (hätte/wäre/könnte...); б) описательная: würde+Infinitiv.
+<br><br><strong>Konjunktiv I</strong> — косвенная речь. Образование: основа инфинитива + -e-окончания.`,
+    table:{head:['','haben','sein','können','dürfen','müssen'],rows:[
+      ['Konj.II ich','hätte','wäre','könnte','dürfte','müsste'],
+      ['Konj.II er','hätte','wäre','könnte','dürfte','müsste'],
+      ['Konj.I er','habe','sei','könne','dürfe','müsse'],
+    ]}
+  },
+  examples:[
+    sent('Wenn ich Zeit hätte, würde ich kommen.',
+      [{w:'Wenn ich Zeit',r:'S'},{w:'hätte,',r:'V'},{w:'würde',r:'Aux'},{w:'ich',r:'S'},{w:'kommen.',r:'V'}],
+      'Если бы у меня было время, я бы пришёл.'),
+    sent('Könntest du mir bitte helfen?',
+      [{w:'Könntest',r:'V'},{w:'du',r:'S'},{w:'mir',r:'Od'},{w:'bitte',r:'Adv'},{w:'helfen?',r:'V'}],
+      'Не мог бы ты мне помочь? (вежливость)'),
+    sent('Er sagt, er habe keine Zeit. (Konj.I)',
+      [{w:'Er',r:'S'},{w:'sagt,',r:'V'},{w:'er',r:'S'},{w:'habe',r:'V'},{w:'keine Zeit.',r:'Oa'}],
+      'Он говорит, что у него нет времени.'),
+  ],
+  exercises:[
+    ex('Wenn ich Geld ___, würde ich reisen. (haben → Konj.II)','hätte','haben → hätte'),
+    ex('___ du mir helfen? (können → Konj.II, höflich)','Könntest','können → könntest'),
+    ex('Er sagt, er ___ keine Zeit. (haben → Konj.I)','habe','Konj.I: habe'),
+    ex('Ich ___ gern kommen. (mögen → Konj.II)','möchte','mögen → möchte'),
+  ]
+};
+
+CONTENT['konj2'] = {
+  zone:'special', tag:'Modus', title:'Konjunktiv II — direkte Form',
+  sub:'Прямая форма Konjunktiv II',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Präteritum-Stamm + Umlaut (a→ä, u→ü, o→ö) + e-Endungen',
+    text:'Прямая форма: hätte, wäre, könnte, dürfte, müsste, sollte, wollte. Остальные глаголы — через würde+Infinitiv.',
+    table:{head:['Infinitiv','Prät.','Konj.II ich/er','du'],rows:[
+      ['haben','hatte','hätte','hättest'],
+      ['sein','war','wäre','wärst'],
+      ['können','konnte','könnte','könntest'],
+      ['müssen','musste','müsste','müsstest'],
+      ['dürfen','durfte','dürfte','dürftest'],
+      ['sollen','sollte','sollte','solltest'],
+      ['wollen','wollte','wollte','wolltest'],
+    ]}
+  },
+  examples:[
+    sent('Das wäre toll!',
+      [{w:'Das',r:'S'},{w:'wäre',r:'V'},{w:'toll!',r:'Adj'}],
+      'Это было бы здорово!'),
+    sent('Ich hätte gern einen Kaffee.',
+      [{w:'Ich',r:'S'},{w:'hätte',r:'V'},{w:'gern',r:'Adv'},{w:'einen Kaffee.',r:'Oa'}],
+      'Я бы хотел кофе. (вежливый заказ)'),
+  ],
+  exercises:[
+    ex('Das ___ schön. (sein → Konj.II)','wäre','sein → wäre'),
+    ex('Ich ___ gern helfen. (haben → Konj.II)','hätte','haben → hätte'),
+    ex('___ du das machen? (können → Konj.II)','Könntest','du → könntest'),
+  ]
+};
+
+CONTENT['konj_irrealis'] = {
+  zone:'special', tag:'Modus', title:'Irrealis — Bedingungssatz',
+  sub:'Условные предложения с Konjunktiv II',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Wenn + S + Konj.II..., (dann) würde + S + Inf. | hätte/wäre + Part.II (Vergangenheit)',
+    text:`Нереальное условие: wenn+Konj.II в придаточном, würde+Inf. в главном.
+<br>Нереальное прошлое: wenn+hätte/wäre+Part.II, hätte/wäre+Part.II.`,
+    table:{head:['Тип','Nebensatz','Hauptsatz'],rows:[
+      ['Gegenwart','Wenn ich Zeit hätte,','würde ich kommen.'],
+      ['Gegenwart','Wenn er reicher wäre,','könnte er reisen.'],
+      ['Vergangenheit','Wenn ich Zeit gehabt hätte,','wäre ich gekommen.'],
+    ]}
+  },
+  examples:[
+    sent('Wenn es nicht regnete, würden wir spazieren gehen.',
+      [{w:'Wenn es',r:'S'},{w:'nicht regnete,',r:'V'},{w:'würden',r:'Aux'},{w:'wir',r:'S'},{w:'spazieren gehen.',r:'V'}],
+      'Если бы не шёл дождь, мы бы пошли гулять.'),
+  ],
+  exercises:[
+    ex('Wenn ich mehr Zeit ___, würde ich sport treiben. (haben→Konj.II)','hätte','hätte'),
+    ex('Wenn er das gewusst ___, wäre er nicht gegangen. (haben→Konj.II Verg.)','hätte','Verg.: hätte gewusst'),
+  ]
+};
+
+// ── IMPERATIV ─────────────────────────────────────────────────────
+CONTENT['imperativ'] = {
+  zone:'special', tag:'Modus', title:'Imperativ',
+  sub:'Повелительное наклонение',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'du: Stamm(+e) | ihr: Stamm+t | Sie: Inf.+Sie',
+    text:`<strong>du-Form</strong>: основа глагола (lern!). При основе на -d/-t/-ig → +e (arbeite!). Сильные с e→i сохраняют Ablaut (lies!, sprich!).
+<br><strong>ihr-Form</strong>: как Präsens ihr (lernt!, arbeitet!).
+<br><strong>Sie-Form</strong>: Infinitiv + Sie (Lernen Sie!). Всегда с Sie.`,
+    table:{head:['Person','lernen','fahren','lesen','arbeiten','sein'],rows:[
+      ['du','Lern(e)!','Fahr(e)!','Lies!','Arbeite!','Sei!'],
+      ['ihr','Lernt!','Fahrt!','Lest!','Arbeitet!','Seid!'],
+      ['Sie','Lernen Sie!','Fahren Sie!','Lesen Sie!','Arbeiten Sie!','Seien Sie!'],
+    ]}
+  },
+  examples:[
+    sent('Lern jeden Tag neue Wörter!',
+      [{w:'Lern',r:'V'},{w:'jeden Tag',r:'Adv'},{w:'neue Wörter!',r:'Oa'}],
+      'Учи каждый день новые слова! (du)'),
+    sent('Fahren Sie bitte langsam!',
+      [{w:'Fahren',r:'V'},{w:'Sie',r:'S'},{w:'bitte',r:'Adv'},{w:'langsam!',r:'Adj'}],
+      'Пожалуйста, едьте медленно! (Sie)'),
+    sent('Seid ruhig!',
+      [{w:'Seid',r:'V'},{w:'ruhig!',r:'Adj'}],
+      'Будьте тихими! (ihr)'),
+  ],
+  exercises:[
+    ex('___ ! (du, lernen)','Lern','du-Form: основа'),
+    ex('___ ! (ihr, lernen)','Lernt','ihr+t'),
+    ex('___ Sie! (lernen)','Lernen','Inf.+Sie'),
+    ex('___ ! (du, lesen)','Lies','e→i сохраняется'),
+    ex('___ ! (du, arbeiten)','Arbeite','основа на -t → +e'),
+    ex('___ Sie bitte! (kommen)','Kommen','Inf.+Sie'),
+  ]
+};
+
+// ── Konjunktiv I ──────────────────────────────────────────────────
+CONTENT['konj1'] = {
+  zone:'special', tag:'Modus', title:'Konjunktiv I — Indirekte Rede',
+  sub:'Косвенная речь',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Inf.Stamm + -e-Endungen (ich -e / du -est / er -e / wir -en / ihr -et / sie -en)',
+    text:`Konjunktiv I используется для передачи чужих слов (<em>косвенная речь</em>).
+<br>Если форма совпадает с Indikativ — используют Konj. II или würde+Inf.
+<br><br>sein имеет особые формы: ich sei / du seist / er sei / wir seien.`,
+    table:{head:['Person','lernen (Konj.I)','haben','sein'],rows:[
+      ['ich','lerne','habe','sei'],
+      ['du','lernest','habest','seist'],
+      ['er/sie','lerne','habe','sei'],
+      ['wir','lernen','haben','seien'],
+      ['ihr','lernet','habet','seiet'],
+      ['sie/Sie','lernen','haben','seien'],
+    ]}
+  },
+  examples:[
+    sent('Er sagt, er lerne Deutsch.',
+      [{w:'Er',r:'S'},{w:'sagt,',r:'V'},{w:'er',r:'S'},{w:'lerne',r:'V'},{w:'Deutsch.',r:'Oa'}],
+      'Он говорит, что учит немецкий.'),
+    sent('Sie sagte, sie sei müde.',
+      [{w:'Sie',r:'S'},{w:'sagte,',r:'V'},{w:'sie',r:'S'},{w:'sei',r:'V'},{w:'müde.',r:'Adj'}],
+      'Она сказала, что усталая.'),
+  ],
+  exercises:[
+    ex('Er sagt, er ___ Deutsch. (lernen → Konj.I)','lerne','Konj.I er: lerne'),
+    ex('Sie sagt, sie ___ müde. (sein → Konj.I)','sei','sein Konj.I: sei'),
+    ex('Er sagt, er ___ Zeit. (haben → Konj.I)','habe','haben Konj.I: habe'),
+  ]
+};
+
+// ── FUTUR II → Aussage / Neg ──────────────────────────────────────
+CONTENT['fut2_aussage'] = {
+  zone:'future', tag:'Satztyp', title:'Futur II — Aussagesatz',
+  sub:'Утвердительное предложение',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'S + werden(P2) + ... + Partizip II + haben/sein',
+    text:'werden на P2, Partizip II + Hilfsverb (haben/sein) — в конце как двойная рамка (Satzklammer). Порядок: Part.II → haben/sein.',
+    table:{head:['P1','P2 (werden)','Mittelfeld','Ende'],rows:[
+      ['Ich','werde','das Buch bis morgen','gelesen haben.'],
+      ['Er','wird','pünktlich','angekommen sein.'],
+      ['Bis Freitag','werden','wir alles','erledigt haben.'],
+    ]}
+  },
+  examples:[
+    sent('Ich werde das bis morgen erledigt haben.',
+      [{w:'Ich',r:'S'},{w:'werde',r:'Aux'},{w:'das',r:'Oa'},{w:'bis morgen',r:'Adv'},{w:'erledigt',r:'V'},{w:'haben.',r:'Aux'}],
+      'Я к завтрашнему дню разберусь с этим.'),
+    sent('Er wird bis dann angekommen sein.',
+      [{w:'Er',r:'S'},{w:'wird',r:'Aux'},{w:'bis dann',r:'Adv'},{w:'angekommen',r:'V'},{w:'sein.',r:'Aux'}],
+      'К тому времени он уже прибудет.'),
+  ],
+  exercises:[
+    ex('Ich werde das erledigt ___. (haben/sein)','haben','erledigen → haben-Verb'),
+    ex('Er wird angekommen ___. (haben/sein)','sein','ankommen → sein-Verb'),
+    ex('Bis Freitag ___ wir alles gemacht haben. (werden/wird)','werden','wir → werden'),
+  ]
+};
+
+CONTENT['fut2_neg'] = {
+  zone:'future', tag:'Satztyp', title:'Futur II — Negation',
+  sub:'Отрицание в Futur II',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'S + werden + ... + nicht + Part.II + haben/sein',
+    text:'nicht стоит перед Partizip II. kein- используется перед существительным в Mittelfeld.',
+    table:{head:['Тип','Пример'],rows:[
+      ['nicht','Ich werde das nicht gemacht haben.'],
+      ['kein','Er wird keine Fehler gemacht haben.'],
+    ]}
+  },
+  examples:[
+    sent('Sie wird das Buch nicht gelesen haben.',
+      [{w:'Sie',r:'S'},{w:'wird',r:'Aux'},{w:'das Buch',r:'Oa'},{w:'nicht',r:'N'},{w:'gelesen',r:'V'},{w:'haben.',r:'Aux'}],
+      'Она, должно быть, не читала книгу.'),
+  ],
+  exercises:[
+    ex('Er wird das ___ gemacht haben. (nicht/kein)','nicht','глагол → nicht'),
+    ex('Sie wird ___ Fehler gemacht haben. (keine/nicht)','keine','Fehler (Pl.) → keine'),
+  ]
+};
+
+// ── PRÄTERITUM → Satztypen ────────────────────────────────────────
+CONTENT['prat_aussage'] = {
+  zone:'past', tag:'Satztyp', title:'Präteritum — Aussagesatz',
+  sub:'Утвердительное в Präteritum',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'S + Verb-Prät.(P2) + ... | Modale: Modal-Prät. + ... + Inf.',
+    text:'Глагол в Präteritum на позиции 2. При инверсии — любой элемент на P1, глагол P2. Модальные: Prät-форма на P2, инфинитив в конце.',
+    table:{head:['P1','P2 (Prät.)','Rest'],rows:[
+      ['Er','arbeitete','jeden Tag.'],
+      ['Jeden Tag','arbeitete','er.'],
+      ['Sie','fuhr','nach Berlin.'],
+      ['Er','konnte','nicht schlafen.'],
+      ['Als Kind','wohnte','sie in Wien.'],
+    ]}
+  },
+  examples:[
+    sent('Er arbeitete damals als Ingenieur.',
+      [{w:'Er',r:'S'},{w:'arbeitete',r:'V'},{w:'damals',r:'Adv'},{w:'als Ingenieur.',r:'Adv'}],
+      'В то время он работал инженером.'),
+    sent('Als Kind wohnte sie in einem kleinen Dorf.',
+      [{w:'Als Kind',r:'Adv'},{w:'wohnte',r:'V'},{w:'sie',r:'S'},{w:'in einem kleinen Dorf.',r:'Adv'}],
+      'В детстве она жила в маленькой деревне.'),
+    sent('Er wollte Arzt werden.',
+      [{w:'Er',r:'S'},{w:'wollte',r:'V'},{w:'Arzt',r:'Oa'},{w:'werden.',r:'V'}],
+      'Он хотел стать врачом.'),
+  ],
+  exercises:[
+    ex('Er ___ viel. (arbeiten → Prät.)','arbeitete','schwach: +te'),
+    ex('Sie ___ nach Hamburg. (fahren → Prät.)','fuhr','stark: fahr→fuhr'),
+    ex('Ich ___ nicht schlafen. (können → Prät.)','konnte','können→konnte'),
+    ex('Wir ___ in München. (wohnen → Prät.)','wohnten','schwach: +ten'),
+  ]
+};
+
+CONTENT['prat_frage'] = {
+  zone:'past', tag:'Satztyp', title:'Präteritum — Frage',
+  sub:'Вопросы в Präteritum',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Verb-Prät.(P1) + S + ...? | W-Wort(P1) + Verb-Prät.(P2) + S + ...?',
+    text:'Структура та же, что и в Präsens: глагол на P1 (Ja/Nein-Frage) или W-Wort + глагол-Prät. на P2 (W-Frage).',
+    table:{head:['Тип','Пример','Перевод'],rows:[
+      ['Ja/Nein','Arbeitete er viel?','Он много работал?'],
+      ['Ja/Nein','War sie müde?','Она была усталой?'],
+      ['W-Frage','Wo wohntest du früher?','Где ты жил раньше?'],
+      ['W-Frage','Wann fuhr er ab?','Когда он уехал?'],
+      ['Modal','Konnte er kommen?','Он мог прийти?'],
+    ]}
+  },
+  examples:[
+    sent('Wohntest du früher in Berlin?',
+      [{w:'Wohntest',r:'V'},{w:'du',r:'S'},{w:'früher',r:'Adv'},{w:'in Berlin?',r:'Adv'}],
+      'Ты раньше жил в Берлине?'),
+    sent('Wo arbeitete er damals?',
+      [{w:'Wo',r:'Adv'},{w:'arbeitete',r:'V'},{w:'er',r:'S'},{w:'damals?',r:'Adv'}],
+      'Где он тогда работал?'),
+  ],
+  exercises:[
+    ex('___ du in Berlin? (Wohntest/Wohnte/Wohnten)','Wohntest','du-Form: +test'),
+    ex('Wo ___ er? (arbeitete/arbeite/arbeitest)','arbeitete','er → +te'),
+    ex('___ sie (она) fahren? (Konnte/Konntest/Konnten)','Konnte','sie (она) → konnte'),
+  ]
+};
+
+CONTENT['prat_neg'] = {
+  zone:'past', tag:'Satztyp', title:'Präteritum — Negation',
+  sub:'Отрицание в Präteritum',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'S + Verb-Prät. + ... + nicht | kein- + Nomen',
+    text:'Те же правила, что в Präsens: nicht отрицает глагол (стоит в конце или перед отрицаемым элементом), kein- отрицает существительные.',
+    table:{head:['Тип','Пример'],rows:[
+      ['nicht (Verb)','Er arbeitete nicht.'],
+      ['nicht (Adj.)','Er war nicht müde.'],
+      ['nicht (Präp.)','Sie wohnte nicht in Berlin.'],
+      ['kein (Nomen)','Er hatte keine Zeit.'],
+      ['kein (Akk.m)','Ich sah keinen Mann.'],
+    ]}
+  },
+  examples:[
+    sent('Er konnte damals nicht schlafen.',
+      [{w:'Er',r:'S'},{w:'konnte',r:'V'},{w:'damals',r:'Adv'},{w:'nicht',r:'N'},{w:'schlafen.',r:'V'}],
+      'В то время он не мог спать.'),
+    sent('Sie hatte keine Arbeit.',
+      [{w:'Sie',r:'S'},{w:'hatte',r:'V'},{w:'keine',r:'N'},{w:'Arbeit.',r:'Oa'}],
+      'У неё не было работы.'),
+  ],
+  exercises:[
+    ex('Er schlief ___ gut. (nicht/kein)','nicht','Adverb/Verb → nicht'),
+    ex('Sie hatte ___ Geld. (kein/nicht/keinen)','kein','Geld (n) → kein'),
+    ex('Ich wohnte ___ in München. (nicht/kein)','nicht','Präp.-Gruppe → nicht'),
+  ]
+};
+
+// ── PLUSQUAMPERFEKT → Satztypen ───────────────────────────────────
+CONTENT['plq_aussage'] = {
+  zone:'past', tag:'Satztyp', title:'Plusquamperf. — Aussagesatz',
+  sub:'Утвердительное в Plusquamperfekt',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'S + hatte/war(P2) + ... + Part.II',
+    text:'hatte/war на P2, Partizip II в конце. Часто в придаточных с <em>nachdem, bevor, als, weil</em>. В главном предложении — Präteritum.',
+    table:{head:['Nebensatz (PqPf)','Hauptsatz (Prät.)'],rows:[
+      ['Nachdem er gegessen hatte,','las er ein Buch.'],
+      ['Bevor sie kam,','hatte er aufgeräumt.'],
+      ['Als ich ankam,','war sie schon gegangen.'],
+      ['Weil er trainiert hatte,','gewann er das Rennen.'],
+    ]}
+  },
+  examples:[
+    sent('Nachdem er das Buch gelesen hatte, schlief er ein.',
+      [{w:'Nachdem er das Buch',r:'S'},{w:'gelesen hatte,',r:'V'},{w:'schlief',r:'V'},{w:'er',r:'S'},{w:'ein.',r:'V'}],
+      'После того как он прочитал книгу, он заснул.'),
+    sent('Als ich ankam, hatte er bereits gegessen.',
+      [{w:'Als ich ankam,',r:'Adv'},{w:'hatte',r:'Aux'},{w:'er',r:'S'},{w:'bereits',r:'Adv'},{w:'gegessen.',r:'V'}],
+      'Когда я пришёл, он уже поел.'),
+    sent('Weil sie fleißig gelernt hatte, bestand sie die Prüfung.',
+      [{w:'Weil sie fleißig',r:'S'},{w:'gelernt hatte,',r:'V'},{w:'bestand',r:'V'},{w:'sie',r:'S'},{w:'die Prüfung.',r:'Oa'}],
+      'Потому что она усердно занималась, она сдала экзамен.'),
+  ],
+  exercises:[
+    ex('Nachdem er ___ hatte, ging er schlafen. (essen → Part.II)','gegessen','essen → gegessen'),
+    ex('Als ich ankam, ___ sie schon gegangen. (war/hatte)','war','gehen → sein → war'),
+    ex('Weil wir ___ hatten, konnten wir gewinnen. (trainieren → Part.II)','trainiert','trainieren → trainiert'),
+  ]
+};
+
+CONTENT['plq_neg'] = {
+  zone:'past', tag:'Satztyp', title:'Plusquamperf. — Negation',
+  sub:'Отрицание в Plusquamperfekt',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'hatte/war + ... + nicht + Part.II | kein im Mittelfeld',
+    text:'nicht стоит непосредственно перед Partizip II. kein- отрицает существительное в Mittelfeld.',
+    table:{head:['Тип','Пример'],rows:[
+      ['nicht vor Part.II','Er hatte das nicht gewusst.'],
+      ['kein im MF','Sie hatte kein Geld gehabt.'],
+      ['sein + nicht','Er war nicht gegangen.'],
+    ]}
+  },
+  examples:[
+    sent('Er hatte das Problem nicht bemerkt.',
+      [{w:'Er',r:'S'},{w:'hatte',r:'Aux'},{w:'das Problem',r:'Oa'},{w:'nicht',r:'N'},{w:'bemerkt.',r:'V'}],
+      'Он не заметил проблемы.'),
+    sent('Sie war noch nie in Deutschland gewesen.',
+      [{w:'Sie',r:'S'},{w:'war',r:'Aux'},{w:'noch nie',r:'N'},{w:'in Deutschland',r:'Adv'},{w:'gewesen.',r:'V'}],
+      'Она никогда не была в Германии.'),
+  ],
+  exercises:[
+    ex('Er hatte das ___ gewusst. (nicht/kein)','nicht','глагол → nicht'),
+    ex('Sie hatte ___ Zeit gehabt. (keine/nicht)','keine','Zeit (f) → keine'),
+    ex('Er war ___ angekommen. (nicht/kein)','nicht','sein-Verb → nicht'),
+  ]
+};
+
+// ── KONJUNKTIV II würde+Inf ───────────────────────────────────────
+CONTENT['konj2_wurd'] = {
+  zone:'special', tag:'Modus', title:'würde + Infinitiv',
+  sub:'Описательная форма Konjunktiv II',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'würde (konj.) + ... + Infinitiv',
+    text:`<strong>würde+Infinitiv</strong> — аналитическая замена Konjunktiv II для большинства глаголов (кроме haben/sein/Modalverben — у них своя форма).
+<br><br>Используется: нереальные желания, вежливые просьбы, гипотетические ситуации.
+<br><br>Спряжение würde: ich würde / du würdest / er würde / wir würden / ihr würdet / sie würden.`,
+    table:{head:['Person','würde'],rows:[
+      ['ich','würde'],['du','würdest'],['er/sie/es','würde'],
+      ['wir','würden'],['ihr','würdet'],['sie/Sie','würden'],
+    ]}
+  },
+  examples:[
+    sent('Ich würde gerne nach Deutschland reisen.',
+      [{w:'Ich',r:'S'},{w:'würde',r:'Aux'},{w:'gerne',r:'Adv'},{w:'nach Deutschland',r:'Adv'},{w:'reisen.',r:'V'}],
+      'Я бы с удовольствием поехал в Германию.'),
+    sent('Würdest du mir bitte helfen?',
+      [{w:'Würdest',r:'Aux'},{w:'du',r:'S'},{w:'mir',r:'Od'},{w:'bitte',r:'Adv'},{w:'helfen?',r:'V'}],
+      'Не помог бы ты мне? (вежливая просьба)'),
+    sent('Was würdest du an meiner Stelle machen?',
+      [{w:'Was',r:'Oa'},{w:'würdest',r:'Aux'},{w:'du',r:'S'},{w:'an meiner Stelle',r:'Adv'},{w:'machen?',r:'V'}],
+      'Что бы ты сделал на моём месте?'),
+  ],
+  exercises:[
+    ex('Ich ___ gern helfen. (würde/würdest)','würde','ich → würde'),
+    ex('___ du das machen? (Würde/Würdest/Würden)','Würdest','du → würdest'),
+    ex('Wir ___ das gerne kaufen.','würden','wir → würden'),
+    ex('Was ___ Sie empfehlen? (würden/würde)','würden','Sie → würden'),
+    ex('Er ___ lieber zu Hause bleiben.','würde','er → würde'),
+  ]
+};
+
+// ── IMPERATIV → alle Formen ───────────────────────────────────────
+CONTENT['imp_du'] = {
+  zone:'special', tag:'Modus', title:'Imperativ — du-Form',
+  sub:'Команда для одного человека (ты)',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Stamm (ohne -st) [+ e bei -d/-t/-ig/-m/-n]',
+    text:`du-форма: берём основу глагола (как Präsens du, но без -st).
+<br><strong>Особые случаи:</strong>
+<br>• основа на <em>-d/-t/-ig/-m/-n</em> (если перед ней другая согласная) → +e: <em>arbeite!, rede!, öffne!</em>
+<br>• сильные глаголы с <em>e→i/ie</em>: сохраняют Umlaut: <em>lesen→Lies!, sprechen→Sprich!, geben→Gib!</em>
+<br>• sein → Sei! | haben → Hab(e)! | werden → Werde!`,
+    table:{head:['Infinitiv','du Präsens','du Imperativ','Особенность'],rows:[
+      ['lernen','du lernst','Lern(e)!','обычный'],
+      ['arbeiten','du arbeitest','Arbeite!','основа на -t'],
+      ['fahren','du fährst','Fahr(e)!','a→ä НЕ сохраняется!'],
+      ['lesen','du liest','Lies!','e→ie сохраняется'],
+      ['sprechen','du sprichst','Sprich!','e→i сохраняется'],
+      ['geben','du gibst','Gib!','e→i сохраняется'],
+      ['sein','du bist','Sei!','нерегулярный'],
+    ]}
+  },
+  examples:[
+    sent('Lern jeden Tag neue Vokabeln!',
+      [{w:'Lern',r:'V'},{w:'jeden Tag',r:'Adv'},{w:'neue Vokabeln!',r:'Oa'}],
+      'Учи каждый день новые слова!'),
+    sent('Lies dieses Buch!',
+      [{w:'Lies',r:'V'},{w:'dieses Buch!',r:'Oa'}],
+      'Читай эту книгу! (e→ie сохраняется)'),
+    sent('Sei bitte ruhig!',
+      [{w:'Sei',r:'V'},{w:'bitte',r:'Adv'},{w:'ruhig!',r:'Adj'}],
+      'Пожалуйста, будь тихим!'),
+    sent('Arbeite fleißig!',
+      [{w:'Arbeite',r:'V'},{w:'fleißig!',r:'Adj'}],
+      'Работай усердно! (основа на -t → +e)'),
+  ],
+  exercises:[
+    ex('___ ! (du, kommen)','Komm','основа: komm-'),
+    ex('___ ! (du, lesen)','Lies','e→ie сохраняется'),
+    ex('___ ! (du, schlafen)','Schlaf','a→ä НЕ сохраняется, schlaf-'),
+    ex('___ ! (du, sprechen)','Sprich','e→i сохраняется'),
+    ex('___ ! (du, arbeiten)','Arbeite','основа на -t → +e'),
+    ex('___ ! (du, sein)','Sei','нерегулярный'),
+    ex('___ ! (du, geben)','Gib','e→i сохраняется'),
+  ]
+};
+
+CONTENT['imp_ihr'] = {
+  zone:'special', tag:'Modus', title:'Imperativ — ihr-Form',
+  sub:'Команда для группы (вы неформальное)',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'= Präsens ihr-Form (Stamm + -t)',
+    text:`ihr-форма Imperativ идентична Präsens ihr-Form. Без изменений основы (никакого Umlaut).
+<br><br>Ударение: произносится с восклицательной интонацией.
+<br>sein → Seid! | haben → Habt! | werden → Werdet!`,
+    table:{head:['Infinitiv','ihr Präsens','ihr Imperativ'],rows:[
+      ['lernen','ihr lernt','Lernt!'],
+      ['fahren','ihr fahrt','Fahrt!'],
+      ['lesen','ihr lest','Lest!'],
+      ['arbeiten','ihr arbeitet','Arbeitet!'],
+      ['sein','ihr seid','Seid!'],
+      ['haben','ihr habt','Habt!'],
+    ]}
+  },
+  examples:[
+    sent('Lernt bitte alle Vokabeln!',
+      [{w:'Lernt',r:'V'},{w:'bitte',r:'Adv'},{w:'alle Vokabeln!',r:'Oa'}],
+      'Пожалуйста, учите все слова! (ihr)'),
+    sent('Seid ruhig!',
+      [{w:'Seid',r:'V'},{w:'ruhig!',r:'Adj'}],
+      'Будьте тихими!'),
+    sent('Kommt her und schaut euch das an!',
+      [{w:'Kommt',r:'V'},{w:'her',r:'Adv'},{w:'und',r:''},{w:'schaut',r:'V'},{w:'euch das',r:'Oa'},{w:'an!',r:'V'}],
+      'Идите сюда и посмотрите на это!'),
+  ],
+  exercises:[
+    ex('___ alle! (ihr, kommen)','Kommt','ihr: Stamm+t'),
+    ex('___ bitte leise! (ihr, sein)','Seid','sein: Seid'),
+    ex('___ das Buch! (ihr, lesen)','Lest','lesen: ihr lest'),
+    ex('___ zusammen! (ihr, arbeiten)','Arbeitet','arbeiten: ihr arbeitet'),
+  ]
+};
+
+CONTENT['imp_sie'] = {
+  zone:'special', tag:'Modus', title:'Imperativ — Sie-Form',
+  sub:'Команда вежливая (Вы)',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Infinitiv + Sie (всегда)',
+    text:`Sie-форма: Infinitiv + местоимение <strong>Sie</strong>. Всегда.
+<br>Обратите внимание: Sie ставится <em>после</em> глагола, в отличие от других форм.
+<br>sein → Seien Sie! (особая форма!)`,
+    table:{head:['Infinitiv','Sie-Imperativ'],rows:[
+      ['lernen','Lernen Sie!'],
+      ['kommen','Kommen Sie!'],
+      ['lesen','Lesen Sie!'],
+      ['sprechen','Sprechen Sie!'],
+      ['sein','Seien Sie!'],
+      ['haben','Haben Sie!'],
+      ['fahren','Fahren Sie!'],
+    ]}
+  },
+  examples:[
+    sent('Sprechen Sie bitte langsamer!',
+      [{w:'Sprechen',r:'V'},{w:'Sie',r:'S'},{w:'bitte',r:'Adv'},{w:'langsamer!',r:'Adj'}],
+      'Пожалуйста, говорите помедленнее!'),
+    sent('Seien Sie pünktlich!',
+      [{w:'Seien',r:'V'},{w:'Sie',r:'S'},{w:'pünktlich!',r:'Adj'}],
+      'Будьте пунктуальны! (sein → Seien)'),
+    sent('Nehmen Sie bitte Platz!',
+      [{w:'Nehmen',r:'V'},{w:'Sie',r:'S'},{w:'bitte',r:'Adv'},{w:'Platz!',r:'Oa'}],
+      'Пожалуйста, присаживайтесь!'),
+  ],
+  exercises:[
+    ex('___ bitte! (kommen, Sie)','Kommen Sie','Inf. + Sie'),
+    ex('___ langsamer! (sprechen, Sie)','Sprechen Sie','Inf. + Sie'),
+    ex('___ ruhig! (sein, Sie)','Seien Sie','sein → Seien Sie!'),
+    ex('___ Platz! (nehmen, Sie)','Nehmen Sie','Inf. + Sie'),
+  ]
+};
+
+CONTENT['imp_neg'] = {
+  zone:'special', tag:'Satztyp', title:'Imperativ — Negation',
+  sub:'Запрет — nicht / kein',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Imp. + nicht | kein- + Nomen',
+    text:`Запрет строится из Imperativ + nicht или kein-.
+<br>nicht стоит в конце или перед отрицаемым элементом.
+<br>kein- заменяет существительное с неопределённым артиклем.
+<br><br>Также часто используется: <em>Hör auf zu + Inf.!</em> (Перестань...), <em>Vergiss nicht, zu + Inf.</em>`,
+    table:{head:['Форма','Позитив','Запрет'],rows:[
+      ['du','Komm!','Komm nicht!'],
+      ['du (kein)','Kauf ein Auto!','Kauf kein Auto!'],
+      ['ihr','Kommt!','Kommt nicht!'],
+      ['Sie','Kommen Sie!','Kommen Sie nicht!'],
+      ['du','Rauche!','Rauch nicht!'],
+    ]}
+  },
+  examples:[
+    sent('Komm nicht zu spät!',
+      [{w:'Komm',r:'V'},{w:'nicht',r:'N'},{w:'zu spät!',r:'Adv'}],
+      'Не опаздывай!'),
+    sent('Macht bitte keinen Lärm!',
+      [{w:'Macht',r:'V'},{w:'bitte',r:'Adv'},{w:'keinen',r:'N'},{w:'Lärm!',r:'Oa'}],
+      'Пожалуйста, не шумите! (Lärm m → keinen)'),
+    sent('Vergessen Sie nicht, den Ausweis mitzubringen!',
+      [{w:'Vergessen',r:'V'},{w:'Sie',r:'S'},{w:'nicht,',r:'N'},{w:'den Ausweis mitzubringen!',r:'V'}],
+      'Не забудьте взять удостоверение!'),
+  ],
+  exercises:[
+    ex('___ nicht! (du, rauchen → Imp.)','Rauch','du Imp: основа'),
+    ex('___ keinen Lärm! (ihr, machen → Imp.)','Macht','ihr: Stamm+t'),
+    ex('___ Sie nicht so laut! (sprechen → Sie-Imp.)','Sprechen','Inf.+Sie'),
+    ex('___ keine Angst! (du, haben → Imp.)','Hab','haben → Hab'),
+  ]
+};
+
+// ── PRÄSENS Aussagesatz Level 3 ───────────────────────────────────
+CONTENT['pra_aus_subj'] = {
+  zone:'present', tag:'Wortart', title:'Subjekt — Nominativ',
+  sub:'Подлежащее — кто или что совершает действие',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'wer? / was? → Nominativ — всегда P1 или P3 (при инверсии)',
+    text:`Subjekt отвечает на вопрос <strong>wer?</strong> (одуш.) или <strong>was?</strong> (неодуш.).
+<br>Всегда в <strong>Nominativ</strong>. Артикль: der/die/das (без изменений в Nom.).
+<br><br><strong>Местоимения Nominativ:</strong> ich / du / er / sie / es / wir / ihr / sie / Sie.
+<br><br>Подлежащее определяет форму глагола (конгруэнция).`,
+    table:{head:['Тип','Nom.m','Nom.f','Nom.n','Nom.Pl.'],rows:[
+      ['best.Art.','der Mann','die Frau','das Kind','die Leute'],
+      ['unbest.Art.','ein Mann','eine Frau','ein Kind','– Leute'],
+      ['kein-','kein Mann','keine Frau','kein Kind','keine Leute'],
+      ['Possessiv(mein)','mein Mann','meine Frau','mein Kind','meine Leute'],
+    ]}
+  },
+  examples:[
+    sent('Der alte Mann liest ein Buch.',
+      [{w:'Der alte Mann',r:'S'},{w:'liest',r:'V'},{w:'ein Buch.',r:'Oa'}],
+      'Старый мужчина читает книгу. (der=Nom.m)'),
+    sent('Eine junge Frau kommt herein.',
+      [{w:'Eine junge Frau',r:'S'},{w:'kommt',r:'V'},{w:'herein.',r:'Adv'}],
+      'Молодая женщина входит. (eine=Nom.f)'),
+    sent('Mein Kind schläft.',
+      [{w:'Mein Kind',r:'S'},{w:'schläft.',r:'V'}],
+      'Моё дитя спит. (mein=Nom.n)'),
+  ],
+  exercises:[
+    ex('___ Mann kommt. (der/die/das)','Der','Mann — m → der'),
+    ex('___ Frau arbeitet. (der/die/das)','Die','Frau — f → die'),
+    ex('___ Kind spielt. (der/die/das)','Das','Kind — n → das'),
+    ex('___ Leute warten. (der/die/das)','Die','Pl. → die'),
+    ex('Mein___ Bruder kommt. (mein/meine/–)','Mein','Bruder — m, Nom.'),
+  ]
+};
+
+CONTENT['pra_aus_verb'] = {
+  zone:'present', tag:'Wortart', title:'Verb — Position 2',
+  sub:'Глагол всегда на 2-й позиции',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'P1 (любой элемент) + Verb(P2) + остальное + [Satzklammer]',
+    text:`<strong>V2-правило</strong> — фундаментальное правило немецкого языка.
+<br>Финитный (изменяемый) глагол <em>всегда на 2-й позиции</em> в главном предложении.
+<br><br>P1 может быть: Subjekt / Adverb / Objekt / Präp.-Phrase / Nebensatz.
+<br><br><strong>Satzklammer (рамка):</strong> инфинитив, Partizip II, трennbare приставка — в конце.`,
+    table:{head:['P1','P2 (Verb)','Mittelfeld','Satzende'],rows:[
+      ['Ich','lerne','–','–'],
+      ['Heute','lerne','ich','–'],
+      ['Deutsch','lerne','ich','–'],
+      ['Ich','lerne','gerne','–'],
+      ['Ich','habe','gestern viel','gelernt.'],
+      ['Ich','werde','morgen','lernen.'],
+      ['Ich','mache','das Fenster','auf.'],
+    ]}
+  },
+  examples:[
+    sent('Heute lerne ich Deutsch.',
+      [{w:'Heute',r:'Adv'},{w:'lerne',r:'V'},{w:'ich',r:'S'},{w:'Deutsch.',r:'Oa'}],
+      'Сегодня я учу немецкий. (Adv. на P1)'),
+    sent('Das Buch lese ich jeden Tag.',
+      [{w:'Das Buch',r:'Oa'},{w:'lese',r:'V'},{w:'ich',r:'S'},{w:'jeden Tag.',r:'Adv'}],
+      'Книгу я читаю каждый день. (Obj. на P1)'),
+    sent('Ich mache das Fenster auf.',
+      [{w:'Ich',r:'S'},{w:'mache',r:'V'},{w:'das Fenster',r:'Oa'},{w:'auf.',r:'V'}],
+      'Я открываю окно. (Satzklammer: auf в конце)'),
+  ],
+  exercises:[
+    ex('___ lerne ich. (Heute/Ich heute)','Heute','P1=Adv, Verb P2'),
+    ex('Das Buch ___ ich jeden Tag. (lese/liest)','lese','ich → -e'),
+    ex('Ich ___ das Fenster auf. (aufmachen → Präs.)','mache...auf','trennbar: mache P2, auf Ende'),
+    ex('Ich ___ heute viel gearbeitet. (haben)','habe','Perf: habe P2, gearbeitet Ende'),
+  ]
+};
+
+CONTENT['pra_aus_obj_a'] = {
+  zone:'present', tag:'Wortart', title:'Akkusativ-Objekt',
+  sub:'Прямое дополнение — кого? что?',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'wen? / was? → Akkusativ',
+    text:`Прямое дополнение — то, на что непосредственно направлено действие.
+<br><br><strong>Изменения артикля в Akkusativ:</strong>
+<br>der → <strong>den</strong> (только m! остальные не меняются)
+<br>die → die | das → das | Pl. die → die
+<br>ein → einen (m), eine → eine (f), ein → ein (n)
+<br><br><strong>Глаголы, требующие Akkusativ:</strong> sehen, hören, kaufen, essen, trinken, lesen, schreiben, lieben, kennen, finden, nehmen, brauchen, haben...`,
+    table:{head:['Kasus','m','f','n','Pl.'],rows:[
+      ['Nom.','der/ein','die/eine','das/ein','die/–'],
+      ['Akk.','<b>den/einen</b>','die/eine','das/ein','die/–'],
+    ]}
+  },
+  examples:[
+    sent('Ich sehe den Mann.',
+      [{w:'Ich',r:'S'},{w:'sehe',r:'V'},{w:'den Mann.',r:'Oa'}],
+      'Я вижу мужчину. (der→den!)'),
+    sent('Er kauft eine neue Jacke.',
+      [{w:'Er',r:'S'},{w:'kauft',r:'V'},{w:'eine neue Jacke.',r:'Oa'}],
+      'Он покупает новую куртку. (eine Nom=Akk у f)'),
+    sent('Ich lese ein spannendes Buch.',
+      [{w:'Ich',r:'S'},{w:'lese',r:'V'},{w:'ein spannendes Buch.',r:'Oa'}],
+      'Я читаю увлекательную книгу. (ein Nom=Akk у n)'),
+  ],
+  exercises:[
+    ex('Ich sehe ___ Mann. (den/die/das)','den','Akk.m: den'),
+    ex('Er kauft ___ Buch. (den/die/das/ein)','das','Buch n, Akk.=das'),
+    ex('Sie liebt ___ Kind. (das/den/die)','das','Kind n, Akk.=das'),
+    ex('Ich brauche ein___ Stift. (einem/en/e)','en','Stift m, Akk.: einen'),
+    ex('Kennst du ___ Frau? (die/der/den)','die','Frau f, Akk.=die'),
+  ]
+};
+
+CONTENT['pra_aus_obj_d'] = {
+  zone:'present', tag:'Wortart', title:'Dativ-Objekt',
+  sub:'Косвенное дополнение — кому? чему?',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'wem? → Dativ',
+    text:`Косвенное дополнение — кому предназначено действие.
+<br><br><strong>Dativ-артикли:</strong>
+<br>der → <strong>dem</strong> | die → <strong>der</strong> | das → <strong>dem</strong> | Pl. die → <strong>den</strong> (+n к сущ.)
+<br>ein → einem | eine → einer | ein → einem
+<br><br><strong>Глаголы с Dativ:</strong> geben, helfen, danken, gefallen, gehören, antworten, glauben, folgen, schreiben (an), zeigen, erklären...
+<br><br><strong>Порядок:</strong> Dativ перед Akkusativ (при существительных).`,
+    table:{head:['Kasus','m','f','n','Pl.'],rows:[
+      ['Nom.','der','die','das','die'],
+      ['Dat.','<b>dem</b>','<b>der</b>','<b>dem</b>','<b>den</b>(+n)'],
+    ]}
+  },
+  examples:[
+    sent('Ich helfe dem alten Mann.',
+      [{w:'Ich',r:'S'},{w:'helfe',r:'V'},{w:'dem alten Mann.',r:'Od'}],
+      'Я помогаю старому мужчине. (Dat.m=dem)'),
+    sent('Er gibt der Lehrerin das Heft.',
+      [{w:'Er',r:'S'},{w:'gibt',r:'V'},{w:'der Lehrerin',r:'Od'},{w:'das Heft.',r:'Oa'}],
+      'Он даёт учительнице тетрадь. (Dat.f=der)'),
+    sent('Das Buch gehört dem Kind.',
+      [{w:'Das Buch',r:'S'},{w:'gehört',r:'V'},{w:'dem Kind.',r:'Od'}],
+      'Книга принадлежит ребёнку. (Dat.n=dem)'),
+  ],
+  exercises:[
+    ex('Ich helfe ___ Mann. (dem/den/der)','dem','Dat.m: dem'),
+    ex('Er gibt ___ Frau das Buch. (die/der/dem)','der','Dat.f: der'),
+    ex('Das Spielzeug gehört ___ Kind. (das/des/dem)','dem','Dat.n: dem'),
+    ex('Ich danke mein___ Mutter. (em/er/en)','er','meine(r) Dat.f: meiner'),
+    ex('Er schreibt ___ Freunden. (die/den/der)','den','Pl. Dat.: den (+n Freunden)'),
+  ]
+};
+
+CONTENT['pra_aus_adv'] = {
+  zone:'present', tag:'Wortart', title:'Adverbiale — TeKaMoLo',
+  sub:'Обстоятельства и их порядок',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Te(mporal) → Ka(usal) → Mo(dal) → Lo(kal)',
+    text:`Обстоятельства в Mittelfeld располагаются в порядке <strong>TeKaMoLo</strong>:
+<br>① <strong>Te</strong>mporal — когда? (heute, morgen, jeden Tag, um 8 Uhr, seit 3 Jahren)
+<br>② <strong>Ka</strong>usal — почему? (wegen des Wetters, aus Müdigkeit)
+<br>③ <strong>Mo</strong>dal — как? (schnell, mit dem Bus, gerne, allein)
+<br>④ <strong>Lo</strong>kal — где/куда? (in Berlin, nach Hause, hier)
+<br><br>При нескольких обстоятельствах одного типа — более общее перед более конкретным.`,
+    table:{head:['T (когда?)','K (почему?)','M (как?)','L (где/куда?)'],rows:[
+      ['morgens','wegen der Arbeit','schnell','zur Schule'],
+      ['jeden Tag','–','gerne','im Park'],
+      ['um 8 Uhr','–','mit dem Zug','nach München'],
+    ]}
+  },
+  examples:[
+    sent('Er fährt jeden Morgen schnell mit dem Rad zur Arbeit.',
+      [{w:'Er',r:'S'},{w:'fährt',r:'V'},{w:'jeden Morgen',r:'Adv'},{w:'schnell',r:'Adv'},{w:'mit dem Rad',r:'Adv'},{w:'zur Arbeit.',r:'Adv'}],
+      'Он ездит каждое утро быстро на велосипеде на работу. (T→M→L)'),
+    sent('Sie geht heute wegen der Kälte nicht nach draußen.',
+      [{w:'Sie',r:'S'},{w:'geht',r:'V'},{w:'heute',r:'Adv'},{w:'wegen der Kälte',r:'Adv'},{w:'nicht',r:'N'},{w:'nach draußen.',r:'Adv'}],
+      'Сегодня из-за холода она не выходит на улицу. (T→K→L)'),
+  ],
+  exercises:[
+    ex('Правильный порядок: [in Berlin] [schnell] [morgens] → ?','morgens schnell in Berlin','T→M→L'),
+    ex('Er fährt ___ (T: jeden Tag) ___ (M: mit dem Bus) ___ (L: zur Schule).','jeden Tag mit dem Bus zur Schule','T→M→L'),
+    ex('Sie arbeitet ___ (T: jetzt) ___ (K: wegen des Projekts) ___ (M: intensiv).','jetzt wegen des Projekts intensiv','T→K→M'),
+  ]
+};
+
+// ── FUTUR I → werden Konjugation ─────────────────────────────────
+CONTENT['fut1_werden'] = {
+  zone:'future', tag:'Wortart', title:'werden — Konjugation',
+  sub:'Спряжение вспомогательного глагола werden',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'ich werde / du wirst / er wird / wir werden / ihr werdet / sie werden',
+    text:`<strong>werden</strong> — многофункциональный глагол:
+<br>① Вспомогательный для <em>Futur I</em> (werden + Inf.)
+<br>② Вспомогательный для <em>Futur II</em> (werden + Part.II + haben/sein)
+<br>③ Вспомогательный для <em>Passiv</em> (werden + Part.II)
+<br>④ <em>Vollverb</em> — становиться: Er wird Arzt. (Он становится врачом.)
+<br><br>Особые формы: du <strong>wirst</strong>, er <strong>wird</strong> (неправильные!).`,
+    table:{head:['Person','werden','Futur I Beispiel'],rows:[
+      ['ich','werde','Ich werde lernen.'],
+      ['du','wirst','Du wirst lernen.'],
+      ['er/sie/es','wird','Er wird lernen.'],
+      ['wir','werden','Wir werden lernen.'],
+      ['ihr','werdet','Ihr werdet lernen.'],
+      ['sie/Sie','werden','Sie werden lernen.'],
+    ]}
+  },
+  examples:[
+    sent('Du wirst das schaffen!',
+      [{w:'Du',r:'S'},{w:'wirst',r:'Aux'},{w:'das',r:'Oa'},{w:'schaffen!',r:'V'}],
+      'Ты справишься!'),
+    sent('Er wird Ingenieur werden.',
+      [{w:'Er',r:'S'},{w:'wird',r:'Aux'},{w:'Ingenieur',r:'Oa'},{w:'werden.',r:'V'}],
+      'Он станет инженером. (Vollverb: werden)'),
+    sent('Ihr werdet das verstehen.',
+      [{w:'Ihr',r:'S'},{w:'werdet',r:'Aux'},{w:'das',r:'Oa'},{w:'verstehen.',r:'V'}],
+      'Вы это поймёте.'),
+  ],
+  exercises:[
+    ex('du ___ (werden)','wirst','нерегулярно: wirst'),
+    ex('er ___ (werden)','wird','нерегулярно: wird'),
+    ex('wir ___ (werden)','werden','регулярно: werden'),
+    ex('ihr ___ (werden)','werdet','ihr: werdet'),
+    ex('ich ___ (werden)','werde','ich: werde'),
+  ]
+};
+
+// ── VERB детали Level 3 ───────────────────────────────────────────
+CONTENT['verb_schwach'] = {
+  zone:'present', tag:'Wortart', title:'Schwache Verben',
+  sub:'Слабые (правильные) глаголы',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Stamm + Endungen (регулярно во всех временах)',
+    text:`Слабые глаголы не меняют корневую гласную. Präteritum: +te. Part.II: ge+Stamm+t.
+<br><br>Особенности: если основа на <em>-d/-t/-m/-n (+ согласная)</em>, вставляется <em>-e-</em> перед окончанием: <em>arbeit→arbeitet, öffn→öffnet</em>.
+<br><br>Глаголы на <em>-ieren</em>: Partizip II без ge-: <em>studieren→studiert, fotografieren→fotografiert</em>.`,
+    table:{head:['Inf.','Präsens (er)','Präteritum (er)','Part.II'],rows:[
+      ['lernen','lernt','lernte','gelernt'],
+      ['kaufen','kauft','kaufte','gekauft'],
+      ['wohnen','wohnt','wohnte','gewohnt'],
+      ['arbeiten','arbeitet','arbeitete','gearbeitet'],
+      ['öffnen','öffnet','öffnete','geöffnet'],
+      ['studieren','studiert','studierte','studiert'],
+      ['machen','macht','machte','gemacht'],
+    ]}
+  },
+  examples:[
+    sent('Er lernte gestern viel.',
+      [{w:'Er',r:'S'},{w:'lernte',r:'V'},{w:'gestern',r:'Adv'},{w:'viel.',r:'Adv'}],
+      'Он вчера много учился. (Prät.: lernte)'),
+    sent('Sie hat ein Buch gekauft.',
+      [{w:'Sie',r:'S'},{w:'hat',r:'Aux'},{w:'ein Buch',r:'Oa'},{w:'gekauft.',r:'V'}],
+      'Она купила книгу. (Part.II: ge+kauf+t)'),
+    sent('Er studiert Medizin.',
+      [{w:'Er',r:'S'},{w:'studiert',r:'V'},{w:'Medizin.',r:'Oa'}],
+      'Он изучает медицину. (-ieren: studiert)'),
+  ],
+  exercises:[
+    ex('kaufen → Präteritum er','kaufte','kaufte'),
+    ex('arbeiten → Präteritum er','arbeitete','основа на -t: arbeit+e+te'),
+    ex('studieren → Part.II','studiert','-ieren: ohne ge-'),
+    ex('wohnen → Part.II','gewohnt','ge+wohn+t'),
+    ex('öffnen → Präsens ihr','öffnet','öffn+et (n+Konsonant: +e)'),
+  ]
+};
+
+CONTENT['verb_stark'] = {
+  zone:'present', tag:'Wortart', title:'Starke Verben',
+  sub:'Сильные (неправильные) глаголы — Ablaut',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Ablaut: Präsens(e→ie/i, a→ä) | Prät.: новая основа | Part.II: ge+...+en',
+    text:`Сильные глаголы меняют корневую гласную (Ablaut) в нескольких формах.
+<br><br><strong>Ablaut-ряды (важнейшие):</strong>`,
+    table:{head:['Infinitiv','Präs.2/3.Sg.','Präteritum','Part.II'],rows:[
+      ['fahren','fährst/fährt','fuhr','gefahren'],
+      ['tragen','trägst/trägt','trug','getragen'],
+      ['laufen','läufst/läuft','lief','gelaufen'],
+      ['lesen','liest/liest','las','gelesen'],
+      ['sprechen','sprichst/spricht','sprach','gesprochen'],
+      ['geben','gibst/gibt','gab','gegeben'],
+      ['schreiben','–','schrieb','geschrieben'],
+      ['gehen','–','ging','gegangen'],
+      ['kommen','–','kam','gekommen'],
+      ['sehen','siehst/sieht','sah','gesehen'],
+      ['stehen','–','stand','gestanden'],
+      ['treffen','triffst/trifft','traf','getroffen'],
+    ]}
+  },
+  examples:[
+    sent('Er spricht sehr gut Deutsch.',
+      [{w:'Er',r:'S'},{w:'spricht',r:'V'},{w:'sehr gut',r:'Adv'},{w:'Deutsch.',r:'Oa'}],
+      'Он очень хорошо говорит по-немецки. (e→i)'),
+    sent('Sie las das Buch in einer Nacht.',
+      [{w:'Sie',r:'S'},{w:'las',r:'V'},{w:'das Buch',r:'Oa'},{w:'in einer Nacht.',r:'Adv'}],
+      'Она прочитала книгу за одну ночь. (Prät.: las)'),
+  ],
+  exercises:[
+    ex('fahren → Präs. er','fährt','a→ä'),
+    ex('lesen → Präs. du','liest','e→ie'),
+    ex('sprechen → Prät. er','sprach','sprach'),
+    ex('gehen → Part.II','gegangen','ge+gang+en'),
+    ex('kommen → Prät. ich','kam','kam'),
+    ex('sehen → Präs. er','sieht','e→ie'),
+  ]
+};
+
+CONTENT['verb_modal'] = {
+  zone:'present', tag:'Wortart', title:'Modalverben',
+  sub:'Модальные глаголы — все формы',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Modal(P2) + ... + Infinitiv(Ende)',
+    text:`Модальные глаголы выражают отношение к действию. В предложении: Modal на P2, инфинитив в конце.
+<br><br><strong>Значения:</strong>
+<br>• <em>können</em> — мочь, уметь (физическая/умственная способность)
+<br>• <em>müssen</em> — должен (необходимость, обязанность)
+<br>• <em>dürfen</em> — разрешено (разрешение/запрет)
+<br>• <em>wollen</em> — хотеть (желание)
+<br>• <em>sollen</em> — должен (чужое требование)
+<br>• <em>mögen/möchten</em> — хотеть вежливо / любить`,
+    table:{head:['','können','müssen','dürfen','wollen','sollen','möchten'],rows:[
+      ['ich','kann','muss','darf','will','soll','möchte'],
+      ['du','kannst','musst','darfst','willst','sollst','möchtest'],
+      ['er/sie','kann','muss','darf','will','soll','möchte'],
+      ['wir','können','müssen','dürfen','wollen','sollen','möchten'],
+      ['ihr','könnt','müsst','dürft','wollt','sollt','möchtet'],
+      ['sie/Sie','können','müssen','dürfen','wollen','sollen','möchten'],
+    ]}
+  },
+  examples:[
+    sent('Ich kann gut Deutsch sprechen.',
+      [{w:'Ich',r:'S'},{w:'kann',r:'V'},{w:'gut',r:'Adv'},{w:'Deutsch',r:'Oa'},{w:'sprechen.',r:'V'}],
+      'Я умею хорошо говорить по-немецки.'),
+    sent('Du musst heute die Hausaufgaben machen.',
+      [{w:'Du',r:'S'},{w:'musst',r:'V'},{w:'heute',r:'Adv'},{w:'die Hausaufgaben',r:'Oa'},{w:'machen.',r:'V'}],
+      'Тебе нужно сегодня сделать домашнее задание.'),
+    sent('Hier darf man nicht rauchen.',
+      [{w:'Hier',r:'Adv'},{w:'darf',r:'V'},{w:'man',r:'S'},{w:'nicht',r:'N'},{w:'rauchen.',r:'V'}],
+      'Здесь нельзя курить.'),
+  ],
+  exercises:[
+    ex('Ich ___ (können) gut schwimmen.','kann','ich → kann'),
+    ex('Er ___ (müssen) jetzt gehen.','muss','er → muss'),
+    ex('Hier ___ (dürfen) man nicht rauchen.','darf','man → darf'),
+    ex('Wir ___ (wollen) nach Berlin fahren.','wollen','wir → wollen'),
+    ex('Du ___ (sollen) das nicht machen.','sollst','du → sollst'),
+    ex('Ich ___ (möchten) einen Kaffee.','möchte','ich → möchte'),
+  ]
+};
+
+CONTENT['verb_trenn'] = {
+  zone:'present', tag:'Wortart', title:'Trennbare Verben',
+  sub:'Отделяемые глаголы — Satzklammer',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Prefix(Ende) ... Verbstamm(P2) | Part.II: Präfix+ge+Stamm',
+    text:`Отделяемые приставки: <em>an-, auf-, aus-, ein-, ab-, mit-, vor-, zu-, nach-, her-, hin-, zurück-</em> и др.
+<br><br>В главном предложении: <strong>приставка уходит в конец</strong> (Satzklammer).
+<br>В Partizip II: ge- вставляется между приставкой и основой: <em>aufmachen → aufgemacht</em>.
+<br>В инфинитивных конструкциях: zu тоже вставляется: <em>aufzumachen</em>.
+<br><br>Неотделяемые: be-, ver-, er-, ge-, ent-, emp-, miss- — всегда вместе с глаголом.`,
+    table:{head:['Infinitiv','Präsens er','Präteritum er','Part.II','Infinitiv+zu'],rows:[
+      ['aufmachen','macht auf','machte auf','aufgemacht','aufzumachen'],
+      ['einkaufen','kauft ein','kaufte ein','eingekauft','einzukaufen'],
+      ['anrufen','ruft an','rief an','angerufen','anzurufen'],
+      ['aufstehen','steht auf','stand auf','aufgestanden','aufzustehen'],
+      ['mitnehmen','nimmt mit','nahm mit','mitgenommen','mitzunehmen'],
+      ['zurückkommen','kommt zurück','kam zurück','zurückgekommen','zurückzukommen'],
+    ]}
+  },
+  examples:[
+    sent('Er macht das Fenster auf.',
+      [{w:'Er',r:'S'},{w:'macht',r:'V'},{w:'das Fenster',r:'Oa'},{w:'auf.',r:'V'}],
+      'Он открывает окно. (auf = в конце)'),
+    sent('Ich stehe jeden Morgen um 7 auf.',
+      [{w:'Ich',r:'S'},{w:'stehe',r:'V'},{w:'jeden Morgen',r:'Adv'},{w:'um 7',r:'Adv'},{w:'auf.',r:'V'}],
+      'Я встаю каждое утро в 7. (aufstehen)'),
+    sent('Sie hat gestern eingekauft.',
+      [{w:'Sie',r:'S'},{w:'hat',r:'Aux'},{w:'gestern',r:'Adv'},{w:'eingekauft.',r:'V'}],
+      'Она вчера ходила за покупками. (Part.II: ein+ge+kauf+t)'),
+  ],
+  exercises:[
+    ex('aufmachen → Präs. er','macht auf','Stamm P2, Präfix Ende'),
+    ex('anrufen → Part.II','angerufen','an+ge+ruf+en'),
+    ex('einkaufen → Part.II','eingekauft','ein+ge+kauf+t'),
+    ex('aufstehen → Inf.+zu','aufzustehen','auf+zu+stehen'),
+    ex('mitnehmen → Prät. er','nahm mit','stark: nehm→nahm, mit am Ende'),
+  ]
+};
+
+CONTENT['verb_refl'] = {
+  zone:'present', tag:'Wortart', title:'Reflexive Verben',
+  sub:'Возвратные глаголы с sich',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'sich(Akk./Dat.) + Verb | Perfekt: immer haben',
+    text:`Возвратные глаголы используют местоимение <strong>sich</strong> (Reflexivpronomen).
+<br><br><strong>Reflexivpronomen Akkusativ:</strong>
+<br>ich mich / du dich / er/sie/es sich / wir uns / ihr euch / sie/Sie sich
+<br><br><strong>Reflexivpronomen Dativ</strong> (когда есть другой Akk.-объект):
+<br>ich mir / du dir / er/sie sich / wir uns / ihr euch
+<br><br>Perfekt: всегда с <strong>haben</strong>!`,
+    table:{head:['Infinitiv','Bedeutung','Beispiel Präsens'],rows:[
+      ['sich freuen','радоваться','Ich freue mich.'],
+      ['sich fühlen','чувствовать себя','Er fühlt sich wohl.'],
+      ['sich waschen','умываться','Ich wasche mich.'],
+      ['sich anziehen','одеваться','Sie zieht sich an.'],
+      ['sich erinnern (an)','помнить','Ich erinnere mich an dich.'],
+      ['sich vorstellen','представляться','Er stellt sich vor.'],
+      ['sich kaufen (Dat.)','покупать себе','Ich kaufe mir ein Buch.'],
+    ]}
+  },
+  examples:[
+    sent('Ich freue mich auf den Urlaub.',
+      [{w:'Ich',r:'S'},{w:'freue',r:'V'},{w:'mich',r:'Oa'},{w:'auf den Urlaub.',r:'Adv'}],
+      'Я радуюсь отпуску. (sich freuen auf)'),
+    sent('Er hat sich das neue Handy gekauft.',
+      [{w:'Er',r:'S'},{w:'hat',r:'Aux'},{w:'sich',r:'Od'},{w:'das neue Handy',r:'Oa'},{w:'gekauft.',r:'V'}],
+      'Он купил себе новый телефон. (Dat. sich, Akk. Handy)'),
+    sent('Sie zieht sich schnell an.',
+      [{w:'Sie',r:'S'},{w:'zieht',r:'V'},{w:'sich',r:'Oa'},{w:'schnell',r:'Adv'},{w:'an.',r:'V'}],
+      'Она быстро одевается. (trennbar + reflexiv)'),
+  ],
+  exercises:[
+    ex('Ich freue ___ (ich, Akk.Refl.)','mich','ich → mich'),
+    ex('Er fühlt ___ gut. (er, Akk.Refl.)','sich','er → sich'),
+    ex('Wir freuen ___ auf das Fest.','uns','wir → uns'),
+    ex('Ich kaufe ___ (Dat.Refl.) ein Buch.','mir','Dat: ich → mir'),
+    ex('Er hat ___ (Perf.) gut gefühlt.','sich','sich + haben'),
+  ]
+};
+
+// ── NOMEN детали Level 3 ─────────────────────────────────────────
+CONTENT['nom_genus'] = {
+  zone:'present', tag:'Wortart', title:'Genus — der/die/das',
+  sub:'Определение рода существительного',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Typische Endungen als Hilfe — aber Ausnahmen beachten!',
+    text:`Род (Genus) — одна из сложнейших тем. Некоторые суффиксы помогают определить род:
+<br><br><strong>der</strong> (m): -er, -ling, -ig, -ismus, -or, -ant, дни/месяцы/времена года, стороны света.
+<br><strong>die</strong> (f): -ung, -heit, -keit, -schaft, -tion, -tät, -ik, -ie, -enz, -anz, -ur, большинство на -e.
+<br><strong>das</strong> (n): -chen, -lein, -ment, -nis, -tum, -um, -ing (заимств.), Infinitiv как сущ.`,
+    table:{head:['der (m)','die (f)','das (n)'],rows:[
+      ['der Lehrer','die Lehrerin','das Mädchen (-chen!)'],
+      ['der Frühling (-ling)','die Zeitung (-ung)','das Dokument (-ment)'],
+      ['der Januar (Monat)','die Freiheit (-heit)','das Laufen (Inf.)'],
+      ['der Norden (Himmelsrichtung)','die Gesellschaft (-schaft)','das Zentrum (-um)'],
+      ['der Optimismus (-ismus)','die Situation (-tion)','das Ergebnis (-nis)'],
+    ]}
+  },
+  examples:[
+    sent('Der Frühling ist meine Lieblingszeit.',
+      [{w:'Der Frühling',r:'S'},{w:'ist',r:'V'},{w:'meine Lieblingszeit.',r:'Adj'}],
+      'Весна — моё любимое время года. (Monat/Jahreszeit → der)'),
+    sent('Die Freiheit ist sehr wichtig.',
+      [{w:'Die Freiheit',r:'S'},{w:'ist',r:'V'},{w:'sehr wichtig.',r:'Adj'}],
+      'Свобода очень важна. (-heit → die)'),
+    sent('Das Mädchen spielt im Garten.',
+      [{w:'Das Mädchen',r:'S'},{w:'spielt',r:'V'},{w:'im Garten.',r:'Adv'}],
+      'Девочка играет в саду. (-chen → das!)'),
+  ],
+  exercises:[
+    ex('___ Zeitung (der/die/das)','Die','-ung → die'),
+    ex('___ Mädchen (der/die/das)','Das','-chen → das'),
+    ex('___ Frühling (der/die/das)','Der','Jahreszeit → der'),
+    ex('___ Freiheit (der/die/das)','Die','-heit → die'),
+    ex('___ Dokument (der/die/das)','Das','-ment → das'),
+    ex('___ Lehrerin (der/die/das)','Die','-in → die (Personen f.)'),
+  ]
+};
+
+CONTENT['nom_plural'] = {
+  zone:'present', tag:'Wortart', title:'Plural — Mehrzahl',
+  sub:'Множественное число существительных',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'5 основных типов + Umlaut (запоминать!)',
+    text:`Множественное число в немецком — нужно учить с каждым словом. 5 типов:
+<br>① <strong>-e</strong> (часто m): der Tag→Tage, der Beruf→Berufe
+<br>② <strong>-er</strong> (часто n, +Umlaut): das Kind→Kinder, das Haus→Häuser
+<br>③ <strong>-(e)n</strong> (часто f): die Frau→Frauen, die Zeitung→Zeitungen
+<br>④ <strong>-s</strong> (заимств.): das Auto→Autos, das Hotel→Hotels
+<br>⑤ <strong>без окончания</strong> (±Umlaut): der Lehrer→Lehrer, der Vater→Väter`,
+    table:{head:['Singular','Plural','Тип'],rows:[
+      ['der Tag','die Tage','-e'],
+      ['das Kind','die Kinder','-er'],
+      ['das Haus','die Häuser','-er + Umlaut'],
+      ['die Frau','die Frauen','-en'],
+      ['die Zeitung','die Zeitungen','-en'],
+      ['das Auto','die Autos','-s'],
+      ['der Lehrer','die Lehrer','– (без окончания)'],
+      ['der Vater','die Väter','– + Umlaut'],
+      ['der Mann','die Männer','-er + Umlaut'],
+    ]}
+  },
+  examples:[
+    sent('Die Kinder spielen im Park.',
+      [{w:'Die Kinder',r:'S'},{w:'spielen',r:'V'},{w:'im Park.',r:'Adv'}],
+      'Дети играют в парке. (Kind → Kinder)'),
+    sent('Die Frauen lesen Zeitungen.',
+      [{w:'Die Frauen',r:'S'},{w:'lesen',r:'V'},{w:'Zeitungen.',r:'Oa'}],
+      'Женщины читают газеты.'),
+  ],
+  exercises:[
+    ex('Tag → Plural','Tage','-e'),
+    ex('Kind → Plural','Kinder','-er'),
+    ex('Haus → Plural','Häuser','-er + Umlaut'),
+    ex('Frau → Plural','Frauen','-en'),
+    ex('Auto → Plural','Autos','-s'),
+    ex('Vater → Plural','Väter','– + Umlaut'),
+  ]
+};
+
+CONTENT['nom_kasus'] = {
+  zone:'present', tag:'Wortart', title:'4 Kasus — Überblick',
+  sub:'Все 4 падежа — полная таблица',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Nom.(wer?) · Akk.(wen/was?) · Dat.(wem?) · Gen.(wessen?)',
+    text:`<strong>Сводная таблица артиклей по падежам:</strong>`,
+    table:{head:['Kasus','m (der)','f (die)','n (das)','Pl. (die)','Frage'],rows:[
+      ['Nom.','der / ein','die / eine','das / ein','die / –','wer/was?'],
+      ['Akk.','den / einen','die / eine','das / ein','die / –','wen/was?'],
+      ['Dat.','dem / einem','der / einer','dem / einem','den / –','wem?'],
+      ['Gen.','des / eines','der / einer','des / eines','der / –','wessen?'],
+    ]}
+  },
+  examples:[
+    sent('Der Mann (Nom.) gibt dem Kind (Dat.) das Buch (Akk.) des Lehrers (Gen.).',
+      [{w:'Der Mann',r:'S'},{w:'gibt',r:'V'},{w:'dem Kind',r:'Od'},{w:'das Buch',r:'Oa'},{w:'des Lehrers.',r:'Adj'}],
+      'Мужчина даёт ребёнку книгу учителя. (все 4 падежа)'),
+    sent('Ich helfe dem alten Mann.',
+      [{w:'Ich',r:'S'},{w:'helfe',r:'V'},{w:'dem alten Mann.',r:'Od'}],
+      'Я помогаю старому мужчине. (Dat.)'),
+  ],
+  exercises:[
+    ex('___ Mann (Nom.m)','Der','Nom.m: der'),
+    ex('Ich sehe ___ Mann. (Akk.m)','den','Akk.m: den'),
+    ex('Ich helfe ___ Mann. (Dat.m)','dem','Dat.m: dem'),
+    ex('Das Buch ___ Mannes (Gen.m)','des','Gen.m: des'),
+    ex('Ich sehe ___ Frau. (Akk.f)','die','Akk.f: die'),
+    ex('Ich helfe ___ Frau. (Dat.f)','der','Dat.f: der'),
+  ]
+};
+
+CONTENT['nom_gen'] = {
+  zone:'present', tag:'Wortart', title:'Genitiv',
+  sub:'Родительный падеж — принадлежность',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'wessen? → Gen. | m/n: +(e)s к Nomen | f/Pl.: без изменений',
+    text:`Genitiv выражает принадлежность ("чей?") и используется после ряда предлогов.
+<br><br><strong>Артикли Genitiv:</strong> des/eines (m/n) · der/einer (f) · der (Pl.)
+<br><strong>Склонение Nomen:</strong> m и n добавляют -(e)s: <em>des Mannes, des Kindes</em>.
+<br><br><strong>Предлоги с Genitiv:</strong> wegen, trotz, während, aufgrund, statt, innerhalb, außerhalb.
+<br><br>В разговорной речи Genitiv часто заменяется на <em>von + Dativ</em>.`,
+    table:{head:['','m','f','n','Pl.'],rows:[
+      ['best.Art.','des Mann-es','der Frau','des Kind-es','der Leute'],
+      ['unbest.Art.','eines Mann-es','einer Frau','eines Kind-es','– Leute'],
+      ['Possessiv','meines Mannes','meiner Frau','meines Kindes','meiner Leute'],
+    ]}
+  },
+  examples:[
+    sent('Das Buch des Lehrers ist interessant.',
+      [{w:'Das Buch',r:'S'},{w:'des Lehrers',r:'Adj'},{w:'ist',r:'V'},{w:'interessant.',r:'Adj'}],
+      'Книга учителя интересная. (des Lehrers = Gen.m)'),
+    sent('Wegen des schlechten Wetters bleiben wir zu Hause.',
+      [{w:'Wegen des schlechten Wetters',r:'Adv'},{w:'bleiben',r:'V'},{w:'wir',r:'S'},{w:'zu Hause.',r:'Adv'}],
+      'Из-за плохой погоды мы остаёмся дома. (wegen+Gen.)'),
+    sent('Die Tasche meiner Mutter ist neu.',
+      [{w:'Die Tasche',r:'S'},{w:'meiner Mutter',r:'Adj'},{w:'ist',r:'V'},{w:'neu.',r:'Adj'}],
+      'Сумка моей мамы новая. (Gen.f)'),
+  ],
+  exercises:[
+    ex('Das Buch ___ Lehrers (Gen.m, best.Art.)','des','Gen.m: des'),
+    ex('Die Tasche ___ Frau (Gen.f, best.Art.)','der','Gen.f: der'),
+    ex('___ schlechten Wetters (wegen + Gen.n)','des','Gen.n: des'),
+    ex('Das Haus mein___ Vaters (Gen.m, Poss.)','es','meines Vaters'),
+    ex('trotz ___ Regens (Gen.m, best.Art.)','des','trotz+Gen: des Regens'),
+  ]
+};
+
+// ── PERFEKT Level 3 ───────────────────────────────────────────────
+CONTENT['pf_haben_trans'] = {
+  zone:'past', tag:'Struktur', title:'Transitive haben-Verben',
+  sub:'Переходные глаголы — всегда haben',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'haben + Part.II (переходные = с Akk.-Objekt)',
+    text:`Переходные глаголы принимают прямое дополнение (Akkusativ). Они всегда образуют Perfekt с <strong>haben</strong>.
+<br><br>Список 50 важнейших переходных глаголов с haben:`,
+    table:{head:['Infinitiv','Part.II','Bedeutung'],rows:[
+      ['kaufen','gekauft','покупать'],
+      ['sehen','gesehen','видеть'],
+      ['hören','gehört','слышать'],
+      ['lesen','gelesen','читать'],
+      ['schreiben','geschrieben','писать'],
+      ['essen','gegessen','есть'],
+      ['trinken','getrunken','пить'],
+      ['nehmen','genommen','брать'],
+      ['geben','gegeben','давать'],
+      ['finden','gefunden','находить'],
+      ['kennen','gekannt','знать (человека)'],
+      ['verstehen','verstanden','понимать'],
+      ['lieben','geliebt','любить'],
+      ['brauchen','gebraucht','нуждаться'],
+    ]}
+  },
+  examples:[
+    sent('Ich habe das Buch gelesen.',
+      [{w:'Ich',r:'S'},{w:'habe',r:'Aux'},{w:'das Buch',r:'Oa'},{w:'gelesen.',r:'V'}],
+      'Я прочитал книгу.'),
+    sent('Er hat seinen Freund gesehen.',
+      [{w:'Er',r:'S'},{w:'hat',r:'Aux'},{w:'seinen Freund',r:'Oa'},{w:'gesehen.',r:'V'}],
+      'Он видел своего друга.'),
+  ],
+  exercises:[
+    ex('kaufen → Part.II','gekauft','ge+kauf+t'),
+    ex('verstehen → Part.II','verstanden','nicht-trennbar: ohne ge-'),
+    ex('Ich habe das Buch ___ (lesen).','gelesen','ge+les+en'),
+    ex('Er hat das Geld ___ (nehmen).','genommen','ge+nomm+en'),
+  ]
+};
+
+CONTENT['pf_haben_refl'] = {
+  zone:'past', tag:'Struktur', title:'Reflexive Verben im Perfekt',
+  sub:'Возвратные глаголы — всегда haben',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'sich + haben + Part.II',
+    text:'Все возвратные глаголы образуют Perfekt с haben, независимо от значения движения или состояния.',
+    table:{head:['Infinitiv','Perfekt Beispiel'],rows:[
+      ['sich freuen','Ich habe mich gefreut.'],
+      ['sich fühlen','Er hat sich gut gefühlt.'],
+      ['sich waschen','Sie hat sich gewaschen.'],
+      ['sich anziehen','Ich habe mich angezogen.'],
+      ['sich erinnern','Wir haben uns erinnert.'],
+      ['sich vorstellen','Er hat sich vorgestellt.'],
+    ]}
+  },
+  examples:[
+    sent('Ich habe mich sehr gefreut.',
+      [{w:'Ich',r:'S'},{w:'habe',r:'Aux'},{w:'mich',r:'Oa'},{w:'sehr',r:'Adv'},{w:'gefreut.',r:'V'}],
+      'Я очень обрадовался.'),
+    sent('Er hat sich das neue Auto gekauft.',
+      [{w:'Er',r:'S'},{w:'hat',r:'Aux'},{w:'sich',r:'Od'},{w:'das neue Auto',r:'Oa'},{w:'gekauft.',r:'V'}],
+      'Он купил себе новую машину.'),
+  ],
+  exercises:[
+    ex('Ich ___ mich gefreut. (habe/bin)','habe','reflexiv → haben'),
+    ex('Er ___ sich gewaschen. (hat/ist)','hat','reflexiv → haben'),
+    ex('sich freuen → Part.II','gefreut','ge+freu+t'),
+  ]
+};
+
+CONTENT['pf_haben_modal'] = {
+  zone:'past', tag:'Struktur', title:'Modalverben im Perfekt',
+  sub:'Модальные глаголы — Ersatzinfinitiv',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'haben + Infinitiv + Infinitiv (Ersatzinfinitiv!)',
+    text:`Когда модальный глагол используется с инфинитивом смыслового глагола, Partizip II заменяется инфинитивом (Ersatzinfinitiv).
+<br><br><em>Ich habe kommen <strong>müssen</strong></em>. (НЕ gemusst!)
+<br><br>Без смыслового глагола — обычный Part.II: <em>Ich habe das <strong>gewollt</strong></em>.`,
+    table:{head:['Modal','Part.II (ohne Vollverb)','Ersatzinfinitiv (mit Vollverb)'],rows:[
+      ['können','gekonnt','... kommen können'],
+      ['müssen','gemusst','... lernen müssen'],
+      ['dürfen','gedurft','... gehen dürfen'],
+      ['wollen','gewollt','... arbeiten wollen'],
+      ['sollen','gesollt','... helfen sollen'],
+    ]}
+  },
+  examples:[
+    sent('Ich habe heute arbeiten müssen.',
+      [{w:'Ich',r:'S'},{w:'habe',r:'Aux'},{w:'heute',r:'Adv'},{w:'arbeiten',r:'V'},{w:'müssen.',r:'V'}],
+      'Мне сегодня нужно было работать. (Ersatzinfinitiv)'),
+    sent('Er hat das nicht gewollt.',
+      [{w:'Er',r:'S'},{w:'hat',r:'Aux'},{w:'das',r:'Oa'},{w:'nicht',r:'N'},{w:'gewollt.',r:'V'}],
+      'Он этого не хотел. (Part.II ohne Vollverb)'),
+  ],
+  exercises:[
+    ex('Ich habe kommen ___ (können → Ersatzinf.)','können','Ersatzinfinitiv!'),
+    ex('Er hat das ___ (wollen → kein Vollverb → Part.II)','gewollt','gewollt'),
+    ex('Wir haben früh aufstehen ___ (müssen → Ersatzinf.)','müssen','müssen'),
+  ]
+};
+
+// ── PRÄTERITUM Level 3 ───────────────────────────────────────────
+CONTENT['prat_aus_schwach'] = {
+  zone:'past', tag:'Struktur', title:'Präteritum Schwach — Satz',
+  sub:'Слабые глаголы в предложениях Präteritum',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'S + Stamm+te(P2) + ... | bei -d/-t: Stamm+ete',
+    text:'Schwache Verben im Präteritum: Stamm + -te + Personalendung. Утвердительные, отрицательные и вопросительные предложения.',
+    table:{head:['Person','arbeiten','wohnen','kaufen','lernen'],rows:[
+      ['ich','arbeitete','wohnte','kaufte','lernte'],
+      ['du','arbeitetest','wohntest','kauftest','lerntest'],
+      ['er/sie/es','arbeitete','wohnte','kaufte','lernte'],
+      ['wir','arbeiteten','wohnten','kauften','lernten'],
+      ['ihr','arbeitetet','wohntet','kauftet','lerntet'],
+      ['sie/Sie','arbeiteten','wohnten','kauften','lernten'],
+    ]}
+  },
+  examples:[
+    sent('Sie wohnte früher in Wien.',
+      [{w:'Sie',r:'S'},{w:'wohnte',r:'V'},{w:'früher',r:'Adv'},{w:'in Wien.',r:'Adv'}],
+      'Раньше она жила в Вене.'),
+    sent('Arbeitete er damals viel?',
+      [{w:'Arbeitete',r:'V'},{w:'er',r:'S'},{w:'damals',r:'Adv'},{w:'viel?',r:'Adv'}],
+      'Работал ли он тогда много? (Frage)'),
+    sent('Er kaufte kein Auto.',
+      [{w:'Er',r:'S'},{w:'kaufte',r:'V'},{w:'kein',r:'N'},{w:'Auto.',r:'Oa'}],
+      'Он не покупал машину. (Negation)'),
+  ],
+  exercises:[
+    ex('Sie ___ in München. (wohnen → Prät.)','wohnte','wohn+te'),
+    ex('Ich ___ gestern viel. (arbeiten → Prät.)','arbeitete','arbeit+e+te'),
+    ex('___ er viel? (lernen → Prät., Frage)','Lernte','V1: lernte'),
+    ex('Er ___ kein Auto. (kaufen → Prät.)','kaufte','kauf+te'),
+  ]
+};
+
+CONTENT['prat_aus_stark'] = {
+  zone:'past', tag:'Struktur', title:'Präteritum Stark — Satz',
+  sub:'Сильные глаголы в предложениях Präteritum',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'S + Ablaut-Stamm(P2) + ... [ich/er без Endung]',
+    text:'Сильные глаголы: новый Ablaut-Stamm. ich и er/sie/es без окончания. Вопрос: Ablaut-Stamm на P1.',
+    table:{head:['Inf.','Prät.-Stamm','ich/er','du','wir/sie'],rows:[
+      ['gehen','ging-','ging','gingst','gingen'],
+      ['kommen','kam-','kam','kamst','kamen'],
+      ['fahren','fuhr-','fuhr','fuhrst','fuhren'],
+      ['sehen','sah-','sah','sahst','sahen'],
+      ['schreiben','schrieb-','schrieb','schriebst','schrieben'],
+      ['sprechen','sprach-','sprach','sprachst','sprachen'],
+      ['geben','gab-','gab','gabst','gaben'],
+      ['stehen','stand-','stand','standst','standen'],
+    ]}
+  },
+  examples:[
+    sent('Er ging jeden Abend spazieren.',
+      [{w:'Er',r:'S'},{w:'ging',r:'V'},{w:'jeden Abend',r:'Adv'},{w:'spazieren.',r:'V'}],
+      'Он каждый вечер ходил гулять.'),
+    sent('Wohin fuhr er im Sommer?',
+      [{w:'Wohin',r:'Adv'},{w:'fuhr',r:'V'},{w:'er',r:'S'},{w:'im Sommer?',r:'Adv'}],
+      'Куда он ехал летом? (W-Frage)'),
+    sent('Sie sprach kein Englisch.',
+      [{w:'Sie',r:'S'},{w:'sprach',r:'V'},{w:'kein',r:'N'},{w:'Englisch.',r:'Oa'}],
+      'Она не говорила по-английски.'),
+  ],
+  exercises:[
+    ex('Er ___ nach Hause. (gehen → Prät.)','ging','gehen→ging'),
+    ex('___ er nach Berlin? (fahren → Prät., Frage)','Fuhr','V1: fuhr'),
+    ex('Sie ___ kein Englisch. (sprechen → Prät.)','sprach','sprechen→sprach'),
+    ex('Wir ___ lange. (stehen → Prät.)','standen','steh→stand+en'),
+  ]
+};
+
+CONTENT['prat_aus_modal'] = {
+  zone:'past', tag:'Struktur', title:'Modalverben Präteritum — Satz',
+  sub:'Модальные в составе предложений',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Modal-Prät.(P2) + ... + Infinitiv(Ende)',
+    text:'Модальные в Präteritum: потеря умлаута + -te. Инфинитив смыслового глагола в конце.',
+    table:{head:['Aussage','Frage','Negation'],rows:[
+      ['Er konnte schlafen.','Konnte er schlafen?','Er konnte nicht schlafen.'],
+      ['Ich musste arbeiten.','Musste ich arbeiten?','Ich musste nicht arbeiten.'],
+      ['Sie wollte fahren.','Wollte sie fahren?','Sie wollte nicht fahren.'],
+    ]}
+  },
+  examples:[
+    sent('Er konnte nicht schlafen, weil er Stress hatte.',
+      [{w:'Er',r:'S'},{w:'konnte',r:'V'},{w:'nicht',r:'N'},{w:'schlafen,',r:'V'},{w:'weil er Stress hatte.',r:'Adv'}],
+      'Он не мог спать, потому что был под стрессом.'),
+    sent('Musstest du früh aufstehen?',
+      [{w:'Musstest',r:'V'},{w:'du',r:'S'},{w:'früh',r:'Adv'},{w:'aufstehen?',r:'V'}],
+      'Тебе нужно было рано вставать?'),
+  ],
+  exercises:[
+    ex('Er ___ nicht kommen. (können → Prät.)','konnte','können→konnte'),
+    ex('___ du früh aufstehen? (müssen → Prät., Frage)','Musstest','du: musstest'),
+    ex('Wir ___ nicht fahren. (dürfen → Prät., Neg.)','durften','dürfen→durften'),
+  ]
+};
+
+CONTENT['prat_aus_inv'] = {
+  zone:'past', tag:'Struktur', title:'Präteritum — Inversion',
+  sub:'Инверсия в повествовательном тексте',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Adv./Zeit + Verb-Prät.(P2) + Subjekt + ...',
+    text:'В нарративных текстах часто используется инверсия для создания разнообразия и акцента. Любой элемент кроме глагола может стоять на P1.',
+    table:{head:['P1','P2 (Prät.)','Subjekt','Rest'],rows:[
+      ['Plötzlich','erschien','er','in der Tür.'],
+      ['Am nächsten Morgen','fuhr','sie','nach Hause.'],
+      ['Ohne Abschied','verschwand','er','in der Nacht.'],
+      ['Lange Zeit','arbeitete','er','als Lehrer.'],
+    ]}
+  },
+  examples:[
+    sent('Plötzlich erschien ein fremder Mann.',
+      [{w:'Plötzlich',r:'Adv'},{w:'erschien',r:'V'},{w:'ein fremder Mann.',r:'S'}],
+      'Вдруг появился незнакомый мужчина.'),
+    sent('Am nächsten Morgen fuhr sie nach Hause.',
+      [{w:'Am nächsten Morgen',r:'Adv'},{w:'fuhr',r:'V'},{w:'sie',r:'S'},{w:'nach Hause.',r:'Adv'}],
+      'На следующее утро она уехала домой.'),
+  ],
+  exercises:[
+    ex('___ kam er nach Hause. (Plötzlich/Er plötzlich)','Plötzlich','P1=Adv, V2'),
+    ex('Am Morgen ___ sie auf. (aufstehen → Prät.)','stand','aufstehen→stand...auf, trennbar'),
+    ex('Lange Zeit ___ er in Berlin. (leben → Prät.)','lebte','schwach: leb+te'),
+  ]
+};
+
+// ── PERFEKT Level 3 Satz ─────────────────────────────────────────
+CONTENT['pf_aus_haben'] = {
+  zone:'past', tag:'Struktur', title:'Perfekt mit haben — Satz',
+  sub:'Построение предложений с haben-Perfekt',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'S + habe/hat(P2) + [Obj.+Adv.] + Part.II(Ende)',
+    text:'haben конъюгируется и стоит на P2. Part.II в конце (Satzklammer). Отрицание: nicht vor Part.II.',
+    table:{head:['Satztyp','Struktur','Beispiel'],rows:[
+      ['Aussage','S + hat + Obj. + Part.II','Er hat das Buch gelesen.'],
+      ['Inversion','Adv. + hat + S + Part.II','Heute hat er gearbeitet.'],
+      ['Frage Ja/Nein','Hat + S + ... + Part.II?','Hat er geschlafen?'],
+      ['W-Frage','W + hat + S + ... + Part.II?','Was hat er gemacht?'],
+      ['Negation','hat + ... + nicht + Part.II','Er hat nicht geschlafen.'],
+    ]}
+  },
+  examples:[
+    sent('Heute hat er den ganzen Tag gearbeitet.',
+      [{w:'Heute',r:'Adv'},{w:'hat',r:'Aux'},{w:'er',r:'S'},{w:'den ganzen Tag',r:'Adv'},{w:'gearbeitet.',r:'V'}],
+      'Сегодня он работал весь день. (инверсия)'),
+    sent('Hat sie das Buch nicht gelesen?',
+      [{w:'Hat',r:'Aux'},{w:'sie',r:'S'},{w:'das Buch',r:'Oa'},{w:'nicht',r:'N'},{w:'gelesen?',r:'V'}],
+      'Разве она не читала книгу? (Frage + Neg.)'),
+  ],
+  exercises:[
+    ex('Heute ___ er viel gelernt. (haben)','hat','er → hat'),
+    ex('___ du das gemacht? (Frage)','Hast','Ja/Nein-Frage: Hast du...?'),
+    ex('Er hat das ___ gelesen. (nicht/kein)','nicht','глагол → nicht'),
+    ex('Was ___ du gestern gemacht?','hast','W-Frage: hast du'),
+  ]
+};
+
+CONTENT['pf_aus_sein'] = {
+  zone:'past', tag:'Struktur', title:'Perfekt mit sein — Satz',
+  sub:'Построение предложений с sein-Perfekt',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'S + bin/ist(P2) + [Adv.] + Part.II(Ende)',
+    text:'sein конъюгируется и стоит на P2. Глаголы bewegung/Zustandswechsel/bleiben/sein.',
+    table:{head:['Satztyp','Struktur','Beispiel'],rows:[
+      ['Aussage','S + ist + Adv. + Part.II','Er ist nach Berlin gefahren.'],
+      ['Frage','Ist + S + ... + Part.II?','Ist sie schon gegangen?'],
+      ['W-Frage','Wo + ist + S + Part.II?','Wohin bist du gefahren?'],
+      ['Negation','ist + ... + nicht + Part.II','Er ist nicht gekommen.'],
+    ]}
+  },
+  examples:[
+    sent('Er ist gestern Abend spät nach Hause gekommen.',
+      [{w:'Er',r:'S'},{w:'ist',r:'Aux'},{w:'gestern Abend',r:'Adv'},{w:'spät',r:'Adv'},{w:'nach Hause',r:'Adv'},{w:'gekommen.',r:'V'}],
+      'Вчера вечером он пришёл домой поздно.'),
+    sent('Wohin bist du gefahren?',
+      [{w:'Wohin',r:'Adv'},{w:'bist',r:'Aux'},{w:'du',r:'S'},{w:'gefahren?',r:'V'}],
+      'Куда ты ездил?'),
+  ],
+  exercises:[
+    ex('Er ___ nach Berlin gefahren. (sein)','ist','er → ist'),
+    ex('___ du schon gegangen? (Frage)','Bist','Bist du...?'),
+    ex('Wohin ___ sie geflogen?','ist','sie (она) → ist'),
+    ex('Er ___ nicht angekommen.','ist','sein-Verb + nicht'),
+  ]
+};
+
+CONTENT['pf_aus_modal'] = {
+  zone:'past', tag:'Struktur', title:'Modal + Perfekt im Satz',
+  sub:'Модальные + инфинитив в Perfekt',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'habe/hat + Inf.(Vollverb) + Inf.(Modal) — двойной инфинитив в конце',
+    text:'С модальным и смысловым глаголом: два инфинитива в конце (Doppelinfintiv). Порядок: Vollverb-Inf. → Modal-Inf.',
+    table:{head:['Richtig','Falsch'],rows:[
+      ['Ich habe kommen müssen.','✗ Ich habe gemusst kommen.'],
+      ['Er hat arbeiten wollen.','✗ Er hat gewollt arbeiten.'],
+      ['Wir haben fahren können.','✗ Wir haben gekonnt fahren.'],
+    ]}
+  },
+  examples:[
+    sent('Ich habe gestern lange arbeiten müssen.',
+      [{w:'Ich',r:'S'},{w:'habe',r:'Aux'},{w:'gestern',r:'Adv'},{w:'lange',r:'Adv'},{w:'arbeiten',r:'V'},{w:'müssen.',r:'V'}],
+      'Мне вчера долго нужно было работать.'),
+    sent('Hat er kommen können?',
+      [{w:'Hat',r:'Aux'},{w:'er',r:'S'},{w:'kommen',r:'V'},{w:'können?',r:'V'}],
+      'Он смог прийти?'),
+  ],
+  exercises:[
+    ex('Ich habe kommen ___ (müssen → Ersatzinf.)','müssen','Дoppelinfnitiv: kommen müssen'),
+    ex('Er hat nicht schlafen ___ (können → Ersatzinf.)','können','können'),
+    ex('___ sie fahren wollen? (Frage, haben)','Hat','Hat sie...wollen?'),
+  ]
+};
+
+CONTENT['pf_aus_trenn'] = {
+  zone:'past', tag:'Struktur', title:'Trennbare Verben im Perfekt',
+  sub:'Отделяемые глаголы в Perfekt',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'haben/sein + Präfix+ge+Stamm+t/en (alles zusammen am Ende)',
+    text:'В Partizip II отделяемая приставка остаётся на месте: ge- вставляется между приставкой и основой. В предложении весь Part.II уходит в конец.',
+    table:{head:['Infinitiv','Part.II','Perfekt-Satz'],rows:[
+      ['aufmachen','aufgemacht','Er hat die Tür aufgemacht.'],
+      ['einkaufen','eingekauft','Ich habe eingekauft.'],
+      ['anrufen','angerufen','Sie hat mich angerufen.'],
+      ['aufstehen','aufgestanden','Ich bin aufgestanden.'],
+      ['einschlafen','eingeschlafen','Das Kind ist eingeschlafen.'],
+      ['zurückkommen','zurückgekommen','Er ist zurückgekommen.'],
+    ]}
+  },
+  examples:[
+    sent('Er hat das Fenster aufgemacht.',
+      [{w:'Er',r:'S'},{w:'hat',r:'Aux'},{w:'das Fenster',r:'Oa'},{w:'aufgemacht.',r:'V'}],
+      'Он открыл окно. (auf+ge+mach+t)'),
+    sent('Das Kind ist schnell eingeschlafen.',
+      [{w:'Das Kind',r:'S'},{w:'ist',r:'Aux'},{w:'schnell',r:'Adv'},{w:'eingeschlafen.',r:'V'}],
+      'Ребёнок быстро заснул. (ein+ge+schlaf+en)'),
+  ],
+  exercises:[
+    ex('aufmachen → Part.II','aufgemacht','auf+ge+mach+t'),
+    ex('einschlafen → Part.II','eingeschlafen','ein+ge+schlaf+en'),
+    ex('Er ___ das Fenster aufgemacht. (haben)','hat','transitiv → haben'),
+    ex('Ich ___ aufgestanden. (sein)','bin','aufstehen → sein'),
+    ex('zurückkommen → Part.II','zurückgekommen','zurück+ge+komm+en'),
+  ]
+};
+
+// ═══════════════════════════════════════════════════════════════════
+// WHEEL ENGINE
+// ═══════════════════════════════════════════════════════════════════
+
+const canvas = document.getElementById('wc');
+const ctx = canvas.getContext('2d');
+const CX=260, CY=260, R_OUT=250, R_IN=46;
+
+let state = {
+  level: 'root',
+  path: [],
+  selected: null,
+  hover: null,
+  score: {ok:0,bad:0},
+  exIdx: 0,
+  answered: false,
+  exResults: [],
+  activeTab: 0,
+};
+
+function getSegs() {
+  if (state.level === 'root') return ROOT_SEGS.map((s,i,arr)=>({
+    ...s,
+    sa: (i/arr.length)*Math.PI*2 - Math.PI/2,
+    ea: ((i+1)/arr.length)*Math.PI*2 - Math.PI/2,
+  }));
+  const ch = CHILDREN[state.level];
+  if (!ch) return [];
+  const parent = findParent(state.level);
+  const baseColor = parent ? parent.color : '#888';
+  return ch.map((s,i)=>({
+    ...s,
+    color: shiftColor(baseColor, i, ch.length),
+    zone: parent ? parent.zone : 'present',
+    sa: (i/ch.length)*Math.PI*2 - Math.PI/2,
+    ea: ((i+1)/ch.length)*Math.PI*2 - Math.PI/2,
+  }));
+}
+
+function findParent(id) {
+  if (id === 'root') return null;
+  return ROOT_SEGS.find(r=>r.id===id) || ROOT_SEGS.find(r=>(CHILDREN[r.id]||[]).some(c=>c.id===id));
+}
+
+function shiftColor(hex, i, n) {
+  const t = n<=1 ? 0.7 : 0.55 + 0.45*(i/(n-1));
+  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+  const h2=(v)=>Math.max(20,Math.min(255,Math.round(v*t))).toString(16).padStart(2,'0');
+  return `#${h2(r)}${h2(g)}${h2(b)}`;
 }
 
 function drawWheel() {
-  ctx.clearRect(0, 0, 560, 560);
+  ctx.clearRect(0,0,520,520);
 
-  // Background rings
-  for (let r = R_OUTER; r > R_INNER; r -= 40) {
-    ctx.beginPath();
-    ctx.arc(CX, CY, r, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
+  // rings
+  for (let r=R_OUT; r>R_IN; r-=35) {
+    ctx.beginPath(); ctx.arc(CX,CY,r,0,Math.PI*2);
+    ctx.strokeStyle='rgba(255,255,255,0.03)'; ctx.lineWidth=1; ctx.stroke();
   }
 
-  const segs = getSegments();
-  segs.forEach(seg => {
-    const isHovered = seg.id === hoveredSeg;
-    const isSelected = seg.id === state.selected;
-    const gap = 0.015;
+  const segs = getSegs();
+  segs.forEach(s=>{
+    const hover = s.id===state.hover;
+    const sel = s.id===state.selected;
+    const gap = 0.012;
+    const r = R_OUT - 3;
 
     ctx.save();
     ctx.beginPath();
-    ctx.moveTo(CX, CY);
-    ctx.arc(CX, CY, R_OUTER - 4, seg.startAngle + gap, seg.endAngle - gap);
+    ctx.moveTo(CX,CY);
+    ctx.arc(CX,CY,r,s.sa+gap,s.ea-gap);
     ctx.closePath();
 
-    // gradient fill
-    const midAngle = (seg.startAngle + seg.endAngle) / 2;
-    const gx1 = CX + (R_INNER) * Math.cos(midAngle);
-    const gy1 = CY + (R_INNER) * Math.sin(midAngle);
-    const gx2 = CX + (R_OUTER - 4) * Math.cos(midAngle);
-    const gy2 = CY + (R_OUTER - 4) * Math.sin(midAngle);
-    const grad = ctx.createLinearGradient(gx1, gy1, gx2, gy2);
-    const alpha = isSelected ? '33' : isHovered ? '22' : '14';
-    grad.addColorStop(0, seg.color + alpha);
-    grad.addColorStop(1, seg.color + (isSelected ? '55' : isHovered ? '33' : '20'));
-    ctx.fillStyle = grad;
+    const mid = (s.sa+s.ea)/2;
+    const g = ctx.createLinearGradient(
+      CX+R_IN*Math.cos(mid), CY+R_IN*Math.sin(mid),
+      CX+r*Math.cos(mid), CY+r*Math.sin(mid)
+    );
+    const a1 = sel?'28': hover?'18':'0e';
+    const a2 = sel?'50': hover?'30':'18';
+    g.addColorStop(0, s.color+a1);
+    g.addColorStop(1, s.color+a2);
+    ctx.fillStyle = g;
     ctx.fill();
-
-    // border
-    ctx.strokeStyle = isSelected ? seg.color : isHovered ? seg.color + '88' : seg.color + '44';
-    ctx.lineWidth = isSelected ? 2 : 1;
+    ctx.strokeStyle = sel ? s.color : hover ? s.color+'aa' : s.color+'55';
+    ctx.lineWidth = sel ? 2 : 1;
     ctx.stroke();
     ctx.restore();
 
-    // Text
-    const midR = (R_INNER + R_OUTER) / 2 - 10;
-    const tx = CX + midR * Math.cos(midAngle);
-    const ty = CY + midR * Math.sin(midAngle);
-
+    // text
+    const tr = (R_IN+r)*0.5;
+    const tx = CX+tr*Math.cos(mid), ty = CY+tr*Math.sin(mid);
     ctx.save();
-    ctx.translate(tx, ty);
-    let rot = midAngle;
-    if (rot > Math.PI / 2 && rot < Math.PI * 1.5) rot += Math.PI;
+    ctx.translate(tx,ty);
+    let rot = mid;
+    if (rot > Math.PI/2 && rot < Math.PI*1.5) rot += Math.PI;
     ctx.rotate(rot);
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-
-    ctx.font = `bold 11px 'JetBrains Mono'`;
-    ctx.fillStyle = isSelected || isHovered ? '#fff' : seg.color + 'cc';
-    ctx.fillText(seg.label, 0, -7);
-
-    ctx.font = `9px 'JetBrains Mono'`;
-    ctx.fillStyle = isSelected ? '#ffffff99' : '#ffffff44';
-    ctx.fillText(seg.sub, 0, 7);
-
-    // has-children indicator
-    if (WHEEL_DATA.children[seg.id]) {
-      ctx.font = '8px monospace';
-      ctx.fillStyle = seg.color + '88';
-      ctx.fillText('▼', 0, 20);
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.font = `500 10px 'DM Mono'`;
+    ctx.fillStyle = sel||hover ? '#fff' : s.color+'dd';
+    ctx.fillText(s.label, 0, -6);
+    ctx.font = '8px DM Mono';
+    ctx.fillStyle = sel ? '#fff9' : '#ffffff44';
+    ctx.fillText(s.sub, 0, 6);
+    if (CHILDREN[s.id]) {
+      ctx.font='7px DM Mono'; ctx.fillStyle=s.color+'77';
+      ctx.fillText('▾', 0, 16);
     }
     ctx.restore();
   });
 
-  // Inner ring
-  ctx.beginPath();
-  ctx.arc(CX, CY, R_INNER + 4, 0, Math.PI * 2);
-  ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-  ctx.lineWidth = 1;
-  ctx.stroke();
+  // center
+  ctx.beginPath(); ctx.arc(CX,CY,R_IN+2,0,Math.PI*2);
+  ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=1; ctx.stroke();
 }
 
-// ── Hover & Click ─────────────────────────────────
-let hoveredSeg = null;
-
-function getSegAtPoint(x, y) {
-  const dx = x - CX, dy = y - CY;
-  const dist = Math.sqrt(dx * dx + dy * dy);
-  if (dist < R_INNER + 4 || dist > R_OUTER) return null;
-  let angle = Math.atan2(dy, dx);
-  if (angle < -Math.PI / 2) angle += Math.PI * 2;
-  const segs = getSegments();
+function hitTest(x,y) {
+  const dx=x-CX, dy=y-CY;
+  const dist=Math.sqrt(dx*dx+dy*dy);
+  if (dist<R_IN+2||dist>R_OUT) return null;
+  let a=Math.atan2(dy,dx);
+  if (a<-Math.PI/2) a+=Math.PI*2;
+  const segs=getSegs();
   for (const s of segs) {
-    let sa = s.startAngle, ea = s.endAngle;
-    if (sa < -Math.PI / 2) { sa += Math.PI * 2; ea += Math.PI * 2; }
-    if (angle >= sa && angle <= ea) return s;
+    let sa=s.sa, ea=s.ea;
+    if (sa<-Math.PI/2){sa+=Math.PI*2;ea+=Math.PI*2;}
+    if (a>=sa&&a<=ea) return s;
   }
   return null;
 }
 
-canvas.addEventListener('mousemove', e => {
-  const rect = canvas.getBoundingClientRect();
-  const seg = getSegAtPoint(e.clientX - rect.left, e.clientY - rect.top);
-  const newId = seg ? seg.id : null;
-  if (newId !== hoveredSeg) { hoveredSeg = newId; drawWheel(); }
-  canvas.style.cursor = seg ? 'pointer' : 'default';
+canvas.addEventListener('mousemove',e=>{
+  const r=canvas.getBoundingClientRect();
+  const s=hitTest(e.clientX-r.left,e.clientY-r.top);
+  const nid=s?s.id:null;
+  if (nid!==state.hover){state.hover=nid;drawWheel();}
+  canvas.style.cursor=s?'pointer':'default';
+});
+canvas.addEventListener('mouseleave',()=>{state.hover=null;drawWheel();});
+canvas.addEventListener('click',e=>{
+  const r=canvas.getBoundingClientRect();
+  const s=hitTest(e.clientX-r.left,e.clientY-r.top);
+  if (!s) return;
+  clickSeg(s);
 });
 
-canvas.addEventListener('click', e => {
-  const rect = canvas.getBoundingClientRect();
-  const seg = getSegAtPoint(e.clientX - rect.left, e.clientY - rect.top);
-  if (!seg) return;
-  handleSegmentClick(seg);
-});
-
-canvas.addEventListener('mouseleave', () => { hoveredSeg = null; drawWheel(); });
-
-function handleSegmentClick(seg) {
-  state.selected = seg.id;
-
-  if (WHEEL_DATA.children[seg.id]) {
-    // drill down
-    state.path.push({ id: seg.id, label: seg.label, level: state.level });
-    state.level = seg.id;
-    state.selected = null;
-    updateCenterLabel(seg.label);
+function clickSeg(s) {
+  state.selected=s.id;
+  if (CHILDREN[s.id]) {
+    state.path.push({id:s.id,label:s.label,prevLevel:state.level});
+    state.level=s.id;
+    state.selected=null;
+    updateCenter(s.label);
   }
-
-  renderPanel(seg.id);
+  renderContent(s.id);
   updateBreadcrumb();
   drawWheel();
 }
 
-function updateCenterLabel(text) {
-  const el = document.getElementById('centerLabel');
-  el.innerHTML = `<div style="font-size:0.45rem;color:var(--text-dim)">${text}</div><div style="font-size:0.5rem;margin-top:2px;opacity:0.5">↺ reset</div>`;
+function updateCenter(label) {
+  const el=document.getElementById('wCenter');
+  el.innerHTML=label.length>8?label.slice(0,8)+'..':label;
+  el.style.fontSize='0.55rem';
 }
 
-// ── Reset ─────────────────────────────────────────
-document.getElementById('btnReset').addEventListener('click', resetWheel);
-document.getElementById('centerLabel').addEventListener('click', () => {
-  if (state.path.length > 0) {
-    const prev = state.path.pop();
-    state.level = prev.level;
-    state.selected = null;
-    updateCenterLabel(state.path.length ? state.path[state.path.length-1].label : 'Deutsch Rad');
-    updateBreadcrumb();
-    drawWheel();
+document.getElementById('btnBack').addEventListener('click',goBack);
+function goBack() {
+  if (!state.path.length) return;
+  const prev=state.path.pop();
+  state.level=prev.prevLevel;
+  state.selected=prev.id;
+  updateCenter(state.path.length?state.path[state.path.length-1].label:'Deutsch\nRad');
+  if (!state.path.length) {
+    document.getElementById('wCenter').innerHTML='Deutsch<br>Rad';
+    document.getElementById('wCenter').style.fontSize='';
   }
-});
-
-function resetWheel() {
-  state.level = 'root'; state.selected = null; state.path = [];
-  document.getElementById('centerLabel').innerHTML = `<div>Deutsch</div><div>Rad</div>`;
   updateBreadcrumb();
   drawWheel();
-  renderPlaceholder();
+  renderContent(prev.id);
 }
 
-// ── Breadcrumb ─────────────────────────────────────
 function updateBreadcrumb() {
-  const bc = document.getElementById('breadcrumb');
-  if (state.path.length === 0) { bc.innerHTML = ''; return; }
-  let html = `<span onclick="resetWheel()">Root</span>`;
-  state.path.forEach((p, i) => {
-    html += `<span class="sep">›</span><span onclick="navTo(${i})">${p.label}</span>`;
+  const bc=document.getElementById('bc');
+  const back=document.getElementById('btnBack');
+  if (!state.path.length){bc.innerHTML='';back.style.display='none';return;}
+  back.style.display='';
+  let html=`<span class="bc-item" onclick="resetWheel()">Корень</span>`;
+  state.path.forEach((p,i)=>{
+    html+=`<span class="bc-sep">›</span><span class="bc-item" onclick="navTo(${i})">${p.label}</span>`;
   });
-  bc.innerHTML = html;
+  bc.innerHTML=html;
 }
 
-window.navTo = function(idx) {
-  state.path = state.path.slice(0, idx + 1);
-  state.level = state.path[idx].id;
-  state.selected = null;
-  updateBreadcrumb();
+window.resetWheel=function(){
+  state.level='root'; state.path=[]; state.selected=null;
+  document.getElementById('wCenter').innerHTML='Deutsch<br>Rad';
+  document.getElementById('wCenter').style.fontSize='';
+  document.getElementById('btnBack').style.display='none';
+  document.getElementById('bc').innerHTML='';
   drawWheel();
+  showPlaceholder();
+};
+window.navTo=function(idx){
+  const p=state.path[idx];
+  state.path=state.path.slice(0,idx+1);
+  state.level=p.id; state.selected=null;
+  updateCenter(p.label);
+  updateBreadcrumb(); drawWheel();
 };
 
-window.resetWheel = resetWheel;
+// ═══════════════════════════════════════════════════════════════════
+// CONTENT RENDERING
+// ═══════════════════════════════════════════════════════════════════
 
-// ══════════════════════════════════════════════════
-//  PANEL RENDERING
-// ══════════════════════════════════════════════════
-function renderPlaceholder() {
-  document.getElementById('tenseTag').textContent = 'Выберите сегмент';
-  document.getElementById('panelTitle').textContent = 'Немецкий язык';
-  document.getElementById('panelSubtitle').textContent = 'Нажмите на любой сегмент колеса';
-  document.getElementById('panelBody').innerHTML = `
-    <div class="placeholder">
-      <div class="big">⊙</div>
-      <p>Колесо времён и форм.<br>Кликните на сегмент — откроется уровень с правилами, примерами и упражнениями.<br><br>
-      Правая половина — будущее.<br>Левая — прошедшее.<br>Верх / низ — настоящее.</p>
-    </div>`;
+function showPlaceholder() {
+  document.getElementById('ipTag').textContent='Нажмите на сегмент';
+  document.getElementById('ipTitle').textContent='Deutsches Rad';
+  document.getElementById('ipTitle').style.color='';
+  document.getElementById('ipSub').textContent='Колесо немецкой грамматики';
+  document.getElementById('ipBody').innerHTML=`<div class="ph"><div class="ph-icon">⊙</div>
+    <p>Кликните любой сегмент колеса.<br>Каждый раскрывается дальше — фрактально.</p></div>`;
 }
 
-function renderPanel(id) {
-  const c = CONTENT[id];
-  if (!c) {
-    // No content yet — show "coming soon"
-    document.getElementById('tenseTag').textContent = 'В разработке';
-    document.getElementById('panelTitle').textContent = id;
-    document.getElementById('panelSubtitle').textContent = '';
-    document.getElementById('panelBody').innerHTML = `
-      <div class="placeholder">
-        <div class="big" style="font-size:1.5rem">🚧</div>
-        <p>Этот раздел скоро будет добавлен.<br>Выберите другой сегмент.</p>
-      </div>`;
-    return;
+function getZoneColor(zone) {
+  return {past:'var(--past)',present:'var(--present)',future:'var(--future)',special:'var(--special)'}[zone]||'var(--gold)';
+}
+
+function renderContent(id) {
+  const c=CONTENT[id];
+  if (!c) { showPlaceholder(); return; }
+
+  state.activeTab=0; state.exIdx=0; state.answered=false; state.exResults=[];
+
+  document.getElementById('ipTag').textContent=c.tag;
+  document.getElementById('ipTitle').textContent=c.title;
+  document.getElementById('ipTitle').style.color=getZoneColor(c.zone);
+  document.getElementById('ipSub').textContent=c.sub;
+
+  let html='<div>';
+
+  // Tabs
+  html+=`<div class="tabs">${(c.tabs||['Правило']).map((t,i)=>
+    `<div class="tab${i===0?' active':''}" data-tab="${i}">${t}</div>`).join('')}</div>`;
+
+  // Tab contents
+  (c.tabs||['Правило']).forEach((t,i)=>{
+    html+=`<div class="tab-content${i===0?' active':''}" id="tc-${i}">`;
+    if (t==='Правило') html+=renderRuleTab(c);
+    else if (t==='Примеры') html+=renderExamplesTab(c);
+    else if (t==='Упражнения') html+=renderExerciseTab(c,0);
+    html+='</div>';
+  });
+
+  html+='</div>';
+  document.getElementById('ipBody').innerHTML=html;
+
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      const idx=+tab.dataset.tab;
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tc-'+idx).classList.add('active');
+      state.activeTab=idx;
+      if (c.tabs[idx]==='Упражнения') {
+        document.getElementById('tc-'+idx).innerHTML=renderExerciseTab(c,state.exIdx);
+        bindExEvents(c);
+      }
+    });
+  });
+
+  bindExEvents(c);
+}
+
+function renderRuleTab(c) {
+  const r=c.rule;
+  if (!r) return '<p style="color:var(--dim);font-size:0.7rem">Нет данных.</p>';
+  let h=`<div class="card ${c.zone}">
+    <h4>Формула</h4>
+    <div class="formula">${r.formula.replace(/\n/g,'<br>')}</div>
+    <div class="rule-text">${r.text}</div>
+  </div>`;
+  if (r.table) {
+    h+=`<div class="card gold"><h4>Таблица</h4><table class="gram-table">
+      <thead><tr>${r.table.head.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+      <tbody>${r.table.rows.map(row=>`<tr>${row.map((cell,i)=>
+        `<td class="${i===0?'hl':'de'}">${cell}</td>`).join('')}</tr>`).join('')}</tbody>
+    </table></div>`;
   }
-
-  const zoneColors = { past: 'past', present: 'present', future: 'future' };
-  document.getElementById('tenseTag').textContent = c.tense;
-  document.getElementById('panelTitle').style.color = c.color;
-  document.getElementById('panelTitle').textContent = c.title;
-  document.getElementById('panelSubtitle').textContent = c.formula;
-
-  state.exIdx = 0;
-  state.answered = false;
-
-  let html = `<div class="animate-in">`;
-
-  // Rule card
-  html += `<div class="info-card ${zoneColors[c.zone] || 'neutral'}">
-    <h3>Правило</h3>
-    <div class="formula">${c.formula}</div>
-    <p>${c.rule}</p>
-  </div>`;
-
-  // Examples
-  html += `<div class="info-card neutral">
-    <h3>Примеры</h3>
-    ${c.examples.map(e => `
-      <div class="example-block">
-        <div class="example-de">${e.de}</div>
-        <div class="example-ru">${e.ru}</div>
-      </div>`).join('')}
-  </div>`;
-
-  // Exercise
-  html += renderExercise(c, 0);
-
-  html += `</div>`;
-  document.getElementById('panelBody').innerHTML = html;
-
-  // Score
-  renderScore();
-  bindExerciseEvents(c);
+  return h;
 }
 
-function renderExercise(c, idx) {
-  const ex = c.exercises[idx];
-  return `<div class="exercise-area" id="exerciseArea">
-    <h3>Упражнение ${idx+1} / ${c.exercises.length}</h3>
-    <div class="exercise-question">${ex.q.replace('___', '<span class="blank" id="blankSpan">___</span>')}</div>
-    <input class="answer-input" id="answerInput" type="text" placeholder="Ваш ответ..." autocomplete="off" spellcheck="false" />
-    <div>
-      <button class="btn-check" id="btnCheck">Проверить</button>
-      <button class="btn-next" id="btnNext">→ Далее</button>
-    </div>
-    <div class="feedback" id="feedback"></div>
-    <div class="score-row" id="scoreRow"></div>
-  </div>`;
-}
-
-function renderScore() {
-  const row = document.getElementById('scoreRow');
-  if (!row) return;
-  row.innerHTML = `
-    <div class="score-item">
-      <div class="num" style="color:var(--accent-present)">${state.score.correct}</div>
-      <div class="lbl">верно</div>
-    </div>
-    <div class="score-item">
-      <div class="num" style="color:var(--accent-past)">${state.score.wrong}</div>
-      <div class="lbl">ошибок</div>
+function renderExamplesTab(c) {
+  if (!c.examples||!c.examples.length) return '<p style="color:var(--dim);font-size:0.7rem">Нет примеров.</p>';
+  let h=`<div class="card ${c.zone}"><h4>Примеры с разбором</h4>`;
+  c.examples.forEach(ex=>{
+    h+=`<div class="sent-block">
+      <div class="sent-de">${ex.de}</div>
+      <div class="sent-parts">${(ex.parts||[]).map(p=>partChip(p.w,p.r)).join('')}</div>
+      <div class="sent-ru">${ex.ru}</div>
     </div>`;
+  });
+  h+='</div>';
+  return h;
 }
 
-function bindExerciseEvents(c) {
-  const input = document.getElementById('answerInput');
-  const btnCheck = document.getElementById('btnCheck');
-  const btnNext = document.getElementById('btnNext');
+function renderExerciseTab(c,idx) {
+  if (!c.exercises||!c.exercises.length) return '<p style="color:var(--dim);font-size:0.7rem">Нет упражнений.</p>';
+  const exs=c.exercises;
+  const e=exs[idx];
+  const dots=exs.map((_,i)=>{
+    const cls=i<state.exResults.length ? (state.exResults[i]?'ok':'bad') : (i===idx?'cur':'');
+    return `<div class="ep-dot ${cls}"></div>`;
+  }).join('');
 
-  if (!input || !btnCheck || !btnNext) return;
+  return `<div class="ex-area">
+    <h4>Упражнение ${idx+1} / ${exs.length}</h4>
+    <div class="ex-progress" id="exDots">${dots}</div>
+    <div class="ex-q">${e.q.replace('___','<span class="blank">___</span>')}</div>
+    <input class="ex-inp" id="exInp" type="text" placeholder="Ваш ответ..." autocomplete="off" spellcheck="false"/>
+    <div class="ex-btns">
+      <button class="btn-check" id="btnCheck">Проверить</button>
+      <button class="btn-next" id="btnNext">Далее →</button>
+    </div>
+    <div class="ex-fb" id="exFb"></div>
+  </div>`;
+}
 
-  input.focus();
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') btnCheck.click(); });
-
-  btnCheck.addEventListener('click', () => {
+function bindExEvents(c) {
+  const inp=document.getElementById('exInp');
+  const btnC=document.getElementById('btnCheck');
+  const btnN=document.getElementById('btnNext');
+  if (!inp||!btnC||!btnN) return;
+  inp.focus();
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter') btnC.click(); });
+  btnC.addEventListener('click',()=>{
     if (state.answered) return;
-    const ex = c.exercises[state.exIdx];
-    const val = input.value.trim();
-    const correct = val.toLowerCase() === ex.a.toLowerCase();
-    state.answered = true;
-
-    if (correct) {
-      state.score.correct++;
-      input.classList.add('correct');
-      document.getElementById('feedback').className = 'feedback correct';
-      document.getElementById('feedback').textContent = '✓ Верно! ' + (ex.hint || '');
-    } else {
-      state.score.wrong++;
-      input.classList.add('wrong');
-      document.getElementById('feedback').className = 'feedback wrong';
-      document.getElementById('feedback').innerHTML = `✗ Неверно. Правильный ответ: <strong>${ex.a}</strong> — ${ex.hint || ''}`;
-    }
-    renderScore();
+    state.answered=true;
+    const val=inp.value.trim();
+    const e=c.exercises[state.exIdx];
+    const ok=val.toLowerCase()===e.a.toLowerCase();
+    if (ok) { state.score.ok++; inp.classList.add('ok'); }
+    else { state.score.bad++; inp.classList.add('bad'); }
+    state.exResults[state.exIdx]=ok;
+    document.getElementById('exFb').className='ex-fb '+(ok?'ok':'bad');
+    document.getElementById('exFb').innerHTML=ok
+      ? `✓ Верно! <em>${e.h||''}</em>`
+      : `✗ Неверно. Ответ: <strong>${e.a}</strong> — ${e.h||''}`;
+    updateScoreUI();
+    refreshDots(c);
   });
-
-  btnNext.addEventListener('click', () => {
-    const nextIdx = (state.exIdx + 1) % c.exercises.length;
-    state.exIdx = nextIdx;
-    state.answered = false;
-    const ea = document.getElementById('exerciseArea');
-    if (ea) {
-      ea.outerHTML = renderExercise(c, nextIdx);
-      // re-bind after DOM update
-      setTimeout(() => bindExerciseEvents(c), 0);
-      renderScore();
-    }
+  btnN.addEventListener('click',()=>{
+    if (!state.answered && inp.value.trim()) { btnC.click(); return; }
+    state.exIdx=(state.exIdx+1)%c.exercises.length;
+    if (state.exIdx===0) state.exResults=[];
+    state.answered=false;
+    const tc=document.getElementById('tc-'+state.activeTab);
+    if (tc) { tc.innerHTML=renderExerciseTab(c,state.exIdx); bindExEvents(c); }
   });
 }
 
-// ══════════════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════════════
+function refreshDots(c) {
+  const el=document.getElementById('exDots');
+  if (!el) return;
+  el.innerHTML=c.exercises.map((_,i)=>{
+    const cls=i<state.exResults.length?(state.exResults[i]?'ok':'bad'):(i===state.exIdx?'cur':'');
+    return `<div class="ep-dot ${cls}"></div>`;
+  }).join('');
+}
+
+function updateScoreUI() {
+  document.getElementById('sc-ok').textContent=state.score.ok;
+  document.getElementById('sc-bad').textContent=state.score.bad;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════
 drawWheel();
 </script>
 </body>
