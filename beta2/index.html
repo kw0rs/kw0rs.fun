@@ -237,7 +237,639 @@ nav {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Chips for part-of-speech */
+/* ── LEVEL BUTTONS ── */
+.ex-levels {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;
+}
+.lv-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 11px; background: transparent;
+  border: 1px solid var(--lvc, #888); color: var(--lvc, #888);
+  font-family: 'DM Mono', monospace; font-size: 0.6rem;
+  font-weight: 500; letter-spacing: 0.1em;
+  cursor: pointer; border-radius: 20px; transition: all 0.2s;
+}
+.lv-btn:hover { background: color-mix(in srgb, var(--lvc) 15%, transparent); }
+.lv-btn.active { background: var(--lvc); color: var(--bg); }
+.lv-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor;
+}
+.lv-btn-sm {
+  padding: 6px 14px; background: transparent;
+  border: 1px solid var(--lvc, #888); color: var(--lvc, #888);
+  font-family: 'DM Mono', monospace; font-size: 0.62rem;
+  cursor: pointer; border-radius: 4px; transition: all 0.2s;
+}
+.lv-btn-sm:hover { background: color-mix(in srgb, var(--lvc) 20%, transparent); }
+.lv-badge {
+  display: inline-block; font-size: 0.5rem; padding: 1px 6px;
+  border-radius: 3px; color: var(--bg); font-weight: 700;
+  vertical-align: middle; margin-left: 4px;
+}
+
+/* ── GENERATE BUTTON ── */
+.btn-gen-more {
+  width: 100%; padding: 10px; margin-top: 8px;
+  background: transparent; border: 1px dashed var(--border);
+  color: var(--dim2); font-family: 'DM Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.08em;
+  cursor: pointer; border-radius: 4px; transition: all 0.2s;
+}
+.btn-gen-more:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── AI LOADING ── */
+.ai-loading {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px; color: var(--dim2); font-size: 0.65rem;
+  animation: fadeUp 0.3s ease;
+}
+.ai-spin {
+  width: 16px; height: 16px; flex-shrink: 0;
+  border: 2px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── EXAMPLE NOTE ── */
+.ex-note {
+  font-size: 0.55rem; color: var(--gold); background: rgba(224,196,106,0.1);
+  padding: 1px 6px; border-radius: 3px; margin-left: 6px;
+  font-style: normal; letter-spacing: 0.05em;
+}
+
+/* ── EXAMPLES TAB ── */
+.ex-tab-wrap { animation: fadeUp 0.25s ease; }
+.ex-lvl-bar {
+  display: flex; gap: 5px; margin-bottom: 14px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--border);
+}
+.ex-lv-btn {
+  flex: 1; padding: 7px 2px; text-align: center;
+  background: transparent; border: 1px solid rgba(255,255,255,0.1);
+  color: var(--dim2); font-family: 'DM Mono', monospace;
+  font-size: 0.58rem; font-weight: 500;
+  cursor: pointer; border-radius: 5px; transition: all 0.18s;
+  position: relative;
+}
+.ex-lv-btn:hover { border-color: var(--lvc); color: var(--lvc); }
+.ex-lv-btn.active { background: var(--lvc); color: var(--bg); border-color: var(--lvc); font-weight: 700; }
+.ex-lv-btn .ex-lv-count {
+  position: absolute; top: -5px; right: -5px;
+  font-size: 0.42rem; background: var(--lvc); color: var(--bg);
+  border-radius: 8px; padding: 0 4px; display: none;
+}
+.ex-lv-btn.has-count .ex-lv-count { display: block; }
+.ex-lv-desc {
+  font-size: 0.58rem; color: var(--dim); line-height: 1.5;
+  margin-bottom: 12px; padding: 7px 10px;
+  background: var(--s2); border-radius: 5px;
+  border-left: 2px solid var(--lvc, var(--gold));
+}
+.ex-count-badge { font-size: 0.52rem; color: var(--dim); background: var(--s3); padding: 2px 8px; border-radius: 10px; }
+
+/* Example cards */
+.ex-card {
+  background: var(--s2); border-radius: 8px; margin-bottom: 8px;
+  border-left: 3px solid rgba(255,255,255,0.06); overflow: hidden;
+  animation: fadeUp 0.22s ease; transition: border-color 0.2s, transform 0.15s;
+}
+.ex-card:hover { transform: translateX(2px); }
+.ex-card-main { padding: 13px 15px 9px; }
+.ex-card-num { font-size: 0.46rem; color: var(--dim); letter-spacing: 0.1em; margin-bottom: 4px; text-transform: uppercase; }
+.ex-card-de {
+  font-family: 'EB Garamond', serif; font-size: 1.06rem;
+  color: var(--text); font-weight: 600; line-height: 1.45;
+  margin-bottom: 5px;
+}
+.ex-card-ru { font-size: 0.67rem; color: var(--dim2); line-height: 1.5; margin-bottom: 4px; }
+.ex-card-note {
+  display: inline-block; font-size: 0.51rem; color: var(--gold);
+  background: rgba(224,196,106,0.1); padding: 2px 7px;
+  border-radius: 3px; margin-top: 3px; letter-spacing: 0.04em;
+}
+.ex-card-analysis { 
+  padding: 0 15px; max-height: 0; overflow: hidden; 
+  transition: max-height 0.3s ease, padding 0.3s;
+}
+.ex-card-analysis.open { max-height: 300px; padding: 10px 15px 12px; border-top: 1px solid var(--border); }
+.analysis-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+.analysis-chip {
+  font-size: 0.52rem; padding: 3px 8px; border-radius: 4px;
+  background: var(--s3); border: 1px solid var(--border);
+  display: flex; gap: 4px; align-items: center;
+}
+.analysis-chip .w { color: var(--text); font-family: 'EB Garamond', serif; font-size: 0.62rem; font-weight: 600; }
+.analysis-chip .r { color: var(--dim); font-size: 0.48rem; }
+.ex-card-toggle {
+  padding: 3px 15px 9px; cursor: pointer; font-size: 0.5rem;
+  color: var(--dim); letter-spacing: 0.07em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 4px;
+  user-select: none; transition: color 0.2s;
+}
+.ex-card-toggle:hover { color: var(--gold); }
+.ex-card-toggle .arrow { transition: transform 0.2s; display: inline-block; }
+.ex-card-toggle.open .arrow { transform: rotate(180deg); }
+
+/* Zone tints */
+.ex-card.past   { border-left-color: rgba(217,79,58,0.5); }
+.ex-card.present{ border-left-color: rgba(58,217,160,0.5); }
+.ex-card.future { border-left-color: rgba(58,143,217,0.5); }
+.ex-card.special{ border-left-color: rgba(201,122,224,0.5); }
+.ex-card.syntax { border-left-color: rgba(224,122,64,0.5); }
+.ex-card.nebensatz { border-left-color: rgba(74,224,192,0.5); }
+.ex-card.c1color { border-left-color: rgba(255,96,144,0.5); }
+
+/* Level progression banner */
+.ex-progress-banner {
+  font-size: 0.55rem; color: var(--dim2); text-align: center;
+  padding: 8px; background: var(--s2); border-radius: 5px;
+  margin-bottom: 10px; line-height: 1.6;
+}
+.ex-progress-banner strong { color: var(--gold); }
+
+/* ── EXERCISE TAB v2 ── */
+.ew-wrap { animation: fadeUp 0.25s ease; }
+
+/* Top bar with mode pills */
+.ew-mode-bar {
+  display: flex; gap: 6px; margin-bottom: 14px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--border);
+}
+.ew-mode-btn {
+  flex: 1; padding: 8px; text-align: center;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--dim); font-family: 'DM Mono', monospace;
+  font-size: 0.58rem; font-weight: 500; letter-spacing: 0.06em;
+  cursor: pointer; border-radius: 5px; transition: all 0.18s;
+}
+.ew-mode-btn:hover { border-color: var(--gold); color: var(--gold); }
+.ew-mode-btn.active { background: var(--gold); color: var(--bg); border-color: var(--gold); font-weight: 700; }
+
+/* Fill-in classic mode */
+.ew-classic { }
+.ew-classic-q {
+  font-family: 'EB Garamond', serif; font-size: 1.05rem;
+  color: var(--text); line-height: 1.6; margin-bottom: 12px;
+}
+.ew-blank { border-bottom: 2px solid var(--gold); color: var(--gold); padding: 0 3px; }
+.ew-dots { display: flex; gap: 5px; margin-bottom: 10px; }
+.ew-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--s3); border: 1px solid var(--border); flex-shrink: 0; }
+.ew-dot.cur { background: var(--gold); border-color: var(--gold); }
+.ew-dot.ok  { background: var(--present); border-color: var(--present); }
+.ew-dot.bad { background: var(--past); border-color: var(--past); }
+.ew-inp {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  color: var(--text); padding: 10px 13px;
+  font-family: 'DM Mono', monospace; font-size: 0.8rem;
+  border-radius: 5px; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  margin-bottom: 8px;
+}
+.ew-inp:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(224,196,106,0.08); }
+.ew-inp.ok  { border-color: var(--present); color: var(--present); }
+.ew-inp.bad { border-color: var(--past); color: var(--past); }
+.ew-btns { display: flex; gap: 8px; margin-bottom: 8px; }
+.ew-btn-check {
+  flex: 2; padding: 9px; background: var(--gold); color: var(--bg);
+  border: none; font-family: 'DM Mono', monospace; font-size: 0.62rem;
+  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; border-radius: 4px; transition: opacity 0.2s;
+}
+.ew-btn-check:hover { opacity: 0.85; }
+.ew-btn-next {
+  flex: 1; padding: 9px; background: transparent;
+  border: 1px solid var(--border); color: var(--dim);
+  font-family: 'DM Mono', monospace; font-size: 0.6rem;
+  cursor: pointer; border-radius: 4px; transition: all 0.2s;
+}
+.ew-btn-next:hover { border-color: var(--dim2); color: var(--text); }
+.ew-fb {
+  font-size: 0.68rem; line-height: 1.5; padding: 8px 12px;
+  border-radius: 4px; display: none; animation: fadeUp 0.2s ease;
+}
+.ew-fb.ok  { display: block; background: rgba(58,217,160,0.08); color: var(--present); }
+.ew-fb.bad { display: block; background: rgba(217,79,58,0.08); color: var(--past); }
+
+/* Free writing mode */
+.ew-free { }
+.ew-free-lvbar { display: flex; gap: 5px; margin-bottom: 12px; }
+.ew-free-lvbtn {
+  flex: 1; padding: 6px 4px; text-align: center;
+  background: transparent; border: 1px solid var(--lvc, rgba(255,255,255,0.1));
+  color: var(--lvc, var(--dim2)); font-family: 'DM Mono', monospace;
+  font-size: 0.56rem; font-weight: 500;
+  cursor: pointer; border-radius: 4px; transition: all 0.18s;
+}
+.ew-free-lvbtn:hover { background: color-mix(in srgb, var(--lvc) 12%, transparent); }
+.ew-free-lvbtn.active { background: var(--lvc); color: var(--bg); font-weight: 700; }
+
+/* Task card */
+.ew-task {
+  background: var(--s2); border-radius: 8px; padding: 14px 16px;
+  margin-bottom: 12px; border-left: 3px solid var(--lvc, var(--gold));
+  animation: fadeUp 0.25s ease;
+}
+.ew-task-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.ew-task-lv {
+  font-size: 0.5rem; padding: 2px 8px; border-radius: 10px;
+  background: var(--lvc, var(--gold)); color: var(--bg); font-weight: 700;
+}
+.ew-task-type { font-size: 0.5rem; color: var(--dim); background: var(--s3); padding: 1px 7px; border-radius: 10px; }
+.ew-task-num { font-size: 0.48rem; color: var(--dim); margin-left: auto; }
+.ew-task-instr {
+  font-family: 'EB Garamond', serif; font-size: 1.05rem;
+  color: var(--text); line-height: 1.5; margin-bottom: 8px;
+}
+.ew-task-hint {
+  font-size: 0.62rem; color: var(--gold); line-height: 1.5;
+  background: rgba(224,196,106,0.07); border-radius: 4px;
+  padding: 6px 10px; border-left: 2px solid rgba(224,196,106,0.4);
+}
+.ew-task-hint b { font-weight: 600; }
+.ew-task-words { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+.ew-word-chip {
+  font-size: 0.6rem; padding: 3px 10px; border-radius: 12px;
+  background: var(--s3); border: 1px solid var(--border);
+  color: var(--dim2); font-family: 'EB Garamond', serif;
+  cursor: pointer; transition: all 0.15s;
+}
+.ew-word-chip:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Writing area */
+.ew-textarea-wrap { position: relative; margin-bottom: 8px; }
+.ew-textarea {
+  width: 100%; background: var(--bg); color: var(--text);
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: 12px 14px 26px; font-family: 'EB Garamond', serif;
+  font-size: 1.05rem; line-height: 1.6; outline: none;
+  resize: none; min-height: 80px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.ew-textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(224,196,106,0.08); }
+.ew-char-count {
+  position: absolute; bottom: 8px; right: 11px;
+  font-size: 0.48rem; color: var(--dim); pointer-events: none;
+}
+.ew-free-btns { display: flex; gap: 8px; margin-bottom: 12px; }
+.ew-btn-submit {
+  flex: 2; padding: 10px; background: var(--gold); color: var(--bg);
+  border: none; font-family: 'DM Mono', monospace; font-size: 0.62rem;
+  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; border-radius: 5px; transition: opacity 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.ew-btn-submit:hover { opacity: 0.85; }
+.ew-btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+.ew-btn-skip {
+  flex: 1; padding: 10px; background: transparent;
+  border: 1px solid var(--border); color: var(--dim);
+  font-family: 'DM Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.06em; cursor: pointer; border-radius: 5px; transition: all 0.2s;
+}
+.ew-btn-skip:hover { border-color: var(--dim2); color: var(--text); }
+
+/* Result box — detailed breakdown */
+.ew-result {
+  border-radius: 8px; padding: 14px 16px; margin-bottom: 12px;
+  animation: fadeUp 0.25s ease; position: relative;
+}
+.ew-result.ok   { background: rgba(58,217,160,0.07); border: 1px solid rgba(58,217,160,0.25); }
+.ew-result.warn { background: rgba(224,196,106,0.07); border: 1px solid rgba(224,196,106,0.25); }
+.ew-result.bad  { background: rgba(217,79,58,0.07);  border: 1px solid rgba(217,79,58,0.25); }
+.ew-result-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.ew-result-icon { font-size: 1.3rem; }
+.ew-result-score-lbl {
+  font-size: 0.55rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.ew-result.ok .ew-result-score-lbl   { color: var(--present); }
+.ew-result.warn .ew-result-score-lbl { color: var(--gold); }
+.ew-result.bad .ew-result-score-lbl  { color: var(--past); }
+.ew-result-pts { margin-left: auto; font-size: 0.55rem; color: var(--dim); }
+
+/* Student sentence with annotations */
+.ew-student-sent {
+  font-family: 'EB Garamond', serif; font-size: 1rem;
+  color: var(--text); line-height: 1.6;
+  padding: 8px 12px; background: var(--s3); border-radius: 5px;
+  margin-bottom: 10px;
+}
+.ew-ann-err { 
+  text-decoration: underline wavy var(--past); 
+  color: var(--past); cursor: help; position: relative;
+}
+.ew-ann-ok { color: var(--present); }
+.ew-ann-hint { color: var(--gold); font-style: italic; }
+
+/* Corrected version */
+.ew-corrected {
+  font-family: 'EB Garamond', serif; font-size: 1rem;
+  color: var(--present); line-height: 1.5;
+  padding: 9px 12px; background: rgba(58,217,160,0.05);
+  border-left: 2px solid var(--present); border-radius: 0 5px 5px 0;
+  margin-bottom: 10px;
+}
+.ew-corrected-label { font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--present); opacity: 0.7; margin-bottom: 3px; }
+
+/* Error list */
+.ew-errors { margin-bottom: 8px; }
+.ew-error-item {
+  display: flex; gap: 8px; padding: 5px 0;
+  border-bottom: 1px solid var(--border); font-size: 0.63rem; line-height: 1.5;
+}
+.ew-error-item:last-child { border-bottom: none; }
+.ew-err-tag {
+  font-size: 0.46rem; padding: 1px 6px; border-radius: 3px;
+  background: rgba(217,79,58,0.15); color: var(--past);
+  font-weight: 600; white-space: nowrap; height: fit-content; margin-top: 2px;
+}
+.ew-err-text { color: var(--dim2); flex: 1; }
+.ew-err-wrong { color: var(--past); font-weight: 600; font-family: 'EB Garamond', serif; }
+.ew-err-right { color: var(--present); font-weight: 600; font-family: 'EB Garamond', serif; }
+
+/* Parts breakdown */
+.ew-parts { margin-top: 8px; }
+.ew-parts-label { font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); margin-bottom: 5px; }
+.ew-parts-row { display: flex; gap: 5px; flex-wrap: wrap; }
+.ew-part-chip {
+  font-size: 0.5rem; padding: 3px 8px; border-radius: 4px;
+  background: var(--s3); border: 1px solid var(--border);
+  display: flex; gap: 4px; align-items: center;
+}
+.ew-part-chip .pw { font-family: 'EB Garamond', serif; font-size: 0.62rem; font-weight: 600; color: var(--text); }
+.ew-part-chip .pr { color: var(--dim); font-size: 0.46rem; }
+
+/* Tip */
+.ew-tip {
+  font-size: 0.62rem; color: var(--gold); margin-top: 8px;
+  padding: 7px 10px; background: rgba(224,196,106,0.06);
+  border-radius: 4px; line-height: 1.5;
+}
+
+/* Stats bar */
+.ew-stats { 
+  display: flex; gap: 0; border-radius: 8px; overflow: hidden;
+  background: var(--s2); margin-bottom: 12px;
+}
+.ew-stat { flex: 1; text-align: center; padding: 10px 8px; }
+.ew-stat + .ew-stat { border-left: 1px solid var(--border); }
+.ew-stat-val { font-size: 1rem; font-weight: 700; color: var(--text); }
+.ew-stat-val.green { color: var(--present); }
+.ew-stat-val.red   { color: var(--past); }
+.ew-stat-val.gold  { color: var(--gold); }
+.ew-stat-lbl { font-size: 0.46rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); margin-top: 2px; }
+
+/* History */
+.ew-history { border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px; }
+.ew-hist-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.ew-hist-title { font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); }
+.ew-hist-clear { font-size: 0.5rem; color: var(--dim); background: none; border: none; cursor: pointer; padding: 0; }
+.ew-hist-clear:hover { color: var(--past); }
+.ew-hist-item {
+  padding: 9px 12px; border-radius: 6px; margin-bottom: 5px;
+  border-left: 3px solid; animation: fadeUp 0.2s ease;
+}
+.ew-hist-item.ok   { background: rgba(58,217,160,0.05);  border-color: var(--present); }
+.ew-hist-item.warn { background: rgba(224,196,106,0.05); border-color: var(--gold); }
+.ew-hist-item.bad  { background: rgba(217,79,58,0.05);   border-color: var(--past); }
+.ew-hist-sent { font-family: 'EB Garamond', serif; font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.ew-hist-fb { font-size: 0.6rem; color: var(--dim2); line-height: 1.5; }
+.ew-hist-fb em { color: var(--present); font-style: normal; }
+.ew-hist-fb s { color: var(--past); text-decoration: line-through; }
+
+/* Empty / no task */
+.ew-empty { text-align: center; padding: 28px 20px; color: var(--dim); }
+.ew-empty-icon { font-size: 2.5rem; opacity: 0.1; margin-bottom: 10px; font-family: 'EB Garamond', serif; }
+
+.ex-load-bar {
+  height: 2px; background: linear-gradient(90deg, var(--gold), transparent);
+  animation: loadBar 1.5s ease-in-out infinite;
+  border-radius: 1px; margin-bottom: 14px;
+}
+@keyframes loadBar { 0%{width:0;opacity:1} 80%{width:100%;opacity:1} 100%{width:100%;opacity:0} }
+
+.btn-more-ex {
+  width: 100%; margin-top: 10px; padding: 10px;
+  background: transparent; border: 1px dashed rgba(255,255,255,0.12);
+  color: var(--dim2); font-family: 'DM Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.08em;
+  cursor: pointer; border-radius: 6px; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.btn-more-ex:hover { border-color: var(--gold); color: var(--gold); }
+.btn-more-ex .pulse { 
+  width: 6px; height: 6px; border-radius: 50%; 
+  background: var(--gold); animation: pulse 1.5s infinite; 
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* ── EXERCISE TAB REDESIGN ── */
+.fw-wrap { animation: fadeUp 0.3s ease; }
+
+/* Level selector row */
+.fw-level-bar {
+  display: flex; gap: 5px; margin-bottom: 14px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.fw-lv-btn {
+  flex: 1; padding: 7px 4px; text-align: center;
+  background: transparent; border: 1px solid var(--lvc, #888);
+  color: var(--lvc, #888); font-family: 'DM Mono', monospace;
+  font-size: 0.58rem; font-weight: 500; letter-spacing: 0.08em;
+  cursor: pointer; border-radius: 4px; transition: all 0.2s;
+  position: relative;
+}
+.fw-lv-btn:hover { background: color-mix(in srgb, var(--lvc) 12%, transparent); }
+.fw-lv-btn.active { background: var(--lvc); color: var(--bg); }
+.fw-lv-streak {
+  position: absolute; top: -6px; right: -6px;
+  font-size: 0.45rem; background: var(--gold); color: var(--bg);
+  border-radius: 8px; padding: 0 4px; display: none;
+}
+.fw-lv-btn.has-streak .fw-lv-streak { display: block; }
+
+/* Task box */
+.fw-task-box {
+  background: var(--s2); border-radius: 8px; padding: 16px 18px;
+  margin-bottom: 14px; position: relative; overflow: hidden;
+}
+.fw-task-box::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 3px; height: 100%; background: var(--lvc, var(--gold));
+}
+.fw-task-meta {
+  display: flex; align-items: center; gap: 6px; margin-bottom: 8px;
+}
+.fw-task-lv { font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+.fw-task-badge {
+  font-size: 0.48rem; padding: 2px 7px; border-radius: 10px;
+  background: var(--lvc, var(--gold)); color: var(--bg); font-weight: 600;
+}
+.fw-task-type { font-size: 0.52rem; color: var(--dim); background: var(--s3); padding: 1px 7px; border-radius: 10px; }
+.fw-task-text {
+  font-family: 'EB Garamond', serif; font-size: 1.05rem;
+  color: var(--text); line-height: 1.5; margin-bottom: 6px;
+}
+.fw-task-hint {
+  font-size: 0.62rem; color: var(--gold); line-height: 1.5;
+  background: rgba(224,196,106,0.08); border-radius: 4px;
+  padding: 6px 10px; margin-top: 6px;
+}
+.fw-task-hint strong { font-weight: 600; }
+.fw-task-words {
+  display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px;
+}
+.fw-word-hint {
+  font-size: 0.58rem; padding: 3px 9px; border-radius: 12px;
+  background: var(--s3); border: 1px solid var(--border);
+  color: var(--dim2); font-family: 'EB Garamond', serif;
+  cursor: default;
+}
+
+/* Writing area */
+.fw-input-wrap { position: relative; margin-bottom: 10px; }
+.fw-textarea {
+  width: 100%; background: var(--bg); color: var(--text);
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: 12px 14px; font-family: 'EB Garamond', serif;
+  font-size: 1rem; line-height: 1.6; outline: none; resize: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  min-height: 80px;
+}
+.fw-textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(224,196,106,0.1); }
+.fw-char-count {
+  position: absolute; bottom: 8px; right: 10px;
+  font-size: 0.5rem; color: var(--dim); pointer-events: none;
+}
+
+/* Buttons */
+.fw-btns { display: flex; gap: 8px; margin-bottom: 12px; }
+.fw-btn-check {
+  flex: 2; padding: 10px; background: var(--gold); color: var(--bg);
+  border: none; font-family: 'DM Mono', monospace; font-size: 0.62rem;
+  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; border-radius: 5px; transition: opacity 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.fw-btn-check:hover { opacity: 0.85; }
+.fw-btn-check:disabled { opacity: 0.4; cursor: not-allowed; }
+.fw-btn-new {
+  flex: 1; padding: 10px; background: transparent;
+  border: 1px solid var(--border); color: var(--dim);
+  font-family: 'DM Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.08em; cursor: pointer; border-radius: 5px;
+  transition: all 0.2s;
+}
+.fw-btn-new:hover { border-color: var(--dim2); color: var(--text); }
+
+/* Result box */
+.fw-result {
+  border-radius: 8px; padding: 14px 16px; margin-bottom: 12px;
+  animation: fadeUp 0.3s ease;
+}
+.fw-result.ok { background: rgba(58,217,160,0.08); border: 1px solid rgba(58,217,160,0.3); }
+.fw-result.warn { background: rgba(224,196,106,0.08); border: 1px solid rgba(224,196,106,0.3); }
+.fw-result.bad { background: rgba(217,79,58,0.08); border: 1px solid rgba(217,79,58,0.3); }
+.fw-result-icon { font-size: 1.2rem; margin-bottom: 6px; }
+.fw-result-score { 
+  font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 8px; font-weight: 600;
+}
+.fw-result.ok .fw-result-score { color: var(--present); }
+.fw-result.warn .fw-result-score { color: var(--gold); }
+.fw-result.bad .fw-result-score { color: var(--past); }
+.fw-result-feedback { font-size: 0.68rem; color: var(--dim2); line-height: 1.6; margin-bottom: 6px; }
+.fw-result-corrected {
+  font-family: 'EB Garamond', serif; font-size: 0.95rem;
+  color: var(--present); background: rgba(58,217,160,0.06);
+  border-radius: 4px; padding: 8px 12px; margin: 8px 0;
+  border-left: 2px solid var(--present); line-height: 1.5;
+}
+.fw-result-errors { margin-top: 6px; }
+.fw-result-error {
+  font-size: 0.62rem; color: var(--past); line-height: 1.5;
+  padding: 2px 0; display: flex; gap: 6px;
+}
+.fw-result-error::before { content: '→'; opacity: 0.5; }
+.fw-result-tip {
+  font-size: 0.62rem; color: var(--gold); margin-top: 6px;
+  padding: 6px 10px; background: rgba(224,196,106,0.06); border-radius: 4px;
+}
+
+/* Streak & stats */
+.fw-stats-bar {
+  display: flex; gap: 10px; padding: 8px 0;
+  border-top: 1px solid var(--border); margin-top: 4px;
+}
+.fw-stat { flex: 1; text-align: center; }
+.fw-stat-val { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+.fw-stat-val.green { color: var(--present); }
+.fw-stat-val.red { color: var(--past); }
+.fw-stat-val.gold { color: var(--gold); }
+.fw-stat-lbl { font-size: 0.48rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); margin-top: 2px; }
+
+/* History */
+.fw-history { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; }
+.fw-hist-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.fw-hist-title { font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+.fw-hist-clear { font-size: 0.5rem; color: var(--dim); background: none; border: none; cursor: pointer; padding: 0; }
+.fw-hist-clear:hover { color: var(--past); }
+.fw-hist-item {
+  padding: 10px 12px; border-radius: 6px; margin-bottom: 6px;
+  border-left: 3px solid; animation: fadeUp 0.2s ease;
+}
+.fw-hist-item.ok { background: rgba(58,217,160,0.05); border-color: var(--present); }
+.fw-hist-item.warn { background: rgba(224,196,106,0.05); border-color: var(--gold); }
+.fw-hist-item.bad { background: rgba(217,79,58,0.05); border-color: var(--past); }
+.fw-hist-sent {
+  font-family: 'EB Garamond', serif; font-size: 0.9rem;
+  font-weight: 600; color: var(--text); margin-bottom: 3px;
+}
+.fw-hist-fb { font-size: 0.6rem; color: var(--dim2); line-height: 1.5; }
+.fw-hist-fb em { color: var(--present); font-style: normal; }
+
+/* No task state */
+.fw-empty {
+  text-align: center; padding: 30px 20px;
+  color: var(--dim); font-size: 0.68rem; line-height: 1.8;
+}
+.fw-empty-icon { font-size: 2.5rem; opacity: 0.1; margin-bottom: 10px; font-family: 'EB Garamond', serif; }
+
+/* Free writing */
+.free-writing-wrap { animation: fadeUp 0.3s ease; }
+.free-task {
+  background: var(--s2); border-radius: 6px; padding: 14px 18px;
+  border-left: 3px solid var(--gold); margin-bottom: 12px;
+}
+.free-task-label { font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin-bottom: 6px; }
+.free-task-text { font-family: 'EB Garamond', serif; font-size: 1rem; color: var(--text); line-height: 1.5; }
+.free-task-hint { font-size: 0.62rem; color: var(--gold); margin-top: 6px; opacity: 0.85; }
+.free-gen-area { background: var(--s2); border-radius: 6px; padding: 14px 18px; margin-bottom: 12px; }
+.free-gen-label { font-size: 0.62rem; color: var(--dim); margin-bottom: 10px; }
+.free-level-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.free-input-area { margin-bottom: 10px; }
+.free-textarea {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  color: var(--text); padding: 10px 14px;
+  font-family: 'EB Garamond', serif; font-size: 1rem; line-height: 1.6;
+  border-radius: 4px; outline: none; resize: vertical; transition: border-color 0.2s;
+}
+.free-textarea:focus { border-color: var(--gold); }
+.free-btns { display: flex; gap: 8px; margin-top: 8px; }
+.free-history { margin-top: 12px; }
+.free-hist-label { font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
+.free-hist-item { padding: 10px 14px; border-radius: 4px; margin-bottom: 8px; border-left: 3px solid; animation: fadeUp 0.3s ease; }
+.free-hist-item.ok { background: rgba(58,217,160,0.07); border-color: var(--present); }
+.free-hist-item.warn { background: rgba(224,196,106,0.07); border-color: var(--gold); }
+.free-hist-item.bad { background: rgba(217,79,58,0.07); border-color: var(--past); }
+.hist-sent { font-family: 'EB Garamond', serif; font-size: 0.9rem; color: var(--text); font-weight: 600; margin-bottom: 4px; }
+.hist-fb { font-size: 0.62rem; color: var(--dim2); line-height: 1.6; }
+.hist-fb em { color: var(--present); font-style: normal; }
+
 .chip-s { color: #3ad9a0; } /* Subjekt */
 .chip-v { color: #e0c46a; } /* Verb */
 .chip-o { color: #3a8fd9; } /* Objekt */
@@ -4629,6 +5261,13 @@ function renderContent(id) {
   if (!c) { showPlaceholder(); return; }
 
   state.activeTab=0; state.exIdx=0; state.answered=false; state.exResults=[];
+  state.exLevel = state.exLevel || 'A2';
+  state.exMode = state.exMode || 'classic';
+  state.exLoading = false;
+  state.freeLoading = false;
+  state.freeTask = null;
+  state.freeHistory = [];
+  state._freeInputVal = '';
 
   document.getElementById('ipTag').textContent=c.tag;
   document.getElementById('ipTitle').textContent=c.title;
@@ -4662,14 +5301,29 @@ function renderContent(id) {
       tab.classList.add('active');
       document.getElementById('tc-'+idx).classList.add('active');
       state.activeTab=idx;
-      if (c.tabs[idx]==='Упражнения') {
+      const tabName = c.tabs[idx];
+      if (tabName==='Упражнения') {
         document.getElementById('tc-'+idx).innerHTML=renderExerciseTab(c,state.exIdx);
         bindExEvents(c);
+        // Auto-generate task if none exists
+        if (!state.freeTask && (state.exMode||'free')==='free') {
+          generateFreeTask(c, state.freeLevel||'B1');
+        }
+      } else if (tabName==='Примеры') {
+        document.getElementById('tc-'+idx).innerHTML=renderExamplesTab(c);
+        bindExamplesEvents(c);
+        // Auto-load examples for current level if none cached
+        const lv = state.exLevel||'B1';
+        const id2 = state.selected;
+        if (!exCache[id2]?.[lv]?.length && !state.exLoading) {
+          generateExamples(c, lv, false);
+        }
       }
     });
   });
 
   bindExEvents(c);
+  bindExamplesEvents(c);
 }
 
 function renderRuleTab(c) {
@@ -4690,87 +5344,985 @@ function renderRuleTab(c) {
   return h;
 }
 
-function renderExamplesTab(c) {
-  if (!c.examples||!c.examples.length) return '<p style="color:var(--dim);font-size:0.7rem">Нет примеров.</p>';
-  let h=`<div class="card ${c.zone}"><h4>Примеры с разбором</h4>`;
-  c.examples.forEach(ex=>{
-    h+=`<div class="sent-block">
-      <div class="sent-de">${ex.de}</div>
-      <div class="sent-parts">${(ex.parts||[]).map(p=>partChip(p.w,p.r)).join('')}</div>
-      <div class="sent-ru">${ex.ru}</div>
-    </div>`;
+// ═══════════════════════════════════════════════════════════════════
+// AI ENGINE — Anthropic API calls
+// ═══════════════════════════════════════════════════════════════════
+
+async function callClaude(systemPrompt, userMessage, maxTokens=800) {
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens: maxTokens,
+      system: systemPrompt,
+      messages:[{role:'user', content: userMessage}]
+    })
   });
-  h+='</div>';
-  return h;
+  const data = await resp.json();
+  return data.content?.map(b=>b.text||'').join('') || '';
 }
 
-function renderExerciseTab(c,idx) {
-  if (!c.exercises||!c.exercises.length) return '<p style="color:var(--dim);font-size:0.7rem">Нет упражнений.</p>';
-  const exs=c.exercises;
-  const e=exs[idx];
-  const dots=exs.map((_,i)=>{
-    const cls=i<state.exResults.length ? (state.exResults[i]?'ok':'bad') : (i===idx?'cur':'');
-    return `<div class="ep-dot ${cls}"></div>`;
+
+// ═══════════════════════════════════════════════════════════════════
+// ПРИМЕРЫ — многоуровневые карточки с AI-генерацией
+// ═══════════════════════════════════════════════════════════════════
+
+const LEVELS = ['A1','A2','B1','B2','C1'];
+const LEVEL_COLORS = {A1:'#3ad9a0',A2:'#22b87a',B1:'#3a8fd9',B2:'#c97ae0',C1:'#ff6090'};
+const LEVEL_DESC = {
+  A1:'Базовый уровень — простая лексика, S+V+O',
+  A2:'Простые предложения с артиклями и падежами',
+  B1:'Средняя сложность — придаточные, сложные глаголы',
+  B2:'Сложные предложения с несколькими конструкциями',
+  C1:'Академический стиль — Partizipialattr., FVG, Konj.I'
+};
+
+const exCache = {}; // exCache[sectionId][level] = [{de,ru,note,parts}]
+
+// ── CSS ADDITIONS ──────────────────────────────────────────────────
+(function injectStyles(){
+  const s = document.createElement('style');
+  s.textContent = `
+/* ── EXAMPLES TAB ── */
+.ex-tab { padding:4px 0; }
+.ex-lvl-bar { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:8px; }
+.ex-lv-btn {
+  padding:4px 10px; border-radius:20px; border:1.5px solid currentColor; background:transparent;
+  color:var(--lvc,#888); cursor:pointer; font-family:inherit; font-size:0.6rem; font-weight:600;
+  letter-spacing:0.05em; transition:all 0.2s; position:relative;
+}
+.ex-lv-btn:hover { background:color-mix(in srgb, var(--lvc) 15%, transparent); }
+.ex-lv-btn.active { background:var(--lvc); color:#000; }
+.ex-lv-count { position:absolute; top:-5px; right:-5px; background:var(--lvc); color:#000;
+  border-radius:9px; min-width:14px; height:14px; font-size:0.48rem; line-height:14px;
+  text-align:center; padding:0 3px; }
+.ex-lv-desc { font-size:0.6rem; color:var(--dim2); margin-bottom:10px; padding-left:8px;
+  border-left:2px solid var(--lv-border,#555); }
+.ex-total-badge { font-size:0.52rem; color:var(--dim); letter-spacing:0.06em; margin-bottom:8px; }
+
+/* Main card */
+.ex-main-card {
+  background:var(--s2); border-radius:10px; padding:14px;
+  border:1px solid var(--border); position:relative; margin-bottom:8px;
+}
+.ex-main-card.zone-past { border-color:#d94f3a44; }
+.ex-main-card.zone-present { border-color:#3ad9a044; }
+.ex-main-card.zone-future { border-color:#3a8fd944; }
+.ex-main-card.zone-special { border-color:#c97ae044; }
+.ex-main-card.zone-syntax { border-color:#e07a4044; }
+.ex-main-card.zone-nebensatz { border-color:#4ae0c044; }
+.ex-main-card.zone-c1color { border-color:#ff609044; }
+
+.ex-lv-badge { position:absolute; top:10px; right:10px; padding:2px 7px;
+  border-radius:10px; font-size:0.5rem; font-weight:700; color:#000; }
+.ex-card-counter { font-size:0.5rem; color:var(--dim); margin-bottom:6px; }
+.ex-sent-de { font-size:1rem; font-family:'EB Garamond',serif; letter-spacing:0.01em;
+  line-height:1.5; margin-bottom:6px; color:#eef; }
+.ex-sent-ru { font-size:0.68rem; color:var(--dim2); margin-bottom:5px; }
+.ex-sent-note { font-size:0.58rem; color:var(--gold); opacity:0.85;
+  padding:3px 6px; background:#ffffff08; border-radius:4px; margin-top:4px; }
+.ex-note-icon { margin-right:4px; opacity:0.6; }
+
+/* Analysis */
+.ex-analysis-toggle { margin-top:8px; }
+.ex-analysis-toggle summary { font-size:0.58rem; color:var(--dim); cursor:pointer;
+  user-select:none; list-style:none; }
+.ex-analysis-toggle summary::-webkit-details-marker { display:none; }
+.ex-analysis-toggle summary::before { content:'▾ '; }
+.ex-analysis-toggle[open] summary::before { content:'▴ '; }
+.ex-analysis-chips { display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; }
+.ex-chip-wrap { display:flex; flex-direction:column; align-items:center;
+  background:#ffffff0a; border-radius:5px; padding:3px 6px; gap:1px; }
+.ex-chip-word { font-size:0.7rem; color:#dde0f0; }
+.ex-chip-role { font-size:0.44rem; color:var(--gold); letter-spacing:0.06em; text-transform:uppercase; }
+
+/* Navigation */
+.ex-nav-row { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.ex-nav-btn { flex:0 0 auto; padding:5px 12px; background:var(--s3); border:1px solid var(--border);
+  border-radius:6px; color:var(--dim2); cursor:pointer; font-family:inherit; font-size:0.62rem;
+  transition:all 0.15s; }
+.ex-nav-btn:hover:not(:disabled) { color:#fff; border-color:#ffffff33; }
+.ex-nav-btn:disabled { opacity:0.3; cursor:default; }
+.ex-dots-row { flex:1; display:flex; justify-content:center; gap:4px; flex-wrap:wrap; }
+.ex-dot { width:7px; height:7px; border-radius:50%; background:var(--s3);
+  border:1px solid var(--border); transition:all 0.2s; }
+.ex-dot.active { background:var(--lvc,#3a8fd9); border-color:var(--lvc,#3a8fd9); width:18px; border-radius:4px; }
+
+/* Generate button */
+.ex-more-btn {
+  display:flex; align-items:center; gap:8px; width:100%; padding:10px 14px;
+  background:transparent; border:1.5px dashed var(--border); border-radius:8px;
+  color:var(--dim2); cursor:pointer; font-family:inherit; font-size:0.65rem;
+  transition:all 0.2s; margin-top:4px;
+}
+.ex-more-btn:hover { border-color:#ffffff44; color:#fff; background:#ffffff05; }
+.ex-more-btn.primary { border-color:var(--lvc,#3a8fd9); color:var(--lvc,#3a8fd9); }
+.ex-more-pulse { width:8px; height:8px; border-radius:50%; background:var(--lvc,#3a8fd9);
+  animation:pulse 1.4s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+
+/* Loading state */
+.ex-load-state { display:flex; flex-direction:column; align-items:center; gap:10px;
+  padding:30px 10px; }
+.ex-load-spinner { width:28px; height:28px; border:2px solid var(--border);
+  border-top-color:var(--lvc,#3a8fd9); border-radius:50%; animation:spin 0.8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.ex-load-text { font-size:0.65rem; color:var(--dim2); text-align:center; line-height:1.6; }
+.ex-builtin-label { font-size:0.5rem; color:var(--dim); letter-spacing:0.08em;
+  text-transform:uppercase; margin-bottom:8px; }
+.ex-empty-state { padding:24px; text-align:center; }
+.ex-empty-icon { font-size:2rem; opacity:0.15; margin-bottom:8px; }
+.ex-empty-text { font-size:0.65rem; color:var(--dim2); }
+
+/* ── EXERCISE TAB ── */
+.ew-wrap { padding:4px 0; }
+.ew-mode-bar { display:flex; gap:5px; margin-bottom:12px; }
+.ew-mode-btn { flex:1; padding:7px; background:var(--s2); border:1.5px solid var(--border);
+  border-radius:8px; color:var(--dim2); cursor:pointer; font-family:inherit; font-size:0.6rem;
+  font-weight:600; letter-spacing:0.04em; transition:all 0.2s; }
+.ew-mode-btn:hover { border-color:#ffffff33; color:#fff; }
+.ew-mode-btn.active { background:var(--s3); border-color:#ffffff33; color:#fff; }
+
+/* Fill-in panel */
+.ew-classic { }
+.ew-dots { display:flex; gap:4px; flex-wrap:wrap; margin-bottom:12px; }
+.ew-dot { width:8px; height:8px; border-radius:50%; background:var(--s3);
+  border:1px solid var(--border); transition:all 0.2s; }
+.ew-dot.ok { background:#3ad9a0; border-color:#3ad9a0; }
+.ew-dot.bad { background:#d94f3a; border-color:#d94f3a; }
+.ew-dot.cur { background:var(--gold); border-color:var(--gold); width:18px; border-radius:4px; }
+.ew-classic-q { font-size:0.82rem; font-family:'EB Garamond',serif; line-height:1.6;
+  margin-bottom:12px; color:#eef; }
+.ew-blank { color:var(--gold); border-bottom:1.5px solid var(--gold); padding:0 4px; }
+.ew-inp { width:100%; padding:9px 12px; background:var(--s1); border:1.5px solid var(--border);
+  border-radius:7px; color:var(--text); font-family:inherit; font-size:0.8rem;
+  margin-bottom:8px; transition:border-color 0.2s; }
+.ew-inp:focus { outline:none; border-color:#ffffff44; }
+.ew-inp.ok { border-color:#3ad9a0; background:#3ad9a010; }
+.ew-inp.bad { border-color:#d94f3a; background:#d94f3a10; }
+.ew-btns { display:flex; gap:6px; margin-bottom:8px; }
+.ew-btn-check { flex:2; padding:8px; background:var(--s3); border:1.5px solid #ffffff22;
+  border-radius:7px; color:#fff; cursor:pointer; font-family:inherit; font-size:0.65rem;
+  font-weight:600; transition:all 0.15s; }
+.ew-btn-check:hover { border-color:#ffffff55; }
+.ew-btn-next { flex:1; padding:8px; background:transparent; border:1.5px solid var(--border);
+  border-radius:7px; color:var(--dim2); cursor:pointer; font-family:inherit; font-size:0.65rem;
+  transition:all 0.15s; }
+.ew-btn-next:hover { color:#fff; border-color:#ffffff33; }
+.ew-fb { font-size:0.68rem; line-height:1.6; padding:8px 10px; border-radius:6px;
+  min-height:0; transition:all 0.2s; }
+.ew-fb.ok { background:#3ad9a015; border:1px solid #3ad9a044; color:#3ad9a0; }
+.ew-fb.bad { background:#d94f3a15; border:1px solid #d94f3a44; color:#ff8070; }
+.ew-empty { padding:24px; text-align:center; color:var(--dim2); font-size:0.65rem; }
+.ew-empty-icon { font-size:2rem; opacity:0.12; margin-bottom:8px; }
+
+/* Free writing */
+.ew-free { }
+.ew-free-lvbar { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:10px; }
+.ew-free-lvbtn { padding:4px 10px; border-radius:20px; border:1.5px solid var(--lvc,#888);
+  background:transparent; color:var(--lvc,#888); cursor:pointer; font-family:inherit;
+  font-size:0.6rem; font-weight:600; transition:all 0.2s; }
+.ew-free-lvbtn:hover { background:color-mix(in srgb,var(--lvc) 15%,transparent); }
+.ew-free-lvbtn.active { background:var(--lvc); color:#000; }
+
+.ew-task { border-radius:10px; padding:12px; margin-bottom:10px;
+  border-left:3px solid var(--lvc,#3a8fd9); background:var(--s2); }
+.ew-task-meta { display:flex; align-items:center; gap:6px; margin-bottom:6px; flex-wrap:wrap; }
+.ew-task-lv { padding:2px 7px; border-radius:10px; background:var(--lvc,#3a8fd9);
+  color:#000; font-size:0.5rem; font-weight:700; }
+.ew-task-type { font-size:0.52rem; color:var(--dim2); text-transform:uppercase; letter-spacing:0.06em; }
+.ew-task-num { font-size:0.5rem; color:var(--dim); margin-left:auto; }
+.ew-task-instr { font-size:0.78rem; font-family:'EB Garamond',serif; line-height:1.5;
+  color:#eef; margin-bottom:6px; }
+.ew-task-hint { font-size:0.6rem; color:var(--gold); opacity:0.9;
+  padding:4px 8px; background:#ffffff08; border-radius:5px; margin-bottom:6px; }
+.ew-task-words { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
+.ew-word-chip { padding:3px 8px; background:#ffffff0a; border:1px solid var(--border);
+  border-radius:12px; color:var(--dim2); cursor:pointer; font-size:0.6rem;
+  font-family:'EB Garamond',serif; transition:all 0.15s; user-select:none; }
+.ew-word-chip:hover { background:#ffffff15; color:#fff; }
+
+.ew-textarea-wrap { position:relative; margin-bottom:6px; }
+.ew-textarea { width:100%; padding:10px 36px 10px 12px; background:var(--s1);
+  border:1.5px solid var(--border); border-radius:8px; color:var(--text);
+  font-family:'EB Garamond',serif; font-size:0.9rem; resize:none; line-height:1.5;
+  transition:border-color 0.2s; }
+.ew-textarea:focus { outline:none; border-color:#ffffff44; }
+.ew-char-count { position:absolute; bottom:8px; right:10px;
+  font-size:0.5rem; color:var(--dim); }
+.ew-free-btns { display:flex; gap:6px; margin-bottom:10px; }
+.ew-btn-submit { flex:3; padding:9px; background:var(--s3);
+  border:1.5px solid #ffffff22; border-radius:7px; color:#fff;
+  cursor:pointer; font-family:inherit; font-size:0.65rem; font-weight:600;
+  transition:all 0.15s; }
+.ew-btn-submit:hover { border-color:#ffffff55; }
+.ew-btn-skip { flex:1; padding:9px; background:transparent;
+  border:1.5px solid var(--border); border-radius:7px; color:var(--dim2);
+  cursor:pointer; font-family:inherit; font-size:0.65rem; transition:all 0.15s; }
+.ew-btn-skip:hover { color:#fff; border-color:#ffffff33; }
+
+/* Result */
+.ew-result { border-radius:10px; padding:12px; margin-bottom:10px; border:1px solid; }
+.ew-result.ok { background:#3ad9a012; border-color:#3ad9a044; }
+.ew-result.warn { background:#e0c46a12; border-color:#e0c46a44; }
+.ew-result.bad { background:#d94f3a12; border-color:#d94f3a44; }
+.ew-result-header { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.ew-result-icon { font-size:1.2rem; line-height:1; }
+.ew-result.ok .ew-result-icon { color:#3ad9a0; }
+.ew-result.warn .ew-result-icon { color:#e0c46a; }
+.ew-result.bad .ew-result-icon { color:#d94f3a; }
+.ew-result-score-lbl { font-size:0.68rem; font-weight:600; color:#eef; }
+.ew-result-pts { margin-left:auto; font-size:0.6rem; color:var(--gold); }
+.ew-student-sent { font-size:0.88rem; font-family:'EB Garamond',serif;
+  color:#eef; margin-bottom:8px; line-height:1.5; }
+.ew-ann-err { color:#ff8070; border-bottom:1.5px dashed #d94f3a;
+  cursor:help; }
+.ew-corrected { margin-bottom:8px; }
+.ew-corrected-label { font-size:0.5rem; color:var(--dim); text-transform:uppercase;
+  letter-spacing:0.06em; margin-bottom:3px; }
+.ew-corrected { font-family:'EB Garamond',serif; font-size:0.85rem; color:#3ad9a0; line-height:1.5; }
+.ew-errors { margin-bottom:8px; }
+.ew-error-item { display:flex; gap:6px; align-items:flex-start; margin-bottom:5px; }
+.ew-err-tag { flex:0 0 auto; font-size:0.5rem; padding:1px 5px; background:#d94f3a33;
+  color:#ff8070; border-radius:4px; font-weight:700; margin-top:2px; }
+.ew-err-text { font-size:0.65rem; color:var(--dim2); line-height:1.5; }
+.ew-err-wrong { color:#ff8070; text-decoration:line-through; }
+.ew-err-right { color:#3ad9a0; }
+.ew-parts { margin-top:6px; }
+.ew-parts-label { font-size:0.5rem; color:var(--dim); text-transform:uppercase;
+  letter-spacing:0.06em; margin-bottom:5px; }
+.ew-parts-row { display:flex; flex-wrap:wrap; gap:4px; }
+.ew-part-chip { display:flex; flex-direction:column; align-items:center; gap:1px;
+  background:#ffffff08; border-radius:5px; padding:3px 7px; }
+.ew-part-chip .pw { font-size:0.7rem; color:#dde0f0; }
+.ew-part-chip .pr { font-size:0.44rem; color:var(--gold); text-transform:uppercase; }
+.ew-tip { font-size:0.62rem; color:var(--gold); padding:6px 9px;
+  background:#e0c46a0a; border-radius:5px; margin-top:6px; }
+
+/* Stats */
+.ew-stats { display:flex; gap:6px; margin-bottom:10px; }
+.ew-stat { flex:1; text-align:center; background:var(--s2);
+  border-radius:8px; padding:7px 4px; border:1px solid var(--border); }
+.ew-stat-val { font-size:1.1rem; font-family:'EB Garamond',serif; }
+.ew-stat-val.green { color:#3ad9a0; }
+.ew-stat-val.gold { color:#e0c46a; }
+.ew-stat-val.red { color:#d94f3a; }
+.ew-stat-lbl { font-size:0.45rem; color:var(--dim); text-transform:uppercase; letter-spacing:0.06em; }
+
+/* History */
+.ew-history { margin-top:6px; }
+.ew-hist-hdr { display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:6px; }
+.ew-hist-title { font-size:0.52rem; color:var(--dim); text-transform:uppercase; letter-spacing:0.06em; }
+.ew-hist-clear { background:none; border:none; color:var(--dim); cursor:pointer;
+  font-size:0.52rem; font-family:inherit; padding:2px 5px; }
+.ew-hist-clear:hover { color:#fff; }
+.ew-hist-item { padding:7px 9px; border-radius:6px; margin-bottom:5px;
+  background:var(--s2); border-left:2.5px solid; }
+.ew-hist-item.ok { border-color:#3ad9a0; }
+.ew-hist-item.warn { border-color:#e0c46a; }
+.ew-hist-item.bad { border-color:#d94f3a; }
+.ew-hist-sent { font-size:0.72rem; font-family:'EB Garamond',serif; color:#dde0f0; margin-bottom:3px; }
+.ew-hist-fb { font-size:0.6rem; color:var(--dim2); }
+
+/* AI loading spinner inline */
+.ai-loading { display:flex; align-items:center; gap:10px; padding:14px 4px;
+  color:var(--dim2); font-size:0.65rem; }
+.ai-spin { width:18px; height:18px; border:2px solid var(--border);
+  border-top-color:#3a8fd9; border-radius:50%; flex:0 0 auto;
+  animation:spin 0.8s linear infinite; }
+`;
+  document.head.appendChild(s);
+})();
+
+// ── EXAMPLES TAB RENDERER ──────────────────────────────────────────
+function renderExamplesTab(c) {
+  const id = state.selected;
+  if (!exCache[id]) exCache[id] = {};
+  const cur = state.exLevel || 'B1';
+  const cached = exCache[id][cur] || [];
+  const exViewIdx = state.exViewIdx || 0;
+
+  // Level selector
+  const lvBtns = LEVELS.map(lv => {
+    const cnt = exCache[id]?.[lv]?.length || 0;
+    const active = lv === cur;
+    return `<button class="ex-lv-btn${active?' active':''}" data-lv="${lv}" style="--lvc:${LEVEL_COLORS[lv]}">
+      ${lv}${cnt ? `<span class="ex-lv-count">${cnt}</span>` : ''}
+    </button>`;
   }).join('');
 
-  return `<div class="ex-area">
-    <h4>Упражнение ${idx+1} / ${exs.length}</h4>
-    <div class="ex-progress" id="exDots">${dots}</div>
-    <div class="ex-q">${e.q.replace('___','<span class="blank">___</span>')}</div>
-    <input class="ex-inp" id="exInp" type="text" placeholder="Ваш ответ..." autocomplete="off" spellcheck="false"/>
-    <div class="ex-btns">
-      <button class="btn-check" id="btnCheck">Проверить</button>
-      <button class="btn-next" id="btnNext">Далее →</button>
+  const totalAll = Object.values(exCache[id]).reduce((s,a)=>s+(a?a.length:0), 0);
+
+  let bodyHtml = '';
+
+  if (state.exLoading) {
+    bodyHtml = `<div class="ex-load-state">
+      <div class="ex-load-spinner" style="border-top-color:${LEVEL_COLORS[cur]}"></div>
+      <div class="ex-load-text">Генерирую примеры уровня <strong style="color:${LEVEL_COLORS[cur]}">${cur}</strong><br>
+      <span style="opacity:0.6;font-size:0.6rem">по теме «${c.title}»…</span></div>
+    </div>`;
+  } else if (cached.length) {
+    const total = cached.length;
+    const idx = Math.min(exViewIdx, total - 1);
+    const ex = cached[idx];
+    const parts = ex.parts || [];
+    const chips = parts.map(p =>
+      `<div class="ex-chip-wrap"><span class="ex-chip-word">${p.w||''}</span><span class="ex-chip-role">${p.r||''}</span></div>`
+    ).join('');
+
+    const dots = cached.map((_,i) =>
+      `<div class="ex-dot${i===idx?' active':''}" style="${i===idx?'--lvc:'+LEVEL_COLORS[cur]:''}"></div>`
+    ).join('');
+
+    bodyHtml = `
+    <div class="ex-main-card zone-${c.zone||'present'}">
+      <div class="ex-lv-badge" style="background:${LEVEL_COLORS[cur]}">${cur}</div>
+      <div class="ex-card-counter">${idx+1} / ${total}</div>
+      <div class="ex-sent-de">${ex.de||''}</div>
+      <div class="ex-sent-ru">${ex.ru||''}</div>
+      ${ex.note ? `<div class="ex-sent-note"><span class="ex-note-icon">§</span>${ex.note}</div>` : ''}
+      ${chips ? `<details class="ex-analysis-toggle">
+        <summary>Разбор предложения</summary>
+        <div class="ex-analysis-chips">${chips}</div>
+      </details>` : ''}
     </div>
-    <div class="ex-fb" id="exFb"></div>
+    <div class="ex-nav-row">
+      <button class="ex-nav-btn" id="exPrev" ${idx===0?'disabled':''}>← Назад</button>
+      <div class="ex-dots-row">${dots}</div>
+      <button class="ex-nav-btn" id="exNext" ${idx===total-1?'disabled':''}>Вперёд →</button>
+    </div>
+    <button class="ex-more-btn" id="btnMoreEx" style="--lvc:${LEVEL_COLORS[cur]}">
+      <span class="ex-more-pulse" style="background:${LEVEL_COLORS[cur]}"></span>
+      Ещё 5 примеров уровня ${cur}
+    </button>`;
+  } else {
+    // Show built-in examples first
+    const builtin = (c.examples || []).filter(e => e && e.de).map(e =>
+      ({de: e.de, ru: e.ru||'', note: e.note||'', parts: e.parts||[]})
+    );
+    if (builtin.length) {
+      const ex0 = builtin[0];
+      const chips0 = (ex0.parts||[]).map(p =>
+        `<div class="ex-chip-wrap"><span class="ex-chip-word">${p.w}</span><span class="ex-chip-role">${p.r}</span></div>`
+      ).join('');
+      const dots0 = builtin.map((_,i) =>
+        `<div class="ex-dot${i===0?' active':''}" style="${i===0?'--lvc:#888':''}"></div>`
+      ).join('');
+      bodyHtml = `
+      <div class="ex-builtin-label">Встроенные примеры — выберите уровень для AI-примеров</div>
+      <div class="ex-main-card zone-${c.zone||'present'}" id="builtinCard">
+        <div class="ex-card-counter" id="builtinCounter">1 / ${builtin.length}</div>
+        <div class="ex-sent-de" id="builtinDe">${ex0.de}</div>
+        <div class="ex-sent-ru" id="builtinRu">${ex0.ru}</div>
+        ${ex0.note ? `<div class="ex-sent-note" id="builtinNote"><span class="ex-note-icon">§</span>${ex0.note}</div>` : '<div id="builtinNote"></div>'}
+        ${chips0 ? `<details class="ex-analysis-toggle"><summary>Разбор</summary>
+          <div class="ex-analysis-chips" id="builtinChips">${chips0}</div></details>` : ''}
+      </div>
+      <div class="ex-nav-row">
+        <button class="ex-nav-btn" id="exPrevB" ${builtin.length<=1?'disabled':''}>← Назад</button>
+        <div class="ex-dots-row" id="builtinDots">${dots0}</div>
+        <button class="ex-nav-btn" id="exNextB" ${builtin.length<=1?'disabled':''}>Вперёд →</button>
+      </div>`;
+      // Store builtin data in state for navigation
+      state._builtin = builtin;
+      state._builtinIdx = 0;
+    } else {
+      bodyHtml = `<div class="ex-empty-state">
+        <div class="ex-empty-icon">§</div>
+        <div class="ex-empty-text">${LEVEL_DESC[cur]}</div>
+      </div>`;
+    }
+    bodyHtml += `<button class="ex-more-btn primary" id="btnGenEx" style="--lvc:${LEVEL_COLORS[cur]}">
+      <span class="ex-more-pulse" style="background:${LEVEL_COLORS[cur]}"></span>
+      ✦ Сгенерировать 5 примеров уровня ${cur}
+    </button>`;
+  }
+
+  return `<div class="ex-tab">
+    <div class="ex-lvl-bar">${lvBtns}</div>
+    <div class="ex-lv-desc" style="--lv-border:${LEVEL_COLORS[cur]}">${LEVEL_DESC[cur]}</div>
+    ${totalAll > 0 ? `<div class="ex-total-badge">Собрано: ${totalAll} AI-примеров</div>` : ''}
+    <div id="examplesBody">${bodyHtml}</div>
   </div>`;
 }
 
-function bindExEvents(c) {
-  const inp=document.getElementById('exInp');
-  const btnC=document.getElementById('btnCheck');
-  const btnN=document.getElementById('btnNext');
-  if (!inp||!btnC||!btnN) return;
-  inp.focus();
-  inp.addEventListener('keydown',e=>{ if(e.key==='Enter') btnC.click(); });
-  btnC.addEventListener('click',()=>{
-    if (state.answered) return;
-    state.answered=true;
-    const val=inp.value.trim();
-    const e=c.exercises[state.exIdx];
-    const ok=val.toLowerCase()===e.a.toLowerCase();
-    if (ok) { state.score.ok++; inp.classList.add('ok'); }
-    else { state.score.bad++; inp.classList.add('bad'); }
-    state.exResults[state.exIdx]=ok;
-    document.getElementById('exFb').className='ex-fb '+(ok?'ok':'bad');
-    document.getElementById('exFb').innerHTML=ok
-      ? `✓ Верно! <em>${e.h||''}</em>`
-      : `✗ Неверно. Ответ: <strong>${e.a}</strong> — ${e.h||''}`;
-    updateScoreUI();
-    refreshDots(c);
+function bindExamplesEvents(c) {
+  document.querySelectorAll('.ex-lv-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.exLevel = btn.dataset.lv;
+      state.exViewIdx = 0;
+      // Auto-load if empty
+      const id2 = state.selected;
+      if (!exCache[id2]?.[btn.dataset.lv]?.length && !state.exLoading) {
+        generateExamples(c, btn.dataset.lv, false);
+      } else {
+        refreshExamplesTab(c);
+      }
+    });
   });
-  btnN.addEventListener('click',()=>{
+
+  const btnGen = document.getElementById('btnGenEx');
+  if (btnGen) btnGen.addEventListener('click', () => generateExamples(c, state.exLevel||'B1', false));
+  const btnMore = document.getElementById('btnMoreEx');
+  if (btnMore) btnMore.addEventListener('click', () => generateExamples(c, state.exLevel||'B1', true));
+
+  // AI cached navigation
+  const btnPrev = document.getElementById('exPrev');
+  const btnNext = document.getElementById('exNext');
+  const cached = exCache[state.selected]?.[state.exLevel||'B1'] || [];
+  if (btnPrev) btnPrev.addEventListener('click', () => {
+    state.exViewIdx = Math.max(0, (state.exViewIdx||0) - 1);
+    refreshExamplesTab(c);
+  });
+  if (btnNext) btnNext.addEventListener('click', () => {
+    state.exViewIdx = Math.min(cached.length - 1, (state.exViewIdx||0) + 1);
+    refreshExamplesTab(c);
+  });
+
+  // Built-in navigation
+  const btnPrevB = document.getElementById('exPrevB');
+  const btnNextB = document.getElementById('exNextB');
+  if (btnPrevB || btnNextB) {
+    const navigateBuiltin = (dir) => {
+      const builtin = state._builtin || [];
+      const idx = Math.max(0, Math.min(builtin.length-1, (state._builtinIdx||0) + dir));
+      state._builtinIdx = idx;
+      const ex = builtin[idx];
+      if (!ex) return;
+      const de = document.getElementById('builtinDe');
+      const ru = document.getElementById('builtinRu');
+      const note = document.getElementById('builtinNote');
+      const counter = document.getElementById('builtinCounter');
+      const dotsEl = document.getElementById('builtinDots');
+      if (de) de.textContent = ex.de;
+      if (ru) ru.textContent = ex.ru;
+      if (note) note.innerHTML = ex.note ? `<span class="ex-note-icon">§</span>${ex.note}` : '';
+      if (counter) counter.textContent = `${idx+1} / ${builtin.length}`;
+      if (dotsEl) dotsEl.innerHTML = builtin.map((_,i) =>
+        `<div class="ex-dot${i===idx?' active':''}"></div>`).join('');
+      if (btnPrevB) btnPrevB.disabled = idx === 0;
+      if (btnNextB) btnNextB.disabled = idx === builtin.length - 1;
+    };
+    if (btnPrevB) btnPrevB.addEventListener('click', () => navigateBuiltin(-1));
+    if (btnNextB) btnNextB.addEventListener('click', () => navigateBuiltin(1));
+  }
+}
+
+function refreshExamplesTab(c) {
+  const tabIdx = (c.tabs||[]).indexOf('Примеры');
+  if (tabIdx < 0) return;
+  const tc = document.getElementById('tc-' + tabIdx);
+  if (!tc) return;
+  tc.innerHTML = renderExamplesTab(c);
+  bindExamplesEvents(c);
+}
+
+async function generateExamples(c, level, append) {
+  const id = state.selected;
+  state.exLoading = true;
+  refreshExamplesTab(c);
+
+  const existing = (exCache[id]?.[level] || []).map(e => e.de).join(' | ');
+  const avoidStr = existing ? `Не повторяй примеры: «${existing.slice(0,400)}»` : '';
+
+  const sys = `Ты учитель немецкого языка. Отвечай ТОЛЬКО валидным JSON-массивом без markdown.`;
+  const prompt = `Создай 5 примеров предложений для темы «${c.title}» (${c.sub}).
+Уровень: ${level} — ${LEVEL_DESC[level]}.
+Грамматический фокус: ${c.rule?.formula || c.title}.
+${avoidStr}
+
+Каждый пример ОБЯЗАН демонстрировать именно эту грамматику.
+Примеры должны быть реалистичными и интересными.
+
+JSON-массив строго без пояснений:
+[{"de":"…","ru":"…","note":"грамматический комментарий","parts":[{"w":"слово","r":"S/V/Oa/Od/Adv/Adj/N/NS/Präp"}]}]`;
+
+  try {
+    const raw = await callClaude(sys, prompt, 1400);
+    const clean = raw.replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(clean);
+    if (!exCache[id]) exCache[id] = {};
+    exCache[id][level] = append ? [...(exCache[id][level]||[]), ...parsed] : parsed;
+    state.exViewIdx = append ? (exCache[id][level].length - parsed.length) : 0;
+  } catch(e) {
+    if (!exCache[id]) exCache[id] = {};
+    if (!exCache[id][level]) exCache[id][level] = [{
+      de:'Fehler beim Laden.', ru:'Ошибка загрузки.', note:'Проверьте соединение', parts:[]
+    }];
+  }
+  state.exLoading = false;
+  refreshExamplesTab(c);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// УПРАЖНЕНИЯ — Fill-in + Свободное написание с AI-разбором
+// ═══════════════════════════════════════════════════════════════════
+
+function renderExerciseTab(c, idx) {
+  const mode = state.exMode || 'free';
+  const modeBar = `<div class="ew-mode-bar">
+    <button class="ew-mode-btn${mode==='fill'?' active':''}" data-mode="fill">📝 Заполнить пробел</button>
+    <button class="ew-mode-btn${mode==='free'?' active':''}" data-mode="free">✍ Писать с нуля</button>
+  </div>`;
+
+  if (mode === 'free') {
+    return `<div class="ew-wrap">${modeBar}${renderFreeWritingPanel(c)}</div>`;
+  } else {
+    return `<div class="ew-wrap">${modeBar}${renderFillInPanel(c, idx)}</div>`;
+  }
+}
+
+// ── FILL-IN PANEL ──────────────────────────────────────────────────
+function renderFillInPanel(c, idx) {
+  if (!c.exercises || !c.exercises.length)
+    return `<div class="ew-empty"><div class="ew-empty-icon">§</div>Нет упражнений заполнения.</div>`;
+
+  const exs = c.exercises;
+  const e = exs[idx];
+  const dots = exs.map((_,i) => {
+    const cls = i < state.exResults.length
+      ? (state.exResults[i] ? 'ok' : 'bad')
+      : (i === idx ? 'cur' : '');
+    return `<div class="ew-dot ${cls}"></div>`;
+  }).join('');
+
+  return `<div class="ew-classic">
+    <div style="font-size:0.5rem;color:var(--dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">
+      Упражнение ${idx+1} / ${exs.length}
+    </div>
+    <div class="ew-dots">${dots}</div>
+    <div class="ew-classic-q">${e.q.replace(/___/g,'<span class="ew-blank">___</span>')}</div>
+    <input class="ew-inp" id="ewInp" type="text" placeholder="Ваш ответ…" autocomplete="off" spellcheck="false"/>
+    <div class="ew-btns">
+      <button class="ew-btn-check" id="ewCheck">Проверить</button>
+      <button class="ew-btn-next" id="ewNext">Далее →</button>
+    </div>
+    <div class="ew-fb" id="ewFb"></div>
+  </div>`;
+}
+
+// ── FREE WRITING PANEL ─────────────────────────────────────────────
+function renderFreeWritingPanel(c) {
+  const lv = state.freeLevel || 'B1';
+  const streaks = state.freeStreaks || {};
+  const hist = state.freeHistory || [];
+
+  const lvBar = LEVELS.map(l => {
+    const s = streaks[l] || 0;
+    const streak = s >= 3 ? ` 🔥${s}` : s >= 1 ? ` ✓${s}` : '';
+    return `<button class="ew-free-lvbtn${l===lv?' active':''}" data-lv="${l}" style="--lvc:${LEVEL_COLORS[l]}">${l}${streak}</button>`;
+  }).join('');
+
+  // Task block
+  let taskHtml = '';
+  if (state.freeLoading) {
+    taskHtml = `<div class="ai-loading"><div class="ai-spin"></div><span>${state.freeLoadingMsg||'Создаю задание…'}</span></div>`;
+  } else if (state.freeTask) {
+    const t = state.freeTask;
+    const words = (t.words||[]).map(w =>
+      `<span class="ew-word-chip" onclick="insertFreeWord('${w.replace(/'/g,"\\'")}')">📌 ${w}</span>`
+    ).join('');
+    taskHtml = `<div class="ew-task" style="--lvc:${LEVEL_COLORS[t.level||lv]}">
+      <div class="ew-task-meta">
+        <span class="ew-task-lv">${t.level||lv}</span>
+        <span class="ew-task-type">${t.taskType||'Составить'}</span>
+        ${state.freeTaskNum ? `<span class="ew-task-num">№${state.freeTaskNum}</span>` : ''}
+      </div>
+      <div class="ew-task-instr">${t.instruction||''}</div>
+      ${t.hint ? `<div class="ew-task-hint">💡 <strong>Подсказка:</strong> ${t.hint}</div>` : ''}
+      ${words ? `<div class="ew-task-words">${words}</div>` : ''}
+    </div>`;
+  } else {
+    taskHtml = `<div class="ew-empty">
+      <div class="ew-empty-icon">✎</div>
+      Выберите уровень выше — AI создаст задание по теме<br>«${c.title}»
+    </div>`;
+  }
+
+  // Result
+  let resultHtml = '';
+  if (state.freeResult && !state.freeLoading) {
+    resultHtml = renderFreeResult(state.freeResult);
+  }
+
+  // Stats
+  const ok = (state.freeStats||{}).ok||0;
+  const warn = (state.freeStats||{}).warn||0;
+  const bad = (state.freeStats||{}).bad||0;
+  const total = ok + warn + bad;
+  const statsHtml = total > 0 ? `<div class="ew-stats">
+    <div class="ew-stat"><div class="ew-stat-val green">${ok}</div><div class="ew-stat-lbl">Отлично</div></div>
+    <div class="ew-stat"><div class="ew-stat-val gold">${warn}</div><div class="ew-stat-lbl">Почти</div></div>
+    <div class="ew-stat"><div class="ew-stat-val red">${bad}</div><div class="ew-stat-lbl">Ошибки</div></div>
+    <div class="ew-stat"><div class="ew-stat-val">${total}</div><div class="ew-stat-lbl">Всего</div></div>
+  </div>` : '';
+
+  // History
+  let histHtml = '';
+  if (hist.length) {
+    const items = hist.slice(-5).reverse().map(h => `
+      <div class="ew-hist-item ${h.score}">
+        <div class="ew-hist-sent">${h.sentence}</div>
+        <div class="ew-hist-fb">${h.shortFb}</div>
+      </div>`).join('');
+    histHtml = `<div class="ew-history">
+      <div class="ew-hist-hdr">
+        <span class="ew-hist-title">История (${hist.length})</span>
+        <button class="ew-hist-clear" id="ewHistClear">очистить</button>
+      </div>
+      ${items}
+    </div>`;
+  }
+
+  const showInput = state.freeTask && !state.freeLoading;
+
+  return `<div class="ew-free">
+    <div class="ew-free-lvbar">${lvBar}</div>
+    ${taskHtml}
+    ${resultHtml}
+    ${showInput ? `
+    <div class="ew-textarea-wrap">
+      <textarea id="ewFreeInput" class="ew-textarea"
+        placeholder="Напишите предложение на немецком…" rows="3" spellcheck="false"></textarea>
+      <span class="ew-char-count" id="ewCharCnt">0</span>
+    </div>
+    <div class="ew-free-btns">
+      <button class="ew-btn-submit" id="ewFreeSubmit">✓ Проверить</button>
+      <button class="ew-btn-skip" id="ewFreeSkip">↻ Другое задание</button>
+    </div>` : ''}
+    ${statsHtml}
+    ${histHtml}
+  </div>`;
+}
+
+function renderFreeResult(r) {
+  const scoreClass = r.score==='perfect'?'ok':r.score==='good'?'warn':'bad';
+  const icons = {perfect:'✓', good:'≈', errors:'✗'};
+  const scoreLabels = {perfect:'Отлично!', good:'Почти правильно', errors:'Есть ошибки'};
+
+  let sentHtml = r.sentence || '';
+  if (r.annotations && r.annotations.length) {
+    let s = r.sentence || '';
+    r.annotations.forEach(ann => {
+      if (ann.wrong && s.includes(ann.wrong)) {
+        s = s.replace(ann.wrong,
+          `<span class="ew-ann-err" title="${(ann.explain||'').replace(/"/g,"'")}">${ann.wrong}</span>`);
+      }
+    });
+    sentHtml = s;
+  }
+
+  const errItems = (r.errors||[]).map(err => {
+    if (typeof err === 'string')
+      return `<div class="ew-error-item"><span class="ew-err-tag">!</span><span class="ew-err-text">${err}</span></div>`;
+    return `<div class="ew-error-item">
+      <span class="ew-err-tag">${err.type||'!'}</span>
+      <span class="ew-err-text">
+        ${err.wrong ? `<span class="ew-err-wrong">${err.wrong}</span> → <span class="ew-err-right">${err.correct||''}</span><br>` : ''}
+        ${err.explain||err.text||''}
+      </span>
+    </div>`;
+  }).join('');
+
+  const partsHtml = (r.parts||[]).length ? `<div class="ew-parts">
+    <div class="ew-parts-label">Разбор:</div>
+    <div class="ew-parts-row">${(r.parts||[]).map(p =>
+      `<div class="ew-part-chip"><span class="pw">${p.w}</span><span class="pr">${p.r}</span></div>`
+    ).join('')}</div>
+  </div>` : '';
+
+  return `<div class="ew-result ${scoreClass}">
+    <div class="ew-result-header">
+      <span class="ew-result-icon">${icons[r.score]||'?'}</span>
+      <span class="ew-result-score-lbl">${scoreLabels[r.score]||r.score}</span>
+    </div>
+    <div class="ew-student-sent">${sentHtml}</div>
+    ${r.corrected && r.corrected !== r.sentence ? `<div class="ew-corrected">
+      <div class="ew-corrected-label">Правильный вариант</div>
+      <div style="font-family:'EB Garamond',serif;font-size:0.88rem;color:#3ad9a0;line-height:1.5">${r.corrected}</div>
+    </div>` : ''}
+    ${r.feedback ? `<div style="font-size:0.67rem;color:var(--dim2);line-height:1.6;margin-bottom:8px">${r.feedback}</div>` : ''}
+    ${errItems ? `<div class="ew-errors">${errItems}</div>` : ''}
+    ${partsHtml}
+    ${r.tip ? `<div class="ew-tip">💡 ${r.tip}</div>` : ''}
+  </div>`;
+}
+
+// ── EVENT BINDING ─────────────────────────────────────────────────
+function bindExEvents(c) {
+  document.querySelectorAll('.ew-mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.exMode = btn.dataset.mode;
+      state.freeResult = null;
+      const tabIdx = (c.tabs||[]).indexOf('Упражнения');
+      const tc = document.getElementById('tc-' + tabIdx);
+      if (tc) { tc.innerHTML = renderExerciseTab(c, state.exIdx); bindExEvents(c); }
+    });
+  });
+
+  if ((state.exMode||'free') === 'free') {
+    bindFreeEvents(c);
+  } else {
+    bindFillInEvents(c);
+  }
+}
+
+function bindFillInEvents(c) {
+  const inp = document.getElementById('ewInp');
+  const btnC = document.getElementById('ewCheck');
+  const btnN = document.getElementById('ewNext');
+  if (!inp || !btnC || !btnN) return;
+  inp.focus();
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') btnC.click(); });
+  btnC.addEventListener('click', () => {
+    if (state.answered) return;
+    state.answered = true;
+    const val = inp.value.trim();
+    const e = c.exercises[state.exIdx];
+    const ok = val.toLowerCase() === e.a.toLowerCase();
+    inp.classList.add(ok ? 'ok' : 'bad');
+    if (ok) state.score.ok++; else state.score.bad++;
+    state.exResults[state.exIdx] = ok;
+    const fb = document.getElementById('ewFb');
+    if (fb) {
+      fb.className = 'ew-fb ' + (ok ? 'ok' : 'bad');
+      fb.innerHTML = ok
+        ? `✓ Верно! <em>${e.h||''}</em>`
+        : `✗ Ответ: <strong>${e.a}</strong>${e.h ? ' — ' + e.h : ''}`;
+    }
+    updateScoreUI();
+    // refresh dots
+    const dotsEl = document.getElementById('exDots');
+    if (dotsEl) dotsEl.innerHTML = c.exercises.map((_,i) => {
+      const cls = i < state.exResults.length ? (state.exResults[i]?'ok':'bad') : (i===state.exIdx?'cur':'');
+      return `<div class="ew-dot ${cls}"></div>`;
+    }).join('');
+  });
+  btnN.addEventListener('click', () => {
     if (!state.answered && inp.value.trim()) { btnC.click(); return; }
-    state.exIdx=(state.exIdx+1)%c.exercises.length;
-    if (state.exIdx===0) state.exResults=[];
-    state.answered=false;
-    const tc=document.getElementById('tc-'+state.activeTab);
-    if (tc) { tc.innerHTML=renderExerciseTab(c,state.exIdx); bindExEvents(c); }
+    state.exIdx = (state.exIdx + 1) % c.exercises.length;
+    if (state.exIdx === 0) state.exResults = [];
+    state.answered = false;
+    const tabIdx = (c.tabs||[]).indexOf('Упражнения');
+    const tc = document.getElementById('tc-' + tabIdx);
+    if (tc) { tc.innerHTML = renderExerciseTab(c, state.exIdx); bindExEvents(c); }
   });
 }
 
+function bindFreeEvents(c) {
+  document.querySelectorAll('.ew-free-lvbtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.freeLevel = btn.dataset.lv;
+      state.freeResult = null;
+      generateFreeTask(c, btn.dataset.lv);
+    });
+  });
+
+  const inp = document.getElementById('ewFreeInput');
+  const btnSub = document.getElementById('ewFreeSubmit');
+  const btnSkip = document.getElementById('ewFreeSkip');
+  const btnHistClear = document.getElementById('ewHistClear');
+
+  if (inp) {
+    inp.addEventListener('input', () => {
+      const cc = document.getElementById('ewCharCnt');
+      if (cc) cc.textContent = inp.value.length;
+    });
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); if (btnSub) btnSub.click(); }
+    });
+    inp.focus();
+  }
+  if (btnSub) btnSub.addEventListener('click', () => checkFreeWriting(c));
+  if (btnSkip) btnSkip.addEventListener('click', () => {
+    state.freeResult = null;
+    generateFreeTask(c, state.freeLevel || 'B1');
+  });
+  if (btnHistClear) btnHistClear.addEventListener('click', () => {
+    state.freeHistory = [];
+    state.freeResult = null;
+    refreshFreeTab(c);
+  });
+}
+
+window.insertFreeWord = function(w) {
+  const inp = document.getElementById('ewFreeInput');
+  if (!inp) return;
+  const pos = inp.selectionStart || inp.value.length;
+  const before = inp.value.slice(0, pos);
+  const after = inp.value.slice(pos);
+  const space = (before.length && !before.endsWith(' ')) ? '' : '';
+  inp.value = before + (before.length && !before.endsWith(' ') ? ' ' : '') + w + ' ' + after;
+  inp.focus();
+  const cc = document.getElementById('ewCharCnt');
+  if (cc) cc.textContent = inp.value.length;
+};
+
+// Legacy alias
+window.insertWord = window.insertFreeWord;
+
+// ── AI: GENERATE TASK ─────────────────────────────────────────────
+async function generateFreeTask(c, level) {
+  state.freeLoading = true;
+  state.freeLoadingMsg = `Создаю задание ${level} по теме «${c.title}»…`;
+  state.freeTask = null;
+  state.freeResult = null;
+  if (!state.freeTaskNum) state.freeTaskNum = 0;
+  state.freeTaskNum++;
+  refreshFreeTab(c);
+
+  const taskTypes = ['Составить','Перевести с русского','Продолжить фразу','Описать ситуацию','Трансформировать'];
+  const ttype = taskTypes[state.freeTaskNum % taskTypes.length];
+
+  const sys = `Ты учитель немецкого языка. Отвечай ТОЛЬКО JSON, без markdown.`;
+  const prompt = `Создай задание для написания немецкого предложения с нуля.
+Тема раздела: «${c.title}» — ${c.sub}
+Уровень: ${level} — ${LEVEL_DESC[level]}
+Грамматический фокус: ${c.rule?.formula || c.title}
+Тип задания: ${ttype}
+
+Задание должно ОБЯЗАТЕЛЬНО требовать применения именно этой грамматики.
+Разнообразие: меняй темы (работа, путешествия, повседневная жизнь, учёба, природа).
+
+JSON (строго):
+{
+  "instruction": "Задание на русском языке — чётко что написать",
+  "taskType": "${ttype}",
+  "hint": "Подсказка по грамматической структуре (1 строка)",
+  "level": "${level}",
+  "words": ["до", "5", "ключевых", "слов-подсказок"]
+}`;
+
+  try {
+    const raw = await callClaude(sys, prompt, 500);
+    const clean = raw.replace(/```json|```/g,'').trim();
+    state.freeTask = JSON.parse(clean);
+    state.freeTask.level = level;
+  } catch(e) {
+    state.freeTask = {
+      instruction: `Составьте предложение на немецком, используя «${c.title}».`,
+      taskType: 'Составить',
+      hint: c.rule?.formula || '',
+      level,
+      words: []
+    };
+  }
+  state.freeLoading = false;
+  refreshFreeTab(c);
+}
+
+// ── AI: CHECK WRITING ─────────────────────────────────────────────
+async function checkFreeWriting(c) {
+  const inp = document.getElementById('ewFreeInput');
+  if (!inp) return;
+  const sentence = inp.value.trim();
+  if (!sentence) { inp.focus(); return; }
+
+  state.freeLoading = true;
+  state.freeLoadingMsg = 'Анализирую предложение…';
+  state.freeResult = null;
+  refreshFreeTab(c);
+
+  const task = state.freeTask;
+  const sys = `Ты опытный учитель немецкого языка. Отвечай ТОЛЬКО JSON.`;
+  const prompt = `Проверь немецкое предложение студента.
+Тема: «${c.title}» — ${c.sub}
+Грамматика: ${c.rule?.formula || c.title}
+${task ? `Задание: ${task.instruction}` : ''}
+
+Предложение студента: «${sentence.replace(/"/g,"'")}»
+
+Проверяй: грамматику, орфографию, порядок слов, применение целевой структуры.
+Будь конкретным и полезным. Объясняй ошибки на русском.
+
+JSON:
+{
+  "score": "perfect",
+  "sentence": ${JSON.stringify(sentence)},
+  "corrected": "исправленный вариант или то же предложение",
+  "feedback": "короткий отзыв на русском (1-2 предложения)",
+  "errors": [
+    {"type": "Падеж/Порядок/Глагол/Артикль", "wrong": "неверное", "correct": "правильное", "explain": "почему"}
+  ],
+  "annotations": [{"wrong": "слово в предложении", "explain": "объяснение"}],
+  "parts": [{"w": "слово", "r": "S/V/Oa/Od/Adv/Adj/N/NS/Präp"}],
+  "tip": "совет по улучшению"
+}`;
+
+  try {
+    const raw = await callClaude(sys, prompt, 900);
+    const clean = raw.replace(/```json|```/g,'').trim();
+    const result = JSON.parse(clean);
+    result.sentence = sentence;
+
+    const sc = result.score==='perfect'?'ok':result.score==='good'?'warn':'bad';
+    if (!state.freeHistory) state.freeHistory = [];
+    state.freeHistory.push({
+      sentence,
+      score: sc,
+      shortFb: result.errors?.length
+        ? `<s>${sentence}</s> → <em style="color:#3ad9a0">${result.corrected||sentence}</em>`
+        : (result.feedback || ''),
+    });
+
+    if (!state.freeStats) state.freeStats = {ok:0, warn:0, bad:0};
+    state.freeStats[sc]++;
+    if (!state.freeStreaks) state.freeStreaks = {};
+    const lv = task?.level || state.freeLevel || 'B1';
+    if (sc === 'ok') {
+      state.freeStreaks[lv] = (state.freeStreaks[lv] || 0) + 1;
+      state.score.ok++;
+    } else if (sc === 'warn') {
+      state.score.ok++;
+    } else {
+      state.freeStreaks[lv] = 0;
+      state.score.bad++;
+    }
+    updateScoreUI();
+
+    state.freeResult = result;
+    state.freeLoading = false;
+    refreshFreeTab(c);
+
+    // Auto-next after good answer
+    if (sc === 'ok' || sc === 'warn') {
+      setTimeout(() => generateFreeTask(c, lv), 2200);
+    }
+  } catch(e) {
+    state.freeLoading = false;
+    state.freeResult = {
+      score: 'errors', sentence,
+      feedback: 'Ошибка проверки. Попробуйте снова.',
+      errors: [], parts: [], corrected: ''
+    };
+    refreshFreeTab(c);
+  }
+}
+
+function refreshFreeTab(c) {
+  const tabIdx = (c.tabs||[]).indexOf('Упражнения');
+  const tc = document.getElementById('tc-' + tabIdx);
+  if (!tc) return;
+  tc.innerHTML = renderExerciseTab(c, state.exIdx);
+  bindExEvents(c);
+}
+
 function refreshDots(c) {
-  const el=document.getElementById('exDots');
+  const el = document.getElementById('exDots');
   if (!el) return;
-  el.innerHTML=c.exercises.map((_,i)=>{
-    const cls=i<state.exResults.length?(state.exResults[i]?'ok':'bad'):(i===state.exIdx?'cur':'');
-    return `<div class="ep-dot ${cls}"></div>`;
+  el.innerHTML = c.exercises.map((_,i) => {
+    const cls = i < state.exResults.length ? (state.exResults[i]?'ok':'bad') : (i===state.exIdx?'cur':'');
+    return `<div class="ew-dot ${cls}"></div>`;
   }).join('');
 }
 
 function updateScoreUI() {
-  document.getElementById('sc-ok').textContent=state.score.ok;
-  document.getElementById('sc-bad').textContent=state.score.bad;
+  const ok = document.getElementById('sc-ok');
+  const bad = document.getElementById('sc-bad');
+  if (ok) ok.textContent = state.score.ok;
+  if (bad) bad.textContent = state.score.bad;
 }
 
 // ═══════════════════════════════════════════════════════════════════
