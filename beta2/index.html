@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deutsch Rad — Полный тренажёр</title>
+<title>Deutsch Rad C1 — Полный тренажёр немецкого</title>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -24,6 +24,9 @@
   --future2: #206aa3;
   --special: #c97ae0;
   --gold: #e0c46a;
+  --syntax: #e07a40;
+  --nebensatz: #4ae0c0;
+  --c1color: #ff6090;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }
@@ -142,6 +145,9 @@ nav {
 .card.future { border-color: var(--future); }
 .card.special{ border-color: var(--special); }
 .card.gold   { border-color: var(--gold); }
+.card.syntax { border-color: var(--syntax); }
+.card.nebensatz { border-color: var(--nebensatz); }
+.card.c1color { border-color: var(--c1color); }
 .card h4 { font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
 .formula { font-family: 'EB Garamond', serif; font-size: 1rem; color: var(--text); font-weight: 600; margin-bottom: 6px; }
 .rule-text { font-size: 0.68rem; line-height: 1.7; color: var(--dim2); }
@@ -244,12 +250,15 @@ nav {
 <body>
 
 <nav>
-  <div class="logo">Deutsch Rad</div>
+  <div class="logo">Deutsch Rad C1</div>
   <div class="nav-legend">
     <div class="nl"><div class="nd" style="background:var(--past)"></div>Vergangenheit</div>
-    <div class="nl"><div class="nd" style="background:var(--present)"></div>Gegenwart</div>
+    <div class="nl"><div class="nd" style="background:var(--present)"></div>Gegenwart/Verb</div>
     <div class="nl"><div class="nd" style="background:var(--future)"></div>Zukunft</div>
-    <div class="nl"><div class="nd" style="background:var(--special)"></div>Naklonenie</div>
+    <div class="nl"><div class="nd" style="background:var(--special)"></div>Modus/Nomen</div>
+    <div class="nl"><div class="nd" style="background:var(--syntax)"></div>Syntax</div>
+    <div class="nl"><div class="nd" style="background:var(--nebensatz)"></div>Nebensatz</div>
+    <div class="nl"><div class="nd" style="background:var(--c1color)"></div>C1</div>
   </div>
   <div class="nav-score">
     <div class="ns"><div class="ns-n" id="sc-ok" style="color:var(--present)">0</div><div class="ns-l">верно</div></div>
@@ -269,22 +278,23 @@ nav {
 
   <div class="info-panel">
     <div class="ip-head">
-      <div class="ip-tag" id="ipTag">Нажмите на сегмент</div>
-      <div class="ip-title" id="ipTitle">Deutsches Rad</div>
-      <div class="ip-sub" id="ipSub">Колесо немецкой грамматики — все времена, части речи, типы предложений</div>
+      <div class="ip-tag" id="ipTag">Нажмите на сегмент · <span style="color:var(--c1color)">C1 Niveau</span></div>
+      <div class="ip-title" id="ipTitle">Deutsch Rad C1</div>
+      <div class="ip-sub" id="ipSub">Полный курс немецкого от A1 до C1 — все темы, все структуры</div>
     </div>
     <div class="ip-body" id="ipBody">
       <div class="ph">
         <div class="ph-icon">⊙</div>
         <p>
-          Кликните любой сегмент колеса.<br>
-          Каждый раскрывается дальше — фрактально.<br><br>
-          <b style="color:var(--past)">Левая</b> сторона — прошедшее.<br>
-          <b style="color:var(--future)">Правая</b> — будущее.<br>
-          <b style="color:var(--present)">Верх/низ</b> — настоящее.<br>
-          <b style="color:var(--special)">Фиолетовое</b> — наклонения.<br><br>
-          Каждый узел содержит:<br>
-          формулу · правило · примеры с разбором · упражнения
+          Кликните любой сегмент колеса — он фрактально раскрывается.<br><br>
+          <b style="color:var(--past)">Красное</b> — Vergangenheit (Perf./Prät./Plusquamp.)<br>
+          <b style="color:var(--future)">Синее</b> — Futur I + II<br>
+          <b style="color:var(--present)">Зелёное</b> — Präsens, Verblehre<br>
+          <b style="color:var(--special)">Фиолетовое</b> — Konjunktiv, Nomen+Adj.<br>
+          <b style="color:var(--syntax)">Оранжевое</b> — Satzbau, Syntax<br>
+          <b style="color:var(--nebensatz)">Бирюзовое</b> — Nebensätze (12 типов)<br>
+          <b style="color:var(--c1color)">Розовое</b> — C1-Strukturen<br><br>
+          Каждый узел: <em>правило · таблица · примеры с разбором · упражнения</em>
         </p>
       </div>
     </div>
@@ -298,19 +308,24 @@ nav {
 
 // Цветовые зоны
 const Z = {
-  PAST:'past', PRESENT:'present', FUTURE:'future', SPECIAL:'special'
+  PAST:'past', PRESENT:'present', FUTURE:'future', SPECIAL:'special',
+  SYNTAX:'syntax', NEB:'nebensatz', C1:'c1color'
 };
 
-// Основные 8 сегментов корня
+// 12 корневых сегментов — полное покрытие до C1
 const ROOT_SEGS = [
   { id:'prasens',     label:'Präsens',       sub:'Настоящее',      color:'#3ad9a0', zone:Z.PRESENT },
-  { id:'futur1',      label:'Futur I',        sub:'Будущее I',       color:'#3a8fd9', zone:Z.FUTURE  },
-  { id:'futur2',      label:'Futur II',       sub:'Будущее II',      color:'#206aa3', zone:Z.FUTURE  },
-  { id:'perfekt',     label:'Perfekt',         sub:'Прошедшее (речь)',color:'#d94f3a', zone:Z.PAST   },
-  { id:'prateritum',  label:'Präteritum',     sub:'Нарратив',        color:'#b03020', zone:Z.PAST   },
-  { id:'plusquamp',   label:'Plusquamperf.',  sub:'Давнопрошедшее',  color:'#7a1a10', zone:Z.PAST   },
-  { id:'konjunktiv',  label:'Konjunktiv',     sub:'Сослагательное',  color:'#c97ae0', zone:Z.SPECIAL},
-  { id:'imperativ',   label:'Imperativ',      sub:'Повелительное',   color:'#e08c3a', zone:Z.SPECIAL},
+  { id:'futur1',      label:'Futur I+II',    sub:'Будущее',        color:'#3a8fd9', zone:Z.FUTURE  },
+  { id:'perfekt',     label:'Perfekt',       sub:'Прошедшее (речь)',color:'#d94f3a', zone:Z.PAST   },
+  { id:'prateritum',  label:'Präteritum',    sub:'Нарратив',       color:'#b03020', zone:Z.PAST   },
+  { id:'plusquamp',   label:'Plusquamperf.', sub:'Давнопрошедшее', color:'#7a1a10', zone:Z.PAST   },
+  { id:'konjunktiv',  label:'Konjunktiv',    sub:'Сослагательное', color:'#c97ae0', zone:Z.SPECIAL},
+  { id:'imperativ',   label:'Imperativ',     sub:'Повелительное',  color:'#e08c3a', zone:Z.SPECIAL},
+  { id:'satzbau',     label:'Satzbau',       sub:'Синтаксис',      color:'#e07a40', zone:Z.SYNTAX },
+  { id:'verblehre',   label:'Verblehre',     sub:'Глаголы',        color:'#e0c46a', zone:Z.PRESENT},
+  { id:'nomenlehre',  label:'Nomen+Adj.',    sub:'Сущ. и прилаг.', color:'#c97ae0', zone:Z.SPECIAL},
+  { id:'nebensatz',   label:'Nebensätze',    sub:'Придаточные',    color:'#4ae0c0', zone:Z.NEB    },
+  { id:'c1strukt',    label:'C1-Strukt.',    sub:'Уровень C1',     color:'#ff6090', zone:Z.C1     },
 ];
 
 // Дочерние узлы — части речи / типы предложений
@@ -326,14 +341,12 @@ const CHILDREN = {
     { id:'pra_prap',     label:'Präposition',  sub:'Предлоги'      },
   ],
   futur1: [
-    { id:'fut1_aussage', label:'Aussagesatz',  sub:'Утвердительное' },
+    { id:'fut1_aussage', label:'Futur I',      sub:'Утвердительное' },
     { id:'fut1_frage',   label:'Frage',        sub:'Вопрос'        },
-    { id:'fut1_neg',     label:'Negation',     sub:'Отрицание'     },
+    { id:'fut1_neg',     label:'Negation F1',  sub:'Отрицание'     },
     { id:'fut1_werden',  label:'werden',       sub:'Спряжение'     },
-  ],
-  futur2: [
-    { id:'fut2_aussage', label:'Aussagesatz',  sub:'Утвердительное' },
-    { id:'fut2_neg',     label:'Negation',     sub:'Отрицание'     },
+    { id:'fut2_aussage', label:'Futur II',     sub:'Утвердительное'},
+    { id:'fut2_neg',     label:'Negation F2',  sub:'Отрицание FII' },
   ],
   perfekt: [
     { id:'pf_aussage',   label:'Aussagesatz',  sub:'Утвердительное' },
@@ -396,6 +409,99 @@ const CHILDREN = {
     { id:'nom_plural',    label:'Plural',       sub:'Мн. число'    },
     { id:'nom_kasus',     label:'4 Kasus',      sub:'Все падежи'   },
     { id:'nom_gen',       label:'Genitiv',      sub:'Родит. падеж' },
+  ],
+  // ── NEW ROOT CHILDREN ──────────────────────────────────────────
+  satzbau: [
+    { id:'sb_v2',         label:'V2-Prinzip',   sub:'Глагол на P2' },
+    { id:'sb_klammer',    label:'Satzklammer',  sub:'Рамка'        },
+    { id:'sb_mittelfeld', label:'Mittelfeld',   sub:'Серед. поле'  },
+    { id:'sb_tekamolo',   label:'TeKaMoLo',     sub:'Порядок обст.'},
+    { id:'sb_inversion',  label:'Inversion',    sub:'Инверсия'     },
+    { id:'sb_fragesatz',  label:'Fragesätze',   sub:'Вопросы'      },
+    { id:'sb_negation',   label:'Negation',     sub:'Отрицание'    },
+    { id:'sb_valenz',     label:'Valenz',       sub:'Управление'   },
+  ],
+  verblehre: [
+    { id:'vl_schwach',    label:'Schwache V.',  sub:'Слабые'       },
+    { id:'vl_stark',      label:'Starke V.',    sub:'Сильные'      },
+    { id:'vl_modal',      label:'Modalverben',  sub:'Модальные'    },
+    { id:'vl_trenn',      label:'Trennbare',    sub:'Отделяемые'   },
+    { id:'vl_refl',       label:'Reflexive',    sub:'Возвратные'   },
+    { id:'vl_untrenn',    label:'Untrennbare',  sub:'Неотделяемые' },
+    { id:'vl_passiv',     label:'Passiv',       sub:'Страд. залог' },
+    { id:'vl_praepobj',   label:'Präp.Objekte', sub:'Управление'   },
+  ],
+  nomenlehre: [
+    { id:'nl_genus',      label:'Genus',        sub:'Род'          },
+    { id:'nl_plural',     label:'Plural',       sub:'Мн. число'    },
+    { id:'nl_kasus4',     label:'4 Kasus',      sub:'Падежи'       },
+    { id:'nl_adj_dekl',   label:'Adj.Deklination',sub:'Прилаг.'    },
+    { id:'nl_adj_komp',   label:'Komparation',  sub:'Степени'      },
+    { id:'nl_pronomen',   label:'Pronomen',     sub:'Местоимения'  },
+    { id:'nl_praep',      label:'Präpositionen',sub:'Предлоги'     },
+    { id:'nl_nominalis',  label:'Nominalisierung',sub:'Номинализ.'  },
+  ],
+  nebensatz: [
+    { id:'ns_dass',       label:'dass-Satz',    sub:'что...'       },
+    { id:'ns_weil',       label:'weil / da',    sub:'потому что'   },
+    { id:'ns_wenn_als',   label:'wenn / als',   sub:'когда'        },
+    { id:'ns_ob',         label:'ob-Satz',      sub:'ли...'        },
+    { id:'ns_relativ',    label:'Relativsatz',  sub:'Относит.'     },
+    { id:'ns_infinitiv',  label:'Infinitivsatz',sub:'um/ohne/statt zu'},
+    { id:'ns_konzessiv',  label:'obwohl/trotzdem',sub:'Уступит.'   },
+    { id:'ns_temporal',   label:'Temporalsatz', sub:'Временные'    },
+    { id:'ns_konditional',label:'wenn/falls',   sub:'Условные'     },
+    { id:'ns_kausal',     label:'Kausalsatz',   sub:'Причинные'    },
+    { id:'ns_konsekutiv', label:'sodass',       sub:'Следственные' },
+    { id:'ns_final',      label:'damit/um zu',  sub:'Целевые'      },
+  ],
+  c1strukt: [
+    { id:'c1_partizip',   label:'Partizipialsatz',sub:'Прич. оборот'},
+    { id:'c1_erw_adj',    label:'Erw.Adj.Attr.',sub:'Расш. опред.' },
+    { id:'c1_fvg',        label:'Funktionsverbgef.',sub:'ФГС'      },
+    { id:'c1_doppelkonj', label:'Doppelkonjunkt.',sub:'Двойн. союзы'},
+    { id:'c1_passiv_adv', label:'Passiv-Ersatz', sub:'Замены пасс.'},
+    { id:'c1_konj2',      label:'Konjunktiv II', sub:'Сослагат.'   },
+    { id:'c1_konj1',      label:'Konjunktiv I',  sub:'Косв. речь'  },
+    { id:'c1_modalsubj',  label:'Subj.Modalität',sub:'Субъ. модаль.'},
+    { id:'c1_stil',       label:'Stilmittel',    sub:'Стилистика'  },
+  ],
+  // Level 3 expansions
+  vl_modal: [
+    { id:'vm_bedeutung',  label:'Bedeutungen',  sub:'Значения'     },
+    { id:'vm_praesens',   label:'Präsens/Prät.',sub:'Спряжение'    },
+    { id:'vm_konjunktiv', label:'Konj.II',      sub:'Сослагат.'    },
+    { id:'vm_subjektiv',  label:'Subj.Gebrauch',sub:'Субъ. употр.' },
+  ],
+  vl_passiv: [
+    { id:'pas_vorgang',   label:'Vorgangspassiv',sub:'werden-Pass.'},
+    { id:'pas_zustand',   label:'Zustandspassiv',sub:'sein-Pass.'  },
+    { id:'pas_modal',     label:'Passiv+Modal',  sub:'С модальными'},
+    { id:'pas_zeiten',    label:'Alle Zeiten',   sub:'Все времена' },
+  ],
+  nl_adj_dekl: [
+    { id:'adj_schwach',   label:'Schwach',      sub:'После def.Art.'},
+    { id:'adj_stark',     label:'Stark',        sub:'Без артикля'  },
+    { id:'adj_gemischt',  label:'Gemischt',     sub:'После indef.' },
+    { id:'adj_praedik',   label:'Prädikativ',   sub:'Сказуемостн.' },
+  ],
+  nl_praep: [
+    { id:'pr_akk_dat',    label:'Akk+Dat Präp.',sub:'Akk/Dat'      },
+    { id:'pr_wechsel',    label:'Wechselpräp.', sub:'2 падежа'     },
+    { id:'pr_gen_praep',  label:'Gen.-Präp.',   sub:'Родит. падеж' },
+    { id:'pr_temporal',   label:'Temporale P.', sub:'Время'        },
+  ],
+  ns_relativ: [
+    { id:'rel_nom_akk',   label:'Nom./Akk.',    sub:'der/den...'   },
+    { id:'rel_dat_gen',   label:'Dat./Gen.',    sub:'dem/dessen...' },
+    { id:'rel_praep',     label:'mit Präp.',    sub:'mit dem...'   },
+    { id:'rel_wo',        label:'wo/worüber',   sub:'Lokale/Pronom.'},
+  ],
+  c1_konj2: [
+    { id:'k2_formen',     label:'Formen',       sub:'Bildung'      },
+    { id:'k2_irrealis',   label:'Irrealis',     sub:'Нереальн. усл.'},
+    { id:'k2_hoeflich',   label:'Höflichkeit',  sub:'Вежливость'   },
+    { id:'k2_vergangen',  label:'Vergangenheit',sub:'Прошедшее'    },
   ],
 };
 
@@ -2884,6 +2990,1402 @@ CONTENT['pf_aus_trenn'] = {
   ]
 };
 
+// ── SATZBAU CONTENT ───────────────────────────────────────────────
+CONTENT['satzbau'] = {
+  zone:'syntax', tag:'Syntax', title:'Satzbau',
+  sub:'Структура немецкого предложения',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'P1 + Verb(P2) + Subj? + Mittelfeld(TeKaMoLo) + [Satzklammer]',
+    text:`<strong>Goldene Regeln:</strong><br>① V2-Prinzip: Verb immer P2<br>② Satzklammer: Aux/Modal P2 → Inf./Part.II Ende<br>③ TeKaMoLo: T→K→M→L im Mittelfeld<br>④ Verb-Letzt im Nebensatz<br>⑤ Pronomen vor Nomen`,
+    table:{head:['Prinzip','Beispiel'],rows:[
+      ['V2','Heute lerne ich Deutsch.'],['Satzklammer','Ich habe gestern viel gearbeitet.'],
+      ['TeKaMoLo','Er fährt morgens aus Gewohnheit schnell nach Hause.'],
+      ['Verb-Letzt','..., weil ich Deutsch lerne.'],['Pron vor Nomen','Er hat es dem Mann gegeben.'],
+    ]}},
+  examples:[sent('Trotzdem hat er gestern aus Müdigkeit langsam nach Hause gefahren.',
+    [{w:'Trotzdem',r:'S'},{w:'hat',r:'V'},{w:'er',r:'S'},{w:'gestern',r:'Adv'},{w:'aus Müdigkeit',r:'Adv'},{w:'langsam',r:'Adv'},{w:'nach Hause',r:'Adv'},{w:'gefahren.',r:'V'}],
+    'P1=Trotzdem→Inversion; T→K→M→L')],
+  exercises:[ex('[Heute] ___ ich Deutsch. (lernen)','lerne','V2'),ex('..., weil er krank ___.','ist','Verb-Letzt'),ex('Er ___ es ___ gegeben. (ihm, haben, Perf.)','hat / ihm','Pron.Dat im MF')]
+};
+CONTENT['sb_v2'] = {
+  zone:'syntax', tag:'Syntax', title:'V2 — Verb an 2. Stelle',
+  sub:'Глагол всегда на второй позиции',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'P1(любой) + Verb(P2) + [Subj.] + ...',
+    text:'Финитный глагол в HS всегда на P2 — независимо от P1.',
+    table:{head:['P1','Verb','Rest'],rows:[
+      ['Ich','lerne','Deutsch.'],['Deutsch','lerne','ich.'],
+      ['Heute','lerne','ich Deutsch.'],['Obwohl er müde ist,','kommt','er trotzdem.'],
+    ]}},
+  examples:[sent('Obwohl es regnet, gehen wir spazieren.',
+    [{w:'Obwohl es regnet,',r:'S'},{w:'gehen',r:'V'},{w:'wir',r:'S'},{w:'spazieren.',r:'Adv'}],
+    'NS als P1 → Inversion')],
+  exercises:[ex('Jeden Tag ___ ich Deutsch. (lernen)','lerne','Inversion'),
+    ex('Obwohl er müde ist, ___ er weiter. (arbeiten)','arbeitet','NS P1'),
+    ex('Am Morgen ___ sie auf. (aufstehen Prät.)','stand','Inversion+trennbar')]
+};
+CONTENT['sb_klammer'] = {
+  zone:'syntax', tag:'Syntax', title:'Satzklammer',
+  sub:'Рамочная конструкция',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Aux/Modal(P2) + Mittelfeld + Inf./Part.II/Präfix(Ende)',
+    table:{head:['Тип','Links','Rechts'],rows:[
+      ['Perfekt','hat','gelesen'],['Futur I','wird','lernen'],
+      ['Modal','kann','kommen'],['Trennbar','macht...','auf'],
+      ['Modal+Perf.','hat','arbeiten müssen'],
+    ]}},
+  examples:[sent('Er hat das Buch trotz Müdigkeit bis spät gelesen.',
+    [{w:'Er',r:'S'},{w:'hat',r:'V'},{w:'das Buch',r:'Oa'},{w:'trotz Müdigkeit',r:'Adv'},{w:'bis spät',r:'Adv'},{w:'gelesen.',r:'V'}],
+    'Langer Mittelfeld')],
+  exercises:[ex('Er ___ gearbeitet. (haben, Perf.)','hat','hat P2'),
+    ex('Ich ___ das Fenster ___. (aufmachen Präs.)','mache / auf','trennbar'),
+    ex('Er ___ nicht kommen ___. (können, Perf. Ersatzinf.)','hat / können','hat...kommen können')]
+};
+CONTENT['sb_mittelfeld'] = {
+  zone:'syntax', tag:'Syntax', title:'Mittelfeld',
+  sub:'Порядок элементов в серединном поле',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'PRON-Akk. > PRON-Dat. > NOM-Dat. > NOM-Akk.',
+    table:{head:['Ситуация','Richtig','Falsch'],rows:[
+      ['2 Pron.','Er hat es ihr gegeben.','Er hat ihr es gegeben.'],
+      ['Pron+Nomen','Er hat es dem Mann gegeben.','Er hat dem Mann es gegeben.'],
+      ['2 Nomen','Er gibt dem Kind das Buch.','Er gibt das Buch dem Kind.'],
+    ]}},
+  examples:[sent('Sie hat es ihm gegeben.',
+    [{w:'Sie',r:'S'},{w:'hat',r:'V'},{w:'es',r:'Oa'},{w:'ihm',r:'Od'},{w:'gegeben.',r:'V'}],
+    'Akk.Pron(es) vor Dat.Pron(ihm)')],
+  exercises:[ex('Richtige Reihenfolge: hat/er/dem Mann/es → ','Er hat es dem Mann gegeben.','Pron.Akk vor Nom.Dat'),
+    ex('Ich habe ___ ___ gegeben. (ihr=Dat.Pron, das Buch=Akk.)','ihr das Buch','Dat.Pron+Akk.Nomen'),
+    ex('Er hat ___ ___ gegeben. (ihm, es)','es ihm','Akk.Pron vor Dat.Pron')]
+};
+CONTENT['sb_tekamolo'] = {
+  zone:'syntax', tag:'Syntax', title:'TeKaMoLo',
+  sub:'Temporal → Kausal → Modal → Lokal',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'T(когда?) → K(почему?) → M(как?) → L(где/куда?)',
+    table:{head:['T','K','M','L'],rows:[
+      ['morgens','aus Gewohnheit','schnell','zur Arbeit'],
+      ['gestern','–','mit dem Zug','nach München'],
+    ]}},
+  examples:[sent('Er fährt jeden Morgen wegen der Arbeit schnell nach Berlin.',
+    [{w:'Er',r:'S'},{w:'fährt',r:'V'},{w:'jeden Morgen',r:'Adv'},{w:'wegen der Arbeit',r:'Adv'},{w:'schnell',r:'Adv'},{w:'nach Berlin.',r:'Adv'}],
+    'T→K→M→L')],
+  exercises:[ex('Правильный порядок: im Büro / täglich / konzentriert → ','täglich konzentriert im Büro','T→M→L'),
+    ex('Er arbeitet ___ (T:gestern) ___ (M:fleißig) ___ (L:zu Hause).','gestern fleißig zu Hause','T→M→L')]
+};
+CONTENT['sb_inversion'] = {
+  zone:'syntax', tag:'Syntax', title:'Inversion',
+  sub:'Инверсия — любой элемент на P1',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Adv./Obj./NS(P1) + Verb(P2) + Subj. + ...',
+    table:{head:['P1','Beispiel'],rows:[
+      ['Adverb','Gestern habe ich gearbeitet.'],['Objekt','Das Buch habe ich gelesen.'],
+      ['Nebensatz','Weil er krank war, blieb er.'],['Konjunktionaladv.','Deshalb bin ich gekommen.'],
+    ]}},
+  examples:[sent('Das Buch habe ich schon zweimal gelesen.',
+    [{w:'Das Buch',r:'S'},{w:'habe',r:'V'},{w:'ich',r:'S'},{w:'schon zweimal',r:'Adv'},{w:'gelesen.',r:'V'}],
+    'Топикализация Akk.-Obj.')],
+  exercises:[ex('Поставь "Gestern" на P1: ___ habe ich gearbeitet.','Gestern','Inversion'),
+    ex('Weil er müde war, ___ er früh ___.  (gehen, Perf.)','ist er / gegangen','NS P1→Inversion'),
+    ex('Deshalb ___ ich nicht gekommen.','bin','Deshalb+Inversion')]
+};
+CONTENT['sb_fragesatz'] = {
+  zone:'syntax', tag:'Syntax', title:'Fragesätze',
+  sub:'Все типы вопросов',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Ja/Nein: V1+S? | W-Frage: W+V2+S? | Indirekt: ob/W+...+V-Letzt',
+    table:{head:['W-Wort','Kasus','Beispiel'],rows:[
+      ['wer','Nom.','Wer kommt?'],['wen','Akk.','Wen siehst du?'],
+      ['wem','Dat.','Wem hilfst du?'],['wessen','Gen.','Wessen Auto ist das?'],
+      ['warum/weshalb','Kausal','Warum lernst du?'],['welch-','Auswahl','Welches Buch?'],
+    ]}},
+  examples:[sent('Kannst du mir sagen, warum er nicht gekommen ist?',
+    [{w:'Kannst du mir sagen,',r:'S'},{w:'warum',r:'V'},{w:'er',r:'S'},{w:'nicht',r:'N'},{w:'gekommen ist?',r:'V'}],
+    'Ind.Frage → Verb-Letzt')],
+  exercises:[ex('___ gibst du das Buch? (кому?)','Wem','Dat.→Wem'),
+    ex('Ich weiß nicht, ___ er kommt.','ob','ob für Ja/Nein'),
+    ex('Kannst du sagen, warum er nicht ___ ___? (kommen, Perf.)','gekommen ist','Verb-Letzt')]
+};
+CONTENT['sb_negation'] = {
+  zone:'syntax', tag:'Syntax', title:'Negation',
+  sub:'Отрицание — nicht, kein и другие',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'nicht (Verb/Adj/Adv/Präp) | kein- (Nomen) | nie/niemand/nichts',
+    table:{head:['Mittel','Gegenteil','Beispiel'],rows:[
+      ['nicht','ja','Er kommt nicht.'],['kein/keine','ein/eine','Ich habe keine Zeit.'],
+      ['nie','immer','Er kommt nie.'],['niemand','jemand','Niemand war da.'],
+      ['weder...noch','sowohl...als auch','weder Kaffee noch Tee'],
+    ]}},
+  examples:[sent('Er hat das Buch nicht gelesen, weil er keine Zeit hatte.',
+    [{w:'Er',r:'S'},{w:'hat',r:'V'},{w:'das Buch',r:'Oa'},{w:'nicht',r:'N'},{w:'gelesen.',r:'V'}],
+    'nicht + kein')],
+  exercises:[ex('Ich habe das ___ gemacht. (nicht/kein)','nicht','Verb→nicht'),
+    ex('Ich habe ___ Auto.','kein','Nomen→kein'),
+    ex('Er wohnt ___ in Berlin.','nicht','Präp.-Gruppe→nicht'),
+    ex('___ hat angerufen.','Niemand','niemand als Subj.')]
+};
+CONTENT['sb_valenz'] = {
+  zone:'syntax', tag:'C1-Syntax', title:'Valenz & Rektion',
+  sub:'Управление глаголов',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Verb → feste Kasus/Präp.',
+    table:{head:['Verb+Präp.','Kasus','Beispiel'],rows:[
+      ['helfen','+Dat.','Er hilft dem Mann.'],['warten auf','+Akk.','Ich warte auf dich.'],
+      ['denken an','+Akk.','Ich denke an dich.'],['abhängen von','+Dat.','Es hängt davon ab.'],
+      ['sich erinnern an','+Akk.','Ich erinnere mich daran.'],['bitten um','+Akk.','Ich bitte um Hilfe.'],
+    ]}},
+  examples:[sent('Er wartet seit einer Stunde auf seine Freundin.',
+    [{w:'Er',r:'S'},{w:'wartet',r:'V'},{w:'seit einer Stunde',r:'Adv'},{w:'auf seine Freundin.',r:'Adv'}],
+    'warten auf + Akk.')],
+  exercises:[ex('warten ___ + Akk.','auf','auf'),ex('abhängen ___ + Dat.','von','von'),
+    ex('Es hängt von ___ (du, Dat.) ab.','dir','von+Dat.: dir'),
+    ex('Ich bitte ___ (du) ___ Hilfe.','dich um','bitten um+Akk.')]
+};
+
+// ── VERBLEHRE CONTENT ────────────────────────────────────────────
+CONTENT['verblehre'] = {
+  zone:'present', tag:'Verblehre', title:'Verblehre',
+  sub:'Система немецких глаголов',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'schwach · stark · Modal · trennbar · untrennbar · reflexiv · Passiv',
+    table:{head:['Тип','Merkmal','Inf.→Prät.→Part.II'],rows:[
+      ['Schwach','регулярный','lernen→lernte→gelernt'],['Stark','Ablaut','fahren→fuhr→gefahren'],
+      ['Trennbar','Präfix trennt','aufmachen→machte auf→aufgemacht'],
+      ['Untrennbar','Präfix bleibt','besuchen→besuchte→besucht'],
+    ]}},
+  examples:[sent('Er hat das Fenster aufgemacht.',
+    [{w:'Er',r:'S'},{w:'hat',r:'V'},{w:'das Fenster',r:'Oa'},{w:'aufgemacht.',r:'V'}],
+    'trennbar: auf+ge+mach+t')],
+  exercises:[ex('lernen → Part.II','gelernt','ge+lern+t'),ex('fahren → Prät.er','fuhr','Ablaut'),
+    ex('aufmachen → Part.II','aufgemacht','auf+ge+mach+t'),ex('besuchen → Part.II','besucht','untrennbar: kein ge-')]
+};
+CONTENT['vl_schwach'] = {
+  zone:'present', tag:'Verb', title:'Schwache Verben',
+  sub:'Слабые (правильные) глаголы',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Prät.: Stamm+te | Part.II: ge+Stamm+t | -ieren: kein ge-',
+    table:{head:['Inf.','Präs.er','Prät.er','Part.II'],rows:[
+      ['lernen','lernt','lernte','gelernt'],['kaufen','kauft','kaufte','gekauft'],
+      ['arbeiten','arbeitet','arbeitete','gearbeitet'],['studieren','studiert','studierte','studiert'],
+    ]}},
+  examples:[sent('Er hat gestern das Auto gekauft.',
+    [{w:'Er',r:'S'},{w:'hat',r:'V'},{w:'gestern',r:'Adv'},{w:'das Auto',r:'Oa'},{w:'gekauft.',r:'V'}],
+    'ge+kauf+t')],
+  exercises:[ex('kaufen → Prät.er','kaufte','kauf+te'),ex('arbeiten → Prät.er','arbeitete','arbeit+e+te'),
+    ex('studieren → Part.II','studiert','-ieren: kein ge-'),ex('machen → Part.II','gemacht','ge+mach+t')]
+};
+CONTENT['vl_stark'] = {
+  zone:'present', tag:'Verb', title:'Starke Verben',
+  sub:'Сильные глаголы — таблица Ablaut',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Präs.2/3Sg.: Ablaut | Prät.: Ablaut-Stamm | Part.II: ge+Ablaut+en',
+    table:{head:['Inf.','Präs.er','Prät.er','Part.II'],rows:[
+      ['fahren','fährt','fuhr','gefahren'],['gehen','geht','ging','gegangen'],
+      ['kommen','kommt','kam','gekommen'],['sprechen','spricht','sprach','gesprochen'],
+      ['lesen','liest','las','gelesen'],['schreiben','schreibt','schrieb','geschrieben'],
+      ['sehen','sieht','sah','gesehen'],['geben','gibt','gab','gegeben'],
+      ['nehmen','nimmt','nahm','genommen'],['finden','findet','fand','gefunden'],
+      ['treffen','trifft','traf','getroffen'],['helfen','hilft','half','geholfen'],
+    ]}},
+  examples:[sent('Er sprach sehr gut Deutsch.',
+    [{w:'Er',r:'S'},{w:'sprach',r:'V'},{w:'sehr gut',r:'Adv'},{w:'Deutsch.',r:'Oa'}],
+    'e→i(e) Präs., Prät.: sprach')],
+  exercises:[ex('fahren → Prät.er','fuhr','fuhr'),ex('gehen → Part.II','gegangen','gegangen'),
+    ex('nehmen → Präs.er','nimmt','nimmt'),ex('helfen → Präs.er','hilft','e→i'),
+    ex('finden → Part.II','gefunden','gefunden')]
+};
+CONTENT['vl_modal'] = {
+  zone:'present', tag:'Verb', title:'Modalverben',
+  sub:'Полная система модальных глаголов',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Modal(P2) + ... + Inf.(Ende) | ich/er gleich! | Prät.: kein Umlaut+te',
+    table:{head:['','können','müssen','dürfen','wollen','sollen','möchten'],rows:[
+      ['ich','kann','muss','darf','will','soll','möchte'],
+      ['du','kannst','musst','darfst','willst','sollst','möchtest'],
+      ['er','kann','muss','darf','will','soll','möchte'],
+      ['Prät.er','konnte','musste','durfte','wollte','sollte','mochte'],
+      ['Konj.II er','könnte','müsste','dürfte','wollte','sollte','möchte'],
+    ]}},
+  examples:[sent('Hier darf man nicht rauchen.',
+    [{w:'Hier',r:'Adv'},{w:'darf',r:'V'},{w:'man',r:'S'},{w:'nicht',r:'N'},{w:'rauchen.',r:'V'}],
+    'dürfen neg. = Verbot')],
+  exercises:[ex('Ich ___ (können) gut schwimmen.','kann','ich→kann'),
+    ex('können → Prät.er','konnte','konnte'),ex('dürfen → Konj.II er','dürfte','Umlaut: dürfte'),
+    ex('möchten → Prät.er','mochte','mochte (nicht möchte!)')]
+};
+CONTENT['vl_trenn'] = {
+  zone:'present', tag:'Verb', title:'Trennbare Verben',
+  sub:'Отделяемые глаголы',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Präfix am Ende | Part.II: Präfix+ge+Stamm | Inf.+zu: Präfix+zu+Inf.',
+    table:{head:['Inf.','Präs.er','Part.II','Inf.+zu'],rows:[
+      ['aufmachen','macht auf','aufgemacht','aufzumachen'],
+      ['einkaufen','kauft ein','eingekauft','einzukaufen'],
+      ['anrufen','ruft an','angerufen','anzurufen'],
+      ['aufstehen','steht auf','aufgestanden','aufzustehen'],
+      ['zurückkommen','kommt zurück','zurückgekommen','zurückzukommen'],
+    ]}},
+  examples:[sent('Sie hat gestern eingekauft.',
+    [{w:'Sie',r:'S'},{w:'hat',r:'V'},{w:'gestern',r:'Adv'},{w:'eingekauft.',r:'V'}],
+    'ein+ge+kauf+t')],
+  exercises:[ex('aufmachen → Part.II','aufgemacht','auf+ge+mach+t'),
+    ex('anrufen → Part.II','angerufen','an+ge+ruf+en'),
+    ex('einkaufen → Inf.+zu','einzukaufen','ein+zu+kaufen'),
+    ex('mitnehmen → Prät.er','nahm mit','stark: nahm...mit')]
+};
+CONTENT['vl_refl'] = {
+  zone:'present', tag:'Verb', title:'Reflexive Verben',
+  sub:'Возвратные глаголы с sich',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'sich(Akk.) | mir/dir/sich(Dat.) wenn Akk.Obj. vorhanden | Perf.: immer haben',
+    table:{head:['Inf.','ich','er'],rows:[
+      ['sich freuen','freue mich','freut sich'],['sich fühlen','fühle mich','fühlt sich'],
+      ['sich kaufen (Dat.)','kaufe mir','kauft sich'],
+    ]}},
+  examples:[sent('Ich habe mir das neue Buch gekauft.',
+    [{w:'Ich',r:'S'},{w:'habe',r:'V'},{w:'mir',r:'Od'},{w:'das neue Buch',r:'Oa'},{w:'gekauft.',r:'V'}],
+    'Dat.Refl.(mir) + Akk.Obj.')],
+  exercises:[ex('Ich freue ___ (ich, Akk.)','mich','ich→mich'),
+    ex('Er fühlt ___ gut.','sich','er→sich'),
+    ex('Ich kaufe ___ (Dat.ich) ein Buch.','mir','Dat.Refl: mir')]
+};
+CONTENT['vl_untrenn'] = {
+  zone:'present', tag:'Verb', title:'Untrennbare Verben',
+  sub:'Неотделяемые приставки — kein ge-',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'be-/ver-/er-/ge-/ent-/emp-/miss-/zer- → kein ge- im Part.II',
+    table:{head:['Inf.','Part.II','Bedeutung'],rows:[
+      ['besuchen','besucht','посещать'],['verstehen','verstanden','понимать'],
+      ['erklären','erklärt','объяснять'],['vergessen','vergessen','забывать'],
+      ['bekommen','bekommen','получать'],['entscheiden','entschieden','решать'],
+    ]}},
+  examples:[sent('Er hat das Problem gut erklärt.',
+    [{w:'Er',r:'S'},{w:'hat',r:'V'},{w:'das Problem',r:'Oa'},{w:'gut',r:'Adv'},{w:'erklärt.',r:'V'}],
+    'er- untrennbar: kein ge-')],
+  exercises:[ex('besuchen → Part.II','besucht','kein ge-'),
+    ex('verstehen → Part.II','verstanden','kein ge-'),ex('vergessen → Prät.er','vergaß','stark+kein ge-')]
+};
+CONTENT['vl_passiv'] = {
+  zone:'present', tag:'Passiv', title:'Passiv',
+  sub:'Страдательный залог',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Vorgangspassiv: werden+Part.II | Zustandspassiv: sein+Part.II',
+    table:{head:['Zeit','Vorgangspassiv'],rows:[
+      ['Präsens','wird gemacht'],['Präteritum','wurde gemacht'],
+      ['Perfekt','ist gemacht worden'],['Modal','muss gemacht werden'],
+    ]}},
+  examples:[sent('Das Haus wird gerade gebaut.',
+    [{w:'Das Haus',r:'S'},{w:'wird',r:'V'},{w:'gerade',r:'Adv'},{w:'gebaut.',r:'V'}],
+    'Vorgangspassiv Präsens')],
+  exercises:[ex('Das Haus ___ gebaut. (Präsens)','wird','wird+Part.II'),
+    ex('Das Haus ___ gebaut. (Prät.)','wurde','wurde+Part.II'),
+    ex('Das Haus ___ gebaut ___. (Perfekt)','ist / worden','ist...worden!'),
+    ex('Das muss gemacht ___. ','werden','Modal+Passiv: werden Ende')]
+};
+CONTENT['vl_praepobj'] = {
+  zone:'present', tag:'Verb', title:'Präpositionalobjekte',
+  sub:'Глагольное управление с предлогами',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Verb+feste Präp.+Kasus → Pronominaladverb: da(r)+Präp.',
+    table:{head:['Verb+Präp.','Kasus','Pronominaladv.'],rows:[
+      ['warten auf','Akk.','darauf'],['denken an','Akk.','daran'],
+      ['sprechen über','Akk.','darüber'],['abhängen von','Dat.','davon'],
+      ['sich kümmern um','Akk.','darum'],['hoffen auf','Akk.','darauf'],
+    ]}},
+  examples:[sent('Er denkt oft an seine Kindheit. Er denkt oft daran.',
+    [{w:'an seine Kindheit',r:'Adv'},{w:'→ daran',r:'N'}],
+    'Sache: an → daran')],
+  exercises:[ex('Ich warte ___ (auf das Ergebnis)','darauf','auf+Sache=darauf'),
+    ex('___ hängt das ab? (wovon?)','Wovon','von+Sache=wovon?'),
+    ex('Ich kümmere mich ___ (um das Problem)','darum','um+Sache=darum')]
+};
+CONTENT['vm_bedeutung'] = {
+  zone:'present', tag:'Modal', title:'Modalverben — Bedeutungen',
+  sub:'Объективное и субъективное употребление',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Objektiv: Fähigkeit/Notw./Erlaubnis | Subjektiv: Vermutung/Gerücht',
+    table:{head:['Modal','Objektiv','Subjektiv'],rows:[
+      ['müssen','Er muss arbeiten.','Er muss krank sein. (должно быть)'],
+      ['können','Er kann schwimmen.','Das kann stimmen. (возможно)'],
+      ['sollen','Du sollst kommen.','Er soll reich sein. (говорят)'],
+    ]}},
+  examples:[sent('Er muss sehr müde sein.',
+    [{w:'Er muss',r:'V'},{w:'sehr müde sein.',r:'Adj'}],
+    'субъективное müssen')],
+  exercises:[ex('"Er muss krank sein" — это?','субъективное предположение','subj.'),
+    ex('"Er soll reich sein" — это?','Gerücht (говорят)','sollen subj.'),
+    ex('Das ___ stimmen. (möglicherweise, können)','kann','kann=vielleicht')]
+};
+CONTENT['vm_praesens'] = {
+  zone:'present', tag:'Modal', title:'Modalverben Präsens+Prät.',
+  sub:'Спряжение модальных глаголов',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'ich/er gleich! | Sg.: ohne -e-Endung | Prät.: kein Umlaut+te',
+    table:{head:['','können','müssen','dürfen','wollen','sollen'],rows:[
+      ['ich','kann','muss','darf','will','soll'],
+      ['er','kann','muss','darf','will','soll'],
+      ['wir','können','müssen','dürfen','wollen','sollen'],
+      ['Prät.er','konnte','musste','durfte','wollte','sollte'],
+    ]}},
+  examples:[],
+  exercises:[ex('Er ___ (dürfen) das nicht.','darf','er→darf'),
+    ex('dürfen → Prät.wir','durften','durften'),ex('wollen → Prät.er','wollte','wollte')]
+};
+CONTENT['vm_konjunktiv'] = {
+  zone:'present', tag:'Modal', title:'Modalverben Konj.II',
+  sub:'Модальные в сослагательном наклонении',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'könnte/müsste/dürfte (Umlaut) | wollte/sollte (kein Umlaut)',
+    table:{head:['Modal','Konj.II','Bedeutung'],rows:[
+      ['können','könnte','мог бы / возможно'],['müssen','müsste','должен был бы'],
+      ['dürfen','dürfte','вероятно / мог бы'],
+    ]}},
+  examples:[sent('Das müsste eigentlich funktionieren.',
+    [{w:'Das',r:'S'},{w:'müsste',r:'V'},{w:'funktionieren.',r:'V'}],
+    'müsste = должно бы было')],
+  exercises:[ex('Das ___ klappen. (können Konj.II)','könnte','könnte'),
+    ex('müssen → Konj.II er','müsste','müsste')]
+};
+CONTENT['vm_subjektiv'] = {
+  zone:'present', tag:'Modal', title:'Subjektive Modalität C1',
+  sub:'Предположения о прошлом — Infinitiv II',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Modal + Inf.II(=Part.II+haben/sein) = Vermutung Vergangenheit',
+    table:{head:['Aussage','Bedeutung'],rows:[
+      ['Er muss krank gewesen sein.','Он, должно быть, был болен.'],
+      ['Das kann gestimmt haben.','Это, возможно, было верным.'],
+    ]}},
+  examples:[sent('Er muss das schon gewusst haben.',
+    [{w:'Er muss',r:'V'},{w:'das gewusst haben.',r:'V'}],
+    'Inf.II: gewusst haben')],
+  exercises:[ex('Er muss das ___ ___ . (wissen, Inf.II Verg.)','gewusst haben','Part.II+haben'),
+    ex('Sie muss ___ ___ . (kommen, sein-Verb)','gekommen sein','Part.II+sein')]
+};
+
+// ── NOMENLEHRE CONTENT ────────────────────────────────────────────
+CONTENT['nomenlehre'] = {
+  zone:'special', tag:'Nomen', title:'Nomen + Adjektiv',
+  sub:'Существительные и прилагательные',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Genus(3) · Kasus(4) · Plural(5) · Adj.Dekl.(3 Typen)',
+    table:{head:['Thema','Kurzregel'],rows:[
+      ['Genus','der/die/das — суффиксы'],['4 Kasus','Nom./Akk./Dat./Gen.'],
+      ['Plural','5 типов: -e/-er/-en/-s/∅'],['Adj.schwach','после def.Art.: -e/sonst -en'],
+      ['Adj.stark','без арт.: Adj. несёт сигнал'],
+    ]}},
+  examples:[sent('Ein alter Mann gibt dem kleinen Kind das rote Buch.',
+    [{w:'Ein alter Mann',r:'S'},{w:'gibt',r:'V'},{w:'dem kleinen Kind',r:'Od'},{w:'das rote Buch.',r:'Oa'}],
+    'Gem.+Schw.+Schw.')],
+  exercises:[ex('ein jung___ Mann (Nom.m, gem.)','er','-er'),
+    ex('der alt___ Frau (Dat.f, schwach)','en','-en')]
+};
+CONTENT['nl_genus'] = {
+  zone:'special', tag:'Nomen', title:'Genus',
+  sub:'Род существительного — суффиксы',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'der(-er/-ling/-ismus) | die(-ung/-heit/-keit/-schaft/-tion) | das(-chen/-lein/-ment/-um)',
+    table:{head:['der (m)','die (f)','das (n)'],rows:[
+      ['-er/-ling','-ung/-heit/-keit','-chen/-lein'],
+      ['-ismus/-ant','-schaft/-tion/-tät','-ment/-um'],
+      ['Wochentage/-Jahreszeiten','-ik/-ie/-enz','-Inf. als Subst.'],
+    ]},text:'Ausnahmen: das Mädchen (-chen!), die Butter'},
+  examples:[],
+  exercises:[ex('___ Zeitung','Die','-ung→die'),ex('___ Mädchen','Das','-chen→das!'),
+    ex('___ Freiheit','Die','-heit→die'),ex('___ Optimismus','Der','-ismus→der')]
+};
+CONTENT['nl_plural'] = {
+  zone:'special', tag:'Nomen', title:'Plural',
+  sub:'Множественное число — 5 типов',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'5 Typen: -e · -er · -(e)n · -s · ∅ (±Umlaut)',
+    table:{head:['Тип','Beispiele'],rows:[
+      ['-e','Tag→Tage, Stuhl→Stühle(+Umlaut)'],['-er','Kind→Kinder, Haus→Häuser'],
+      ['-(e)n','Frau→Frauen, Zeitung→Zeitungen'],['-s','Auto→Autos'],['∅','Lehrer→Lehrer, Vater→Väter'],
+    ]}},
+  examples:[],
+  exercises:[ex('Tag → Pl.','Tage','-e'),ex('Kind → Pl.','Kinder','-er'),
+    ex('Frau → Pl.','Frauen','-en'),ex('Mutter → Pl.','Mütter','∅+Umlaut')]
+};
+CONTENT['nl_kasus4'] = {
+  zone:'special', tag:'Nomen', title:'4 Kasus',
+  sub:'Все 4 падежа — полная таблица',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Nom.(wer?) · Akk.(wen?) · Dat.(wem?) · Gen.(wessen?)',
+    table:{head:['Kasus','m','f','n','Pl.'],rows:[
+      ['Nom.','der/ein','die/eine','das/ein','die/–'],
+      ['Akk.','den/einen','die/eine','das/ein','die/–'],
+      ['Dat.','dem/einem','der/einer','dem/einem','den/–'],
+      ['Gen.','des/eines','der/einer','des/eines','der/–'],
+    ]}},
+  examples:[],
+  exercises:[ex('Ich sehe ___ Mann (Akk.m)','den','den'),
+    ex('Ich helfe ___ Frau (Dat.f)','der','der'),ex('Das Auto ___ Mannes (Gen.m)','des','des')]
+};
+CONTENT['nl_adj_dekl'] = {
+  zone:'special', tag:'Adjektiv', title:'Adjektivdeklination',
+  sub:'3 Typen — schwach / gemischt / stark',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Schwach(def.): Nom.Sg.-e, sonst -en | Gem.(indef.): wo kein Signal→stark | Stark(kein Art.)',
+    table:{head:['Kasus','Schwach m','Gemischt m','Stark m'],rows:[
+      ['Nom.','-e (der alte)','-er (ein alter)','alter'],
+      ['Akk.','-en (den alten)','-en (einen alten)','alten'],
+      ['Dat.','-en','-en','altem'],['Gen.','-en','-en','alten'],
+    ]}},
+  examples:[sent('Der alte Mann trifft einen alten Freund.',
+    [{w:'Der alte Mann',r:'S'},{w:'trifft',r:'V'},{w:'einen alten Freund.',r:'Oa'}],
+    'Schwach Nom.m(-e) | Gemischt Akk.m(-en)')],
+  exercises:[ex('der alt___ Mann (Nom.m, schwach)','e','-e'),
+    ex('ein alt___ Mann (Nom.m, gem.)','er','-er'),ex('mit dem alt___ Mann (Dat.m, schwach)','en','-en'),
+    ex('ein klein___ Kind (Nom.n, gem.)','es','-es'),ex('gut___ Wein (Nom.m, stark, kein Art.)','er','-er')]
+};
+CONTENT['adj_schwach'] = {
+  zone:'special', tag:'Adjektiv', title:'Schwache Deklination',
+  sub:'После определённого артикля',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Nom.Sg.: -e | alle anderen: -en',
+    table:{head:['','m','f','n','Pl.'],rows:[
+      ['Nom.','-e','-e','-e','-en'],['Akk.','-en','-e','-e','-en'],
+      ['Dat.','-en','-en','-en','-en'],['Gen.','-en','-en','-en','-en'],
+    ]},text:'Nach: der/die/das, dieser, welcher, jeder, mancher.'},
+  examples:[],
+  exercises:[ex('der jung___ Mann (Nom.m)','e','-e'),ex('die jung___ Frau (Akk.f)','e','-e'),
+    ex('dem alt___ Kind (Dat.n)','en','-en'),ex('die klein___ Kinder (Nom.Pl.)','en','-en Pl.')]
+};
+CONTENT['adj_stark'] = {
+  zone:'special', tag:'Adjektiv', title:'Starke Deklination',
+  sub:'Без артикля — прилагательное несёт падежный сигнал',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Endung = was der Artikel tragen würde',
+    table:{head:['','m','f','n','Pl.'],rows:[
+      ['Nom.','-er','-e','-es','-e'],['Akk.','-en','-e','-es','-e'],
+      ['Dat.','-em','-er','-em','-en'],['Gen.','-en','-er','-en','-er'],
+    ]},text:'Nach: kein Artikel, Zahlen, einige/viele/manche/solche.'},
+  examples:[sent('Ich trinke gerne starken Kaffee.',
+    [{w:'Ich',r:'S'},{w:'trinke gerne',r:'V'},{w:'starken Kaffee.',r:'Oa'}],
+    'Stark Akk.m: -en')],
+  exercises:[ex('frisch___ Brot (Nom.n, stark)','es','-es'),
+    ex('mit gut___ Wein (Dat.m, stark)','em','-em'),
+    ex('mehrere gut___ Bücher (Nom.Pl., stark)','e','-e')]
+};
+CONTENT['adj_gemischt'] = {
+  zone:'special', tag:'Adjektiv', title:'Gemischte Deklination',
+  sub:'После неопределённого артикля',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Wo kein Kasussignal im Art. → Adj. übernimmt es (stark)',
+    table:{head:['Kasus','m','f','n'],rows:[
+      ['Nom.','-er (ein alter)!','-e (eine alte)','-es (ein altes)!'],
+      ['Akk.','-en','-e','-es!'],['Dat.','-en','-en','-en'],
+    ]},text:'Nach: ein/kein/mein/dein...'},
+  examples:[sent('Ein junger Mann und ein kaltes Bier.',
+    [{w:'Ein junger Mann',r:'S'},{w:'und ein kaltes Bier.',r:'Oa'}],
+    'Nom.m(-er) | Nom.n(-es)')],
+  exercises:[ex('ein jung___ Mann (Nom.m, gem.)','er','-er'),
+    ex('ein kalt___ Bier (Nom.n, gem.)','es','-es'),
+    ex('meinen alt___ Vater (Akk.m)','en','-en')]
+};
+CONTENT['adj_praedik'] = {
+  zone:'special', tag:'Adjektiv', title:'Prädikatives Adjektiv',
+  sub:'Сказуемостное — без окончания',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'sein/werden/bleiben + Adj. → keine Endung!',
+    table:{head:['Verb','Beispiel'],rows:[
+      ['sein','Der Mann ist alt.'],['werden','Er wird müde.'],
+      ['bleiben','Sie bleibt ruhig.'],['finden','Ich finde das schön.'],
+    ]}},
+  examples:[],
+  exercises:[ex('Der Mann ist ___. (alt, prädikativ)','alt','keine Endung'),
+    ex('Er wird ___. (müde)','müde','keine Endung'),ex('Ich finde das ___. (schön)','schön','keine Endung')]
+};
+CONTENT['nl_adj_komp'] = {
+  zone:'special', tag:'Adjektiv', title:'Komparation',
+  sub:'Степени сравнения',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Positiv | Komp.: +er (Umlaut!) | Superlativ: am -sten / der -ste',
+    table:{head:['Positiv','Komparativ','Superlativ'],rows:[
+      ['alt','älter','am ältesten'],['gut','besser','am besten'],
+      ['viel','mehr','am meisten'],['gern','lieber','am liebsten'],
+    ]}},
+  examples:[sent('Je mehr er lernt, desto besser wird er.',
+    [{w:'Je mehr er lernt,',r:'S'},{w:'desto besser wird er.',r:'V'}],
+    'je...desto')],
+  exercises:[ex('alt → Komparativ','älter','Umlaut'),ex('gut → Superlativ','am besten','unreg.'),
+    ex('Er ist ___ ich. (groß, Komp.+als)','größer als','Komp.+als'),
+    ex('Je mehr er übt, ___ besser...','desto','je...desto')]
+};
+CONTENT['nl_pronomen'] = {
+  zone:'special', tag:'Pronomen', title:'Pronomen',
+  sub:'Личные и возвратные местоимения',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Personalpronomen: Nom./Akk./Dat.',
+    table:{head:['Person','Nom.','Akk.','Dat.'],rows:[
+      ['ich','ich','mich','mir'],['du','du','dich','dir'],
+      ['er','er','ihn','ihm'],['sie(f)','sie','sie','ihr'],
+      ['es','es','es','ihm'],['wir','wir','uns','uns'],
+      ['ihr','ihr','euch','euch'],['sie/Sie','sie','sie','ihnen/Ihnen'],
+    ]}},
+  examples:[sent('Ich gebe es ihr.',
+    [{w:'Ich',r:'S'},{w:'gebe',r:'V'},{w:'es',r:'Oa'},{w:'ihr.',r:'Od'}],
+    'Akk.(es) vor Dat.(ihr)')],
+  exercises:[ex('Ich gebe ___ (er, Dat.) das Buch.','ihm','Dat.m: ihm'),
+    ex('Er liebt ___ (sie Sg., Akk.f).','sie','Akk.f: sie'),
+    ex('Ich gebe ___ ___ (er-Dat., es-Akk.).','es ihm','Akk.Pron vor Dat.Pron')]
+};
+CONTENT['nl_praep'] = {
+  zone:'special', tag:'Präpositionen', title:'Präpositionen',
+  sub:'Предлоги — управление падежами',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Akk.: durch/für/gegen/ohne/um | Dat.: aus/bei/mit/nach/seit/von/zu | Gen.: wegen/trotz/während',
+    table:{head:['Kasus','Präpositionen'],rows:[
+      ['Akk.','durch, für, gegen, ohne, um, bis'],
+      ['Dat.','aus, bei, mit, nach, seit, von, zu, gegenüber'],
+      ['Gen.(C1)','wegen, trotz, während, aufgrund, statt, innerhalb, außerhalb'],
+      ['Wechsel Wo?→Dat.','an, auf, in, über, unter, vor, hinter, neben, zwischen'],
+    ]}},
+  examples:[sent('Das Buch liegt auf dem Tisch. Er legt das Buch auf den Tisch.',
+    [{w:'auf dem Tisch',r:'Adv'},{w:'→ auf den Tisch',r:'Adv'}],
+    'Wo?→Dat. | Wohin?→Akk.')],
+  exercises:[ex('Das Buch liegt auf ___ Tisch.','dem','Wo?→Dat.'),
+    ex('Er legt das Buch auf ___ Tisch.','den','Wohin?→Akk.'),
+    ex('___ schlechten Wetters blieb er.','Wegen','wegen+Gen.')]
+};
+CONTENT['nl_nominalis'] = {
+  zone:'special', tag:'C1-Stil', title:'Nominalisierung',
+  sub:'Номинализация — C1 стиль',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Verb→das Inf. | Adj.→das Schöne | Suffix: -ung/-heit/-keit',
+    table:{head:['Verb/Adj.','Nominalisierung'],rows:[
+      ['lernen','das Lernen'],['beschreiben','die Beschreibung'],
+      ['entscheiden','die Entscheidung'],['schön','das Schöne'],
+    ]}},
+  examples:[sent('Aufgrund der steigenden Kosten beschloss die Firma zu sparen.',
+    [{w:'Aufgrund der steigenden Kosten',r:'Adv'},{w:'beschloss',r:'V'},{w:'die Firma',r:'S'},{w:'zu sparen.',r:'V'}],
+    'Nominalisierung statt: weil die Kosten steigen')],
+  exercises:[ex('beschreiben → Nominalisierung','die Beschreibung','-ung'),
+    ex('entscheiden → Nominalisierung','die Entscheidung','-ung'),
+    ex('weil er krank war → aufgrund...','aufgrund seiner Krankheit','aufgrund+Gen.')]
+};
+CONTENT['pr_akk_dat'] = {
+  zone:'special', tag:'Präp.', title:'Akk.- und Dat.-Präpositionen',
+  sub:'Предлоги с Akkusativ и Dativ',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Akk.: durch/für/gegen/ohne/um/bis | Dat.: aus/bei/mit/nach/seit/von/zu',
+    table:{head:['Präp.','Kasus','Bedeutung'],rows:[
+      ['durch','Akk.','сквозь'],['für','Akk.','для'],['ohne','Akk.','без'],
+      ['mit','Dat.','с/на транспорте'],['seit','Dat.','с (до сих пор)'],
+      ['nach','Dat.','после; в(город)'],['zu','Dat.','к/в'],
+    ]}},
+  examples:[sent('Er fährt mit dem Bus zur Schule.',
+    [{w:'Er fährt',r:'V'},{w:'mit dem Bus',r:'Adv'},{w:'zur Schule.',r:'Adv'}],
+    'mit+Dat. | zu+Dat.')],
+  exercises:[ex('Das ist ___ dich. (für)','für','für+Akk.'),
+    ex('Ich fahre ___ dem Rad.','mit','mit+Dat.'),ex('Ich gehe ___ Arzt. (zu+dem)','zum','zu+dem=zum')]
+};
+CONTENT['pr_wechsel'] = {
+  zone:'special', tag:'Präp.', title:'Wechselpräpositionen',
+  sub:'Wo?(Dat.) vs. Wohin?(Akk.)',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'an/auf/hinter/in/neben/über/unter/vor/zwischen | Wo?→Dat. | Wohin?→Akk.',
+    table:{head:['Zustand(Wo?→Dat.)','Bewegung(Wohin?→Akk.)'],rows:[
+      ['auf dem Stuhl sitzen','auf den Stuhl setzen'],['im Zimmer sein','ins Zimmer gehen'],
+      ['an der Wand hängen','an die Wand hängen'],
+    ]}},
+  examples:[],
+  exercises:[ex('Das Buch liegt auf ___ Tisch. (dem/den)','dem','Wo?→Dat.'),
+    ex('Er legt das Buch auf ___ Tisch.','den','Wohin?→Akk.'),
+    ex('Das Bild hängt an ___ Wand. (der/die, f)','der','Wo?→Dat.f')]
+};
+CONTENT['pr_gen_praep'] = {
+  zone:'special', tag:'Präp.', title:'Genitiv-Präpositionen',
+  sub:'Предлоги с родительным падежом — C1',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'wegen/trotz/während/aufgrund/statt/innerhalb/außerhalb/angesichts + Gen.',
+    table:{head:['Präp.','Bedeutung','Beispiel'],rows:[
+      ['wegen','из-за','wegen des Wetters'],['trotz','несмотря','trotz des Regens'],
+      ['während','во время','während der Stunde'],['aufgrund','ввиду','aufgrund seiner Leistung'],
+      ['angesichts','учитывая','angesichts der Krise'],
+    ]}},
+  examples:[],
+  exercises:[ex('___ schlechten Wetters. (из-за)','Wegen','wegen+Gen.'),
+    ex('___ seiner Krankheit kam er. (несмотря на)','Trotz','trotz+Gen.'),
+    ex('___ der Ferien reiste er. (во время)','Während','während+Gen.')]
+};
+CONTENT['pr_temporal'] = {
+  zone:'special', tag:'Präp.', title:'Temporale Präpositionen',
+  sub:'Предлоги для времени',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'um(Uhr) · am(Tag/Tageszeit) · im(Monat/Saison) · in(durch, Zukunft) · vor(назад) · seit(andauernd)',
+    table:{head:['Präp.','Wann?','Beispiel'],rows:[
+      ['um','часы','um 8 Uhr'],['am','день нед./части сут.','am Montag / am Abend'],
+      ['im','месяц/сезон','im Januar / im Sommer'],['in','через (буд.)','in einer Stunde'],
+      ['vor','назад','vor drei Jahren'],['seit','с (до сих пор)','seit drei Jahren'],
+    ]}},
+  examples:[],
+  exercises:[ex('___ Montag habe ich frei.','Am','Wochentag: am'),
+    ex('Er kommt ___ zwei Stunden.','in','in=через'),
+    ex('Ich lerne Deutsch ___ drei Jahren.','seit','seit (andauernd)')]
+};
+
+// ── NEBENSATZ CONTENT ─────────────────────────────────────────────
+CONTENT['nebensatz'] = {
+  zone:'nebensatz', tag:'Nebensatz', title:'Nebensätze',
+  sub:'Придаточные предложения — все типы',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Konnektor + ... + Verb(Ende) | Komma obligatorisch',
+    table:{head:['Тип','Konnektor','Bedeutung'],rows:[
+      ['Kausal','weil, da','потому что'],['Konzessiv','obwohl','хотя'],
+      ['Konditional','wenn, falls','если'],['Temporal','als/wenn/während/nachdem','когда/пока'],
+      ['Final','damit, um...zu','чтобы'],['Konsekutiv','sodass','так что'],
+      ['Relativ','der/die/das','который'],['Komplement','dass, ob','что, ли'],
+    ]}},
+  examples:[sent('Obwohl er sehr müde war, arbeitete er weiter.',
+    [{w:'Obwohl er sehr müde war,',r:'S'},{w:'arbeitete',r:'V'},{w:'er',r:'S'},{w:'weiter.',r:'Adv'}],
+    'NS als P1 → Inversion im HS')],
+  exercises:[ex('Er kommt nicht, ___ er krank ist.','weil','weil=потому что'),
+    ex('___ er müde war, arbeitete er weiter.','Obwohl','obwohl=хотя')]
+};
+CONTENT['ns_dass'] = {
+  zone:'nebensatz', tag:'Komplement', title:'dass-Satz',
+  sub:'Дополнительное придаточное',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'HS + dass + S + ... + Verb(Ende)',
+    text:'dass-Satz nach: sagen, denken, glauben, wissen, fühlen, finden, hoffen...',
+    table:{head:['Hauptsatz','dass-Satz'],rows:[
+      ['Ich glaube,','dass er morgen kommt.'],
+      ['Es ist wichtig,','dass du pünktlich bist.'],
+    ]}},
+  examples:[sent('Ich glaube, dass er morgen kommen wird.',
+    [{w:'Ich glaube,',r:'S'},{w:'dass',r:'V'},{w:'er',r:'S'},{w:'morgen kommen wird.',r:'V'}],
+    'dass+Verb-Letzt')],
+  exercises:[ex('Ich denke, ___ er recht hat.','dass','dass-Satz'),
+    ex('Es ist wichtig, ___ du pünktlich ___. (sein)','dass / bist','Verb-Letzt'),
+    ex('Er sagt, ___ er morgen ___ ___. (kommen, Futur)','dass / kommen wird','wird Ende')]
+};
+CONTENT['ns_weil'] = {
+  zone:'nebensatz', tag:'Kausalsatz', title:'weil / da / denn',
+  sub:'Причинные конструкции',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'weil/da: NS(V-Ende) | denn: HS(V2) | deshalb/daher: HS+Inv.',
+    table:{head:['Mittel','Тип','Beispiel'],rows:[
+      ['weil','NS','Er bleibt, weil er krank ist.'],
+      ['da','NS (известное)','Da er krank ist, bleibt er.'],
+      ['denn','HS (kein Inv.)','Er bleibt, denn er ist krank.'],
+      ['deshalb','HS+Inv.','Er ist krank. Deshalb bleibt er.'],
+    ]}},
+  examples:[sent('Er kann nicht kommen, weil er einen wichtigen Termin hat.',
+    [{w:'Er kann nicht kommen,',r:'S'},{w:'weil',r:'V'},{w:'er einen wichtigen Termin hat.',r:'V'}],
+    'weil→V-Letzt')],
+  exercises:[ex('Er bleibt, ___ er krank ___. (weil)','weil / ist','V-Letzt!'),
+    ex('Er ist krank. ___ kommt er nicht.','Deshalb','Deshalb+Inversion'),
+    ex('Er ist krank. ___ er ist krank. (ohne Inversion!)','denn','denn+V2')]
+};
+CONTENT['ns_wenn_als'] = {
+  zone:'nebensatz', tag:'Temporal', title:'wenn / als',
+  sub:'Когда — разграничение',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'als: однократно прошл. | wenn: повторно или наст./буд.',
+    table:{head:['Konj.','Wann?','Beispiel'],rows:[
+      ['als','однократно прошл.','Als ich 10 war, zogen wir um.'],
+      ['wenn','повторно прошл.','Wenn ich müde war, schlief ich.'],
+      ['wenn','настоящее/будущее','Wenn er Zeit hat, liest er.'],
+    ]}},
+  examples:[sent('Als ich das erste Mal Deutsch hörte, verstand ich kein Wort.',
+    [{w:'Als ich das erste Mal Deutsch hörte,',r:'S'},{w:'verstand',r:'V'},{w:'ich kein Wort.',r:'Oa'}],
+    'als = einmalig')],
+  exercises:[ex('___ ich ein Kind war, spielte ich viel.','Als','einmalig→als'),
+    ex('___ ich müde bin, gehe ich schlafen.','Wenn','Gewohnheit→wenn'),
+    ex('___ er früher schlief, war er ausgeruhter.','Wenn','wiederholt→Wenn')]
+};
+CONTENT['ns_ob'] = {
+  zone:'nebensatz', tag:'Komplement', title:'ob-Satz',
+  sub:'Косвенный общий вопрос',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'HS + ob + S + ... + Verb(Ende)',
+    text:'Прямой: Kommt er? → Косвенный: Ich weiß nicht, ob er kommt.'},
+  examples:[sent('Ich weiß nicht, ob er morgen kommen wird.',
+    [{w:'Ich weiß nicht,',r:'S'},{w:'ob er morgen kommen wird.',r:'V'}],
+    'ob NS')],
+  exercises:[ex('Ich frage mich, ___ er kommt.','ob','ob=ли'),
+    ex('Ich frage, ___ er bestanden ___ ___. (Perf.)','ob / bestanden hat','Verb-Letzt: bestanden hat')]
+};
+CONTENT['ns_relativ'] = {
+  zone:'nebensatz', tag:'Relativsatz', title:'Relativsatz',
+  sub:'Относительные придаточные',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Genus=Bezugswort, Kasus=Funktion im NS | Dat.Pl.: denen | Gen.: dessen/deren',
+    table:{head:['Kasus','m','f','n','Pl.'],rows:[
+      ['Nom.','der','die','das','die'],['Akk.','den','die','das','die'],
+      ['Dat.','dem','der','dem','denen'],['Gen.','dessen','deren','dessen','deren'],
+    ]}},
+  examples:[sent('Der Lehrer, dessen Unterricht mir gefällt, heißt Müller.',
+    [{w:'Der Lehrer,',r:'S'},{w:'dessen Unterricht mir gefällt,',r:'NS'},{w:'heißt Müller.',r:'V'}],
+    'Gen.m: dessen')],
+  exercises:[ex('Der Mann, ___ ich gesehen habe. (Akk.m)','den','den'),
+    ex('Die Frau, ___ ich helfe. (Dat.f)','der','der'),
+    ex('Das Kind, ___ Spielzeug verloren ist. (Gen.n)','dessen','dessen'),
+    ex('Die Kinder, ___ ich geholfen habe. (Dat.Pl.)','denen','denen')]
+};
+CONTENT['ns_infinitiv'] = {
+  zone:'nebensatz', tag:'Infinitivsatz', title:'Infinitivsätze',
+  sub:'um/ohne/statt...zu + Infinitiv',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'um...zu (цель, gleicher Subj.) | ohne...zu | statt...zu | trennbar: auf+zu+machen',
+    table:{head:['NS','→ Infinitivsatz'],rows:[
+      ['damit er lernt','um zu lernen'],['ohne dass er schläft','ohne zu schlafen'],
+      ['statt dass er hilft','statt zu helfen'],
+    ]}},
+  examples:[sent('Er lernt Deutsch, um in Deutschland arbeiten zu können.',
+    [{w:'Er lernt Deutsch,',r:'S'},{w:'um in Deutschland arbeiten zu können.',r:'V'}],
+    'um+zu+Modal')],
+  exercises:[ex('Er lernt, ___ die Prüfung ___ bestehen.','um / zu','um...zu'),
+    ex('aufmachen → Inf.+zu','aufzumachen','auf+zu+machen'),
+    ex('statt → gleicher oder verschiedener Subj.?','gleicher Subj.','gleich wie um...zu')]
+};
+CONTENT['ns_konzessiv'] = {
+  zone:'nebensatz', tag:'Konzessiv', title:'obwohl / trotzdem / trotz',
+  sub:'Уступительные конструкции',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'obwohl+NS(V-Ende) | trotzdem/dennoch+HS+Inv. | trotz+Gen.',
+    table:{head:['Mittel','Beispiel'],rows:[
+      ['obwohl (NS)','Er kam, obwohl er krank war.'],
+      ['trotzdem (HS+Inv.)','Er war krank. Trotzdem kam er.'],
+      ['trotz + Gen.','Trotz der Krankheit kam er.'],
+    ]}},
+  examples:[sent('Obwohl er die ganze Nacht gearbeitet hatte, war er nicht müde.',
+    [{w:'Obwohl er die ganze Nacht gearbeitet hatte,',r:'S'},{w:'war er nicht müde.',r:'V'}],
+    'obwohl+Plusquamp.')],
+  exercises:[ex('Er kam, ___ er krank war.','obwohl','obwohl'),
+    ex('Er war krank. ___ kam er. (Inversion)','Trotzdem','Trotzdem+Inv.'),
+    ex('___ seiner Krankheit kam er. (Gen.)','Trotz','trotz+Gen.')]
+};
+CONTENT['ns_temporal'] = {
+  zone:'nebensatz', tag:'Temporal', title:'Temporalsätze',
+  sub:'Все временны́е союзы',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'als/wenn/während/nachdem/bevor/bis/seitdem/sobald/solange + V-Ende',
+    table:{head:['Konnektor','Verhältnis'],rows:[
+      ['als','однократно прошл.'],['wenn','повторно/наст./буд.'],
+      ['nachdem','NS предшествует → Plusquamp.'],['bevor','HS предшествует'],
+      ['während','одновременно'],['seitdem','с момента'],
+    ]}},
+  examples:[sent('Nachdem er das Studium abgeschlossen hatte, begann er zu arbeiten.',
+    [{w:'Nachdem er abgeschlossen hatte,',r:'S'},{w:'begann er zu arbeiten.',r:'V'}],
+    'nachdem+Plusquamp.')],
+  exercises:[ex('___ er ankam, war sie weg. (однократно)','Als','als'),
+    ex('___ er gelesen hatte, sah er den Film. (nachdem)','Nachdem','nachdem+Plusquamp.'),
+    ex('Sie wartete, ___ er zurückkam.','bis','bis=пока не')]
+};
+CONTENT['ns_konditional'] = {
+  zone:'nebensatz', tag:'Konditional', title:'wenn / falls / sofern',
+  sub:'Условные придаточные',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Real: wenn+Präs. | Irreal Geg.: Konj.II | Irreal Verg.: Konj.II+Part.II',
+    table:{head:['Тип','Bedingung','Folge'],rows:[
+      ['Real','Wenn er kommt,','helfe ich.'],
+      ['Irreal Geg.','Wenn er käme,','würde ich helfen.'],
+      ['Irreal Verg.','Wenn er gekommen wäre,','hätte ich geholfen.'],
+    ]}},
+  examples:[sent('Wenn er Zeit gehabt hätte, wäre er gekommen.',
+    [{w:'Wenn er Zeit gehabt hätte,',r:'S'},{w:'wäre er gekommen.',r:'V'}],
+    'Irrealis Vergangenheit')],
+  exercises:[ex('___ es regnet, bleiben wir.','Wenn','real→wenn'),
+    ex('___ er Zeit ___, würde er kommen. (Irreal)','Wenn / hätte','Konj.II'),
+    ex('"ohne wenn": Hätte er Zeit, ___ er kommen.','würde','würde+Inf.')]
+};
+CONTENT['ns_kausal'] = {
+  zone:'nebensatz', tag:'Kausal', title:'Kausalsatz',
+  sub:'Причинные конструкции',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'weil/da(NS) | denn(HS,kein Inv.) | deshalb(HS+Inv.) | aufgrund+Gen.(C1)',
+    table:{head:['Mittel','Тип'],rows:[
+      ['weil','NS (V-Letzt)'],['da','NS (vorn, bekannt)'],
+      ['denn','HS (V2, kein Inv.)'],['deshalb/daher','HS+Inv.'],
+    ]}},
+  examples:[],
+  exercises:[ex('Er bleibt, ___ er krank ist.','weil','weil NS'),
+    ex('___ Noten verlor er das Stipendium. (aufgrund+Gen.)','Aufgrund schlechter','aufgrund+Gen.')]
+};
+CONTENT['ns_konsekutiv'] = {
+  zone:'nebensatz', tag:'Konsekutiv', title:'sodass / so...dass',
+  sub:'Следственные придаточные',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'sodass+NS | so+Adj.+dass+NS | damit=цель ≠ следствие',
+    table:{head:['Konj.','Bedeutung'],rows:[
+      ['sodass','следствие'],['so...dass','степень+следствие'],['damit','цель (не следствие)'],
+    ]}},
+  examples:[sent('Er hat so viel gelernt, dass er problemlos bestand.',
+    [{w:'Er hat so viel gelernt,',r:'S'},{w:'dass er problemlos bestand.',r:'V'}],
+    'so viel...dass')],
+  exercises:[ex('Er war ___ müde, ___ er einschlief.','so / dass','so+Adj...dass'),
+    ex('"damit" vs "sodass": Unterschied?','damit=Ziel, sodass=Folge','wichtig!')]
+};
+CONTENT['ns_final'] = {
+  zone:'nebensatz', tag:'Final', title:'damit / um...zu',
+  sub:'Целевые придаточные',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'damit+NS (разные субъекты) | um...zu+Inf. (gleicher Subj.)',
+    table:{head:['Mittel','Субъекты','Beispiel'],rows:[
+      ['damit','любые','Er erklärt, damit sie versteht.'],
+      ['um...zu','одинаковые','Er lernt, um zu bestehen.'],
+    ]}},
+  examples:[sent('Er spart, um sich ein Auto kaufen zu können.',
+    [{w:'Er spart,',r:'S'},{w:'um sich ein Auto kaufen zu können.',r:'V'}],
+    'um+zu+Modal')],
+  exercises:[ex('Er lernt, ___ die Prüfung ___ bestehen.','um / zu','um...zu'),
+    ex('Der Lehrer wiederholt, ___ alle es ___. (damit+verstehen)','damit / verstehen','damit NS')]
+};
+
+// ── C1 CONTENT ────────────────────────────────────────────────────
+CONTENT['c1strukt'] = {
+  zone:'c1color', tag:'C1', title:'C1-Strukturen',
+  sub:'Конструкции уровня C1',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Partizipialkonstr. · Erw.Adj.Attr. · FVG · Doppelkonj. · Passiv-Ersatz · Konj.I/II',
+    table:{head:['Struktur','C1','Einfach'],rows:[
+      ['Partizipialattr.','der von allen geliebte Mann','der Mann, der geliebt wird'],
+      ['FVG','zur Lösung bringen','lösen'],['Doppelkonj.','sowohl...als auch','und'],
+      ['Passiv-Ersatz','lässt sich lösen','kann gelöst werden'],
+      ['Nominalisierung','aufgrund seiner Erkrankung','weil er krank war'],
+    ]}},
+  examples:[sent('Das von der Regierung verabschiedete Gesetz trat in Kraft.',
+    [{w:'Das',r:'S'},{w:'von der Regierung verabschiedete',r:'Adj'},{w:'Gesetz',r:'S'},{w:'trat in Kraft.',r:'V'}],
+    'Erweitertes Partizipialattribut (Part.II)')],
+  exercises:[ex('"lösen" als FVG?','zur Lösung bringen','FVG'),
+    ex('"Das lässt sich nicht ändern" = ?','Das kann nicht geändert werden.','Passiv-Ersatz')]
+};
+CONTENT['c1_partizip'] = {
+  zone:'c1color', tag:'C1', title:'Partizipialkonstruktion',
+  sub:'Причастные обороты вместо придаточных',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Part.I (Inf.+-d, gleichzeitig/aktiv) | Part.II (passiv/abgeschl.) als Attribut',
+    table:{head:['NS (устно)','→ Partizipialattr.'],rows:[
+      ['der Mann, der singt','der singende Mann'],
+      ['das Buch, das geschrieben wurde','das geschriebene Buch'],
+      ['der Mann, der von allen geliebt wird','der von allen geliebte Mann'],
+    ]}},
+  examples:[sent('Der von allen respektierte Wissenschaftler hielt einen Vortrag.',
+    [{w:'Der von allen respektierte',r:'Adj'},{w:'Wissenschaftler',r:'S'},{w:'hielt einen Vortrag.',r:'V'}],
+    'Part.II als erweitertes Attribut')],
+  exercises:[ex('der Mann, der singt → Attr.','der singende Mann','Part.I: -d'),
+    ex('das Buch, das gelesen wurde → Attr.','das gelesene Buch','Part.II'),
+    ex('die Studentin, die fleißig lernt → Attr.','die fleißig lernende Studentin','Part.I erw.')]
+};
+CONTENT['c1_erw_adj'] = {
+  zone:'c1color', tag:'C1', title:'Erweiterte Adjektivattribute',
+  sub:'Распространённое определение — письменный стиль',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'[Artikel] + [Erweiterung] + [dekl.Part./Adj.] + [Nomen]',
+    table:{head:['NS (устно)','Erw.Adj.Attr. (письм.)'],rows:[
+      ['das Gesetz, das gestern verabschiedet wurde','das gestern verabschiedete Gesetz'],
+      ['die Kosten, die gestiegen sind','die gestiegenen Kosten'],
+      ['ein Problem, das noch nicht gelöst ist','ein noch nicht gelöstes Problem'],
+    ]}},
+  examples:[sent('Die in den letzten Jahren stark gestiegenen Energiepreise belasten die Haushalte.',
+    [{w:'Die',r:'S'},{w:'in den letzten Jahren stark gestiegenen',r:'Adj'},{w:'Energiepreise',r:'S'},{w:'belasten die Haushalte.',r:'V'}],
+    'Erweitertes Attr. mit Präp.+Adj.')],
+  exercises:[ex('das Projekt, das von der EU finanziert wurde → Attr.','das von der EU finanzierte Projekt','Part.II'),
+    ex('Wo steht das erweiterte Adj.?','zwischen Artikel und Nomen','Grundregel')]
+};
+CONTENT['c1_fvg'] = {
+  zone:'c1color', tag:'C1', title:'Funktionsverbgefüge',
+  sub:'Глагольно-именные словосочетания',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'semantisch leeres Verb + Nomen in fester Verbindung',
+    table:{head:['FVG','Einfaches Verb'],rows:[
+      ['zur Sprache bringen','erwähnen'],['in Gang setzen','starten'],
+      ['Kritik üben','kritisieren'],['Hilfe leisten','helfen'],
+      ['eine Entscheidung treffen','entscheiden'],['in Betracht ziehen','berücksichtigen'],
+      ['zum Ausdruck bringen','ausdrücken'],['in Frage stellen','bezweifeln'],
+    ]}},
+  examples:[sent('Der Minister brachte das Thema erneut zur Sprache.',
+    [{w:'Der Minister',r:'S'},{w:'brachte',r:'V'},{w:'das Thema zur Sprache.',r:'Adv'}],
+    'FVG: zur Sprache bringen = erwähnen')],
+  exercises:[ex('"eine Entscheidung treffen" = ?','entscheiden','FVG'),
+    ex('"Kritik üben" = ?','kritisieren','FVG'),
+    ex('Er erwähnte das. → FVG:','Er brachte das zur Sprache.','FVG')]
+};
+CONTENT['c1_doppelkonj'] = {
+  zone:'c1color', tag:'C1', title:'Doppelkonjunktionen',
+  sub:'Двойные союзы',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'sowohl...als auch | weder...noch | nicht nur...sondern auch | zwar...aber | entweder...oder',
+    table:{head:['Doppelkonj.','Bedeutung','Beispiel'],rows:[
+      ['sowohl...als auch','и...и','sowohl Englisch als auch Französisch'],
+      ['weder...noch','ни...ни','weder Zeit noch Geld'],
+      ['nicht nur...sondern auch','не только...но и','nicht nur klug, sondern auch fleißig'],
+      ['zwar...aber','хотя...но','zwar müde, aber arbeitet weiter'],
+      ['entweder...oder','или...или','entweder heute oder morgen'],
+    ]}},
+  examples:[sent('Sowohl die Qualität als auch der Preis sind entscheidend.',
+    [{w:'Sowohl die Qualität als auch der Preis',r:'S'},{w:'sind',r:'V'},{w:'entscheidend.',r:'Adj'}],
+    'sowohl...als auch → Plural!')],
+  exercises:[ex('Er spricht ___ Deutsch ___ Englisch. (и...и)','sowohl / als auch','sowohl...als auch'),
+    ex('Sie hat ___ Zeit ___ Geld. (ни...ни)','weder / noch','weder...noch'),
+    ex('Er ist ___ müde, ___ er weiterarbeitet.','zwar / aber','zwar...aber')]
+};
+CONTENT['c1_passiv_adv'] = {
+  zone:'c1color', tag:'C1-Passiv', title:'Passiv-Alternativen',
+  sub:'Замены пассива — C1',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'lassen+sich+Inf. | sein+zu+Inf. | -bar/-lich Adj. | man+Aktiv',
+    table:{head:['Passiv','Alternative'],rows:[
+      ['kann gelöst werden','lässt sich lösen'],['muss erledigt werden','ist zu erledigen'],
+      ['kann gesehen werden','ist sichtbar / ist zu sehen'],
+    ]}},
+  examples:[sent('Das lässt sich nicht so einfach lösen.',
+    [{w:'Das',r:'S'},{w:'lässt sich nicht so einfach lösen.',r:'V'}],
+    'sich lassen = kann...werden')],
+  exercises:[ex('Das Problem kann gelöst werden. → lassen+sich:','Das Problem lässt sich lösen.','lassen+sich'),
+    ex('Das muss gemacht werden. → sein+zu:','Das ist zu machen.','sein+zu+Inf.')]
+};
+CONTENT['c1_konj2'] = {
+  zone:'c1color', tag:'Konj.II', title:'Konjunktiv II',
+  sub:'Полная система сослагательного наклонения',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'hätte/wäre/könnte... | würde+Inf. | Verg.: hätte/wäre+Part.II',
+    table:{head:['','hätte','wäre','könnte','würde'],rows:[
+      ['ich','hätte','wäre','könnte','würde'],
+      ['er/sie','hätte','wäre','könnte','würde'],
+      ['wir','hätten','wären','könnten','würden'],
+    ]}},
+  examples:[sent('Wenn ich mehr Zeit hätte, würde ich mehr reisen.',
+    [{w:'Wenn ich mehr Zeit hätte,',r:'S'},{w:'würde ich mehr reisen.',r:'V'}],
+    'Irrealis Gegenwart')],
+  exercises:[ex('sein → Konj.II ich','wäre','wäre'),ex('haben → Konj.II wir','hätten','hätten'),
+    ex('Wenn ich Geld ___, würde ich reisen.','hätte','hätte')]
+};
+CONTENT['k2_formen'] = {
+  zone:'c1color', tag:'Konj.II', title:'Konjunktiv II Formen',
+  sub:'Образование всех форм',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Stark: Prät.Stamm+Umlaut+e | Schwach: würde+Inf.',
+    table:{head:['Inf.','Konj.II er'],rows:[
+      ['haben','hätte'],['sein','wäre'],['werden','würde'],
+      ['können','könnte'],['müssen','müsste'],['dürfen','dürfte'],
+      ['lernen','würde lernen (=Prät.!)'],
+    ]}},
+  examples:[sent('Das wäre eine gute Idee.',
+    [{w:'Das wäre eine gute Idee.',r:'V'}],
+    'sein→wäre')],
+  exercises:[ex('sein → Konj.II ich','wäre','wäre'),ex('haben → Konj.II wir','hätten','hätten'),
+    ex('lernen → Konj.II ich (schwach)','würde lernen','schwach → würde+Inf.')]
+};
+CONTENT['k2_irrealis'] = {
+  zone:'c1color', tag:'Konj.II', title:'Irrealis',
+  sub:'Нереальные условия — Gegenwart и Vergangenheit',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Geg.: Konj.II | Verg.: hätte/wäre+Part.II | ohne wenn: V1',
+    table:{head:['Zeit','Bedingung (NS)','Folge (HS)'],rows:[
+      ['Gegenwart','Wenn er Zeit hätte,','würde er kommen.'],
+      ['Vergangenheit','Wenn er gekommen wäre,','hätten wir geholfen.'],
+      ['ohne wenn(Geg.)','Hätte er Zeit,','würde er kommen.'],
+    ]}},
+  examples:[sent('Wenn er das gewusst hätte, wäre alles anders gelaufen.',
+    [{w:'Wenn er das gewusst hätte,',r:'S'},{w:'wäre alles anders gelaufen.',r:'V'}],
+    'Irrealis Vergangenheit')],
+  exercises:[ex('Wenn ich Zeit ___, würde ich kommen.','hätte','hätte'),
+    ex('Wenn er früher ___ ___, hätten wir gewonnen. (kommen)','gekommen wäre','Part.II+wäre'),
+    ex('"ohne wenn": Wenn sie fleißiger wäre, ... →','Wäre sie fleißiger, würde sie bestehen.','V1')]
+};
+CONTENT['k2_hoeflich'] = {
+  zone:'c1color', tag:'Konj.II', title:'Höflichkeit — Konj.II',
+  sub:'Вежливые просьбы и вопросы',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Könnten/Würden/Hätten Sie...? | Ich möchte/hätte gern...',
+    table:{head:['Indikativ','Konjunktiv II'],rows:[
+      ['Können Sie helfen?','Könnten Sie helfen?'],['Darf ich fragen?','Dürfte ich fragen?'],
+      ['Ich will einen Kaffee.','Ich möchte/hätte gern einen Kaffee.'],
+    ]}},
+  examples:[],
+  exercises:[ex('Können Sie helfen? → Konj.II','Könnten Sie helfen?','könnten'),
+    ex('Ich will einen Kaffee. → вежливо','Ich hätte gern einen Kaffee.','hätte gern'),
+    ex('___ Sie das bitte machen?','Würden','würden Sie')]
+};
+CONTENT['k2_vergangen'] = {
+  zone:'c1color', tag:'Konj.II', title:'Konj.II Vergangenheit',
+  sub:'Нереальное прошлое',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'hätte/wäre + Part.II | haben-V → hätte | sein-V → wäre',
+    table:{head:['Person','haben-Verb','sein-Verb'],rows:[
+      ['ich','hätte gelernt','wäre gekommen'],['er','hätte gelernt','wäre gekommen'],
+    ]}},
+  examples:[sent('Sie wäre gerne mitgekommen, aber sie hatte keine Zeit.',
+    [{w:'Sie wäre gerne mitgekommen,',r:'S'},{w:'aber sie hatte keine Zeit.',r:'V'}],
+    'wäre+Part.II')],
+  exercises:[ex('Ich ___ das getan. (haben→Konj.II Verg.)','hätte getan','hätte+Part.II'),
+    ex('Er ___ früher ___. (kommen→Konj.II Verg.)','wäre / gekommen','wäre+Part.II')]
+};
+CONTENT['c1_konj1'] = {
+  zone:'c1color', tag:'Konj.I', title:'Konjunktiv I',
+  sub:'Косвенная речь — indirekte Rede',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Inf.Stamm+-e-Endungen | sein: sei | Konj.I=Ind.→Konj.II verwenden',
+    table:{head:['Person','lernen','haben','sein'],rows:[
+      ['ich','lerne','habe','sei'],['du','lernest','habest','seist'],
+      ['er/sie','lerne','habe','sei'],['wir','lernen*','haben*','seien'],
+    ]},text:'*wir lernen = Ind.! → würde+Inf. oder Konj.II verwenden'},
+  examples:[sent('Die Ministerin erklärte, die Regierung habe keine Fehler gemacht.',
+    [{w:'Die Ministerin erklärte,',r:'S'},{w:'die Regierung habe keine Fehler gemacht.',r:'V'}],
+    'Konj.I Perfekt: habe+Part.II')],
+  exercises:[ex('Er sagt, er ___ Deutsch. (lernen→Konj.I er)','lerne','lerne'),
+    ex('Sie sagt, sie ___ müde. (sein)','sei','sei'),
+    ex('Wann Konj.II statt Konj.I?','wenn Konj.I = Indikativ','z.B. wir lernen')]
+};
+CONTENT['c1_modalsubj'] = {
+  zone:'c1color', tag:'C1-Modal', title:'Subjektive Modalität',
+  sub:'Предположения с модальными глаголами',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Modal+Inf./Inf.II → Sprechermeinung',
+    table:{head:['Modal','Subj. Bedeutung','Beispiel'],rows:[
+      ['müssen','должно быть','Er muss krank sein.'],
+      ['können','возможно','Das kann stimmen.'],
+      ['sollen','говорят, что','Er soll reich sein.'],
+      ['dürfen(Konj.II)','вероятно','Das dürfte schwer sein.'],
+    ]}},
+  examples:[sent('Er muss das schon gewusst haben.',
+    [{w:'Er muss',r:'V'},{w:'das gewusst haben.',r:'V'}],
+    'Inf.II: gewusst haben = Vergangenheit')],
+  exercises:[ex('"Er muss krank sein" bedeutet:','Er ist wahrscheinlich krank.','subj.müssen'),
+    ex('Er muss das ___ ___ (wissen, Verg.)','gewusst haben','Inf.II'),
+    ex('Sie muss ___ ___ (kommen, sein-V, Verg.)','gekommen sein','Inf.II+sein')]
+};
+CONTENT['c1_stil'] = {
+  zone:'c1color', tag:'C1-Stil', title:'Stilmittel & Register',
+  sub:'Стилистика немецкого языка',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Umgangsspr. ↔ Neutral ↔ Formal/Wissenschaftlich',
+    table:{head:['Umgangsspr.','→ Formal (C1)'],rows:[
+      ['Ich habe das gelöst.','Das Problem wurde gelöst.'],
+      ['weil er krank war','aufgrund seiner Erkrankung'],
+      ['Er kritisiert das.','Er übt Kritik daran.'],
+      ['Er sagte, dass...','Er sagte, er habe... (Konj.I)'],
+    ]},text:'C1 formal: Passiv · Nominalisierung · FVG · Erw.Adj.Attr. · Gen.-Präp. · Konj.I'},
+  examples:[sent('Aufgrund der anhaltenden Unsicherheit sehen sich viele Unternehmen gezwungen, zu handeln.',
+    [{w:'Aufgrund der anhaltenden Unsicherheit',r:'Adv'},{w:'sehen sich viele Unternehmen gezwungen,',r:'V'},{w:'zu handeln.',r:'V'}],
+    'Formeller C1-Stil')],
+  exercises:[ex('weil er krank war → aufgrund...','aufgrund seiner Erkrankung','aufgrund+Gen.'),
+    ex('Er hat gelöst. → Passiv','Das Problem wurde gelöst.','Passiv'),
+    ex('C1-Merkmale nennen:','Passiv, Nominalisierung, FVG, Konj.I, Erw.Adj.Attr.','C1')]
+};
+CONTENT['pas_vorgang'] = {
+  zone:'present', tag:'Passiv', title:'Vorgangspassiv',
+  sub:'werden + Partizip II',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'werden(konj.)+Part.II | von+Dat.(Agens) | durch+Akk.(Mittel)',
+    table:{head:['Zeit','Bildung','Beispiel'],rows:[
+      ['Präsens','wird+Part.II','wird gebaut'],['Präteritum','wurde+Part.II','wurde gebaut'],
+      ['Perfekt','ist+Part.II+worden','ist gebaut worden'],
+      ['Modal','muss+Part.II+werden','muss gebaut werden'],
+    ]}},
+  examples:[sent('Das neue Gesetz wurde vom Parlament verabschiedet.',
+    [{w:'Das neue Gesetz',r:'S'},{w:'wurde',r:'V'},{w:'vom Parlament',r:'Adv'},{w:'verabschiedet.',r:'V'}],
+    'Prät.Passiv + von+Dat.')],
+  exercises:[ex('Das Haus ___ renoviert. (Präsens)','wird','wird'),
+    ex('Der Brief ___ geschrieben. (Prät.)','wurde','wurde'),
+    ex('Das Paket ___ geliefert ___. (Perfekt)','ist / worden','ist...worden!')]
+};
+CONTENT['pas_modal'] = {
+  zone:'present', tag:'Passiv', title:'Passiv + Modalverben',
+  sub:'Страдательный залог с модальными',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Modal(P2) + ... + Part.II + werden(Ende)',
+    table:{head:['Modal','Beispiel'],rows:[
+      ['müssen','muss gemacht werden'],['können','kann gemacht werden'],
+      ['sollen (Prät.)','sollte gemacht werden'],
+    ]}},
+  examples:[sent('Die Aufgaben müssen bis morgen abgegeben werden.',
+    [{w:'Die Aufgaben',r:'S'},{w:'müssen',r:'V'},{w:'bis morgen abgegeben werden.',r:'V'}],
+    'müssen+Passiv')],
+  exercises:[ex('Das muss gemacht ___.','werden','Modal+Passiv: werden Ende'),
+    ex('Die Aufgabe ___ bis Freitag gemacht werden. (sollen, Prät.)','sollte','Prät.: sollte')]
+};
+CONTENT['pas_zeiten'] = {
+  zone:'present', tag:'Passiv', title:'Passiv — alle Zeiten',
+  sub:'Пассив во всех временах',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Perfekt Passiv: ist+Part.II+worden (NICHT geworden!)',
+    table:{head:['Zeit','Bildung'],rows:[
+      ['Präsens','wird+Part.II'],['Präteritum','wurde+Part.II'],
+      ['Perfekt','ist+Part.II+worden'],['Plusquamp.','war+Part.II+worden'],
+      ['Futur I','wird+Part.II+werden'],
+    ]}},
+  examples:[sent('Das Haus ist letztes Jahr renoviert worden.',
+    [{w:'Das Haus',r:'S'},{w:'ist',r:'V'},{w:'letztes Jahr',r:'Adv'},{w:'renoviert worden.',r:'V'}],
+    'worden nicht geworden!')],
+  exercises:[ex('Das Buch ___ gelesen. (Präsens)','wird','wird'),
+    ex('Das Buch ___ gelesen ___. (Perfekt)','ist / worden','ist...worden'),
+    ex('worden oder geworden?','worden!','Perfekt Passiv')]
+};
+CONTENT['rel_nom_akk'] = {
+  zone:'nebensatz', tag:'Relativsatz', title:'Relativsatz Nom./Akk.',
+  sub:'Nominativ und Akkusativ',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Nom.: der/die/das/die | Akk.: den/die/das/die',
+    table:{head:['','m','f','n','Pl.'],rows:[
+      ['Nom.','der','die','das','die'],['Akk.','den','die','das','die'],
+    ]}},
+  examples:[],
+  exercises:[ex('Der Mann, ___ hier arbeitet. (Nom.m)','der','Nom.m: der'),
+    ex('Das Buch, ___ ich lese. (Akk.n)','das','Akk.n: das'),
+    ex('Der Mann, ___ ich kenne. (Akk.m)','den','Akk.m: den')]
+};
+CONTENT['rel_dat_gen'] = {
+  zone:'nebensatz', tag:'Relativsatz', title:'Relativsatz Dat./Gen.',
+  sub:'Dativ und Genitiv',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Dat.: dem/der/dem/denen | Gen.: dessen/deren/dessen/deren',
+    table:{head:['','m','f','n','Pl.'],rows:[
+      ['Dat.','dem','der','dem','denen'],['Gen.','dessen','deren','dessen','deren'],
+    ]}},
+  examples:[sent('Das Kind, dessen Spielzeug verloren ist, weint.',
+    [{w:'Das Kind,',r:'S'},{w:'dessen Spielzeug verloren ist,',r:'NS'},{w:'weint.',r:'V'}],
+    'Gen.n: dessen')],
+  exercises:[ex('Die Frau, ___ ich helfe. (Dat.f)','der','Dat.f: der'),
+    ex('Das Kind, ___ Spielzeug verloren ist. (Gen.n)','dessen','Gen.n: dessen'),
+    ex('Die Kinder, ___ ich geholfen habe. (Dat.Pl.)','denen','Dat.Pl.: denen')]
+};
+CONTENT['rel_praep'] = {
+  zone:'nebensatz', tag:'Relativsatz', title:'Relativsatz mit Präp.',
+  sub:'С предлогом',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'Präp.+Rel.Pron.(Kasus) | Sache: wo(r)+Präp.',
+    table:{head:['Person/Sache','Beispiel'],rows:[
+      ['Person m','der Mann, mit dem ich arbeite'],
+      ['Sache','das Thema, worüber wir sprechen'],
+    ]}},
+  examples:[sent('Der Kollege, mit dem ich arbeite, kommt aus Wien.',
+    [{w:'Der Kollege,',r:'S'},{w:'mit dem ich arbeite,',r:'NS'},{w:'kommt aus Wien.',r:'V'}],
+    'mit+Dat.m: dem')],
+  exercises:[ex('Der Mann, mit ___ sie spricht. (Dat.m)','dem','mit+Dat: dem'),
+    ex('Das Thema, ___ wir gesprochen haben. (worüber)','worüber','Sache: wo+r+über')]
+};
+CONTENT['rel_wo'] = {
+  zone:'nebensatz', tag:'Relativsatz', title:'wo / was als Rel.Pron.',
+  sub:'Особые относительные местоимения',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{formula:'wo = Ort | was nach: alles/nichts/etwas/das | wo(r)+Präp. für Sachen',
+    table:{head:['Pronomen','Gebrauch'],rows:[
+      ['wo','место: die Stadt, wo ich lebe'],
+      ['was','nach alles/nichts: alles, was er sagte'],
+      ['worüber','über+Sache: das Thema, worüber wir reden'],
+    ]}},
+  examples:[],
+  exercises:[ex('Die Stadt, ___ ich wohne.','wo','wo=Ort'),
+    ex('Alles, ___ er sagte, stimmte.','was','was nach alles'),
+    ex('Das Thema, ___ wir uns gestritten haben.','worüber','Sache: worüber')]
+};
+
+// ── REMAINING NEW CONTENT ─────────────────────────────────────────
+
+CONTENT['pas_zustand'] = {
+  zone:'present', tag:'Passiv', title:'Zustandspassiv',
+  sub:'sein + Partizip II — результат/состояние',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'sein(konj.) + Part.II | kein Agens möglich',
+    text:`<strong>Zustandspassiv</strong> описывает <em>состояние</em>, ставшее результатом действия.<br><br>
+Сравните: <em>Das Fenster wird geöffnet</em> (процесс) vs <em>Das Fenster ist geöffnet</em> (состояние).<br>
+Kein Agens (von+Dat.) möglich, da der Zustand bereits eingetreten ist.`,
+    table:{head:['Zeit','sein','Beispiel'],rows:[
+      ['Präsens','ist','Die Tür ist geschlossen.'],
+      ['Präteritum','war','Die Tür war geschlossen.'],
+      ['Perfekt','ist...gewesen','Die Tür ist geschlossen gewesen.'],
+    ]}
+  },
+  examples:[
+    sent('Die Aufgabe ist bereits erledigt.',
+      [{w:'Die Aufgabe',r:'S'},{w:'ist',r:'V'},{w:'bereits',r:'Adv'},{w:'erledigt.',r:'V'}],
+      'Zustandspassiv Präsens'),
+    sent('Als wir ankamen, war alles vorbereitet.',
+      [{w:'Als wir ankamen,',r:'Adv'},{w:'war',r:'V'},{w:'alles',r:'S'},{w:'vorbereitet.',r:'V'}],
+      'Zustandspassiv Präteritum'),
+  ],
+  exercises:[
+    ex('Die Tür ___ geschlossen. (sein, Präsens)','ist','ist geschlossen'),
+    ex('Das Paket ___ schon geliefert. (sein, Prät.)','war','war geliefert'),
+    ex('"Das Haus wird gebaut" — Vorgangs- oder Zustandspassiv?','Vorgangspassiv','werden=Vorgang'),
+    ex('"Das Haus ist fertig." — Vorgangs- oder Zustandspassiv?','Zustandspassiv','sein=Zustand'),
+  ]
+};
+
+CONTENT['pas_modal'] = {
+  zone:'present', tag:'Passiv', title:'Passiv + Modalverben',
+  sub:'Модальные глаголы + страдательный залог',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Modal(P2) + ... + Part.II + werden(Ende)',
+    text:'Modalverb wird konjugiert, <em>werden</em> steht als Infinitiv am Ende.',
+    table:{head:['Modal','Passiv Präsens','Passiv Prät.'],rows:[
+      ['müssen','muss gemacht werden','musste gemacht werden'],
+      ['können','kann gemacht werden','konnte gemacht werden'],
+      ['sollen','soll gemacht werden','sollte gemacht werden'],
+      ['dürfen','darf gemacht werden','durfte gemacht werden'],
+    ]}
+  },
+  examples:[
+    sent('Die Hausaufgaben müssen bis morgen abgegeben werden.',
+      [{w:'Die Hausaufgaben',r:'S'},{w:'müssen',r:'V'},{w:'bis morgen',r:'Adv'},{w:'abgegeben werden.',r:'V'}],
+      'müssen + Passiv'),
+    sent('Das lässt sich nicht so einfach lösen.',
+      [{w:'Das',r:'S'},{w:'lässt sich',r:'V'},{w:'nicht so einfach',r:'Adv'},{w:'lösen.',r:'V'}],
+      'Passiv-Ersatz: sich lassen'),
+  ],
+  exercises:[
+    ex('Das muss gemacht ___. (werden)','werden','Modal+Passiv: werden Ende'),
+    ex('Die Aufgabe ___ bis Freitag abgegeben werden. (sollen, Prät.)','sollte','Prät.: sollte'),
+    ex('Man kann das Problem lösen. → Passiv-Ersatz: Das Problem ___ ___ lösen.','lässt sich','lassen+sich'),
+    ex('Das Fenster muss geöffnet ___. (werden)','werden','werden am Ende'),
+  ]
+};
+
+CONTENT['pas_zeiten'] = {
+  zone:'present', tag:'Passiv', title:'Passiv — alle Zeiten',
+  sub:'Пассив во всех временах',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Vorgangspassiv: werden(konj.) + Part.II in allen Zeiten',
+    table:{head:['Zeit','Bildung','Beispiel'],rows:[
+      ['Präsens','wird+Part.II','Das Buch wird gelesen.'],
+      ['Präteritum','wurde+Part.II','Das Buch wurde gelesen.'],
+      ['Perfekt','ist+Part.II+worden','Das Buch ist gelesen worden.'],
+      ['Plusquamp.','war+Part.II+worden','Das Buch war gelesen worden.'],
+      ['Futur I','wird+Part.II+werden','Das Buch wird gelesen werden.'],
+      ['Modal Prät.','musste+Part.II+werden','Das Buch musste gelesen werden.'],
+    ]},
+    text:'Perfekt Passiv: <em>worden</em> (nicht "geworden"!) — häufiger Fehler!'
+  },
+  examples:[
+    sent('Das Haus ist letztes Jahr renoviert worden.',
+      [{w:'Das Haus',r:'S'},{w:'ist',r:'V'},{w:'letztes Jahr',r:'Adv'},{w:'renoviert worden.',r:'V'}],
+      'Perfekt Passiv: worden nicht geworden!'),
+  ],
+  exercises:[
+    ex('Das Buch ___ gelesen. (Präsens Passiv)','wird','wird+Part.II'),
+    ex('Das Buch ___ gelesen. (Präteritum Passiv)','wurde','wurde+Part.II'),
+    ex('Das Buch ___ gelesen ___. (Perfekt Passiv)','ist / worden','ist...worden'),
+    ex('Perfekt Passiv: "worden" oder "geworden"?','worden','worden! (nicht geworden)'),
+  ]
+};
+
+// ── RELATIVSATZ LEVEL 3 ──────────────────────────────────────────
+CONTENT['rel_nom_akk'] = {
+  zone:'nebensatz', tag:'Relativsatz', title:'Relativsatz Nom./Akk.',
+  sub:'Relativpronomen im Nominativ und Akkusativ',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Nom.: der/die/das/die | Akk.: den/die/das/die',
+    table:{head:['Kasus','m','f','n','Pl.'],rows:[
+      ['Nom.','der','die','das','die'],
+      ['Akk.','den','die','das','die'],
+    ]},
+    text:'Genus = Bezugswort. Kasus = Funktion im NS. Nom. = Subj. im NS. Akk. = direktes Obj. im NS.'
+  },
+  examples:[
+    sent('Der Mann, der hier arbeitet, ist mein Kollege.',
+      [{w:'der Mann,',r:'S'},{w:'der hier arbeitet,',r:'NS'},{w:'ist mein Kollege.',r:'V'}],
+      'Nom.m: der (Subj. im NS)'),
+    sent('Das Buch, das ich lese, ist sehr gut.',
+      [{w:'Das Buch,',r:'S'},{w:'das ich lese,',r:'NS'},{w:'ist sehr gut.',r:'V'}],
+      'Akk.n: das (Obj. im NS)'),
+  ],
+  exercises:[
+    ex('Die Frau, ___ hier wohnt, ist nett. (Nom.f)','die','Nom.f: die'),
+    ex('Das Kind, ___ ich sehe, lacht. (Akk.n)','das','Akk.n: das'),
+    ex('Der Mann, ___ ich kenne, ist Arzt. (Akk.m)','den','Akk.m: den'),
+    ex('Die Kinder, ___ spielen, sind laut. (Nom.Pl.)','die','Nom.Pl: die'),
+  ]
+};
+
+CONTENT['rel_dat_gen'] = {
+  zone:'nebensatz', tag:'Relativsatz', title:'Relativsatz Dat./Gen.',
+  sub:'Relativpronomen im Dativ und Genitiv',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Dat.: dem/der/dem/denen | Gen.: dessen/deren/dessen/deren',
+    table:{head:['Kasus','m','f','n','Pl.'],rows:[
+      ['Dat.','dem','der','dem','denen'],
+      ['Gen.','dessen','deren','dessen','deren'],
+    ]},
+    text:'Dat. = indirektes Obj. Gen. = Besitz (чей?). Pl.Dat.: denen (nicht "den"!).'
+  },
+  examples:[
+    sent('Die Frau, der ich helfe, ist krank.',
+      [{w:'Die Frau,',r:'S'},{w:'der ich helfe,',r:'NS'},{w:'ist krank.',r:'V'}],
+      'Dat.f: der'),
+    sent('Der Lehrer, dessen Unterricht mir gefällt, heißt Müller.',
+      [{w:'Der Lehrer,',r:'S'},{w:'dessen Unterricht mir gefällt,',r:'NS'},{w:'heißt Müller.',r:'V'}],
+      'Gen.m: dessen'),
+    sent('Die Kinder, denen ich geholfen habe, sind glücklich.',
+      [{w:'Die Kinder,',r:'S'},{w:'denen ich geholfen habe,',r:'NS'},{w:'sind glücklich.',r:'V'}],
+      'Dat.Pl.: denen'),
+  ],
+  exercises:[
+    ex('Die Frau, ___ ich helfe. (Dat.f)','der','Dat.f: der'),
+    ex('Das Kind, ___ Spielzeug verloren ist. (Gen.n)','dessen','Gen.n: dessen'),
+    ex('Die Studenten, ___ ich geholfen habe. (Dat.Pl.)','denen','Dat.Pl.: denen'),
+    ex('Der Mann, ___ Auto gestohlen wurde. (Gen.m)','dessen','Gen.m: dessen'),
+  ]
+};
+
+CONTENT['rel_praep'] = {
+  zone:'nebensatz', tag:'Relativsatz', title:'Relativsatz mit Präposition',
+  sub:'Относительное с предлогом',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'Präp. + Relativpronomen(entspr. Kasus) | für Sachen: wo(r)+Präp.',
+    text:'Wenn der NS-Verb eine Präposition verlangt, steht sie vor dem Relativpronomen.<br><br>Für Sachen: Pronominalrelativadverb: <em>worüber, womit, woran, worauf, wovon...</em>',
+    table:{head:['Bezugswort','Präp.+Kasus','Beispiel'],rows:[
+      ['Person m','mit+Dat.','der Mann, mit dem ich arbeite'],
+      ['Person f','für+Akk.','die Frau, für die ich arbeite'],
+      ['Sache','worüber','das Thema, worüber wir sprechen'],
+      ['Sache','wofür','die Arbeit, wofür er bekannt ist'],
+    ]}
+  },
+  examples:[
+    sent('Der Kollege, mit dem ich arbeite, kommt aus Wien.',
+      [{w:'Der Kollege,',r:'S'},{w:'mit dem ich arbeite,',r:'NS'},{w:'kommt aus Wien.',r:'V'}],
+      'mit+Dat.m: dem'),
+    sent('Das Thema, worüber wir gesprochen haben, ist wichtig.',
+      [{w:'Das Thema,',r:'S'},{w:'worüber wir gesprochen haben,',r:'NS'},{w:'ist wichtig.',r:'V'}],
+      'Sache: wo+r+über'),
+  ],
+  exercises:[
+    ex('Der Mann, mit ___ sie spricht. (Dat.m)','dem','mit+Dat.m: dem'),
+    ex('Die Frau, für ___ er arbeitet. (Akk.f)','die','für+Akk.f: die'),
+    ex('Das Problem, ___ wir gesprochen haben. (worüber)','worüber','Sache: wo+r+über'),
+    ex('Der Freund, bei ___ er wohnt. (Dat.m)','dem','bei+Dat.m: dem'),
+  ]
+};
+
+CONTENT['rel_wo'] = {
+  zone:'nebensatz', tag:'Relativsatz', title:'wo / worüber / was als Relativpronomen',
+  sub:'Особые относительные местоимения',
+  tabs:['Правило','Примеры','Упражнения'],
+  rule:{
+    formula:'wo = Ort | Sachen: wo(r)+Präp. | was nach: alles/nichts/etwas/das',
+    table:{head:['Relativpronomen','Gebrauch','Beispiel'],rows:[
+      ['wo','место','die Stadt, wo ich geboren bin'],
+      ['worüber','über+Sache','das Thema, worüber wir reden'],
+      ['wofür','für+Sache','der Grund, wofür er kämpft'],
+      ['was','nach alles/nichts/etwas','alles, was er sagte'],
+      ['was','nach Superlativ','das Beste, was mir passiert ist'],
+    ]},text:''
+  },
+  examples:[
+    sent('Berlin, wo ich geboren bin, ist meine Heimat.',
+      [{w:'Berlin,',r:'S'},{w:'wo ich geboren bin,',r:'NS'},{w:'ist meine Heimat.',r:'V'}],
+      'wo = Ort'),
+    sent('Alles, was er sagte, war richtig.',
+      [{w:'Alles,',r:'S'},{w:'was er sagte,',r:'NS'},{w:'war richtig.',r:'V'}],
+      'was nach alles'),
+  ],
+  exercises:[
+    ex('Die Stadt, ___ ich wohne. (Ort)','wo','wo=Ort'),
+    ex('Alles, ___ er sagte, stimmte.','was','was nach alles'),
+    ex('Das Thema, ___ wir uns gestritten haben. (worüber)','worüber','Sache: worüber'),
+    ex('Das Beste, ___ je passiert ist.','was','was nach Superlativ'),
+  ]
+};
+
 // ═══════════════════════════════════════════════════════════════════
 // WHEEL ENGINE
 // ═══════════════════════════════════════════════════════════════════
@@ -2925,7 +4427,18 @@ function getSegs() {
 
 function findParent(id) {
   if (id === 'root') return null;
-  return ROOT_SEGS.find(r=>r.id===id) || ROOT_SEGS.find(r=>(CHILDREN[r.id]||[]).some(c=>c.id===id));
+  // Direct root match
+  const rootMatch = ROOT_SEGS.find(r=>r.id===id);
+  if (rootMatch) return rootMatch;
+  // Child of root
+  for (const r of ROOT_SEGS) {
+    if ((CHILDREN[r.id]||[]).some(c=>c.id===id)) return r;
+    // Child of child (level 3)
+    for (const c of (CHILDREN[r.id]||[])) {
+      if ((CHILDREN[c.id]||[]).some(cc=>cc.id===id)) return c;
+    }
+  }
+  return null;
 }
 
 function shiftColor(hex, i, n) {
