@@ -5,19 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ПК и девайсы | Академия Кворса</title>
     
-    <meta property="og:title" content="Академия имени Вильяма Кворса">
-    <meta property="og:description" content="Блин, а прикольный сайтик так-то.">
-    <meta property="og:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg">
-    <meta property="og:url" content="https://kw0rs.uno/social">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Академия Кворса">
-
-    <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
-    <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
-    <link rel="shortcut icon" href="/icon/favicon.ico">
-
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
 
     <style>
@@ -43,36 +32,17 @@
             border: 1px solid #15151a;
         }
 
-        /* Кнопка меню в стиле терминала */
-        .menu-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--panel-dark);
-            border: 1px solid #15151a;
-            padding: 10px 20px;
-            color: #fff;
-            text-decoration: none;
-            z-index: 100;
-            transition: all 0.3s;
-        }
-        .menu-button:hover {
-            border-color: var(--laser-red);
-            color: var(--laser-red);
-            transform: translateY(-2px);
-        }
-
-        /* Масштабирование карточек */
+        /* 🛠️ ФИКС МАСШТАБИРОВАНИЯ ДЛЯ ВСЕХ КАРТОЧЕК */
         .device-card {
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease !important;
         }
         .device-card:hover {
-            transform: scale(1.04);
+            transform: translateY(-5px) scale(1.05) !important;
             border-color: #333;
-            z-index: 10;
+            z-index: 50;
         }
 
-        /* Особый статус для GPU (твоя гордость) */
+        /* 👑 ЦЕНТРАЛЬНЫЙ УЗЕЛ (GPU) */
         .tier-mega {
             border: 1px solid transparent !important;
             background-image: linear-gradient(var(--panel-dark), var(--panel-dark)), 
@@ -88,7 +58,6 @@
             100% { background-position: 200% 0%; }
         }
 
-        /* Заглушка изображения */
         .no-image {
             background: repeating-linear-gradient(45deg, #0a0a0d 0, #0a0a0d 10px, #0d0d11 10px, #0d0d11 20px);
             border: 1px dashed #2a2a35;
@@ -99,6 +68,7 @@
             color: #444;
             font-size: 10px;
             text-transform: uppercase;
+            text-align: center;
         }
 
         /* Модалка */
@@ -115,15 +85,6 @@
         }
         .modal-overlay.active { display: flex; }
 
-        .modal-content {
-            background: var(--panel-dark);
-            border: 1px solid #1c1c24;
-            width: 100%;
-            max-width: 900px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: var(--core-black); }
         ::-webkit-scrollbar-thumb { background: #222; }
@@ -132,7 +93,7 @@
 </head>
 <body class="antialiased">
 
-    <a href="https://kw0rs.uno" class="menu-button tech-mono text-xs">
+    <a href="https://kw0rs.uno" class="fixed top-5 right-5 bg-[#08080a] border border-[#15151a] px-4 py-2 text-white tech-mono text-[10px] hover:border-red-600 hover:text-red-500 transition-all z-[100]">
         [ 🏠 HOME_DIR ]
     </a>
 
@@ -140,117 +101,207 @@
         
         <header class="mb-16 border-b-2 border-[#111] pb-8">
             <div class="flex items-center gap-3 mb-4">
-                <span class="tech-mono text-[10px] text-red-500 bg-red-950/30 px-2 py-0.5 border border-red-900/40">HARDWARE_INDEX</span>
-                <span class="tech-mono text-[10px] text-zinc-600">STABLE_BUILD_2026</span>
+                <span class="tech-mono text-[10px] text-red-500 bg-red-950/30 px-2 py-0.5 border border-red-900/40">HARDWARE_REGISTRY</span>
+                <span class="tech-mono text-[10px] text-zinc-600">S_E_M_Y_O_N // 2026</span>
             </div>
             <h1 class="brutal-font text-4xl sm:text-6xl uppercase tracking-tighter text-white">
-                МОИ <span class="text-red-600">.</span> УСТРОЙСТВА
+                К<span class="text-red-600">.</span>А<span class="text-red-600">.</span>Л <span class="text-zinc-600 text-3xl sm:text-4xl font-normal tech-mono">// ДЕВАЙС ЛИСТ</span>
             </h1>
-            <p class="tech-mono text-xs text-zinc-500 mt-2 uppercase tracking-[0.2em]">С чем дед не шутит</p>
         </header>
 
-        <div id="hardware-registry">
-            <section class="mb-20">
-                <div class="flex items-center gap-4 mb-8">
-                    <h2 class="tech-mono text-sm text-red-600 uppercase font-bold tracking-widest">01 // INTERNAL_COMPONENTS</h2>
-                    <div class="h-px flex-1 bg-zinc-900"></div>
+        <section class="mb-16">
+            <div class="flex items-center gap-4 mb-8">
+                <h2 class="tech-mono text-xs text-red-600 uppercase font-bold tracking-[0.3em]">01 // INTERNAL_UNITS</h2>
+                <div class="h-px flex-1 bg-zinc-900"></div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="cpu">
+                    <div class="tech-mono text-[9px] text-zinc-600 mb-2">CPU</div>
+                    <div class="text-xl mb-3">⚙️</div>
+                    <div class="text-xs font-bold uppercase text-white truncate">Ryzen 7 5700X</div>
                 </div>
-                
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    <div class="device-card core-panel p-4 cursor-pointer" data-device="cpu">
-                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">PROC_UNIT</div>
-                        <div class="text-xl mb-4">⚙️</div>
-                        <div class="text-sm font-bold uppercase truncate text-white">Ryzen 7 5700X</div>
-                    </div>
-                    <div class="device-card core-panel p-4 cursor-pointer" data-device="mother">
-                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">BOARD_V</div>
-                        <div class="text-xl mb-4">💾</div>
-                        <div class="text-sm font-bold uppercase truncate text-white">B450 GAMING PLUS</div>
-                    </div>
-                    <div class="device-card core-panel p-4 cursor-pointer tier-mega" data-device="gpu">
-                        <div class="tech-mono text-[10px] text-red-500 mb-2">CORE_LOAD</div>
-                        <div class="text-xl mb-4">🎮</div>
-                        <div class="text-sm font-bold uppercase truncate text-white">RTX 5070 ASUS</div>
-                    </div>
-                    <div class="device-card core-panel p-4 cursor-pointer" data-device="ram">
-                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">MEM_CELL</div>
-                        <div class="text-xl mb-4">💾</div>
-                        <div class="text-sm font-bold uppercase truncate text-white">HyperX 32GB</div>
-                    </div>
-                    <div class="device-card core-panel p-4 cursor-pointer" data-device="ssd">
-                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">FLASH_DRIVE</div>
-                        <div class="text-xl mb-4">💽</div>
-                        <div class="text-sm font-bold uppercase truncate text-white">Samsung 980</div>
-                    </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="mother">
+                    <div class="tech-mono text-[9px] text-zinc-600 mb-2">MB</div>
+                    <div class="text-xl mb-3">💾</div>
+                    <div class="text-xs font-bold uppercase text-white truncate">MSI B450 GAMING</div>
                 </div>
-            </section>
+                <div class="device-card core-panel p-4 cursor-pointer tier-mega" data-device="gpu">
+                    <div class="tech-mono text-[9px] text-red-500 mb-2">GPU_CORE</div>
+                    <div class="text-xl mb-3">🎮</div>
+                    <div class="text-xs font-bold uppercase text-white truncate">RTX 5070 ASUS</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="ram">
+                    <div class="tech-mono text-[9px] text-zinc-600 mb-2">RAM</div>
+                    <div class="text-xl mb-3">💾</div>
+                    <div class="text-xs font-bold uppercase text-white truncate">HyperX 32GB</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="ssd">
+                    <div class="tech-mono text-[9px] text-zinc-600 mb-2">SSD</div>
+                    <div class="text-xl mb-3">💽</div>
+                    <div class="text-xs font-bold uppercase text-white truncate">Samsung 980</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="hdd">
+                    <div class="tech-mono text-[9px] text-zinc-600 mb-2">HDD</div>
+                    <div class="text-xl mb-3">💽</div>
+                    <div class="text-xs font-bold uppercase text-white truncate">WD + Seagate</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="case">
+                    <div class="tech-mono text-[9px] text-zinc-600 mb-2">CHASSIS</div>
+                    <div class="text-xl mb-3">📦</div>
+                    <div class="text-xs font-bold uppercase text-white truncate">ZALMAN Z7 NEO</div>
+                </div>
+            </div>
+        </section>
 
-            <section class="mb-20">
-                <div class="flex items-center gap-4 mb-8">
-                    <h2 class="tech-mono text-sm text-zinc-500 uppercase font-bold tracking-widest">02 // EXTERNAL_DEVICES</h2>
-                    <div class="h-px flex-1 bg-zinc-900"></div>
+        <section class="mb-16">
+            <div class="flex items-center gap-4 mb-8">
+                <h2 class="tech-mono text-xs text-zinc-500 uppercase font-bold tracking-[0.3em]">02 // VISUAL_OUTPUT</h2>
+                <div class="h-px flex-1 bg-zinc-900"></div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="device-card core-panel p-4 cursor-pointer border-l-red-600 border-l-2" data-device="screen1">
+                    <div class="tech-mono text-[9px] text-zinc-600 mb-2">PRIMARY_SCR</div>
+                    <div class="text-xl mb-3">🖥️</div>
+                    <div class="text-xs font-bold uppercase text-white">AOC C24G1</div>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    <div class="device-card core-panel p-4 cursor-pointer" data-device="mouse">
-                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">POINTER</div>
-                        <div class="text-xl mb-4">🖱️</div>
-                        <div class="text-sm font-bold uppercase text-white">Dareu A950 PRO</div>
-                    </div>
-                    <div class="device-card core-panel p-4 cursor-pointer" data-device="keyboard">
-                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">INPUT_KEY</div>
-                        <div class="text-xl mb-4">⌨️</div>
-                        <div class="text-sm font-bold uppercase text-white">Varmilo Sakura</div>
-                    </div>
-                    <div class="device-card core-panel p-4 cursor-pointer" data-device="headphones">
-                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">AUDIO_OUT</div>
-                        <div class="text-xl mb-4">🎧</div>
-                        <div class="text-sm font-bold uppercase text-white">Logitech G735</div>
-                    </div>
-                    <div class="device-card core-panel p-4 cursor-pointer" data-device="microphone">
-                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">VOICE_CAP</div>
-                        <div class="text-xl mb-4">🎤</div>
-                        <div class="text-sm font-bold uppercase text-white">HyperX ProCast</div>
-                    </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="screen2">
+                    <div class="tech-mono text-[9px] text-zinc-600 mb-2">SECONDARY_SCR</div>
+                    <div class="text-xl mb-3">🖥️</div>
+                    <div class="text-xs font-bold uppercase text-white">ASUS VP249</div>
                 </div>
-            </section>
-        </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="screen3">
+                    <div class="tech-mono text-[9px] text-zinc-600 mb-2">AUX_SCR</div>
+                    <div class="text-xl mb-3">🖥️</div>
+                    <div class="text-xs font-bold uppercase text-white">DELL U2419Hc</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <div class="flex items-center gap-4 mb-8">
+                <h2 class="tech-mono text-xs text-zinc-500 uppercase font-bold tracking-[0.3em]">03 // PERIPHERALS</h2>
+                <div class="h-px flex-1 bg-zinc-900"></div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="mouse">
+                    <div class="text-xl mb-3">🖱️</div>
+                    <div class="text-xs font-bold uppercase text-white">Dareu A950 PRO</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="keyboard">
+                    <div class="text-xl mb-3">⌨️</div>
+                    <div class="text-xs font-bold uppercase text-white">Varmilo Sakura</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="mousepad">
+                    <div class="text-xl mb-3">📏</div>
+                    <div class="text-xs font-bold uppercase text-white">ROG Sheath XXL</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="headphones">
+                    <div class="text-xl mb-3">🎧</div>
+                    <div class="text-xs font-bold uppercase text-white">Logitech G735</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="headphones2">
+                    <div class="text-xl mb-3">🎧</div>
+                    <div class="text-xs font-bold uppercase text-white">Logitech G PRO X</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="microphone">
+                    <div class="text-xl mb-3">🎤</div>
+                    <div class="text-xs font-bold uppercase text-white">HyperX ProCast</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="micarm">
+                    <div class="text-xl mb-3">🦾</div>
+                    <div class="text-xs font-bold uppercase text-white">OfficePro SA166</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="audiointerface">
+                    <div class="text-xl mb-3">🎛️</div>
+                    <div class="text-xs font-bold uppercase text-white">NI Komplete 1</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="webcam">
+                    <div class="text-xl mb-3">📷</div>
+                    <div class="text-xs font-bold uppercase text-white">Razer Kiyo PRO</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="chair">
+                    <div class="text-xl mb-3">🪑</div>
+                    <div class="text-xs font-bold uppercase text-white">Kaiser 4</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <div class="flex items-center gap-4 mb-8">
+                <h2 class="tech-mono text-xs text-zinc-500 uppercase font-bold tracking-[0.3em]">04 // OTHER_EQUIPMENT</h2>
+                <div class="h-px flex-1 bg-zinc-900"></div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="phone">
+                    <div class="text-xl mb-3">📱</div>
+                    <div class="text-xs font-bold uppercase text-white">iPhone 13</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="walkheadphones">
+                    <div class="text-xl mb-3">🎧</div>
+                    <div class="text-xs font-bold uppercase text-white">Skullcandy Crusher</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="backgroundlight">
+                    <div class="text-xl mb-3">💡</div>
+                    <div class="text-xs font-bold uppercase text-white">ULANZI VL119</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="mainlight">
+                    <div class="text-xl mb-3">💡</div>
+                    <div class="text-xs font-bold uppercase text-white">Smart LED RGB</div>
+                </div>
+                <div class="device-card core-panel p-4 cursor-pointer" data-device="secondlight">
+                    <div class="text-xl mb-3">💡</div>
+                    <div class="text-xs font-bold uppercase text-white">PULUZ PU392</div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content flex flex-col md:flex-row">
+        <div class="bg-[#08080a] border border-[#1c1c24] w-full max-w-5xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden">
             <div class="w-full md:w-1/2 bg-black p-6 border-b md:border-b-0 md:border-r border-[#15151a]">
-                <div class="relative aspect-square w-full bg-zinc-950 flex items-center justify-center border border-[#15151a]" id="modalImageBox">
-                    </div>
-                <div class="mt-4 p-4 bg-[#030304] border border-[#15151a] tech-mono text-xs" id="modalInfo">
-                    </div>
+                <div class="relative aspect-square w-full bg-zinc-950 flex items-center justify-center border border-[#15151a]" id="modalImageBox"></div>
+                <div class="mt-4 p-4 bg-[#030304] border border-[#15151a] tech-mono text-xs italic text-zinc-400" id="modalInfo"></div>
             </div>
-            
             <div class="flex-1 p-8 md:p-12 overflow-y-auto">
                 <div class="flex justify-between items-start mb-8">
                     <div>
-                        <span class="tech-mono text-[10px] text-red-500 uppercase font-bold" id="modalCategory">DEVICE_SPEC</span>
-                        <h2 class="brutal-font text-3xl sm:text-5xl text-white uppercase tracking-tighter mt-1" id="modalTitle">Устройство</h2>
+                        <span class="tech-mono text-[10px] text-red-500 uppercase font-bold">DEVICE_SPEC_RAW</span>
+                        <h2 class="brutal-font text-3xl sm:text-4xl text-white uppercase tracking-tighter mt-1" id="modalTitle"></h2>
                     </div>
                     <button class="tech-mono text-zinc-600 hover:text-white text-xs px-2 py-1 border border-zinc-800" id="modalClose">X_TERMINATE</button>
                 </div>
-
-                <div class="space-y-6" id="modalSpecs">
-                    </div>
+                <div class="space-y-4" id="modalSpecs"></div>
             </div>
         </div>
     </div>
 
     <script>
         const deviceData = {
-            cpu: { title: 'AMD Ryzen 7 5700X', info: 'Жаль не x3d', image: 'https://5.imimg.com/data5/SELLER/Default/2024/2/383306741/UP/XQ/EC/209261280/r7-5700x-5700g-7700x-desktop-computer-pc-gamer-socket-am4-cpu-procesador-amd-ryzen-7-5700x.jpeg', specs: [{l:'Ядра',v:'8/16'},{l:'Частота',v:'4.6 GHz'},{l:'Сокет',v:'AM4'}] },
-            gpu: { title: 'RTX 5070 ASUS PRIME', info: '12гб, у 3060 столько же...', image: 'https://ua.gecid.com/data/video/202505100900-71707/img/01.jpg', specs: [{l:'Память',v:'12GB GDDR6'},{l:'Интерфейс',v:'PCIe 4.0'}] },
-            ram: { title: 'HyperX 32GB DDR4', info: '32гб уже мало, надо больше', image: 'https://content2.rozetka.com.ua/goods/images/big/16702750.jpg', specs: [{l:'Объем',v:'32GB'},{l:'Частота',v:'3200 MHz'}] },
-            mother: { title: 'MSI B450 GAMING PLUS', info: 'Дёшево и сердито', image: 'https://asset.msi.com/resize/image/global/product/product_3_20190716132640_5d2d601054421.png62405b38c58fe0f07fcef2367d8a9ba1/380.png', specs: [{l:'Чипсет',v:'B450'},{l:'Производитель',v:'MSI'}] },
-            ssd: { title: 'Samsung 980', info: '89% здоровья', image: 'https://img.telemart.ua/352791-497896-product_popup/samsung-980-v-nand-mlc-500gb-m2-2280-pci-e-nvme-14-mz-v8v500bw.png', specs: [{l:'Объем',v:'1TB'},{l:'Скорость',v:'3500 MB/s'}] },
-            mouse: { title: 'Dareu A950 PRO', info: 'Китайский кусок говна', image: 'https://cdn.shopify.com/s/files/1/0631/9590/6271/products/DSC08473.jpg', specs: [{l:'Сенсор',v:'PixArt 3395'},{l:'Вес',v:'54г'}] },
-            keyboard: { title: 'Varmilo Sakura EC 2', info: 'А чё не кастом?', image: 'https://i.moyo.ua/img/gallery/5276/15/1760941_middle.jpg', specs: [{l:'Свитчи',v:'Sakura V2'},{l:'Формат',v:'TKL'}] },
-            headphones: { title: 'Logitech G735', info: 'LOGITECH - ГОВНО', image: 'https://logitech.com.ua/image/catalog/product/g735/g735-2.webp', specs: [{l:'Тип',v:'Wireless'},{l:'АКБ',v:'56 часов'}] },
-            microphone: { title: 'HyperX ProCast', info: 'Купил за 100$', image: 'https://www.gamerevolution.com/wp-content/uploads/sites/2/2022/12/HyperX-ProCast-Review_0004_Layer-8.jpg', specs: [{l:'Тип',v:'XLR'},{l:'Диафрагма',v:'Gold-sputtered'}] }
+            cpu: { title: 'AMD Ryzen 7 5700X', info: 'Жаль не x3d', image: 'https://5.imimg.com/data5/SELLER/Default/2024/2/383306741/UP/XQ/EC/209261280/r7-5700x-5700g-7700x-desktop-computer-pc-gamer-socket-am4-cpu-procesador-amd-ryzen-7-5700x.jpeg', specs: [{l:'Ядра/Потоки',v:'8/16'},{l:'Частота',v:'4.6 GHz'},{l:'Сокет',v:'AM4'},{l:'TDP',v:'65W'}] },
+            gpu: { title: 'RTX 5070 ASUS PRIME', info: '12гб, у 3060 столько же...', image: 'https://ua.gecid.com/data/video/202505100900-71707/img/01.jpg', specs: [{l:'Память',v:'12GB GDDR6'},{l:'Интерфейс',v:'PCIe 4.0'},{l:'CUDA',v:'5888'}] },
+            ram: { title: 'HyperX 32GB DDR4', info: '32гб уже мало, надо больше', image: 'https://content2.rozetka.com.ua/goods/images/big/16702750.jpg', specs: [{l:'Объем',v:'32GB'},{l:'Частота',v:'3200 MHz'},{l:'Тайминги',v:'CL16'}] },
+            mother: { title: 'MSI B450 GAMING PLUS MAX', info: 'Дёшево и сердито', image: 'https://asset.msi.com/resize/image/global/product/product_3_20190716132640_5d2d601054421.png62405b38c58fe0f07fcef2367d8a9ba1/380.png', specs: [{l:'Чипсет',v:'B450'},{l:'Сокет',v:'AM4'},{l:'Формат',v:'ATX'}] },
+            ssd: { title: 'Samsung 980', info: '89% здоровья', image: 'https://img.telemart.ua/352791-497896-product_popup/samsung-980-v-nand-mlc-500gb-m2-2280-pci-e-nvme-14-mz-v8v500bw.png', specs: [{l:'Объем',v:'1TB'},{l:'Скорость',v:'3500 MB/s'},{l:'Интерфейс',v:'NVMe PCIe 3.0'}] },
+            hdd: { title: 'WD + Seagate RAID', info: 'Старше меня', image: 'https://content1.rozetka.com.ua/goods/images/big/316611107.jpg', specs: [{l:'WD Blue',v:'1TB'},{l:'Seagate',v:'1TB'},{l:'Seagate 2',v:'500GB'},{l:'Общий',v:'2.5TB'}] },
+            case: { title: 'ZALMAN Z7 NEO', info: 'Свистит и пердит', image: 'https://zalmanusa.com/cdn/shop/files/4_x_RGB_Ring_Fans_-_Zalman_Ultimate_PC_Cases_Cooling_Solutions-2663828_1200x.jpg?v=1724456320', specs: [{l:'Тип',v:'Mid Tower'},{l:'Вертушки',v:'4x 120mm RGB'},{l:'Материал',v:'Сталь + Стекло'}] },
+            screen1: { title: 'AOC C24G1', info: 'Я удивлён как он ещё жив', image: 'https://hotline.ua/img/tx/181/1812102135.jpg', specs: [{l:'Герцовка',v:'144Hz'},{l:'Тип',v:'VA Curved'},{l:'Отклик',v:'1ms'}] },
+            screen2: { title: 'ASUS VP249', info: 'Купил за пару копеек', image: 'https://erc.ua/cache/media/erc2_968_504/upload/ware/567/5d34d72d6870e_nuawkqvt78utbebs_setting_fff_1_90_end_500.jpg', specs: [{l:'Тип',v:'IPS'},{l:'Герцовка',v:'60Hz'}] },
+            screen3: { title: 'DELL U2419Hc', info: 'Чисто для спотика', image: 'https://topradar.com.ua/image/cache/catalog/i/ni/kc/bc66c1f96d52789850229340ad31f36c-500x500.jpg', specs: [{l:'Порты',v:'USB-C'},{l:'sRGB',v:'99%'}] },
+            mouse: { title: 'Dareu A950 PRO', info: 'Китайский кусок говна', image: 'https://cdn.shopify.com/s/files/1/0631/9590/6271/products/DSC08473.jpg', specs: [{l:'Сенсор',v:'3395'},{l:'Вес',v:'54g'}] },
+            keyboard: { title: 'Varmilo Sakura EC 2', info: 'А чё не кастом?', image: 'https://i.moyo.ua/img/gallery/5276/15/1760941_middle.jpg', specs: [{l:'Свитчи',v:'Sakura'},{l:'Формат',v:'TKL'}] },
+            mousepad: { title: 'Asus ROG Sheath XXL', info: 'Шёл в подарок к видяхе', image: 'https://img.telemart.ua/444469-586762/asus-rog-sheath-xxl-90mp00k1-b0uc00-black.jpg', specs: [{l:'Размер',v:'900x440'},{l:'Толщина',v:'3mm'}] },
+            headphones: { title: 'Logitech G735', info: 'LOGITECH - ГОВНО', image: 'https://logitech.com.ua/image/catalog/product/g735/g735-2.webp', specs: [{l:'Связь',v:'Light-speed'},{l:'RGB',v:'Да'}] },
+            headphones2: { title: 'Logitech G PRO X', info: 'LOGITECH - ГОВНО', image: 'https://sm.ign.com/ign_pk/review/l/logitech-g/logitech-g-pro-x-gaming-headset-review_32zr.jpg', specs: [{l:'Тип',v:'Wired'},{l:'Драйвер',v:'50mm'}] },
+            microphone: { title: 'HyperX ProCast', info: 'Купил за 100$', image: 'https://www.gamerevolution.com/wp-content/uploads/sites/2/2022/12/HyperX-ProCast-Review_0004_Layer-8.jpg', specs: [{l:'Тип',v:'XLR'},{l:'Мембрана',v:'Золото'}] },
+            micarm: { title: 'OfficePro SA166', info: 'Не самая удобная покупка', image: 'https://files.foxtrot.com.ua/PhotoNew/1_638243177727735870.jpg', specs: [{l:'Тип',v:'Пружинный'},{l:'Материал',v:'Металл'}] },
+            audiointerface: { title: 'NI Komplete Audio 1', info: 'Вроде работает', image: 'https://prodj.ua/image/cache/catalog/img4b/2019/01/20190124130713-920x920.webp', specs: [{l:'ЦАП',v:'24-bit/192kHz'}] },
+            webcam: { title: 'Razer Kiyo PRO', info: 'Спасибо Андрею', image: 'https://avic.com.ua/storage/photos/shares/veb-kamera-razer-kiyo-pro-ultra_1.jpg', specs: [{l:'Качество',v:'1080p 60fps'}] },
+            chair: { title: 'Anda Seat Kaiser 4', info: 'Вот кресло имба кста', image: 'http://andaseat.ua/wp-content/uploads/2024/08/K4Green1.webp', specs: [{l:'Материал',v:'Кожа'},{l:'Макс. вес',v:'180kg'}] },
+            phone: { title: 'iPhone 13', info: 'Apple - ГОВНО', image: 'https://hotline.ua/img/tx/298/2989120325.jpg', specs: [{l:'Версия',v:'PRODUCT RED'},{l:'Объем',v:'128GB'}] },
+            walkheadphones: { title: 'Skullcandy Crusher ANC', info: 'Очень классный бас', image: 'https://wazza.com.ua/25570-thickbox_default/naushniki-skullcandy-crusher-wireless-over-ear-anc.jpg', specs: [{l:'Фишка',v:'Sensory Bass'},{l:'ANC',v:'Да'}] },
+            backgroundlight: { title: 'ULANZI VL119', info: 'Алиэкспресс чудотворный', image: 'https://whitenight.com.ua/Media/shop-18449/_imports/5670206375_ruchnoj-svetodiodnyj-svetilnik.jpg', specs: [{l:'Тип',v:'RGB Tube'},{l:'АКБ',v:'2600mAh'}] },
+            mainlight: { title: 'Smart LED RGB', info: 'С софтбоксом', image: 'https://content2.rozetka.com.ua/goods/images/big/194924980.jpg', specs: [{l:'Тип',v:'Smart Bulb'},{l:'Вайфай',v:'Да'}] },
+            secondlight: { title: 'PULUZ PU392', info: 'Купил по приколу', image: 'https://for-extreme.com.ua/image/cache/catalog/image/catalog/puluz/2053/puluz-pu392-nastolnaya-kolcevaya-lampa-02.webp', specs: [{l:'Диаметр',v:'12 дюймов'}] }
         };
 
         const overlay = document.getElementById('modalOverlay');
@@ -258,17 +309,14 @@
         function openModal(id) {
             const data = deviceData[id];
             if (!data) return;
-            
             document.getElementById('modalTitle').textContent = data.title;
             document.getElementById('modalInfo').textContent = data.info;
-            document.getElementById('modalImageBox').innerHTML = data.image ? `<img src="${data.image}" class="w-full h-full object-contain">` : `<div class="no-image">NO_IMAGE_DATA</div>`;
-            
+            document.getElementById('modalImageBox').innerHTML = data.image ? `<img src="${data.image}" class="w-full h-full object-contain">` : `<div class="no-image">постер<br>временно<br>отсутствует</div>`;
             let specsHtml = '';
             data.specs.forEach(s => {
-                specsHtml += `<div class="flex justify-between border-b border-zinc-900 pb-2"><span class="tech-mono text-[10px] text-zinc-600 uppercase">${s.l}</span><span class="text-sm font-bold text-white">${s.v}</span></div>`;
+                specsHtml += `<div class="flex justify-between border-b border-zinc-900 pb-2"><span class="tech-mono text-[9px] text-zinc-600 uppercase">${s.l}</span><span class="text-sm font-bold text-white">${s.v}</span></div>`;
             });
             document.getElementById('modalSpecs').innerHTML = specsHtml;
-            
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
