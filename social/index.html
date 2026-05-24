@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <!-- Open Graph -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Социальные сети | Академия Кворса</title>
+
     <meta property="og:title" content="Академия имени Вильяма Кворса">
     <meta property="og:description" content="Блин, а прикольный сайтик так-то.">
     <meta property="og:image" content="https://kw0rs.fun/icon/williamkw0rs.jpg">
@@ -9,31 +12,26 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Академия Кворса">
 
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Академия имени Вильяма Кворса">
     <meta name="twitter:description" content="Блин, а прикольный сайтик так-то.">
     <meta name="twitter:image" content="https://kw0rs.fun/icon/williamkw0rs.jpg">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Социальные сети | Академия Кворса</title>
-
-    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
     <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
     <link rel="manifest" href="/icon/site.webmanifest">
     <link rel="shortcut icon" href="/icon/favicon.ico">
 
-    <!-- Перегонка www на без www -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+
     <script>
     if (location.hostname === 'www.kw0rs.fun') {
         window.location.href = 'https://kw0rs.fun' + location.pathname;
     }
     </script>
 
-    <!-- Редирект с больших букв на маленькие -->
     <script>
     var path = window.location.pathname;
     if (path !== path.toLowerCase()) {
@@ -42,41 +40,26 @@
     </script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --core-black: #020203;
+            --panel-dark: #08080a;
+            --laser-red: #ff052b;
         }
-        
+
         body {
-            font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: radial-gradient(circle at 50% 50%, #0a0a0a 0%, #000000 100%);
-            color: #ffffff;
+            background-color: var(--core-black);
+            color: #efefef;
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            position: relative;
             overflow-x: hidden;
+            position: relative;
         }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(600px circle at 20% 30%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(800px circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(400px circle at 40% 80%, rgba(0, 255, 127, 0.1) 0%, transparent 50%);
-            animation: float 6s ease-in-out infinite;
-            pointer-events: none;
-            transition: all 0.8s ease;
-        }
-        
+
+        /* Тот самый "Портал", но в стиле Core */
         body::after {
             content: '';
             position: fixed;
@@ -84,336 +67,164 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
-                radial-gradient(1000px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(var(--portal-color, 0, 255, 255), 0.15) 0%, transparent 70%);
+            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(var(--portal-color, 255, 5, 43), 0.08) 0%, transparent 70%);
             opacity: 0;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.6s ease;
             pointer-events: none;
             z-index: -1;
         }
-        
-        body.portal-active::after {
-            opacity: 1;
-        }
-        
-        body.portal-active::before {
-            filter: blur(3px);
-            transform: scale(1.1);
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        .container {
-            text-align: center;
-            max-width: 450px;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-        }
-        
+        body.portal-active::after { opacity: 1; }
 
-        
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ff7f);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-        
-        @keyframes glow {
-            from { text-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
-            to { text-shadow: 0 0 30px rgba(0, 255, 255, 0.8); }
-        }
-        
-        .subtitle {
-            font-size: 16px;
-            color: #888;
-            margin-bottom: 40px;
-            font-weight: 300;
-            letter-spacing: 0.5px;
-        }
-        
-        .menu-button {
-            padding: 14px 28px;
-            background: rgba(26, 26, 26, 0.8);
-            border: 2px solid transparent;
-            border-radius: 20px;
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.4s ease;
-            display: inline-block;
-            margin-bottom: 40px;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-        
-        .menu-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
+        .brutal-font { font-family: 'Inter', sans-serif; font-weight: 900; tracking: -0.05em; }
+        .tech-mono { font-family: 'Space Mono', monospace; }
+
+        .container-box {
+            max-width: 500px;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
+            text-align: center;
+            z-index: 10;
         }
-        
-        .menu-button:hover::before {
-            left: 100%;
-        }
-        
-        .menu-button:hover {
-            background: rgba(26, 26, 26, 0.9);
-            border-color: rgba(0, 255, 255, 0.5);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .social-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        
+
+        /* Кнопки соцсетей в стиле Core Panels */
         .social-button {
-            padding: 24px 32px;
-            border: 3px solid transparent;
-            border-radius: 25px;
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: 700;
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
             display: block;
+            background: var(--panel-dark);
+            border: 1px solid #15151a;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            color: #fff;
+            text-decoration: none;
             position: relative;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             overflow: hidden;
-            backdrop-filter: blur(15px);
-            text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
-        
+
+        .social-button:hover {
+            transform: scale(1.04) translateY(-2px);
+            border-color: rgba(var(--portal-color), 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
         .social-button::before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
-            transition: all 1s cubic-bezier(0.23, 1, 0.320, 1);
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: -1;
-        }
-        
-        .social-button:hover::before {
-            width: 600px;
-            height: 600px;
-        }
-        
-        .social-button::after {
-            content: '';
-            position: absolute;
-            top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: conic-gradient(
-                from 0deg,
-                transparent 0deg,
-                rgba(255, 255, 255, 0.3) 90deg,
-                transparent 180deg,
-                rgba(255, 255, 255, 0.3) 270deg,
-                transparent 360deg
-            );
-            border-radius: 25px;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: rgba(var(--portal-color), 1);
             opacity: 0;
-            transition: all 0.8s ease;
-            animation: none;
+            transition: opacity 0.3s;
         }
-        
-        .social-button:hover::after {
-            opacity: 1;
-            animation: spin 2s linear infinite;
+        .social-button:hover::before { opacity: 1; }
+
+        .btn-label {
+            display: block;
+            font-size: 10px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+            transition: color 0.3s;
         }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Обработка эффектов для фона */
-        .social-button:hover {
-            transform: translateY(-8px) scale(1.05);
-            box-shadow: 
-                0 20px 60px rgba(0, 0, 0, 0.6),
-                inset 0 0 50px rgba(255, 255, 255, 0.1);
-        }
-        
-        .social-button {
-            position: relative;
-        }
-        
-        .social-button:hover ~ * {
-            filter: blur(1px);
-        }
-        
-        .social-buttons:hover .social-button:not(:hover) {
-            filter: blur(2px);
-            opacity: 0.7;
-        }
-        
-        .telegram-streams {
-            background: 
-                radial-gradient(circle at 50% 50%, rgba(255, 0, 0, 0.9) 0%, rgba(255, 0, 0, 0.7) 100%),
-                conic-gradient(from 0deg, #ff0000, #ff6600, #ff0000);
-            border-color: rgba(255, 0, 0, 0.7);
-        }
-        
-        .telegram-academy {
-            background: 
-                radial-gradient(circle at 50% 50%, rgba(0, 136, 204, 0.9) 0%, rgba(0, 136, 204, 0.7) 100%),
-                conic-gradient(from 0deg, #0088cc, #00aaff, #0088cc);
-            border-color: rgba(0, 136, 204, 0.7);
-        }
-        
-        .twitch {
-            background: 
-                radial-gradient(circle at 50% 50%, rgba(100, 65, 165, 0.9) 0%, rgba(100, 65, 165, 0.7) 100%),
-                conic-gradient(from 0deg, #6441a5, #9966cc, #6441a5);
-            border-color: rgba(100, 65, 165, 0.7);
-        }
-        
-        .youtube {
-            background: 
-                radial-gradient(circle at 50% 50%, rgba(204, 0, 0, 0.9) 0%, rgba(204, 0, 0, 0.7) 100%),
-                conic-gradient(from 0deg, #cc0000, #ff3333, #cc0000);
-            border-color: rgba(204, 0, 0, 0.7);
-        }
-        
-        .steam {
-            background: 
-                radial-gradient(circle at 50% 50%, rgba(42, 71, 94, 0.9) 0%, rgba(42, 71, 94, 0.7) 100%),
-                conic-gradient(from 0deg, #2a475e, #4477aa, #2a475e);
-            border-color: rgba(42, 71, 94, 0.7);
+        .social-button:hover .btn-label { color: rgba(var(--portal-color), 0.8); }
+
+        .btn-name {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
         }
 
-        .telegram-streams:hover { 
-            box-shadow: 
-                0 20px 80px rgba(255, 0, 0, 0.6),
-                inset 0 0 50px rgba(255, 0, 0, 0.3),
-                0 0 100px rgba(255, 0, 0, 0.4);
-            border-color: rgba(255, 0, 0, 1);
-        }
-        .telegram-academy:hover { 
-            box-shadow: 
-                0 20px 80px rgba(0, 136, 204, 0.6),
-                inset 0 0 50px rgba(0, 136, 204, 0.3),
-                0 0 100px rgba(0, 136, 204, 0.4);
-            border-color: rgba(0, 136, 204, 1);
-        }
-        .twitch:hover { 
-            box-shadow: 
-                0 20px 80px rgba(100, 65, 165, 0.6),
-                inset 0 0 50px rgba(100, 65, 165, 0.3),
-                0 0 100px rgba(100, 65, 165, 0.4);
-            border-color: rgba(100, 65, 165, 1);
-        }
-        .youtube:hover { 
-            box-shadow: 
-                0 20px 80px rgba(204, 0, 0, 0.6),
-                inset 0 0 50px rgba(204, 0, 0, 0.3),
-                0 0 100px rgba(204, 0, 0, 0.4);
-            border-color: rgba(204, 0, 0, 1);
-        }
-        .steam:hover { 
-            box-shadow: 
-                0 20px 80px rgba(42, 71, 94, 0.6),
-                inset 0 0 50px rgba(42, 71, 94, 0.3),
-                0 0 100px rgba(42, 71, 94, 0.4);
-            border-color: rgba(42, 71, 94, 1);
-        }
+        /* Специфические цвета для портала */
+        .telegram-streams { --portal-rgb: 255, 5, 43; }
+        .telegram-academy { --portal-rgb: 0, 136, 204; }
+        .twitch { --portal-rgb: 145, 70, 255; }
+        .youtube { --portal-rgb: 255, 0, 0; }
+        .steam { --portal-rgb: 102, 102, 102; }
 
-        @media (max-width: 768px) {
-            .social-button {
-                font-size: 16px;
-                padding: 16px 24px;
-            }
-            
-            .container {
-                max-width: 380px;
-            }
-            
-            h1 {
-                font-size: 24px;
-            }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 40px;
+            padding: 8px 16px;
+            border: 1px solid #15151a;
+            color: #555;
+            font-size: 11px;
+            text-transform: uppercase;
+            transition: all 0.3s;
         }
-        
-        /* Дополнительные футуристические эффекты */
-        
-        .menu-button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: radial-gradient(circle, rgba(0, 255, 255, 0.3) 0%, transparent 70%);
-            transition: all 0.6s ease;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-        }
-        
-        .menu-button:hover::after {
-            width: 150px;
-            height: 150px;
+        .back-link:hover {
+            border-color: var(--laser-red);
+            color: var(--laser-red);
         }
     </style>
-    
+</head>
+
+<body>
+    <div class="container-box">
+        <header class="mb-12">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <span class="tech-mono text-[10px] text-red-500 bg-red-950/30 px-2 py-0.5 border border-red-900/40">COMM_HUB</span>
+                <span class="tech-mono text-[10px] text-zinc-600">SECURE_LINK</span>
+            </div>
+            <h1 class="brutal-font text-4xl sm:text-5xl uppercase tracking-tighter text-white mb-2">
+                СОЦ<span class="text-red-600">.</span>СЕТИ
+            </h1>
+            <div class="h-1 w-12 bg-red-600 mx-auto"></div>
+        </header>
+
+        <a href="/" class="back-link tech-mono">
+            [ ← В МЕНЮ ]
+        </a>
+
+        <div class="social-buttons">
+            <a href="https://t.me/kw0rs" class="social-button telegram-streams" target="_blank" data-color="255, 5, 43">
+                <span class="btn-label tech-mono">Channel_01</span>
+                <span class="btn-name">Telegram Стримов</span>
+            </a>
+            
+            <a href="https://t.me/kw0rs_edu" class="social-button telegram-academy" target="_blank" data-color="0, 136, 204">
+                <span class="btn-label tech-mono">Channel_02</span>
+                <span class="btn-name">Telegram Академии</span>
+            </a>
+            
+            <a href="https://www.twitch.tv/kw0rs" class="social-button twitch" target="_blank" data-color="145, 70, 255">
+                <span class="btn-label tech-mono">Live_Broadcast</span>
+                <span class="btn-name">Twitch</span>
+            </a>
+            
+            <a href="https://www.youtube.com/@kw0rs" class="social-button youtube" target="_blank" data-color="255, 0, 0">
+                <span class="btn-label tech-mono">Video_Archive</span>
+                <span class="btn-name">YouTube</span>
+            </a>
+            
+            <a href="https://store.steampowered.com/curator/45513934-академия-имени-вильяма/" class="social-button steam" target="_blank" data-color="102, 102, 102">
+                <span class="btn-label tech-mono">Curator_Node</span>
+                <span class="btn-name">Steam Академии</span>
+            </a>
+        </div>
+
+        <footer class="mt-12 opacity-20 tech-mono text-[9px] uppercase tracking-[0.3em]">
+            Connection established // Academy Core
+        </footer>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const buttons = document.querySelectorAll('.social-button');
             const body = document.body;
             
-            // Цвета для каждой кнопки
-            const colors = {
-                'telegram-streams': '255, 0, 0',
-                'telegram-academy': '0, 136, 204',
-                'twitch': '100, 65, 165',
-                'youtube': '204, 0, 0',
-                'steam': '42, 71, 94'
-            };
-            
             buttons.forEach(button => {
-                button.addEventListener('mouseenter', function(e) {
-                    const rect = button.getBoundingClientRect();
+                button.addEventListener('mouseenter', function() {
+                    const color = this.getAttribute('data-color');
+                    const rect = this.getBoundingClientRect();
                     const x = ((rect.left + rect.width / 2) / window.innerWidth) * 100;
                     const y = ((rect.top + rect.height / 2) / window.innerHeight) * 100;
                     
-                    // Определяем цвет кнопки
-                    let buttonColor = '0, 255, 255';
-                    for (let className in colors) {
-                        if (button.classList.contains(className)) {
-                            buttonColor = colors[className];
-                            break;
-                        }
-                    }
-                    
                     body.style.setProperty('--mouse-x', x + '%');
                     body.style.setProperty('--mouse-y', y + '%');
-                    body.style.setProperty('--portal-color', buttonColor);
+                    body.style.setProperty('--portal-color', color);
                     body.classList.add('portal-active');
                 });
                 
@@ -423,21 +234,5 @@
             });
         });
     </script>
-</head>
-
-<body>
-    <div class="container">
-        <h1>Социальные сети</h1>
-        
-        <a href="/" class="menu-button">В меню</a>
-        
-        <div class="social-buttons">
-            <a href="https://t.me/kw0rs" class="social-button telegram-streams" target="_blank">Telegram Стримов</a>
-            <a href="https://t.me/kw0rs_edu" class="social-button telegram-academy" target="_blank">Telegram Академии</a>
-            <a href="https://www.twitch.tv/kw0rs" class="social-button twitch" target="_blank">Twitch</a>
-            <a href="https://www.youtube.com/@kw0rs" class="social-button youtube" target="_blank">YouTube</a>
-            <a href="https://store.steampowered.com/curator/45513934-академия-имени-вильяма/" class="social-button steam" target="_blank">Steam Академии</a>
-        </div>
-    </div>
 </body>
 </html>
