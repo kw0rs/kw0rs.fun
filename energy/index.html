@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>К.А.Л — Кворс Энерго Лист</title>
+    <title>Тирлист энероготосов</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -27,7 +27,6 @@
         .brutal-font { font-family: 'Inter', sans-serif; font-weight: 900; tracking: -0.05em; }
         .tech-mono { font-family: 'Space Mono', monospace; }
 
-        /* Масштабирование всех карточек */
         .card-item {
             transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease !important;
         }
@@ -36,30 +35,22 @@
             z-index: 10;
         }
 
-        /* 👑 МЕГА ПОМПЕЗНЫЙ S-TIER (11+/10 ENERGY) */
+        /* 👑 S-TIER — СТАТИЧНЫЙ ПАФОС */
         .tier-mega {
             border: 2px solid transparent !important;
             background-image: linear-gradient(var(--panel-dark), var(--panel-dark)), 
                               linear-gradient(90deg, #ff052b, #200005, #ff052b) !important;
             background-origin: border-box !important;
             background-clip: padding-box, border-box !important;
-            background-size: 200% 100% !important;
-            animation: laserShift 3s linear infinite !important;
             box-shadow: 0 0 30px rgba(255, 5, 43, 0.4) !important;
         }
 
-        /* 🔴 ПОМПЕЗНЫЙ A-TIER */
+        /* 🔴 A-TIER */
         .tier-10 {
             border: 2px solid var(--laser-red) !important;
             box-shadow: 0 0 20px rgba(255, 5, 43, 0.2) !important;
         }
 
-        @keyframes laserShift {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 200% 0%; }
-        }
-
-        /* Заглушка для отсутствующего постера */
         .no-poster {
             background: repeating-linear-gradient(45deg, #0a0a0d 0, #0a0a0d 10px, #0d0d11 10px, #0d0d11 20px);
             border: 1px dashed #2a2a35;
@@ -71,7 +62,6 @@
             padding: 10px;
         }
 
-        /* Стилизация тиров */
         .tier-row {
             background: #08080a;
             border: 1px solid #15151a;
@@ -101,7 +91,7 @@
         <header class="mb-16 border-b-2 border-[#111] pb-8 relative">
             <div class="flex items-center gap-3 mb-4">
                 <span class="tech-mono text-xs text-red-500 bg-red-950/50 px-2 py-0.5 border border-red-900/40">FUEL_REGISTRY</span>
-                <span class="tech-mono text-xs text-zinc-600">HEART_RATE_CRITICAL</span>
+                <span class="tech-mono text-xs text-zinc-600">STATIC_LOAD_MODE</span>
             </div>
             <h1 class="brutal-font text-4xl sm:text-7xl uppercase tracking-tighter text-white">
                 К<span class="text-red-600">.</span>А<span class="text-red-600">.</span>Л <span class="text-zinc-600 text-3xl sm:text-4xl font-normal tech-mono">// Кворс Энерго Лист</span>
@@ -113,7 +103,7 @@
             </div>
         </header>
 
-        <div id="content" class="tech-mono text-zinc-500 uppercase tracking-widest text-center py-20 animate-pulse">
+        <div id="content" class="tech-mono text-zinc-500 uppercase tracking-widest text-center py-20">
             Инициализация потока данных...
         </div>
     </div>
@@ -177,7 +167,7 @@
                                         <span class="tech-mono text-[8px] text-zinc-600 uppercase">Постер<br>отсутствует</span>
                                     </div>
                                     <div class="absolute top-1 right-1 bg-black/80 border border-zinc-800 px-1.5 py-0.5 tech-mono text-[9px] text-red-500">
-                                        ${item.rating}/10
+                                        TIER ${item.rating}
                                     </div>
                                 </div>
                                 <div class="px-1">
