@@ -3,264 +3,275 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KW0RS ARCHIVE // MEDIA REGISTRY</title>
+    <title>KW0RS // IMPERIAL ARCHIVE</title>
     
-    <!-- Подключаем Tailwind и Alpine -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
-    <!-- Шрифты: жесткий геометрический для интерфейса и читаемый для текстов -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Space Grotesk', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Playfair+Display:ital,wght@0,400;0,900;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 
     <style>
-        body {
-            background-color: #090a0f;
-            color: #f1f5f9;
-            -webkit-font-smoothing: antialiased;
+        :root {
+            --gold: #d4af37;
+            --gold-bright: #f9e2af;
+            --imperial-purple: #1a0b2e;
+            --deep-black: #050208;
         }
-        /* Тонкий кастомный скроллбар, чтобы не ломать верстку */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #090a0f; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #ea580c; }
+
+        body {
+            background-color: var(--deep-black);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                url("https://www.transparenttextures.com/patterns/dark-matter.png");
+            color: #e5e7eb;
+            font-family: 'Playfair Display', serif;
+            overflow-x: hidden;
+        }
+
+        .imperial-font { font-family: 'Cinzel', serif; }
+        .mono-tech { font-family: 'Fira Code', monospace; }
+
+        .gold-text {
+            background: linear-gradient(to bottom, var(--gold-bright) 20%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
+        }
+
+        /* Дефолтная карточка */
+        .relic-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            position: relative;
+        }
+        .relic-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--gold);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        /* 👑 ТИР 10/10 — ПОМПЕЗНОЕ СВЯЩЕННОЕ ЗОЛОТО */
+        .tier-10 {
+            border: 2px solid var(--gold) !important;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.3), inset 0 0 15px rgba(212, 175, 55, 0.1) !important;
+            animation: goldPulse 4s ease-in-out infinite alternate;
+        }
+        .tier-10:hover {
+            box-shadow: 0 0 45px rgba(212, 175, 55, 0.7), inset 0 0 25px rgba(212, 175, 55, 0.3) !important;
+        }
+        @keyframes goldPulse {
+            0% { border-color: rgba(212, 175, 55, 0.6); filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.2)); }
+            100% { border-color: rgba(255, 226, 175, 1); filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5)); }
+        }
+
+        /* 🌌 ТИР 11/10 и 12/10 — МЕГА ПОМПЕЗНАЯ СИНГУЛЯРНОСТЬ */
+        .tier-mega {
+            border: 2px solid transparent !important;
+            background-image: linear-gradient(rgba(26, 11, 46, 0.9), rgba(5, 2, 8, 0.9)), 
+                              linear-gradient(90deg, #d4af37, #ff007f, #7000ff, #00f2ff, #d4af37) !important;
+            background-origin: border-box !important;
+            background-clip: padding-box, border-box !important;
+            background-size: 300% 300% !important;
+            animation: megaPlasmaShift 4s linear infinite, megaGlow 3s ease-in-out infinite alternate !important;
+        }
+        .tier-mega:hover {
+            transform: translateY(-15px) scale(1.04) !important;
+            filter: drop-shadow(0 0 35px rgba(0, 242, 255, 0.6)) drop-shadow(0 0 50px rgba(255, 0, 127, 0.4)) !important;
+        }
+        @keyframes megaPlasmaShift {
+            0% { background-position: 0% 50%, 0% 50%; }
+            50% { background-position: 0% 50%, 100% 50%; }
+            100% { background-position: 0% 50%, 0% 50%; }
+        }
+        @keyframes megaGlow {
+            0% { filter: drop-shadow(0 0 15px rgba(255, 0, 127, 0.4)) drop-shadow(0 0 10px rgba(212, 175, 55, 0.2)); }
+            100% { filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.5)) drop-shadow(0 0 25px rgba(112, 0, 255, 0.4)); }
+        }
+
+        /* Кастомный скролл */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--deep-black); }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(var(--gold), var(--imperial-purple));
+            border-radius: 4px;
+        }
     </style>
 </head>
-<body class="font-sans antialiased text-slate-200" x-data="mediaApp()" x-init="loadItems()">
+<body class="antialiased" x-data="mediaApp()" x-init="loadItems()">
 
-    <!-- Верхний технический бордер -->
-    <div class="h-1 w-full bg-gradient-to-r from-orange-600 via-amber-500 to-transparent"></div>
+    <!-- Угловые орнаменты -->
+    <div class="fixed top-0 left-0 w-full h-full opacity-20 pointer-events-none overflow-hidden -z-10">
+        <div class="absolute top-0 left-0 w-64 h-64 border-l-2 border-t-2 border-yellow-600/20 m-8"></div>
+        <div class="absolute bottom-0 right-0 w-64 h-64 border-r-2 border-b-2 border-yellow-600/20 m-8"></div>
+    </div>
 
-    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="max-w-[1400px] mx-auto px-6 py-12">
         
         <!-- HEADER -->
-        <header class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pb-6 border-b border-slate-800">
-            <div>
-                <div class="flex items-center gap-3 mb-2">
-                    <span class="font-display font-bold text-xs tracking-widest text-orange-500 uppercase px-2 py-0.5 bg-orange-500/10 border border-orange-500/20">CORE_V2.6</span>
-                    <span class="font-mono text-xs text-slate-500">INDEXED_RECORDS</span>
-                </div>
-                <h1 class="font-display text-4xl sm:text-5xl font-bold tracking-tight text-white uppercase">
-                    KW0RS <span class="font-light text-slate-500">//</span> MEDIA INDEX
-                </h1>
+        <header class="text-center mb-20">
+            <div class="flex justify-center items-center gap-4 mb-4">
+                <div class="h-[1px] w-24 bg-gradient-to-l from-yellow-600 to-transparent"></div>
+                <span class="imperial-font text-xs tracking-[0.5em] text-yellow-600 uppercase">THE SACRED REGISTRY</span>
+                <div class="h-[1px] w-24 bg-gradient-to-r from-yellow-600 to-transparent"></div>
             </div>
-            
-            <!-- Инфо-панель -->
-            <div class="flex items-center gap-6 font-mono text-xs text-slate-400 bg-slate-900/40 p-3 border border-slate-800 rounded">
-                <div>TOTAL: <span class="text-white font-medium" x-text="items.length"></span></div>
-                <div class="w-px h-4 bg-slate-800"></div>
-                <div>FILTERED: <span class="text-orange-500 font-medium" x-text="filteredAndSortedItems.length"></span></div>
+            <h1 class="imperial-font text-6xl md:text-8xl font-black mb-4 gold-text tracking-widest">
+                KW0RS
+            </h1>
+            <h2 class="playfair italic text-2xl md:text-3xl text-slate-400 tracking-wide">
+                Архив Высших Медиа-Реликвий
+            </h2>
+            <div class="mt-8 flex justify-center">
+                <div class="h-12 w-px bg-gradient-to-b from-yellow-600 to-transparent"></div>
             </div>
         </header>
 
-        <!-- ПАНЕЛЬ ФИЛЬТРОВ (Строгая модульная сетка) -->
-        <section class="mb-8 bg-slate-900/20 border border-slate-800/80 rounded overflow-hidden">
-            <div class="p-6 grid grid-cols-1 md:grid-cols-12 gap-4">
-                
-                <!-- Поиск (Занимает 5 колонок) -->
-                <div class="md:col-span-5">
-                    <label class="block font-mono text-[11px] uppercase tracking-wider text-slate-400 mb-2">01 // Идентификатор_названия</label>
-                    <div class="relative">
-                        <input type="text" x-model="search" placeholder="Поиск по названию реестра..." 
-                               class="w-full bg-slate-950/60 border border-slate-800 rounded px-4 py-2.5 text-sm font-medium text-white placeholder-slate-600 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/30 transition-all">
+        <!-- ФИЛЬТРЫ -->
+        <section class="mb-16 relic-card rounded-xl p-8 border-t-2 border-yellow-600/50">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Search -->
+                <div>
+                    <label class="imperial-font text-[10px] tracking-widest text-yellow-600 uppercase mb-3 block">Запрос по названию</label>
+                    <input type="text" x-model="search" placeholder="NAME OF THE RECORD..." 
+                           class="w-full bg-transparent border-b border-yellow-600/30 py-3 text-xl focus:outline-none focus:border-yellow-500 transition-all placeholder:text-slate-700 italic">
+                </div>
+
+                <!-- Category -->
+                <div>
+                    <label class="imperial-font text-[10px] tracking-widest text-yellow-600 uppercase mb-3 block">Классификация</label>
+                    <div class="flex flex-wrap gap-2">
+                        <template x-for="cat in ['movie', 'show', 'anime', 'game', 'book']">
+                            <button @click="categoryFilter = (categoryFilter === cat ? '' : cat)"
+                                    :class="categoryFilter === cat ? 'bg-yellow-600 text-black' : 'border border-yellow-600/30 text-slate-400'"
+                                    class="px-4 py-1.5 rounded-full text-[10px] imperial-font transition-all hover:border-yellow-600"
+                                    x-text="cat.toUpperCase()"></button>
+                        </template>
                     </div>
                 </div>
 
-                <!-- Категория (3 колонки) -->
-                <div class="md:col-span-3">
-                    <label class="block font-mono text-[11px] uppercase tracking-wider text-slate-400 mb-2">02 // Классификация</label>
-                    <select x-model="categoryFilter" 
-                            class="w-full bg-slate-950/60 border border-slate-800 rounded px-3 py-2.5 text-sm font-medium text-white focus:outline-none focus:border-orange-500 transition-all appearance-none cursor-pointer">
-                        <option value="">Все категории</option>
-                        <option value="movie">Кинематограф</option>
-                        <option value="show">Сериалы</option>
-                        <option value="anime">Аниме-индустрия</option>
-                        <option value="game">Интерактивный софт (Игры)</option>
-                        <option value="book">Литература / Чтиво</option>
-                        <option value="cartoon">Мультипликация</option>
-                    </select>
-                </div>
-
-                <!-- Сортировка (4 колонки) -->
-                <div class="md:col-span-4">
-                    <label class="block font-mono text-[11px] uppercase tracking-wider text-slate-400 mb-2">03 // Вектор сортировки</label>
-                    <select x-model="sortKey" 
-                            class="w-full bg-slate-950/60 border border-slate-800 rounded px-3 py-2.5 text-sm font-medium text-white focus:outline-none focus:border-orange-500 transition-all appearance-none cursor-pointer">
-                        <option value="rating-desc">Рейтинг: По убыванию [MAX]</option>
-                        <option value="rating-asc">Рейтинг: По возрастанию [MIN]</option>
-                        <option value="year-desc">Хронология: Сначала новые</option>
-                        <option value="year-asc">Хронология: Сначала старые</option>
-                        <option value="title">Алфавитный порядок [A-Z]</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Дополнительные утилиты управления -->
-            <div class="px-6 py-4 bg-slate-950/40 border-t border-slate-800/60 flex flex-wrap justify-between items-center gap-4">
-                <div class="flex items-center gap-4">
-                    <!-- Слайдер минимального рейтинга -->
-                    <div class="flex items-center gap-3">
-                        <span class="font-mono text-[11px] text-slate-400 uppercase">Рейтинг от:</span>
-                        <input type="range" x-model.number="minRating" min="0" max="10" step="0.5" class="w-24 accent-orange-500 h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer">
-                        <span class="font-mono text-xs font-bold text-orange-500" x-text="minRating || '0'"></span>
+                <!-- Sort -->
+                <div class="flex items-end justify-between gap-4">
+                    <div class="flex-1">
+                        <label class="imperial-font text-[10px] tracking-widest text-yellow-600 uppercase mb-3 block">Вектор хроник</label>
+                        <select x-model="sortKey" class="w-full bg-transparent border-b border-yellow-600/30 py-3 text-sm focus:outline-none cursor-pointer">
+                            <option value="rating-desc">ВЫСШИЙ СУД (Сначала ТОП)</option>
+                            <option value="year-desc">НОВЕЙШИЕ СВИТКИ</option>
+                            <option value="title">АЛФАВИТНЫЙ ПЕРЕЧЕНЬ</option>
+                        </select>
                     </div>
-                </div>
-
-                <div class="flex gap-3">
-                    <button @click="pickRandomItem()" class="font-mono text-xs font-bold tracking-wider uppercase border border-slate-700 hover:border-orange-500 hover:bg-orange-500/5 px-4 py-2 transition-all rounded">
-                        [ RANDOM_PICK ]
-                    </button>
-                    <button @click="clearFilters()" class="font-mono text-xs font-bold tracking-wider uppercase text-slate-400 hover:text-white px-3 py-2 transition-all">
-                        Очистить
+                    <button @click="pickRandomItem()" class="h-12 w-12 flex items-center justify-center border border-yellow-600/50 hover:bg-yellow-600 hover:text-black transition-all rounded-full">
+                        🎲
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- СЕТКА КАРТОЧЕК -->
-        <main class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4" role="main">
-            <template x-for="item in filteredAndSortedItems" :key="item.title + '-' + item.year">
+        <!-- СЕТКА С ДИНАМИЧЕСКИМИ ОБВОДКАМИ -->
+        <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+            <template x-for="item in filteredAndSortedItems" :key="item.title">
+                <!-- Alpine принудительно вешает нужный класс в зависимости от рейтинга -->
                 <article @click="openModal(item)" 
-                         class="bg-slate-900/40 border border-slate-800/80 rounded p-2 hover:border-slate-600 transition-all duration-300 cursor-pointer group flex flex-col h-full relative">
+                         :class="getCardTierClass(item.rating)" 
+                         class="relic-card overflow-hidden flex flex-col h-full cursor-pointer">
                     
-                    <!-- Постер / Изображение -->
-                    <div class="relative aspect-[2/3] w-full bg-slate-950 rounded overflow-hidden mb-3">
-                        <img :src="item.image || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400&auto=format&fit=crop'" 
-                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                             loading="lazy"
-                             @error="$el.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400&auto=format&fit=crop'">
+                    <!-- Media Container -->
+                    <div class="relative aspect-[3/4] overflow-hidden bg-slate-950">
+                        <img :src="item.image || 'https://via.placeholder.com/600x800'" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[20%] group-hover:grayscale-0"
+                             loading="lazy">
                         
-                        <!-- Абсолютный бейдж рейтинга -->
-                        <div class="absolute top-2 right-2 backdrop-blur-md bg-slate-950/80 border px-2 py-0.5 rounded font-mono text-[11px] font-bold"
-                             :class="item.rating >= 8 ? 'text-emerald-400 border-emerald-500/20' : (item.rating >= 5 ? 'text-amber-400 border-amber-500/20' : 'text-rose-400 border-rose-500/20')">
-                            <span x-text="item.rating ? item.rating.toFixed(1) : 'Н/Д'"></span>
+                        <!-- Floating Score -->
+                        <div class="absolute top-0 left-0 p-4">
+                            <div class="backdrop-blur-md bg-black/80 border w-12 h-12 rounded-full flex items-center justify-center"
+                                 :class="item.rating >= 10 ? 'border-yellow-400' : 'border-white/15'">
+                                <span class="imperial-font text-sm font-black" 
+                                      :class="item.rating >= 10 ? 'gold-text' : 'text-white'" 
+                                      x-text="item.rating || '?'"></span>
+                            </div>
                         </div>
+
+                        <!-- Эффект нимба для абсолютных богов (рейтинг > 10) -->
+                        <template x-if="item.rating > 10">
+                            <div class="absolute inset-0 bg-gradient-to-t from-purple-900/40 via-transparent to-transparent pointer-events-none"></div>
+                        </template>
                     </div>
 
-                    <!-- Метаданные -->
-                    <div class="flex flex-col flex-1 px-1 py-1">
-                        <span class="font-mono text-[10px] uppercase text-slate-500 mb-1" x-text="item.typeDisplay"></span>
-                        <!-- Название (Обрезается красиво, без выползания) -->
-                        <h3 class="text-sm font-semibold text-white group-hover:text-orange-500 transition-colors line-clamp-2 tracking-tight uppercase mb-2" x-text="item.title"></h3>
+                    <!-- Description Area -->
+                    <div class="p-6 relative bg-black/40 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="imperial-font text-[9px] tracking-widest text-yellow-600 uppercase" x-text="item.typeDisplay"></span>
+                            <h3 class="playfair text-2xl font-black text-white mt-1 group-hover:text-yellow-400 transition-all line-clamp-2" x-text="item.title"></h3>
+                        </div>
                         
-                        <!-- Год в самом низу -->
-                        <div class="mt-auto pt-2 border-t border-slate-800/50 flex justify-between items-center">
-                            <span class="font-mono text-[11px] text-slate-400" x-text="item.year"></span>
-                            <span class="text-[10px] text-slate-500" x-show="item.genres.length" x-text="item.genres[0]"></span>
+                        <div class="mt-6 flex justify-between items-center opacity-60">
+                            <span class="mono-tech text-[10px]" x-text="item.year"></span>
+                            <div class="h-px flex-1 mx-4 bg-yellow-600/20"></div>
+                            <span class="imperial-font text-[9px] tracking-tighter uppercase truncate max-w-[80px]" x-text="item.genres[0] || 'Свиток'"></span>
                         </div>
                     </div>
                 </article>
             </template>
         </main>
-
-        <!-- Пустое состояние -->
-        <div x-show="filteredAndSortedItems.length === 0" class="text-center py-24 border border-dashed border-slate-800 rounded">
-            <p class="font-mono text-sm text-slate-500 uppercase tracking-widest mb-4">НЕТ СОВПАДЕНИЙ ПО ДАННОМУ ЗАПРОСУ</p>
-            <button @click="clearFilters()" class="text-xs font-mono text-orange-500 hover:underline">[ СБРОСИТЬ ФИЛЬТРАЦИЮ ]</button>
-        </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО (Индустриальный оверлей) -->
+    <!-- МОДАЛКА (ИМПЕРСКИЙ РАЗДЕЛ) -->
     <div x-show="modalItem" 
-         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-sm"
-         x-transition:enter="transition ease-out duration-200"
-         x-transition:enter-start="opacity-0"
-         x-transition:leave="transition ease-in duration-150"
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-12 bg-black/95 backdrop-blur-xl"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 scale-110"
+         x-transition:leave="transition ease-in duration-200"
          style="display: none;">
         
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-5xl rounded overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
+        <div class="bg-gradient-to-b from-slate-900 to-black w-full max-w-6xl rounded-2xl overflow-hidden shadow-[0_0_100px_rgba(212,175,55,0.15)] border border-yellow-600/30 flex flex-col md:flex-row max-h-[90vh]"
              @click.away="closeModal()">
             
-            <!-- Левая часть (Постер + статы) -->
-            <div class="w-full md:w-2/5 bg-slate-950 p-6 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-800">
-                <div>
-                    <img :src="modalItem?.image" class="w-full aspect-[2/3] object-cover rounded border border-slate-800 shadow-lg mb-6">
-                    <div class="grid grid-cols-2 gap-2 font-mono">
-                        <div class="p-3 bg-slate-900/60 border border-slate-800 rounded">
-                            <span class="text-[10px] text-slate-500 block uppercase">РЕЙТИНГ</span>
-                            <span class="text-xl font-bold text-white" x-text="modalItem?.rating ? modalItem.rating.toFixed(1) : 'Н/Д'"></span>
-                        </div>
-                        <div class="p-3 bg-slate-900/60 border border-slate-800 rounded">
-                            <span class="text-[10px] text-slate-500 block uppercase">РЕЛИЗ</span>
-                            <span class="text-xl font-bold text-white" x-text="modalItem?.year"></span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mt-6">
-                    <span class="font-mono text-[10px] text-slate-500 block mb-2 uppercase">ТЕГИ_КАТЕГОРИИ</span>
-                    <div class="flex flex-wrap gap-1.5">
-                        <template x-for="genre in modalItem?.genres" :key="genre">
-                            <span class="text-xs bg-slate-900 px-2.5 py-1 rounded text-slate-300 border border-slate-800" x-text="genre"></span>
-                        </template>
-                    </div>
-                </div>
+            <div class="md:w-2/5 relative h-64 md:h-auto overflow-hidden bg-black">
+                <img :src="modalItem?.image" class="w-full h-full object-cover">
             </div>
 
-            <!-- Правая часть (Тексты и логи) -->
-            <div class="flex-1 p-6 sm:p-8 overflow-y-auto flex flex-col justify-between">
-                <div>
-                    <div class="flex justify-between items-start gap-4 mb-4">
-                        <div>
-                            <span class="font-mono text-xs text-orange-500 uppercase font-bold tracking-wider" x-text="modalItem?.typeDisplay"></span>
-                            <h2 class="text-2xl sm:text-3xl font-bold text-white uppercase tracking-tight mt-1" x-text="modalItem?.title"></h2>
-                        </div>
-                        <button @click="closeModal()" class="font-mono text-slate-500 hover:text-white transition-colors text-sm bg-slate-950 px-2 py-1 rounded border border-slate-800">ESC_✖</button>
+            <div class="flex-1 p-8 md:p-12 overflow-y-auto">
+                <div class="flex justify-between items-start mb-8">
+                    <div>
+                        <span class="imperial-font text-xs text-yellow-600 tracking-[0.3em] uppercase block mb-2" x-text="modalItem?.typeDisplay"></span>
+                        <h2 class="playfair text-4xl md:text-5xl font-black text-white italic" x-text="modalItem?.title"></h2>
                     </div>
+                    <button @click="closeModal()" class="text-yellow-600 hover:text-white transition-colors imperial-font text-2xl">[ X ]</button>
+                </div>
 
-                    <!-- Переключатели контента -->
-                    <div class="flex border-b border-slate-800 mb-6">
-                        <button @click="showReview = true" 
-                                class="px-4 py-2 font-mono text-xs uppercase tracking-wider border-b-2 transition-all"
-                                :class="showReview ? 'border-orange-500 text-white font-bold bg-slate-800/30' : 'border-transparent text-slate-400 hover:text-white'">
-                            [ Мнение_Рецензия ]
-                        </button>
-                        <button @click="showReview = false" 
-                                class="px-4 py-2 font-mono text-xs uppercase tracking-wider border-b-2 transition-all"
-                                :class="!showReview ? 'border-orange-500 text-white font-bold bg-slate-800/30' : 'border-transparent text-slate-400 hover:text-white'">
-                            [ Сюжет_Описание ]
-                        </button>
+                <div class="grid grid-cols-3 gap-4 mb-10">
+                    <div class="border-l border-yellow-600/30 pl-4">
+                        <span class="mono-tech text-[10px] text-slate-500 uppercase block">Вердикт</span>
+                        <span class="text-2xl font-black gold-text" x-text="modalItem?.rating + ' / 10'"></span>
                     </div>
-
-                    <!-- Блок с текстом -->
-                    <div class="prose prose-invert max-w-none">
-                        <div x-show="showReview">
-                            <p class="text-slate-300 text-base leading-relaxed whitespace-pre-line font-serif italic" x-text="modalItem?.review || 'Рецензия на данный объект не сформирована в базе данных.'"></p>
-                        </div>
-                        <div x-show="!showReview">
-                            <p class="text-slate-400 text-sm leading-relaxed" x-text="modalItem?.description || 'Описание отсутствует или заблокировано.'"></p>
-                        </div>
+                    <div class="border-l border-yellow-600/30 pl-4">
+                        <span class="mono-tech text-[10px] text-slate-500 uppercase block">Эпоха</span>
+                        <span class="text-2xl font-black text-white" x-text="modalItem?.year"></span>
+                    </div>
+                    <div class="border-l border-yellow-600/30 pl-4">
+                        <span class="mono-tech text-[10px] text-slate-500 uppercase block">Индекс</span>
+                        <span class="text-2xl font-black text-amber-500 uppercase">SAFE</span>
                     </div>
                 </div>
 
-                <div class="mt-8 pt-4 border-t border-slate-800 flex justify-end">
-                    <button @click="closeModal()" class="w-full sm:w-auto bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-white font-mono text-xs uppercase px-6 py-3 transition-all rounded">
-                        Закрыть сессию
-                    </button>
+                <div class="space-y-8">
+                    <section>
+                        <h4 class="imperial-font text-xs text-yellow-600 border-b border-yellow-600/20 pb-2 mb-4 uppercase tracking-[0.2em]">Мнение // Рецензия</h4>
+                        <p class="playfair text-xl text-slate-200 leading-relaxed italic" x-text="modalItem?.review || 'Рецензия отсутствует.'"></p>
+                    </section>
+                    <section class="opacity-50">
+                        <h4 class="imperial-font text-xs text-slate-500 border-b border-slate-800 pb-2 mb-4 uppercase tracking-[0.2em]">Суть // Описание</h4>
+                        <p class="mono-tech text-sm leading-relaxed text-slate-400" x-text="modalItem?.description || 'Нет описания.'"></p>
+                    </section>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Загрузчик -->
-    <div x-show="loading" class="fixed inset-0 bg-[#090a0f] z-[100] flex flex-col items-center justify-center gap-4">
-        <div class="h-1 w-48 bg-slate-900 rounded-full overflow-hidden relative border border-slate-800">
-            <div class="absolute h-full bg-orange-500 top-0 left-0 animate-[pulse_1.5s_infinite]" style="width: 60%"></div>
-        </div>
-        <p class="font-mono text-[11px] text-slate-500 tracking-widest uppercase">ЧТЕНИЕ_ФАЙЛОВ_ДАННЫХ...</p>
+    <div x-show="loading" class="fixed inset-0 bg-black z-[100] flex flex-col items-center justify-center">
+        <div class="w-16 h-16 border-t-2 border-b-2 border-yellow-600 rounded-full animate-spin mb-4"></div>
+        <h3 class="imperial-font text-yellow-600 text-xs tracking-[0.5em] uppercase animate-pulse">Открытие Врат Архива...</h3>
     </div>
 
     <script>
@@ -269,107 +280,59 @@
                 search: '',
                 categoryFilter: '',
                 sortKey: 'rating-desc',
-                minRating: 0,
                 modalItem: null,
                 items: [],
                 loading: true,
-                showReview: true,
 
                 async loadItems() {
-                    const fileNames = ['anime_data.json', 'movies_data.json', 'games_data.json', 'books_data.json', 'cartoons_data.json'];
-                    this.loading = true;
-                    
+                    const files = ['anime_data.json', 'movies_data.json', 'games_data.json', 'books_data.json', 'cartoons_data.json'];
                     try {
-                        // Чистый параллельный фетч без лишней воды
-                        const fetches = fileNames.map(file => 
-                            fetch(file)
-                                .then(res => res.ok ? res.json() : [])
-                                .catch(() => [])
-                        );
-                        
-                        const results = await Promise.all(fetches);
-                        const rawItems = results.flat();
-                        
-                        this.items = rawItems.map(item => {
-                            const r = parseFloat(item.rating);
-                            return {
-                                title: item.title || 'НЕИЗВЕСТНЫЙ_ОБЪЕКТ',
-                                type: item.type || 'unknown',
-                                typeDisplay: this.getTypeDisplay(item.type),
-                                year: item.year || 'Н/Д',
-                                rating: !isNaN(r) ? r : null,
-                                genres: Array.isArray(item.genres) ? item.genres : [],
-                                description: item.description || '',
-                                review: item.review || '',
-                                image: item.image || null
-                            };
-                        });
-                    } catch (e) {
-                        console.error("DATA_FETCH_ERROR //", e);
+                        const results = await Promise.all(files.map(f => fetch(f).then(r => r.ok ? r.json() : []).catch(() => [])));
+                        this.items = results.flat().map(item => ({
+                            ...item,
+                            rating: parseFloat(item.rating) || 0,
+                            typeDisplay: this.getType(item.type)
+                        }));
                     } finally {
                         this.loading = false;
                     }
                 },
 
-                getTypeDisplay(type) {
-                    const map = {
-                        'movie': 'КИНЕМАТОГРАФ',
-                        'show': 'СЕРИАЛ',
-                        'anime': 'АНИМЕ',
-                        'game': 'ИНТЕРАКТИВНЫЙ_СОФТ',
-                        'book': 'ЛИТЕРАТУРА',
-                        'cartoon': 'МУЛЬТФИЛЬМ'
-                    };
-                    return map[type] || 'ОБЪЕКТ_РЕЕСТРА';
+                getType(t) {
+                    const m = { 'movie': 'МАНУСКРИПТ: КИНО', 'show': 'МАНУСКРИПТ: СЕРИАЛ', 'anime': 'МАНУСКРИПТ: АНИМЕ', 'game': 'АРТЕФАКТ: ИГРА', 'book': 'СВИТОК: ЛИТЕРАТУРА', 'cartoon': 'МУЛЬТФИЛЬМ' };
+                    return m[t] || 'ОБЪЕКТ РЕЕСТРА';
+                },
+
+                // Динамическая раздача имперских статусов рамкам
+                getCardTierClass(rating) {
+                    if (rating === 10) {
+                        return 'tier-10';
+                    }
+                    if (rating > 10) {
+                        return 'tier-mega';
+                    }
+                    return '';
                 },
 
                 get filteredAndSortedItems() {
-                    let filtered = this.items.filter(item => {
-                        const matchSearch = !this.search || item.title.toLowerCase().includes(this.search.toLowerCase());
-                        const matchCat = !this.categoryFilter || item.type === this.categoryFilter;
-                        const matchRating = !this.minRating || (item.rating !== null && item.rating >= this.minRating);
-                        return matchSearch && matchCat && matchRating;
+                    let f = this.items.filter(i => {
+                        return (!this.search || i.title.toLowerCase().includes(this.search.toLowerCase())) &&
+                               (!this.categoryFilter || i.type === this.categoryFilter);
                     });
 
-                    return filtered.sort((a, b) => {
-                        const rA = a.rating === null ? -1 : a.rating;
-                        const rB = b.rating === null ? -1 : b.rating;
-                        
-                        switch (this.sortKey) {
-                            case 'rating-asc':   return rA - rB;
-                            case 'rating-desc':  return rB - rA;
-                            case 'year-asc':     return (parseInt(a.year) || 0) - (parseInt(b.year) || 0);
-                            case 'year-desc':    return (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
-                            case 'title':        return a.title.localeCompare(b.title, 'ru');
-                            default:             return 0;
-                        }
+                    return f.sort((a, b) => {
+                        if (this.sortKey === 'rating-desc') return b.rating - a.rating;
+                        if (this.sortKey === 'year-desc') return (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
+                        if (this.sortKey === 'title') return a.title.localeCompare(b.title);
+                        return 0;
                     });
                 },
 
-                openModal(item) {
-                    this.modalItem = item;
-                    this.showReview = !!item.review;
-                    document.body.style.overflow = 'hidden';
-                },
-
-                closeModal() {
-                    this.modalItem = null;
-                    document.body.style.overflow = '';
-                },
-
-                clearFilters() {
-                    this.search = '';
-                    this.categoryFilter = '';
-                    this.sortKey = 'rating-desc';
-                    this.minRating = 0;
-                },
-
+                openModal(item) { this.modalItem = item; document.body.style.overflow = 'hidden'; },
+                closeModal() { this.modalItem = null; document.body.style.overflow = ''; },
                 pickRandomItem() {
-                    const currentList = this.filteredAndSortedItems;
-                    if (currentList.length > 0) {
-                        const random = currentList[Math.floor(Math.random() * currentList.length)];
-                        this.openModal(random);
-                    }
+                    const l = this.filteredAndSortedItems;
+                    if (l.length) this.openModal(l[Math.floor(Math.random() * l.length)]);
                 }
             }
         }
