@@ -7,194 +7,172 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Archive&family=Inter:wght@400;500;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --core-black: #020203;
             --panel-dark: #08080a;
             --laser-red: #ff052b;
-            --dark-crimson: #5c000d;
         }
+
+        * { box-sizing: border-box; }
 
         body {
             background-color: var(--core-black);
-            background-image: 
-                radial-gradient(circle at 50% -20%, rgba(255, 5, 43, 0.12) 0%, transparent 60%);
+            background-image: radial-gradient(circle at 50% -20%, rgba(255,5,43,0.12) 0%, transparent 60%);
             color: #efefef;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            /* Отступ снизу чтобы контент не прятался под кнопкой на мобиле */
+            padding-bottom: env(safe-area-inset-bottom, 0px);
         }
 
-        .brutal-font { font-family: 'Inter', sans-serif; font-weight: 900; tracking: -0.05em; }
-        .tech-mono { font-family: 'Space Mono', monospace; }
+        .brutal-font { font-family: 'Inter', sans-serif; font-weight: 900; }
+        .tech-mono   { font-family: 'Space Mono', monospace; }
 
-        .text-block {
-            font-size: 1rem;
-            line-height: 1.7;
-            color: #e2e8f0;
-        }
+        .text-block { font-size: 1rem; line-height: 1.7; color: #e2e8f0; }
+        .core-panel { background: var(--panel-dark); border: 1px solid #15151a; }
 
-        .core-panel {
-            background: var(--panel-dark);
-            border: 1px solid #15151a;
-        }
-
-        /* Все карточки масштабируются при наведении */
+        /* ── Карточки ─────────────────────────────────── */
         article.card-item {
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+            transition: transform 0.3s ease, box-shadow 0.3s ease !important;
         }
-        article.card-item:hover {
-            transform: scale(1.04) !important;
+        @media (hover: hover) {
+            article.card-item:hover { transform: scale(1.04) !important; }
         }
 
-        /* 👑 ТИР 10/10 */
+        /* ТИР 10 */
         .tier-10 {
             border: 2px solid var(--laser-red) !important;
-            box-shadow: 0 0 25px rgba(255, 5, 43, 0.25), inset 0 0 15px rgba(255, 5, 43, 0.1) !important;
+            box-shadow: 0 0 25px rgba(255,5,43,.25), inset 0 0 15px rgba(255,5,43,.1) !important;
         }
         .tier-10::before {
             content: 'TOP_VERDICT';
-            position: absolute;
-            top: -10px;
-            left: 10px;
-            background: var(--laser-red);
-            color: #000;
-            font-family: 'Space Mono', monospace;
-            font-size: 9px;
-            font-weight: 900;
-            padding: 0 6px;
-            z-index: 20;
-        }
-        .tier-10:hover {
-            box-shadow: 0 0 40px rgba(255, 5, 43, 0.45), inset 0 0 15px rgba(255, 5, 43, 0.1) !important;
+            position: absolute; top: -10px; left: 10px;
+            background: var(--laser-red); color: #000;
+            font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 900;
+            padding: 0 6px; z-index: 20;
         }
 
-        /* 🌌 ТИР 11/10 и выше */
+        /* ТИР 11+ */
         .tier-mega {
             border: 2px solid transparent !important;
-            background-image: linear-gradient(var(--panel-dark), var(--panel-dark)), 
+            background-image: linear-gradient(var(--panel-dark), var(--panel-dark)),
                               linear-gradient(90deg, #ff052b, #200005, #ff052b) !important;
             background-origin: border-box !important;
             background-clip: padding-box, border-box !important;
             background-size: 200% 100% !important;
             animation: laserShift 3s linear infinite !important;
-            box-shadow: 0 0 35px rgba(255, 5, 43, 0.4) !important;
+            box-shadow: 0 0 35px rgba(255,5,43,.4) !important;
         }
         .tier-mega::before {
             content: 'OVER_LOAD_11+';
-            position: absolute;
-            top: -10px;
-            left: 10px;
-            background: #fff;
-            color: #000;
-            font-family: 'Space Mono', monospace;
-            font-size: 9px;
-            font-weight: 900;
-            padding: 0 6px;
-            z-index: 20;
+            position: absolute; top: -10px; left: 10px;
+            background: #fff; color: #000;
+            font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 900;
+            padding: 0 6px; z-index: 20;
             animation: pulseBlink 1s infinite;
         }
-        .tier-mega:hover {
-            box-shadow: 0 0 60px rgba(255, 5, 43, 0.7) !important;
-        }
 
-        @keyframes laserShift {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 200% 0%; }
-        }
-        @keyframes pulseBlink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
+        @keyframes laserShift { 0%{background-position:0%}100%{background-position:200%} }
+        @keyframes pulseBlink { 0%,100%{opacity:1} 50%{opacity:.5} }
+        @keyframes loadingBar { 0%{left:-30%}100%{left:100%} }
 
-        /* Заглушка для отсутствующего постера */
+        /* ── Заглушка постера ──────────────────────────── */
         .no-poster {
-            background: 
-                repeating-linear-gradient(
-                    45deg,
-                    #0a0a0d 0px,
-                    #0a0a0d 10px,
-                    #0d0d11 10px,
-                    #0d0d11 20px
-                );
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            border: 1px dashed #2a2a35;
-        }
-        .no-poster-icon {
-            width: 40px;
-            height: 40px;
-            opacity: 0.3;
+            background: repeating-linear-gradient(45deg,#0a0a0d 0,#0a0a0d 10px,#0d0d11 10px,#0d0d11 20px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 8px; border: 1px dashed #2a2a35;
         }
         .no-poster-text {
-            font-family: 'Space Mono', monospace;
-            font-size: 8px;
-            color: #444;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            line-height: 1.5;
+            font-family: 'Space Mono', monospace; font-size: 8px; color: #444;
+            text-align: center; text-transform: uppercase; letter-spacing: .05em; line-height: 1.5;
         }
 
-        ::-webkit-scrollbar { width: 6px; }
+        /* ── Модалка на мобиле — полный экран снизу ────── */
+        @media (max-width: 767px) {
+            .modal-inner {
+                flex-direction: column !important;
+                max-height: 95vh !important;
+                border-radius: 0 !important;
+                position: fixed !important;
+                bottom: 0; left: 0; right: 0;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            .modal-poster-col {
+                display: none !important; /* на мобиле прячем постер — экономим место */
+            }
+            .modal-content-col {
+                padding: 20px 16px !important;
+            }
+            .modal-title {
+                font-size: 1.6rem !important;
+            }
+        }
+
+        /* ── Скроллбар ─────────────────────────────────── */
+        ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: var(--core-black); }
-        ::-webkit-scrollbar-thumb { background: #222; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--laser-red); }
+
+        /* ── Нативные селекты и инпуты на мобиле ───────── */
+        select, input[type="text"] {
+            -webkit-appearance: none;
+            appearance: none;
+            font-size: 16px; /* предотвращает зум на iOS */
+        }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Кнопка В меню — фиксированная, правый верхний угол -->
+    <!-- Кнопка В меню -->
     <button onclick="window.location.href='https://kw0rs.uno'"
-       class="fixed top-4 right-4 z-[200] flex items-center gap-2 tech-mono text-xs text-zinc-400 hover:text-white bg-[#08080a] border border-[#1c1c24] hover:border-red-900/60 px-4 py-2.5 transition-all duration-200 hover:shadow-[0_0_15px_rgba(255,5,43,0.2)] group cursor-pointer">
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" class="transition-transform duration-200 group-hover:-translate-x-0.5">
+       class="fixed top-3 right-3 z-[200] flex items-center gap-2 tech-mono bg-[#08080a] border border-[#1c1c24] hover:border-red-900/60 px-3 py-2 transition-all duration-200 hover:shadow-[0_0_15px_rgba(255,5,43,0.2)] cursor-pointer"
+       style="font-size:11px;color:#999;">
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
             <path d="M6 1L2 5L6 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         В МЕНЮ
     </button>
 
-    <div class="max-w-[1600px] mx-auto px-6 py-12">
-        
+    <div class="max-w-[1600px] mx-auto px-3 sm:px-6 py-6 sm:py-12">
+
         <!-- HEADER -->
-        <header class="mb-16 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 pb-8 border-b-2 border-[#111]">
-            <div>
-                <div class="flex items-center gap-3 mb-3">
-                    <span class="tech-mono text-xs text-red-500 bg-red-950/50 px-2 py-0.5 border border-red-900/40">SYS_V2.0</span>
-                    <span class="tech-mono text-xs text-zinc-600">SECURE_CHANNEL</span>
+        <header class="mb-8 sm:mb-16 pt-8 sm:pt-0 pb-6 sm:pb-8 border-b-2 border-[#111]">
+            <div class="flex flex-col gap-3">
+                <div class="flex items-center gap-3">
+                    <span class="tech-mono text-[10px] text-red-500 bg-red-950/50 px-2 py-0.5 border border-red-900/40">SYS_V2.0</span>
+                    <span class="tech-mono text-[10px] text-zinc-600">SECURE_CHANNEL</span>
                 </div>
-                <h1 class="brutal-font text-5xl sm:text-7xl uppercase tracking-tighter text-white">
-                    К<span class="text-red-600">.</span>А<span class="text-red-600">.</span>Л <span class="text-zinc-600 text-3xl sm:text-4xl font-normal tech-mono">// Кворс Аниме Лист</span>
+                <!-- Заголовок: крупный на десктопе, компактный на мобиле -->
+                <h1 class="brutal-font uppercase tracking-tighter text-white leading-none" style="font-size:clamp(2.2rem,10vw,5rem)">
+                    К<span class="text-red-600">.</span>А<span class="text-red-600">.</span>Л
+                    <span class="text-zinc-600 font-normal tech-mono block sm:inline mt-1 sm:mt-0" style="font-size:clamp(0.8rem,3vw,1.3rem)">// Кворс Аниме Лист</span>
                 </h1>
-            </div>
-            
-            <!-- Статы -->
-            <div class="flex gap-8 tech-mono text-xs bg-[#0a0a0d] p-4 border border-[#15151a]" x-data x-text="">
-                <div>TOTAL_UNITS: <span class="text-white font-bold" id="total-count">—</span></div>
-                <div class="text-red-600">//</div>
-                <div>FILTERED: <span class="text-red-500 font-bold" id="filtered-count">—</span></div>
             </div>
         </header>
 
-        <!-- УПРАВЛЕНИЕ АРХИВОМ -->
-        <section class="mb-12 core-panel p-6 sm:p-8" x-data="mediaApp()" x-init="loadItems()">
-            <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+        <!-- УПРАВЛЕНИЕ -->
+        <section class="mb-8 core-panel p-4 sm:p-6 sm:p-8" x-data="mediaApp()" x-init="loadItems()">
+
+            <!-- Фильтры -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+
                 <!-- Поиск -->
-                <div class="xl:col-span-2">
-                    <label class="tech-mono text-[11px] text-zinc-500 uppercase mb-2 block">01 / Ключ_Поиска</label>
-                    <input type="text" x-model="search" placeholder="Введи название тайтла..." 
-                           class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 transition-colors">
+                <div class="sm:col-span-2">
+                    <label class="tech-mono text-[10px] text-zinc-500 uppercase mb-1.5 block">Поиск</label>
+                    <input type="text" x-model="search" placeholder="Введи название тайтла..."
+                           class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 transition-colors text-sm">
                 </div>
 
                 <!-- Категория -->
                 <div>
-                    <label class="tech-mono text-[11px] text-zinc-500 uppercase mb-2 block">02 / Сектор</label>
-                    <select x-model="categoryFilter" class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 cursor-pointer">
-                        <option value="">ВСЕ КАТЕГОРИИ</option>
+                    <label class="tech-mono text-[10px] text-zinc-500 uppercase mb-1.5 block">Сектор</label>
+                    <select x-model="categoryFilter" class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 cursor-pointer text-sm">
+                        <option value="">ВСЕ</option>
                         <option value="movie">КИНО</option>
                         <option value="show">СЕРИАЛЫ</option>
                         <option value="anime">АНИМЕ</option>
@@ -205,117 +183,126 @@
 
                 <!-- Сортировка -->
                 <div>
-                    <label class="tech-mono text-[11px] text-zinc-500 uppercase mb-2 block">03 / Сортировка</label>
-                    <select x-model="sortKey" class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 cursor-pointer">
-                        <option value="rating-desc">РЕЙТИНГ [MAX → MIN]</option>
-                        <option value="rating-asc">РЕЙТИНГ [MIN → MAX]</option>
-                        <option value="year-desc">ХРОНОЛОГИЯ [НОВЫЕ]</option>
-                        <option value="year-asc">ХРОНОЛОГИЯ [СТАРЫЕ]</option>
-                        <option value="title-asc">АЛФАВИТ [А → Я]</option>
-                        <option value="title-desc">АЛФАВИТ [Я → А]</option>
+                    <label class="tech-mono text-[10px] text-zinc-500 uppercase mb-1.5 block">Сортировка</label>
+                    <select x-model="sortKey" class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 cursor-pointer text-sm">
+                        <option value="rating-desc">РЕЙТИНГ ↓</option>
+                        <option value="rating-asc">РЕЙТИНГ ↑</option>
+                        <option value="year-desc">ГОД (новые)</option>
+                        <option value="year-asc">ГОД (старые)</option>
+                        <option value="title-asc">А → Я</option>
+                        <option value="title-desc">Я → А</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Доп. опции -->
-            <div class="mt-6 pt-6 border-t border-[#15151a] flex flex-wrap justify-between items-center gap-4">
-                <div class="flex items-center gap-3">
-                    <span class="tech-mono text-[11px] text-zinc-500">MIN_SCORE:</span>
-                    <input type="range" x-model.number="minRating" min="0" max="10" step="1" class="accent-red-600 bg-zinc-900 h-1 w-32">
-                    <span class="tech-mono text-sm text-red-500 font-bold" x-text="minRating + '/10'"></span>
+            <!-- Слайдер + кнопки -->
+            <div class="mt-4 pt-4 border-t border-[#15151a] flex flex-col sm:flex-row sm:items-center gap-4">
+                <div class="flex items-center gap-3 flex-1">
+                    <span class="tech-mono text-[10px] text-zinc-500 whitespace-nowrap">МИН. ОЦЕНКА:</span>
+                    <input type="range" x-model.number="minRating" min="0" max="10" step="1"
+                           class="accent-red-600 flex-1 h-1" style="max-width:140px">
+                    <span class="tech-mono text-sm text-red-500 font-bold w-12" x-text="minRating + '/10'"></span>
                 </div>
-                
-                <div class="flex gap-4">
-                    <button @click="pickRandomItem()" class="tech-mono text-xs bg-red-950/30 hover:bg-red-900/40 text-red-500 border border-red-900/50 px-5 py-2.5 transition-colors">
-                        [СЛУЧАЙНЫЙ_ВЫБОР]
+
+                <div class="flex gap-3">
+                    <button @click="pickRandomItem()"
+                            class="tech-mono text-xs bg-red-950/30 hover:bg-red-900/40 text-red-500 border border-red-900/50 px-4 py-2.5 transition-colors flex-1 sm:flex-none">
+                        [СЛУЧАЙНЫЙ]
                     </button>
-                    <button @click="clearFilters()" class="tech-mono text-xs text-zinc-500 hover:text-white px-3 py-2 transition-colors">
-                        Сбросить
+                    <button @click="clearFilters()"
+                            class="tech-mono text-xs text-zinc-500 hover:text-white px-3 py-2 transition-colors border border-[#15151a]">
+                        Сброс
                     </button>
                 </div>
             </div>
 
-            <!-- РЕЕСТР КАРТОЧЕК -->
-            <main class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 mt-12">
+            <!-- Счётчик -->
+            <div class="mt-4 flex gap-6 tech-mono text-xs text-zinc-600">
+                <span>ВСЕГО: <span class="text-white font-bold" x-text="items.length"></span></span>
+                <span class="text-red-900">//</span>
+                <span>ПОКАЗАНО: <span class="text-red-500 font-bold" x-text="filteredAndSortedItems.length"></span></span>
+            </div>
+
+            <!-- КАРТОЧКИ -->
+            <main class="grid gap-3 sm:gap-5 mt-8"
+                  style="grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));">
                 <template x-for="item in filteredAndSortedItems" :key="item.title">
-                    <article @click="openModal(item)" 
-                             :class="getCardTierClass(item.rating)" 
-                             class="card-item core-panel p-2 rounded-none hover:border-zinc-500 cursor-pointer group flex flex-col h-full relative">
-                        
+                    <article @click="openModal(item)"
+                             :class="getCardTierClass(item.rating)"
+                             class="card-item core-panel p-1.5 sm:p-2 hover:border-zinc-500 cursor-pointer group flex flex-col h-full relative">
+
                         <!-- Обложка -->
-                        <div class="relative aspect-[2/3] bg-black overflow-hidden mb-3">
-                            <!-- Заглушка (показывается если нет картинки) -->
+                        <div class="relative overflow-hidden mb-2" style="aspect-ratio:2/3;background:#000">
                             <div x-show="!item.image" class="no-poster w-full h-full absolute inset-0">
-                                <svg class="no-poster-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="4" y="6" width="32" height="28" rx="1" stroke="#555" stroke-width="1.5" stroke-dasharray="3 2"/>
-                                    <circle cx="14" cy="16" r="3" stroke="#555" stroke-width="1.5"/>
-                                    <path d="M4 28l8-8 6 6 5-5 9 9" stroke="#555" stroke-width="1.5" stroke-linejoin="round"/>
+                                <svg width="28" height="28" viewBox="0 0 40 40" fill="none" style="opacity:.25">
+                                    <rect x="4" y="6" width="32" height="28" rx="1" stroke="#888" stroke-width="1.5" stroke-dasharray="3 2"/>
+                                    <circle cx="14" cy="16" r="3" stroke="#888" stroke-width="1.5"/>
+                                    <path d="M4 28l8-8 6 6 5-5 9 9" stroke="#888" stroke-width="1.5" stroke-linejoin="round"/>
                                 </svg>
-                                <span class="no-poster-text">постер<br>временно<br>отсутствует</span>
+                                <span class="no-poster-text">постер<br>отсутствует</span>
                             </div>
-                            <!-- Реальная картинка -->
-                            <img x-show="item.image"
-                                 :src="item.image" 
-                                 class="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500"
-                                 loading="lazy"
-                                 @error="item.image = null">
-                            
-                            <!-- Оценка в углу — формат X/10 -->
-                            <div class="absolute top-2 right-2 bg-black/90 px-2 py-0.5 border text-xs font-bold tech-mono"
+                            <img x-show="item.image" :src="item.image"
+                                 class="w-full h-full object-cover transition-all duration-500 grayscale-[30%] group-hover:grayscale-0"
+                                 loading="lazy" @error="item.image = null">
+
+                            <!-- Оценка -->
+                            <div class="absolute top-1.5 right-1.5 bg-black/90 px-1.5 py-0.5 border tech-mono font-bold"
+                                 style="font-size:9px"
                                  :class="item.rating >= 10 ? 'text-red-500 border-red-900' : 'text-white border-zinc-800'">
                                 <span x-text="item.rating ? item.rating.toFixed(1) + '/10' : 'Н/Д'"></span>
                             </div>
                         </div>
 
                         <!-- Инфо -->
-                        <div class="flex flex-col flex-1 px-1">
-                            <span class="tech-mono text-[9px] text-zinc-600 uppercase mb-1" x-text="item.typeDisplay"></span>
-                            <h3 class="text-sm font-bold text-zinc-100 group-hover:text-red-500 transition-colors line-clamp-2 uppercase tracking-tight mb-2" x-text="item.title"></h3>
-                            
-                            <div class="mt-auto pt-2 border-t border-[#15151a] flex justify-between text-[11px] tech-mono text-zinc-500">
+                        <div class="flex flex-col flex-1 px-0.5">
+                            <span class="tech-mono text-zinc-600 uppercase mb-0.5" style="font-size:8px" x-text="item.typeDisplay"></span>
+                            <h3 class="font-bold text-zinc-100 group-hover:text-red-500 transition-colors line-clamp-2 uppercase tracking-tight mb-1.5"
+                                style="font-size:11px" x-text="item.title"></h3>
+                            <div class="mt-auto pt-1.5 border-t border-[#15151a] flex justify-between tech-mono text-zinc-500"
+                                 style="font-size:9px">
                                 <span x-text="item.year"></span>
-                                <span class="truncate max-w-[80px]" x-text="item.genres[0] || ''"></span>
+                                <span class="truncate max-w-[60px]" x-text="item.genres?.[0] || ''"></span>
                             </div>
                         </div>
                     </article>
                 </template>
             </main>
 
-            <!-- Пустой экран -->
-            <div x-show="filteredAndSortedItems.length === 0" class="text-center py-20 border border-dashed border-[#15151a] mt-12">
-                <p class="tech-mono text-xs text-zinc-600 uppercase tracking-widest mb-4">РЕЗУЛЬТАТЫ НЕ ОБНАРУЖЕНЫ</p>
-                <button @click="clearFilters()" class="text-xs tech-mono text-red-500 hover:underline">[ СБРОСИТЬ СИСТЕМУ ФИЛЬТРОВ ]</button>
+            <!-- Пусто -->
+            <div x-show="filteredAndSortedItems.length === 0"
+                 class="text-center py-16 border border-dashed border-[#15151a] mt-8">
+                <p class="tech-mono text-xs text-zinc-600 uppercase tracking-widest mb-4">РЕЗУЛЬТАТЫ НЕ НАЙДЕНЫ</p>
+                <button @click="clearFilters()" class="text-xs tech-mono text-red-500 hover:underline">[ СБРОСИТЬ ФИЛЬТРЫ ]</button>
             </div>
 
-            <!-- МОДАЛКА -->
-            <div x-show="modalItem" 
-                 class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md"
+            <!-- ── МОДАЛКА ─────────────────────────────────────── -->
+            <div x-show="modalItem"
+                 class="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4 bg-black/95 backdrop-blur-md"
                  x-transition:enter="transition ease-out duration-200"
-                 x-transition:enter-start="opacity-0"
-                 style="display: none;">
-                
-                <div class="bg-[#08080a] border border-[#1c1c24] w-full max-w-5xl rounded-none flex flex-col md:flex-row max-h-[90vh]"
+                 x-transition:enter-start="opacity-0 translate-y-4"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 style="display:none;">
+
+                <div class="modal-inner bg-[#08080a] border border-[#1c1c24] w-full sm:max-w-5xl flex flex-col sm:flex-row max-h-[95vh] sm:max-h-[90vh] overflow-hidden"
                      @click.away="closeModal()">
-                    
-                    <!-- Лево: Постер -->
-                    <div class="w-full md:w-2/5 bg-black p-6 border-b md:border-b-0 md:border-r border-[#15151a] flex flex-col">
-                        <!-- Постер или заглушка в модалке -->
-                        <div class="relative w-full aspect-[2/3] border border-[#15151a] shadow-2xl overflow-hidden">
+
+                    <!-- Постер (скрыт на мобиле через CSS) -->
+                    <div class="modal-poster-col w-full sm:w-2/5 bg-black p-6 border-b sm:border-b-0 sm:border-r border-[#15151a] flex flex-col flex-shrink-0">
+                        <div class="relative w-full overflow-hidden border border-[#15151a] shadow-2xl" style="aspect-ratio:2/3">
                             <div x-show="!modalItem?.image" class="no-poster w-full h-full absolute inset-0">
-                                <svg class="no-poster-icon" style="width:60px;height:60px;opacity:0.2" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg width="50" height="50" viewBox="0 0 40 40" fill="none" style="opacity:.15">
                                     <rect x="4" y="6" width="32" height="28" rx="1" stroke="#aaa" stroke-width="1.5" stroke-dasharray="3 2"/>
                                     <circle cx="14" cy="16" r="3" stroke="#aaa" stroke-width="1.5"/>
                                     <path d="M4 28l8-8 6 6 5-5 9 9" stroke="#aaa" stroke-width="1.5" stroke-linejoin="round"/>
                                 </svg>
                                 <span class="no-poster-text" style="font-size:11px;color:#555">постер<br>временно отсутствует</span>
                             </div>
-                            <img x-show="modalItem?.image" :src="modalItem?.image" class="w-full h-full object-cover" @error="modalItem.image = null">
+                            <img x-show="modalItem?.image" :src="modalItem?.image" class="w-full h-full object-cover" @error="modalItem.image=null">
                         </div>
-                        
                         <div class="grid grid-cols-2 gap-2 tech-mono text-center mt-4">
                             <div class="bg-[#030304] p-3 border border-[#15151a]">
                                 <span class="text-[9px] text-zinc-600 block uppercase">SCORE</span>
-                                <span class="text-xl font-bold text-red-500" x-text="modalItem?.rating + '/10'"></span>
+                                <span class="text-xl font-bold text-red-500" x-text="(modalItem?.rating || 0) + '/10'"></span>
                             </div>
                             <div class="bg-[#030304] p-3 border border-[#15151a]">
                                 <span class="text-[9px] text-zinc-600 block uppercase">YEAR</span>
@@ -324,44 +311,56 @@
                         </div>
                     </div>
 
-                    <!-- Право: Контент -->
-                    <div class="flex-1 p-6 sm:p-10 overflow-y-auto flex flex-col justify-between">
-                        <div>
-                            <div class="flex justify-between items-start gap-4 mb-6">
-                                <div>
-                                    <span class="tech-mono text-xs text-red-500 uppercase font-bold" x-text="modalItem?.typeDisplay"></span>
-                                    <h2 class="brutal-font text-3xl sm:text-5xl text-white uppercase tracking-tighter mt-1" x-text="modalItem?.title"></h2>
-                                </div>
-                                <button @click="closeModal()" class="tech-mono text-zinc-500 hover:text-white text-xs bg-[#030304] px-3 py-1.5 border border-[#15151a]">CLOSE_×</button>
-                            </div>
+                    <!-- Контент -->
+                    <div class="modal-content-col flex-1 p-5 sm:p-10 overflow-y-auto flex flex-col">
 
-                            <!-- Табы -->
-                            <div class="flex border-b border-[#15151a] mb-6">
-                                <button @click="showReview = true" 
-                                        class="px-4 py-2.5 tech-mono text-xs uppercase tracking-wider border-b-2 transition-all"
-                                        :class="showReview ? 'border-red-600 text-white font-bold bg-red-950/20' : 'border-transparent text-zinc-500 hover:text-white'">
-                                    [ Мнение_Рецензия ]
-                                </button>
-                                <button @click="showReview = false" 
-                                        class="px-4 py-2.5 tech-mono text-xs uppercase tracking-wider border-b-2 transition-all"
-                                        :class="!showReview ? 'border-red-600 text-white font-bold bg-red-950/20' : 'border-transparent text-zinc-500 hover:text-white'">
-                                    [ Инфо_Описание ]
-                                </button>
+                        <!-- Шапка модалки -->
+                        <div class="flex justify-between items-start gap-3 mb-4">
+                            <div class="flex-1 min-w-0">
+                                <!-- На мобиле показываем оценку+год т.к. постер скрыт -->
+                                <div class="flex items-center gap-3 mb-2 sm:hidden">
+                                    <span class="tech-mono text-red-500 font-bold" style="font-size:11px" x-text="(modalItem?.rating || 0) + '/10'"></span>
+                                    <span class="tech-mono text-zinc-500" style="font-size:11px" x-text="modalItem?.year"></span>
+                                </div>
+                                <span class="tech-mono text-xs text-red-500 uppercase font-bold" x-text="modalItem?.typeDisplay"></span>
+                                <h2 class="modal-title brutal-font text-white uppercase tracking-tighter mt-1 leading-tight break-words" x-text="modalItem?.title"></h2>
                             </div>
+                            <button @click="closeModal()"
+                                    class="tech-mono text-zinc-500 hover:text-white bg-[#030304] border border-[#15151a] flex-shrink-0 px-3 py-2"
+                                    style="font-size:11px">✕</button>
+                        </div>
 
-                            <div class="text-block">
-                                <div x-show="showReview">
-                                    <p class="whitespace-pre-line text-zinc-100 italic font-medium" x-text="modalItem?.review || 'Рецензия еще не занесена в ядро базы данных.'"></p>
-                                </div>
-                                <div x-show="!showReview">
-                                    <p class="text-zinc-400" x-text="modalItem?.description || 'Сюжетное описание отсутствует.'"></p>
-                                </div>
+                        <!-- Табы -->
+                        <div class="flex border-b border-[#15151a] mb-5">
+                            <button @click="showReview = true"
+                                    class="px-3 py-2.5 tech-mono text-xs uppercase tracking-wider border-b-2 transition-all"
+                                    :class="showReview ? 'border-red-600 text-white font-bold bg-red-950/20' : 'border-transparent text-zinc-500'">
+                                Рецензия
+                            </button>
+                            <button @click="showReview = false"
+                                    class="px-3 py-2.5 tech-mono text-xs uppercase tracking-wider border-b-2 transition-all"
+                                    :class="!showReview ? 'border-red-600 text-white font-bold bg-red-950/20' : 'border-transparent text-zinc-500'">
+                                Описание
+                            </button>
+                        </div>
+
+                        <!-- Текст -->
+                        <div class="text-block flex-1 overflow-y-auto">
+                            <div x-show="showReview">
+                                <p class="whitespace-pre-line text-zinc-100 italic font-medium text-sm sm:text-base"
+                                   x-text="modalItem?.review || 'Рецензия ещё не добавлена.'"></p>
+                            </div>
+                            <div x-show="!showReview">
+                                <p class="text-zinc-400 text-sm sm:text-base"
+                                   x-text="modalItem?.description || 'Описание отсутствует.'"></p>
                             </div>
                         </div>
 
-                        <div class="mt-8 flex flex-wrap gap-2">
+                        <!-- Жанры -->
+                        <div class="mt-5 flex flex-wrap gap-2">
                             <template x-for="genre in modalItem?.genres" :key="genre">
-                                <span class="text-xs tech-mono bg-[#030304] px-3 py-1.5 text-zinc-400 border border-[#15151a]" x-text="genre"></span>
+                                <span class="tech-mono bg-[#030304] px-2.5 py-1 text-zinc-400 border border-[#15151a]"
+                                      style="font-size:10px" x-text="genre"></span>
                             </template>
                         </div>
                     </div>
@@ -370,20 +369,13 @@
 
             <!-- Загрузчик -->
             <div x-show="loading" class="fixed inset-0 bg-[#020203] z-[100] flex flex-col items-center justify-center gap-3">
-                <div class="h-1 w-48 bg-zinc-900 overflow-hidden relative">
-                    <div class="absolute h-full bg-red-600 top-0 left-0 animate-[loadingBar_1.5s_infinite]" style="width: 30%"></div>
+                <div class="h-1 w-40 bg-zinc-900 overflow-hidden relative">
+                    <div class="absolute h-full bg-red-600 top-0 left-0 animate-[loadingBar_1.5s_infinite]" style="width:30%"></div>
                 </div>
                 <p class="tech-mono text-[10px] text-red-500 tracking-widest uppercase">LOADING_CORE_DATA...</p>
             </div>
         </section>
     </div>
-
-    <style>
-        @keyframes loadingBar {
-            0% { left: -30%; }
-            100% { left: 100%; }
-        }
-    </style>
 
     <script>
         function mediaApp() {
@@ -398,9 +390,11 @@
                 showReview: true,
 
                 async loadItems() {
-                    const files = ['anime_data.json', 'movies_data.json', 'games_data.json', 'books_data.json', 'cartoons_data.json'];
+                    const files = ['anime_data.json','movies_data.json','games_data.json','books_data.json','cartoons_data.json'];
                     try {
-                        const results = await Promise.all(files.map(f => fetch(f).then(r => r.ok ? r.json() : []).catch(() => [])));
+                        const results = await Promise.all(
+                            files.map(f => fetch(f).then(r => r.ok ? r.json() : []).catch(() => []))
+                        );
                         this.items = results.flat().map(item => ({
                             ...item,
                             rating: parseFloat(item.rating) || 0,
@@ -412,7 +406,7 @@
                 },
 
                 getType(t) {
-                    const m = { 'movie': 'CINEMA', 'show': 'SERIES', 'anime': 'ANIME', 'game': 'GAME', 'book': 'LITERATURE', 'cartoon': 'CARTOON' };
+                    const m = { movie:'CINEMA', show:'SERIES', anime:'ANIME', game:'GAME', book:'LITERATURE', cartoon:'CARTOON' };
                     return m[t] || 'RECORD';
                 },
 
@@ -423,30 +417,26 @@
                 },
 
                 get filteredAndSortedItems() {
-                    let f = this.items.filter(i => {
-                        return (!this.search || i.title.toLowerCase().includes(this.search.toLowerCase())) &&
-                               (!this.categoryFilter || i.type === this.categoryFilter) &&
-                               (!this.minRating || i.rating >= this.minRating);
-                    });
-
+                    let f = this.items.filter(i =>
+                        (!this.search || i.title.toLowerCase().includes(this.search.toLowerCase())) &&
+                        (!this.categoryFilter || i.type === this.categoryFilter) &&
+                        (!this.minRating || i.rating >= this.minRating)
+                    );
                     return f.sort((a, b) => {
                         if (this.sortKey === 'rating-desc') return b.rating - a.rating;
                         if (this.sortKey === 'rating-asc')  return a.rating - b.rating;
-                        if (this.sortKey === 'year-desc')   return (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
-                        if (this.sortKey === 'year-asc')    return (parseInt(a.year) || 0) - (parseInt(b.year) || 0);
+                        if (this.sortKey === 'year-desc')   return (parseInt(b.year)||0) - (parseInt(a.year)||0);
+                        if (this.sortKey === 'year-asc')    return (parseInt(a.year)||0) - (parseInt(b.year)||0);
                         if (this.sortKey === 'title-asc')   return a.title.localeCompare(b.title, 'ru');
                         if (this.sortKey === 'title-desc')  return b.title.localeCompare(a.title, 'ru');
                         return 0;
                     });
                 },
 
-                openModal(item) { this.modalItem = item; this.showReview = !!item.review; document.body.style.overflow = 'hidden'; },
-                closeModal() { this.modalItem = null; document.body.style.overflow = ''; },
-                clearFilters() { this.search = ''; this.categoryFilter = ''; this.sortKey = 'rating-desc'; this.minRating = 0; },
-                pickRandomItem() {
-                    const l = this.filteredAndSortedItems;
-                    if (l.length) this.openModal(l[Math.floor(Math.random() * l.length)]);
-                }
+                openModal(item)  { this.modalItem = item; this.showReview = !!item.review; document.body.style.overflow = 'hidden'; },
+                closeModal()     { this.modalItem = null; document.body.style.overflow = ''; },
+                clearFilters()   { this.search = ''; this.categoryFilter = ''; this.sortKey = 'rating-desc'; this.minRating = 0; },
+                pickRandomItem() { const l = this.filteredAndSortedItems; if (l.length) this.openModal(l[Math.floor(Math.random()*l.length)]); }
             }
         }
     </script>
