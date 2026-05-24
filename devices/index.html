@@ -1,993 +1,288 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ПК и девайсы</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ПК и девайсы | Академия Кворса</title>
     
-    <!-- Open Graph -->
     <meta property="og:title" content="Академия имени Вильяма Кворса">
     <meta property="og:description" content="Блин, а прикольный сайтик так-то.">
     <meta property="og:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg">
     <meta property="og:url" content="https://kw0rs.uno/social">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Академия Кворса">
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Академия имени Вильяма Кворса">
-    <meta name="twitter:description" content="Блин, а прикольный сайтик так-то.">
-    <meta name="twitter:image" content="https://kw0rs.uno/icon/williamkw0rs.jpg">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Пк и девайсы | Академия Кворса</title>
-    <!-- Favicon -->
+
     <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
     <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
-    <link rel="manifest" href="/icon/site.webmanifest">
     <link rel="shortcut icon" href="/icon/favicon.ico">
-   
-    
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0a0a;
-            color: #ffffff;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        :root {
+            --core-black: #020203;
+            --panel-dark: #08080a;
+            --laser-red: #ff052b;
         }
 
-        /* Кнопка меню */
+        body {
+            background-color: var(--core-black);
+            background-image: radial-gradient(circle at 50% -20%, rgba(255, 5, 43, 0.12) 0%, transparent 60%);
+            color: #efefef;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .brutal-font { font-family: 'Inter', sans-serif; font-weight: 900; tracking: -0.05em; }
+        .tech-mono { font-family: 'Space Mono', monospace; }
+
+        .core-panel {
+            background: var(--panel-dark);
+            border: 1px solid #15151a;
+        }
+
+        /* Кнопка меню в стиле терминала */
         .menu-button {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 12px 20px;
-            color: #ffffff;
+            background: var(--panel-dark);
+            border: 1px solid #15151a;
+            padding: 10px 20px;
+            color: #fff;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
             z-index: 100;
+            transition: all 0.3s;
         }
-
         .menu-button:hover {
-            background: #2a2a2a;
-            border-color: #555;
+            border-color: var(--laser-red);
+            color: var(--laser-red);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
-        .menu-button::before {
-            content: '🏠';
-            font-size: 16px;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        
-        .header h1 {
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #ffffff;
-        }
-        
-        .header .subtitle {
-            font-size: 18px;
-            color: #888;
-        }
-        
-        .section {
-            margin-bottom: 60px;
-        }
-        
-        .section-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 30px;
-            text-align: center;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #333;
-        }
-        
-        .devices-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        
+        /* Масштабирование карточек */
         .device-card {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            aspect-ratio: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease;
         }
-        
         .device-card:hover {
-            background: #2a2a2a;
-            border-color: #555;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transform: scale(1.04);
+            border-color: #333;
+            z-index: 10;
         }
-        
-        .device-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
+
+        /* Особый статус для GPU (твоя гордость) */
+        .tier-mega {
+            border: 1px solid transparent !important;
+            background-image: linear-gradient(var(--panel-dark), var(--panel-dark)), 
+                              linear-gradient(90deg, #ff052b, #200005, #ff052b) !important;
+            background-origin: border-box !important;
+            background-clip: padding-box, border-box !important;
+            background-size: 200% 100% !important;
+            animation: laserShift 3s linear infinite !important;
         }
-        
-        .device-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 8px;
+
+        @keyframes laserShift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
         }
-        
-        .device-model {
-            font-size: 14px;
-            color: #007AFF;
-            font-weight: 500;
-            margin-bottom: 8px;
+
+        /* Заглушка изображения */
+        .no-image {
+            background: repeating-linear-gradient(45deg, #0a0a0d 0, #0a0a0d 10px, #0d0d11 10px, #0d0d11 20px);
+            border: 1px dashed #2a2a35;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #444;
+            font-size: 10px;
+            text-transform: uppercase;
         }
-        
-        .device-info {
-            color: #888;
-            font-size: 12px;
-        }
-        
-        /* Модальное окно */
+
+        /* Модалка */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
             z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
-        
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
+        .modal-overlay.active { display: flex; }
+
         .modal-content {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 16px;
-            padding: 30px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            transform: scale(0.8);
-            transition: transform 0.3s ease;
-        }
-        
-        .modal-overlay.active .modal-content {
-            transform: scale(1);
-        }
-        
-        .modal-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .modal-icon {
-            width: 60px;
-            height: 60px;
-            background: #333;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 16px;
-            font-size: 30px;
-        }
-        
-        .modal-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: #ffffff;
-            flex: 1;
-        }
-        
-        .modal-close {
-            width: 32px;
-            height: 32px;
-            background: #333;
-            border: none;
-            border-radius: 8px;
-            color: #888;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: all 0.2s ease;
-        }
-        
-        .modal-close:hover {
-            background: #555;
-            color: #ffffff;
-        }
-        
-        .modal-info {
-            color: #888;
-            font-size: 16px;
-            margin-bottom: 24px;
-        }
-        
-        .modal-image {
+            background: var(--panel-dark);
+            border: 1px solid #1c1c24;
             width: 100%;
-            height: 300px;
-            background: #333;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-            font-size: 14px;
-            aspect-ratio: 2/3;
-            overflow: hidden;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
-        
-        .modal-specs {
-            border-top: 1px solid #333;
-            padding-top: 20px;
-        }
-        
-        .spec-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 16px;
-        }
-        
-        .spec-label {
-            color: #888;
-        }
-        
-        .spec-value {
-            color: #ffffff;
-            font-weight: 500;
-        }
-        
-        @media (max-width: 768px) {
-            .devices-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
-            
-            .header h1 {
-                font-size: 24px;
-            }
-            
-            .section-title {
-                font-size: 20px;
-            }
-            
-            .device-icon {
-                font-size: 36px;
-            }
-            
-            .device-title {
-                font-size: 16px;
-            }
-            
-            .modal-content {
-                padding: 20px;
-                width: 95%;
-            }
-            
-            .modal-title {
-                font-size: 20px;
-            }
-            
-            .modal-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 24px;
-            }
 
-            .menu-button {
-                top: 15px;
-                right: 15px;
-                padding: 10px 16px;
-                font-size: 13px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .devices-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .menu-button {
-                padding: 8px 12px;
-                font-size: 12px;
-            }
-
-            .menu-button::before {
-                font-size: 14px;
-            }
-        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--core-black); }
+        ::-webkit-scrollbar-thumb { background: #222; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--laser-red); }
     </style>
 </head>
-<body>
-    <a href="https://kw0rs.uno" class="menu-button">В меню</a>
+<body class="antialiased">
 
-    <div class="container">
-        <div class="header">
-            <h1>Мои устройства</h1>
-            <p class="subtitle">С чем дед не шутит</p>
-        </div>
+    <a href="https://kw0rs.uno" class="menu-button tech-mono text-xs">
+        [ 🏠 HOME_DIR ]
+    </a>
+
+    <div class="max-w-[1400px] mx-auto px-6 py-12">
         
-        <!-- ПК и внутрянка -->
-        <div class="section">
-            <h2 class="section-title">ПК и внутрянка</h2>
-            <div class="devices-grid">
-                <div class="device-card" data-device="cpu">
-                    <div class="device-icon">⚙️</div>
-                    <div class="device-title">Процессор</div>
-                    <div class="device-model">Ryzen 7 5700X</div>
-                    <div class="device-info">Жаль не x3d</div>
-                </div>
-
-   <div class="device-card" data-device="mother">
-                    <div class="device-icon">💾</div>
-                    <div class="device-title">Материская плата</div>
-                    <div class="device-model">MSI B450 GAMING PLUS MAX</div>
-                    <div class="device-info">Дёшево и сердито</div>
-                </div>
-                
-                <div class="device-card" data-device="ram">
-                    <div class="device-icon">💾</div>
-                    <div class="device-title">Оперативная память</div>
-                    <div class="device-model">HyperX 32GB DDR4</div>
-                    <div class="device-info">32гб уже мало, надо больше</div>
-                </div>
-                
-                <div class="device-card" data-device="gpu">
-                    <div class="device-icon">🎮</div>
-                    <div class="device-title">Видеокарта</div>
-                    <div class="device-model">RTX 5070 ASUS PRIME</div>
-                    <div class="device-info">12гб, у 3060 столько же...</div>
-                </div>
-                
-                <div class="device-card" data-device="ssd">
-                    <div class="device-icon">💽</div>
-                    <div class="device-title">SSD Накопитель</div>
-                    <div class="device-model">Samsung 980</div>
-                    <div class="device-info">89% здоровья</div>
-                </div>
-                
-                <div class="device-card" data-device="hdd">
-                    <div class="device-icon">💽</div>
-                    <div class="device-title">HDD Накопители</div>
-                    <div class="device-model">WD + Seagate</div>
-                    <div class="device-info">Старше меня</div>
-                </div>
-
-                      <div class="device-card" data-device="case">
-                    <div class="device-icon">💽</div>
-                    <div class="device-title">Корпус</div>
-                    <div class="device-model">ZALMAN Z7 NEO</div>
-                    <div class="device-info">Свистит и пердит</div>
-                </div>
-
-                <div class="device-card" data-device="screen1">
-                    <div class="device-icon">🖥️</div>
-                    <div class="device-title">Монитор 1</div>
-                    <div class="device-model">AOC C24G1</div>
-                    <div class="device-info">Я удивлён как он ещё жив</div>
-                </div>
-
-                <div class="device-card" data-device="screen2">
-                    <div class="device-icon">🖥️</div>
-                    <div class="device-title">Монитор 2</div>
-                    <div class="device-model">ASUS VP249</div>
-                    <div class="device-info">Купил за пару копеек</div>
-                </div>
-
-                <div class="device-card" data-device="screen3">
-                    <div class="device-icon">🖥️</div>
-                    <div class="device-title">Монитор 3</div>
-                    <div class="device-model">DELL U2419Hc</div>
-                    <div class="device-info">Чисто для спотика</div>
-                </div>
+        <header class="mb-16 border-b-2 border-[#111] pb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="tech-mono text-[10px] text-red-500 bg-red-950/30 px-2 py-0.5 border border-red-900/40">HARDWARE_INDEX</span>
+                <span class="tech-mono text-[10px] text-zinc-600">STABLE_BUILD_2026</span>
             </div>
-        </div>
-        
-        <!-- Девайсы -->
-        <div class="section">
-            <h2 class="section-title">Девайсы</h2>
-            <div class="devices-grid">
-                <div class="device-card" data-device="mouse">
-                    <div class="device-icon">🖱️</div>
-                    <div class="device-title">Игровая мышь</div>
-                    <div class="device-model">Dareu A950 PRO</div>
-                    <div class="device-info">Китайский кусок говна</div>
+            <h1 class="brutal-font text-4xl sm:text-6xl uppercase tracking-tighter text-white">
+                МОИ <span class="text-red-600">.</span> УСТРОЙСТВА
+            </h1>
+            <p class="tech-mono text-xs text-zinc-500 mt-2 uppercase tracking-[0.2em]">С чем дед не шутит</p>
+        </header>
+
+        <div id="hardware-registry">
+            <section class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <h2 class="tech-mono text-sm text-red-600 uppercase font-bold tracking-widest">01 // INTERNAL_COMPONENTS</h2>
+                    <div class="h-px flex-1 bg-zinc-900"></div>
                 </div>
                 
-                <div class="device-card" data-device="keyboard">
-                    <div class="device-icon">⌨️</div>
-                    <div class="device-title">Клавиатура</div>
-                    <div class="device-model">Varmilo Sakura EC 2</div>
-                    <div class="device-info">А чё не кастом?</div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <div class="device-card core-panel p-4 cursor-pointer" data-device="cpu">
+                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">PROC_UNIT</div>
+                        <div class="text-xl mb-4">⚙️</div>
+                        <div class="text-sm font-bold uppercase truncate text-white">Ryzen 7 5700X</div>
+                    </div>
+                    <div class="device-card core-panel p-4 cursor-pointer" data-device="mother">
+                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">BOARD_V</div>
+                        <div class="text-xl mb-4">💾</div>
+                        <div class="text-sm font-bold uppercase truncate text-white">B450 GAMING PLUS</div>
+                    </div>
+                    <div class="device-card core-panel p-4 cursor-pointer tier-mega" data-device="gpu">
+                        <div class="tech-mono text-[10px] text-red-500 mb-2">CORE_LOAD</div>
+                        <div class="text-xl mb-4">🎮</div>
+                        <div class="text-sm font-bold uppercase truncate text-white">RTX 5070 ASUS</div>
+                    </div>
+                    <div class="device-card core-panel p-4 cursor-pointer" data-device="ram">
+                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">MEM_CELL</div>
+                        <div class="text-xl mb-4">💾</div>
+                        <div class="text-sm font-bold uppercase truncate text-white">HyperX 32GB</div>
+                    </div>
+                    <div class="device-card core-panel p-4 cursor-pointer" data-device="ssd">
+                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">FLASH_DRIVE</div>
+                        <div class="text-xl mb-4">💽</div>
+                        <div class="text-sm font-bold uppercase truncate text-white">Samsung 980</div>
+                    </div>
                 </div>
-                
-                <div class="device-card" data-device="mousepad">
-                    <div class="device-icon">🖱️</div>
-                    <div class="device-title">Коврик для мыши</div>
-                    <div class="device-model">Asus ROG Sheath XXL</div>
-                    <div class="device-info">Шёл в подарок к видяхе</div>
-                </div>
-                
-                <div class="device-card" data-device="headphones">
-                    <div class="device-icon">🎧</div>
-                    <div class="device-title">Наушники</div>
-                    <div class="device-model">Logitech G735</div>
-                    <div class="device-info">LOGITECH - ГОВНО</div>
-                </div>
+            </section>
 
-                     <div class="device-card" data-device="headphones2">
-                    <div class="device-icon">🎧</div>
-                    <div class="device-title">Наушники</div>
-                    <div class="device-model">Logitech G PRO X</div>
-                    <div class="device-info">LOGITECH - ГОВНО</div>
+            <section class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <h2 class="tech-mono text-sm text-zinc-500 uppercase font-bold tracking-widest">02 // EXTERNAL_DEVICES</h2>
+                    <div class="h-px flex-1 bg-zinc-900"></div>
                 </div>
-
-                <div class="device-card" data-device="microphone">
-                    <div class="device-icon">🎤</div>
-                    <div class="device-title">Микрофон</div>
-                    <div class="device-model">HyperX ProCast</div>
-                    <div class="device-info">Купил за 100$</div>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <div class="device-card core-panel p-4 cursor-pointer" data-device="mouse">
+                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">POINTER</div>
+                        <div class="text-xl mb-4">🖱️</div>
+                        <div class="text-sm font-bold uppercase text-white">Dareu A950 PRO</div>
+                    </div>
+                    <div class="device-card core-panel p-4 cursor-pointer" data-device="keyboard">
+                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">INPUT_KEY</div>
+                        <div class="text-xl mb-4">⌨️</div>
+                        <div class="text-sm font-bold uppercase text-white">Varmilo Sakura</div>
+                    </div>
+                    <div class="device-card core-panel p-4 cursor-pointer" data-device="headphones">
+                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">AUDIO_OUT</div>
+                        <div class="text-xl mb-4">🎧</div>
+                        <div class="text-sm font-bold uppercase text-white">Logitech G735</div>
+                    </div>
+                    <div class="device-card core-panel p-4 cursor-pointer" data-device="microphone">
+                        <div class="tech-mono text-[10px] text-zinc-600 mb-2">VOICE_CAP</div>
+                        <div class="text-xl mb-4">🎤</div>
+                        <div class="text-sm font-bold uppercase text-white">HyperX ProCast</div>
+                    </div>
                 </div>
-
-                <div class="device-card" data-device="micarm">
-                    <div class="device-icon">🎤</div>
-                    <div class="device-title">Держатель микрофона</div>
-                    <div class="device-model">OfficePro SA166</div>
-                    <div class="device-info">Не самая удобная покупка</div>
-                </div>
-
-                <div class="device-card" data-device="audiointerface">
-                    <div class="device-icon">🎛️</div>
-                    <div class="device-title">Аудиоинтерфейс</div>
-                    <div class="device-model">NI Komplete Audio 1</div>
-                    <div class="device-info">Вроде работает</div>
-                </div>
-
-                <div class="device-card" data-device="webcam">
-                    <div class="device-icon">📷</div>
-                    <div class="device-title">Веб-камера</div>
-                    <div class="device-model">Razer Kiyo PRO</div>
-                    <div class="device-info">Спасибо Андрею</div>
-                </div>
-
-                <div class="device-card" data-device="chair">
-                    <div class="device-icon">🪑</div>
-                    <div class="device-title">Игровое кресло</div>
-                    <div class="device-model">Anda Seat Kaiser 4</div>
-                    <div class="device-info">Вот кресло имба кста</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Прочее -->
-        <div class="section">
-            <h2 class="section-title">Прочее</h2>
-            <div class="devices-grid">
-                <div class="device-card" data-device="phone">
-                    <div class="device-icon">📱</div>
-                    <div class="device-title">Смартфон</div>
-                    <div class="device-model">iPhone 13</div>
-                    <div class="device-info">Apple - ГОВНО</div>
-                </div>
-                
-                <div class="device-card" data-device="walkheadphones">
-                    <div class="device-icon">🎧</div>
-                    <div class="device-title">Наушники</div>
-                    <div class="device-model">Skullcandy Crusher ANC</div>
-                    <div class="device-info">Очень класный бас</div>
-                </div>
-
-                <div class="device-card" data-device="backgroundlight">
-                    <div class="device-icon">💡</div>
-                    <div class="device-title">Фоновый свет</div>
-                    <div class="device-model">ULANZI VL119</div>
-                    <div class="device-info">Алиекспрес чудотворный</div>
-                </div>
-
-                <div class="device-card" data-device="mainlight">
-                    <div class="device-icon">💡</div>
-                    <div class="device-title">Основной свет</div>
-                    <div class="device-model">Smart LED RGB</div>
-                    <div class="device-info">С софтбоксом</div>
-                </div>
-
-                <div class="device-card" data-device="secondlight">
-                    <div class="device-icon">💡</div>
-                    <div class="device-title">Второй свет</div>
-                    <div class="device-model">PULUZ PU392</div>
-                    <div class="device-info">Купил по приколу</div>
-                </div>
-            </div>
+            </section>
         </div>
     </div>
-    
-    <!-- Модальное окно -->
+
     <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-icon" id="modalIcon">💻</div>
-                <div class="modal-title" id="modalTitle">Устройство</div>
-                <button class="modal-close" id="modalClose">×</button>
+        <div class="modal-content flex flex-col md:flex-row">
+            <div class="w-full md:w-1/2 bg-black p-6 border-b md:border-b-0 md:border-r border-[#15151a]">
+                <div class="relative aspect-square w-full bg-zinc-950 flex items-center justify-center border border-[#15151a]" id="modalImageBox">
+                    </div>
+                <div class="mt-4 p-4 bg-[#030304] border border-[#15151a] tech-mono text-xs" id="modalInfo">
+                    </div>
             </div>
-            <div class="modal-info" id="modalInfo">Описание устройства</div>
-            <div class="modal-image" id="modalImage">
-                Место для изображения устройства
-            </div>
-            <div class="modal-specs" id="modalSpecs">
-                <!-- Характеристики будут добавлены через JavaScript -->
+            
+            <div class="flex-1 p-8 md:p-12 overflow-y-auto">
+                <div class="flex justify-between items-start mb-8">
+                    <div>
+                        <span class="tech-mono text-[10px] text-red-500 uppercase font-bold" id="modalCategory">DEVICE_SPEC</span>
+                        <h2 class="brutal-font text-3xl sm:text-5xl text-white uppercase tracking-tighter mt-1" id="modalTitle">Устройство</h2>
+                    </div>
+                    <button class="tech-mono text-zinc-600 hover:text-white text-xs px-2 py-1 border border-zinc-800" id="modalClose">X_TERMINATE</button>
+                </div>
+
+                <div class="space-y-6" id="modalSpecs">
+                    </div>
             </div>
         </div>
     </div>
-    
+
     <script>
-        // Данные устройств
         const deviceData = {
-            cpu: {
-                icon: '⚙️',
-                title: 'Процессор',
-                info: 'Центральный процессор AMD для высокопроизводительных задач',
-                image: 'https://5.imimg.com/data5/SELLER/Default/2024/2/383306741/UP/XQ/EC/209261280/r7-5700x-5700g-7700x-desktop-computer-pc-gamer-socket-am4-cpu-procesador-amd-ryzen-7-5700x.jpeg', // Вставьте сюда ссылку на картинку
-                specs: [
-                    { label: 'Модель', value: 'AMD Ryzen 7 5700X' },
-                    { label: 'Ядра/Потоки', value: '8 ядер / 16 потоков' },
-                    { label: 'Базовая частота', value: '3.4 GHz' },
-                    { label: 'Максимальная частота', value: '4.6 GHz' },
-                    { label: 'Сокет', value: 'AM4' },
-                    { label: 'TDP', value: '65W' }
-                ]
-            },
-            ram: {
-                icon: '💾',
-                title: 'Оперативная память',
-                info: 'Высокоскоростная игровая память для многозадачности',
-                image: 'https://content2.rozetka.com.ua/goods/images/big/16702750.jpg', // Вставьте сюда ссылку на картинку
-                specs: [
-                    { label: 'Объем', value: '32GB (2x16GB)' },
-                    { label: 'Тип', value: 'DDR4' },
-                    { label: 'Частота', value: '3200 MHz' },
-                    { label: 'Производитель', value: 'HyperX' },
-                    { label: 'Тайминги', value: 'CL16' },
-                    { label: 'Напряжение', value: '1.35V' }
-                ]
-                            },
-            mother: {
-                icon: '💾',
-                title: 'Материнская плата',
-                info: 'Самая дешёвая материнка которую я нашёл',
-                image: 'https://asset.msi.com/resize/image/global/product/product_3_20190716132640_5d2d601054421.png62405b38c58fe0f07fcef2367d8a9ba1/380.png', // Вставьте сюда ссылку на картинку
-                specs: [
-                    { label: 'Цвет', value: 'Красный + чёрный' },
-                    { label: 'Чипсет', value: 'B450' },
-                    { label: 'Сокет', value: 'АМ4' },
-                    { label: 'Производитель', value: 'MSI' }
-                ]
-            },
-            gpu: {
-                icon: '🎮',
-                title: 'Видеокарта',
-                info: 'Мощная видеокарта для игр в 4K и создания контента',
-                image: 'https://ua.gecid.com/data/video/202505100900-71707/img/01.jpg', // Вставьте сюда ссылку на картинку
-                specs: [
-                    { label: 'Модель', value: 'NVIDIA RTX 5070 ASUS PRIME' },
-                    { label: 'Память', value: '12GB GDDR6' },
-                    { label: 'Интерфейс', value: 'PCI Express 4.0' },
-                    { label: 'CUDA ядра', value: '5888' },
-                    { label: 'RT ядра', value: '46 (3-го поколения)' },
-                    { label: 'Разъемы', value: '3x DP 1.4a, 1x HDMI 2.1' }
-                ]
-            },
-            ssd: {
-                icon: '💽',
-                title: 'SSD Накопитель',
-                info: 'Высокоскоростной M.2 SSD для системы и игр',
-                image: 'https://img.telemart.ua/352791-497896-product_popup/samsung-980-v-nand-mlc-500gb-m2-2280-pci-e-nvme-14-mz-v8v500bw.png', // Вставьте сюда ссылку на картинку
-                specs: [
-                    { label: 'Модель', value: 'Samsung 980' },
-                    { label: 'Объем', value: '1TB' },
-                    { label: 'Интерфейс', value: 'M.2 NVMe PCIe 3.0' },
-                    { label: 'Чтение', value: 'до 3500 МБ/с' },
-                    { label: 'Запись', value: 'до 3000 МБ/с' },
-                    { label: 'Форм-фактор', value: '2280' }
-                ]
-            },
-            hdd: {
-                icon: '💽',
-                title: 'HDD Накопители',
-                info: 'Дополнительное хранилище для файлов и архивов',
-                image: 'https://content1.rozetka.com.ua/goods/images/big/316611107.jpg', // Вставьте сюда ссылку на картинку
-                specs: [
-                    { label: 'Накопитель 1', value: '1TB Western Digital' },
-                    { label: 'Накопитель 2', value: '1TB Seagate' },
-                    { label: 'Накопитель 3', value: '500GB Seagate' },
-                    { label: 'Общий объем', value: '2.5TB' },
-                    { label: 'Интерфейс', value: 'SATA III' },
-                    { label: 'Скорость', value: '7200 RPM' }
-                ]
-            },
-                       case: {
-                icon: '💽',
-                title: 'Корпус',
-                info: 'Гроб с вентиляцией',
-                image: 'https://zalmanusa.com/cdn/shop/files/4_x_RGB_Ring_Fans_-_Zalman_Ultimate_PC_Cases_Cooling_Solutions-2663828_1200x.jpg?v=1724456320', // Вставьте сюда ссылку на картинку
-                specs: [
-                    { label: 'Производитель', value: 'Zalman' },
-                    { label: 'Цвет', value: 'Чёрный' },
-                    { label: 'Вентиляторы', value: '4шт' }
-                ]
-            },
-            screen1: {
-                icon: '🖥️',
-                title: 'Основной монитор',
-                info: 'Изогнутый игровой монитор с высокой частотой обновления',
-                image: 'https://hotline.ua/img/tx/181/1812102135.jpg', // Вставьте сюда ссылку на картинку
-                specs: [
-                    { label: 'Модель', value: 'AOC C24G1' },
-                    { label: 'Диагональ', value: '24 дюйма' },
-                    { label: 'Разрешение', value: '1920x1080 (Full HD)' },
-                    { label: 'Частота', value: '144 Hz' },
-                    { label: 'Тип матрицы', value: 'VA Curved' },
-                    { label: 'Время отклика', value: '1 мс' }
-                ]
-            },
-            screen2: {
-                icon: '🖥️',
-                title: 'Второй монитор',
-                info: 'IPS монитор для работы с контентом и многозадачности',
-                image: 'https://erc.ua/cache/media/erc2_968_504/upload/ware/567/5d34d72d6870e_nuawkqvt78utbebs_setting_fff_1_90_end_500.jpg', // Вставьте сюда ссылку на картинку
-                specs: [
-                    { label: 'Модель', value: 'ASUS VP249' },
-                    { label: 'Диагональ', value: '24 дюйма' },
-                    { label: 'Разрешение', value: '1920x1080 (Full HD)' },
-                    { label: 'Частота', value: '60 Hz' },
-                    { label: 'Тип матрицы', value: 'IPS' },
-                    { label: 'Углы обзора', value: '178°/178°' }
-                ]
-            },
-            screen3: {
-                icon: '🖥️',
-                title: 'Третий монитор',
-                info: 'Профессиональный монитор с USB-C подключением',
-                image: 'https://topradar.com.ua/image/cache/catalog/i/ni/kc/bc66c1f96d52789850229340ad31f36c-500x500.jpg',
-                specs: [
-                    { label: 'Модель', value: 'DELL U2419Hc' },
-                    { label: 'Диагональ', value: '24 дюйма' },
-                    { label: 'Разрешение', value: '1920x1080 (Full HD)' },
-                    { label: 'Частота', value: '60 Hz' },
-                    { label: 'Особенности', value: 'USB-C Hub' },
-                    { label: 'Покрытие sRGB', value: '99%' }
-                ]
-            },
-            mouse: {
-                icon: '🖱️',
-                title: 'Игровая мышь',
-                info: 'Профессиональная игровая мышь с точным сенсором',
-                image: 'https://cdn.shopify.com/s/files/1/0631/9590/6271/products/DSC08473.jpg',
-                specs: [
-                    { label: 'Модель', value: 'Dareu A950 PRO' },
-                    { label: 'Сенсор', value: 'PixArt 3395' },
-                    { label: 'DPI', value: 'до 26000' },
-                    { label: 'Частота опроса', value: '1000 Hz' },
-                    { label: 'Кнопки', value: '6 программируемых' },
-                    { label: 'Подключение', value: 'USB 2.0' }
-                ]
-            },
-            keyboard: {
-                icon: '⌨️',
-                title: 'Механическая клавиатура',
-                info: 'Премиум механическая клавиатура с кастомными переключателями',
-                image: 'https://i.moyo.ua/img/gallery/5276/15/1760941_middle.jpg',
-                specs: [
-                    { label: 'Модель', value: 'Varmilo Sakura EC 2' },
-                    { label: 'Переключатели', value: 'Sakura switches' },
-                    { label: 'Раскладка', value: '87 клавиш (TKL)' },
-                    { label: 'Подключение', value: 'USB-C' },
-                    { label: 'Материал', value: 'Алюминиевый корпус' },
-                    { label: 'Подсветка', value: 'RGB' }
-                ]
-            },
-            mousepad: {
-                icon: '🖱️',
-                title: 'Коврик для мыши',
-                info: 'Большой игровой коврик с гладкой поверхностью',
-                image: 'https://img.telemart.ua/444469-586762/asus-rog-sheath-xxl-90mp00k1-b0uc00-black.jpg',
-                specs: [
-                    { label: 'Модель', value: 'Asus ROG Sheath XXL' },
-                    { label: 'Размер', value: '900x440x3 мм' },
-                    { label: 'Поверхность', value: 'Игровая)))' },
-                    { label: 'База', value: 'Резиновая' },
-                    { label: 'Края', value: 'Прошитые' },
-                    { label: 'Дизайн', value: 'ROG' }
-                ]
-            },
-            headphones: {
-                icon: '🎧',
-                title: 'Игровые наушники',
-                info: 'Беспроводные игровые наушники',
-                image: 'https://logitech.com.ua/image/catalog/product/g735/g735-2.webp',
-                specs: [
-                    { label: 'Модель', value: 'Logitech G735 Wireless' },
-                    { label: 'Подключение', value: 'Радиоканал + блютуз к телефону' },
-                    { label: 'Время работы', value: 'Не мало, 2-3дня' },
-                    { label: 'Драйвер', value: 'Не работающее говно' },
-                    { label: 'Микрофон', value: 'Где-то валяется' }
-                ]
-            },
-            headphones2: {
-                icon: '🎧',
-                title: 'Игровые наушники',
-                info: 'Проводные игровые наушники',
-                image: 'https://sm.ign.com/ign_pk/review/l/logitech-g/logitech-g-pro-x-gaming-headset-review_32zr.jpg',
-                specs: [
-                    { label: 'Модель', value: 'G PRO X' },
-                    { label: 'Подключение', value: '3.5 в USB карту' },
-                    { label: 'Время работы', value: 'Пока беспроводные на зарядке' },
-                    { label: 'Драйверы', value: 'ГОВНО' },
-                    { label: 'Микрофон', value: 'Где-то валяется' }
-                ]
-            },
-            microphone: {
-                icon: '🎤',
-                title: 'Студийный микрофон',
-                info: 'USB микрофон для стриминга и записи контента',
-                image: 'https://www.gamerevolution.com/wp-content/uploads/sites/2/2022/12/HyperX-ProCast-Review_0004_Layer-8.jpg',
-                specs: [
-                    { label: 'Модель', value: 'HyperX ProCast' },
-                    { label: 'Тип', value: 'Конденсаторный' },
-                    { label: 'Диаграмма', value: 'Кардиоидная' },
-                    { label: 'Частотный диапазон', value: '20 Гц - 20 кГц' },
-                    { label: 'Подключение', value: 'USB-C' },
-                    { label: 'Мониторинг', value: '3.5 мм jack' }
-                ]
-            },
-            micarm: {
-                icon: '🎤',
-                title: 'Держатель микрофона',
-                info: 'Регулируемый настольный держатель для микрофона',
-                image: 'https://files.foxtrot.com.ua/PhotoNew/1_638243177727735870.jpg',
-                specs: [
-                    { label: 'Модель', value: 'OfficePro SA166' },
-                    { label: 'Тип', value: 'Настольный с зажимом' },
-                    { label: 'Материал', value: 'Металл' },
-                    { label: 'Длина', value: 'Регулируемая' },
-                    { label: 'Поворот', value: '360°' },
-                    { label: 'Нагрузка', value: 'до 2 кг' }
-                ]
-            },
-            audiointerface: {
-                icon: '🎛️',
-                title: 'Аудиоинтерфейс',
-                info: 'Компактный аудиоинтерфейс для записи и мониторинга',
-                image: 'https://prodj.ua/image/cache/catalog/img4b/2019/01/20190124130713-920x920.webp',
-                specs: [
-                    { label: 'Модель', value: 'Native Instruments Komplete Audio 1' },
-                    { label: 'Входы', value: '2 (mic/line)' },
-                    { label: 'Выходы', value: '2 (monitor)' },
-                    { label: 'Разрядность', value: '24-bit/192kHz' },
-                    { label: 'Подключение', value: 'USB 2.0' },
-                    { label: 'ПО в комплекте', value: 'Komplete Start' }
-                ]
-            },
-            webcam: {
-                icon: '📷',
-                title: 'Веб-камера',
-                info: 'Профессиональная веб-камера для стриминга',
-                image: 'https://avic.com.ua/storage/photos/shares/veb-kamera-razer-kiyo-pro-ultra_1.jpg',
-                specs: [
-                    { label: 'Модель', value: 'Razer Kiyo PRO' },
-                    { label: 'Разрешение', value: '1080p при 60 FPS' },
-                    { label: 'Автофокус', value: 'Да' },
-                    { label: 'Угол обзора', value: '103°' },
-                    { label: 'Подключение', value: 'USB 3.0' },
-                    { label: 'Совместимость', value: 'Windows/Mac/Linux' }
-                ]
-            },
-            chair: {
-                icon: '🪑',
-                title: 'Игровое кресло',
-                info: 'Эргономичное игровое кресло премиум класса',
-                image: 'http://andaseat.ua/wp-content/uploads/2024/08/K4Green1.webp',
-                specs: [
-                    { label: 'Модель', value: 'Anda Seat Kaiser 4' },
-                    { label: 'Материал', value: 'Кожа + ткань' },
-                    { label: 'Нагрузка', value: 'до 180 кг' },
-                    { label: 'Регулировки', value: '4D подлокотники' },
-                    { label: 'Наклон', value: '90-165°' },
-                    { label: 'Поясничная поддержка', value: 'Магнитная' }
-                ]
-            },
-            phone: {
-                icon: '📱',
-                title: 'Смартфон',
-                info: 'Основной смартфон для повседневного использования',
-                image: 'https://hotline.ua/img/tx/298/2989120325.jpg',
-                specs: [
-                    { label: 'Модель', value: 'Apple iPhone 13' },
-                    { label: 'Память', value: '128GB' },
-                    { label: 'Процессор', value: 'A15 Bionic' },
-                    { label: 'Экран', value: '6.1" Super Retina XDR' },
-                    { label: 'Камера', value: '12MP двойная' },
-                    { label: 'Цвет', value: 'PRODUCT RED' }
-                ]
-            },
-            walkheadphones: {
-                icon: '🎧',
-                title: 'Наушники для прогулок',
-                info: 'Беспроводные наушники с активным шумоподавлением',
-                image: 'https://wazza.com.ua/25570-thickbox_default/naushniki-skullcandy-crusher-wireless-over-ear-anc.jpg',
-                specs: [
-                    { label: 'Модель', value: 'Skullcandy Crusher ANC' },
-                    { label: 'Тип', value: 'Накладные' },
-                    { label: 'ANC', value: 'Активное шумоподавление' },
-                    { label: 'Время работы', value: 'до 24 часов' },
-                    { label: 'Подключение', value: 'Bluetooth 5.0' },
-                    { label: 'Особенности', value: 'Sensory Bass' }
-                ]
-            },
-            backgroundlight: {
-                icon: '💡',
-                title: 'Фоновый свет',
-                info: 'RGB светодиодная панель для создания атмосферы',
-                image: 'https://whitenight.com.ua/Media/shop-18449/_imports/5670206375_ruchnoj-svetodiodnyj-svetilnik.jpg',
-                specs: [
-                    { label: 'Модель', value: 'ULANZI VL119' },
-                    { label: 'Тип', value: 'RGB LED панель' },
-                    { label: 'Мощность', value: '10W' },
-                    { label: 'Цветовая температура', value: '2500-9000K' },
-                    { label: 'Управление', value: 'Пульт ДУ / App' },
-                    { label: 'Питание', value: 'USB-C / батарея' }
-                ]
-            },
-            mainlight: {
-                icon: '💡',
-                title: 'Основной свет',
-                info: 'Умная LED лампа с софтбоксом для студийного освещения',
-                image: 'https://content2.rozetka.com.ua/goods/images/big/194924980.jpg',
-                specs: [
-                    { label: 'Тип', value: 'Smart LED Bulb RGB' },
-                    { label: 'Мощность', value: '15W' },
-                    { label: 'Цвета', value: '16 миллионов' },
-                    { label: 'Диммирование', value: '1-100%' },
-                    { label: 'Софтбокс', value: '60x90 см' },
-                    { label: 'Управление', value: 'WiFi / App' }
-                ]
-            },
-            secondlight: {
-                icon: '💡',
-                title: 'Второй свет',
-                info: 'Компактный студийный свет для дополнительного освещения',
-                image: 'https://for-extreme.com.ua/image/cache/catalog/image/catalog/puluz/2053/puluz-pu392-nastolnaya-kolcevaya-lampa-02.webp',
-                specs: [
-                    { label: 'Модель', value: 'PULUZ PU392' },
-                    { label: 'Тип', value: 'LED кольцевой свет' },
-                    { label: 'Диаметр', value: '12 дюймов' },
-                    { label: 'Мощность', value: '18W' },
-                    { label: 'Температура', value: '3200-5600K' },
-                    { label: 'Крепление', value: 'Настольная стойка' }
-                ]
-            }
+            cpu: { title: 'AMD Ryzen 7 5700X', info: 'Жаль не x3d', image: 'https://5.imimg.com/data5/SELLER/Default/2024/2/383306741/UP/XQ/EC/209261280/r7-5700x-5700g-7700x-desktop-computer-pc-gamer-socket-am4-cpu-procesador-amd-ryzen-7-5700x.jpeg', specs: [{l:'Ядра',v:'8/16'},{l:'Частота',v:'4.6 GHz'},{l:'Сокет',v:'AM4'}] },
+            gpu: { title: 'RTX 5070 ASUS PRIME', info: '12гб, у 3060 столько же...', image: 'https://ua.gecid.com/data/video/202505100900-71707/img/01.jpg', specs: [{l:'Память',v:'12GB GDDR6'},{l:'Интерфейс',v:'PCIe 4.0'}] },
+            ram: { title: 'HyperX 32GB DDR4', info: '32гб уже мало, надо больше', image: 'https://content2.rozetka.com.ua/goods/images/big/16702750.jpg', specs: [{l:'Объем',v:'32GB'},{l:'Частота',v:'3200 MHz'}] },
+            mother: { title: 'MSI B450 GAMING PLUS', info: 'Дёшево и сердито', image: 'https://asset.msi.com/resize/image/global/product/product_3_20190716132640_5d2d601054421.png62405b38c58fe0f07fcef2367d8a9ba1/380.png', specs: [{l:'Чипсет',v:'B450'},{l:'Производитель',v:'MSI'}] },
+            ssd: { title: 'Samsung 980', info: '89% здоровья', image: 'https://img.telemart.ua/352791-497896-product_popup/samsung-980-v-nand-mlc-500gb-m2-2280-pci-e-nvme-14-mz-v8v500bw.png', specs: [{l:'Объем',v:'1TB'},{l:'Скорость',v:'3500 MB/s'}] },
+            mouse: { title: 'Dareu A950 PRO', info: 'Китайский кусок говна', image: 'https://cdn.shopify.com/s/files/1/0631/9590/6271/products/DSC08473.jpg', specs: [{l:'Сенсор',v:'PixArt 3395'},{l:'Вес',v:'54г'}] },
+            keyboard: { title: 'Varmilo Sakura EC 2', info: 'А чё не кастом?', image: 'https://i.moyo.ua/img/gallery/5276/15/1760941_middle.jpg', specs: [{l:'Свитчи',v:'Sakura V2'},{l:'Формат',v:'TKL'}] },
+            headphones: { title: 'Logitech G735', info: 'LOGITECH - ГОВНО', image: 'https://logitech.com.ua/image/catalog/product/g735/g735-2.webp', specs: [{l:'Тип',v:'Wireless'},{l:'АКБ',v:'56 часов'}] },
+            microphone: { title: 'HyperX ProCast', info: 'Купил за 100$', image: 'https://www.gamerevolution.com/wp-content/uploads/sites/2/2022/12/HyperX-ProCast-Review_0004_Layer-8.jpg', specs: [{l:'Тип',v:'XLR'},{l:'Диафрагма',v:'Gold-sputtered'}] }
         };
+
+        const overlay = document.getElementById('modalOverlay');
         
-        // Элементы модального окна
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalIcon = document.getElementById('modalIcon');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalInfo = document.getElementById('modalInfo');
-        const modalSpecs = document.getElementById('modalSpecs');
-        const modalClose = document.getElementById('modalClose');
-        
-        // Функция открытия модального окна
-        function openModal(deviceId) {
-            const device = deviceData[deviceId];
-            if (!device) return;
+        function openModal(id) {
+            const data = deviceData[id];
+            if (!data) return;
             
-            modalIcon.textContent = device.icon;
-            modalTitle.textContent = device.title;
-            modalInfo.textContent = device.info;
+            document.getElementById('modalTitle').textContent = data.title;
+            document.getElementById('modalInfo').textContent = data.info;
+            document.getElementById('modalImageBox').innerHTML = data.image ? `<img src="${data.image}" class="w-full h-full object-contain">` : `<div class="no-image">NO_IMAGE_DATA</div>`;
             
-            // Обновляем изображение
-            const modalImage = document.getElementById('modalImage');
-            if (device.image) {
-                modalImage.innerHTML = `<img src="${device.image}" alt="${device.title}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;">`;
-            } else {
-                modalImage.innerHTML = 'Место для изображения устройства';
-            }
-            
-            // Очищаем и заполняем характеристики
-            modalSpecs.innerHTML = '';
-            device.specs.forEach(spec => {
-                const specItem = document.createElement('div');
-                specItem.className = 'spec-item';
-                specItem.innerHTML = `
-                    <span class="spec-label">${spec.label}:</span>
-                    <span class="spec-value">${spec.value}</span>
-                `;
-                modalSpecs.appendChild(specItem);
+            let specsHtml = '';
+            data.specs.forEach(s => {
+                specsHtml += `<div class="flex justify-between border-b border-zinc-900 pb-2"><span class="tech-mono text-[10px] text-zinc-600 uppercase">${s.l}</span><span class="text-sm font-bold text-white">${s.v}</span></div>`;
             });
+            document.getElementById('modalSpecs').innerHTML = specsHtml;
             
-            modalOverlay.classList.add('active');
+            overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-        
-        // Функция закрытия модального окна
-        function closeModal() {
-            modalOverlay.classList.remove('active');
+
+        document.querySelectorAll('.device-card').forEach(c => {
+            c.addEventListener('click', () => openModal(c.dataset.device));
+        });
+
+        document.getElementById('modalClose').addEventListener('click', () => {
+            overlay.classList.remove('active');
             document.body.style.overflow = '';
-        }
-        
-        // Обработчики событий для карточек устройств
-        document.querySelectorAll('.device-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const deviceId = card.dataset.device;
-                openModal(deviceId);
-            });
         });
-        
-        // Обработчики закрытия модального окна
-        modalClose.addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) {
-                closeModal();
-            }
-        });
-        
-        // Закрытие по клавише Escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
-                closeModal();
-            }
-        });
+
+        overlay.addEventListener('click', (e) => { if(e.target === overlay) document.getElementById('modalClose').click(); });
     </script>
 </body>
 </html>
