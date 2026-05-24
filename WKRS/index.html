@@ -3,211 +3,172 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KW0RS // IMPERIAL ARCHIVE</title>
+    <title>KW0RS // RED_ARCHIVE // S.E.M.Y.O.N.</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Playfair+Display:ital,wght@0,400;0,900;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Metamorphous&family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --gold: #d4af37;
-            --gold-bright: #f9e2af;
-            --imperial-purple: #1a0b2e;
-            --deep-black: #050208;
+            --blood-red: #8b0000;
+            --pure-red: #ff0000;
+            --obsidian: #050505;
+            --slate-gray: #1a1a1a;
         }
 
         body {
-            background-color: var(--deep-black);
+            background-color: var(--obsidian);
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-                url("https://www.transparenttextures.com/patterns/dark-matter.png");
-            color: #e5e7eb;
-            font-family: 'Playfair Display', serif;
+                linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
+                url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+            color: #d1d1d1;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
 
-        .imperial-font { font-family: 'Cinzel', serif; }
-        .mono-tech { font-family: 'Fira Code', monospace; }
+        .gothic-font { font-family: 'Metamorphous', serif; }
+        .mono-tech { font-family: 'JetBrains Mono', monospace; }
 
-        .gold-text {
-            background: linear-gradient(to bottom, var(--gold-bright) 20%, var(--gold) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
+        /* Читаемые тексты */
+        .readable-text {
+            line-height: 1.6;
+            letter-spacing: 0.02em;
         }
 
-        /* Дефолтная карточка */
-        .relic-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        /* Обычная карточка (Мрачный обсидиан) */
+        .vault-card {
+            background: #0a0a0a;
+            border: 1px solid #222;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
-        .relic-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: var(--gold);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(212, 175, 55, 0.2);
+        .vault-card:hover {
+            border-color: var(--blood-red);
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
         }
 
-        /* 👑 ТИР 10/10 — ПОМПЕЗНОЕ СВЯЩЕННОЕ ЗОЛОТО */
+        /* 🩸 ТИР 10/10 — КРОВАВОЕ КЛЕЙМО */
         .tier-10 {
-            border: 2px solid var(--gold) !important;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.3), inset 0 0 15px rgba(212, 175, 55, 0.1) !important;
-            animation: goldPulse 4s ease-in-out infinite alternate;
+            border: 2px solid var(--blood-red) !important;
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.4), inset 0 0 10px rgba(139, 0, 0, 0.2) !important;
         }
         .tier-10:hover {
-            box-shadow: 0 0 45px rgba(212, 175, 55, 0.7), inset 0 0 25px rgba(212, 175, 55, 0.3) !important;
-        }
-        @keyframes goldPulse {
-            0% { border-color: rgba(212, 175, 55, 0.6); filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.2)); }
-            100% { border-color: rgba(255, 226, 175, 1); filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5)); }
+            border-color: var(--pure-red) !important;
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.6) !important;
         }
 
-        /* 🌌 ТИР 11/10 и 12/10 — МЕГА ПОМПЕЗНАЯ СИНГУЛЯРНОСТЬ */
+        /* 💀 ТИР 11/10 и 12/10 — АДСКИЙ РАЗЛОМ (ЖИВАЯ ПЛАЗМА) */
         .tier-mega {
             border: 2px solid transparent !important;
-            background-image: linear-gradient(rgba(26, 11, 46, 0.9), rgba(5, 2, 8, 0.9)), 
-                              linear-gradient(90deg, #d4af37, #ff007f, #7000ff, #00f2ff, #d4af37) !important;
+            background-image: linear-gradient(#0a0a0a, #0a0a0a), 
+                              linear-gradient(90deg, #300, #f00, #600, #f00, #300) !important;
             background-origin: border-box !important;
             background-clip: padding-box, border-box !important;
-            background-size: 300% 300% !important;
-            animation: megaPlasmaShift 4s linear infinite, megaGlow 3s ease-in-out infinite alternate !important;
+            background-size: 200% 100% !important;
+            animation: bloodFlow 3s linear infinite !important;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.3));
         }
         .tier-mega:hover {
-            transform: translateY(-15px) scale(1.04) !important;
-            filter: drop-shadow(0 0 35px rgba(0, 242, 255, 0.6)) drop-shadow(0 0 50px rgba(255, 0, 127, 0.4)) !important;
+            transform: translateY(-10px) !important;
+            filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.7)) !important;
         }
-        @keyframes megaPlasmaShift {
-            0% { background-position: 0% 50%, 0% 50%; }
-            50% { background-position: 0% 50%, 100% 50%; }
-            100% { background-position: 0% 50%, 0% 50%; }
-        }
-        @keyframes megaGlow {
-            0% { filter: drop-shadow(0 0 15px rgba(255, 0, 127, 0.4)) drop-shadow(0 0 10px rgba(212, 175, 55, 0.2)); }
-            100% { filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.5)) drop-shadow(0 0 25px rgba(112, 0, 255, 0.4)); }
+        @keyframes bloodFlow {
+            0% { background-position: 0% 50%, 0% 0%; }
+            100% { background-position: 0% 50%, 200% 0%; }
         }
 
-        /* Кастомный скролл */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--deep-black); }
-        ::-webkit-scrollbar-thumb { 
-            background: linear-gradient(var(--gold), var(--imperial-purple));
-            border-radius: 4px;
+        /* Скроллбар */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--obsidian); }
+        ::-webkit-scrollbar-thumb { background: var(--blood-red); border-radius: 0; }
+
+        /* Кастомный инпут */
+        .red-input {
+            background: #0f0f0f;
+            border: 1px solid #222;
+            color: #fff;
+            transition: 0.3s;
+        }
+        .red-input:focus {
+            border-color: var(--pure-red);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+            outline: none;
         }
     </style>
 </head>
 <body class="antialiased" x-data="mediaApp()" x-init="loadItems()">
 
-    <!-- Угловые орнаменты -->
-    <div class="fixed top-0 left-0 w-full h-full opacity-20 pointer-events-none overflow-hidden -z-10">
-        <div class="absolute top-0 left-0 w-64 h-64 border-l-2 border-t-2 border-yellow-600/20 m-8"></div>
-        <div class="absolute bottom-0 right-0 w-64 h-64 border-r-2 border-b-2 border-yellow-600/20 m-8"></div>
-    </div>
+    <div class="fixed inset-0 pointer-events-none opacity-[0.05] z-50 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
 
-    <div class="max-w-[1400px] mx-auto px-6 py-12">
+    <div class="max-w-[1440px] mx-auto px-6 py-10 relative z-10">
         
-        <!-- HEADER -->
-        <header class="text-center mb-20">
-            <div class="flex justify-center items-center gap-4 mb-4">
-                <div class="h-[1px] w-24 bg-gradient-to-l from-yellow-600 to-transparent"></div>
-                <span class="imperial-font text-xs tracking-[0.5em] text-yellow-600 uppercase">THE SACRED REGISTRY</span>
-                <div class="h-[1px] w-24 bg-gradient-to-r from-yellow-600 to-transparent"></div>
-            </div>
-            <h1 class="imperial-font text-6xl md:text-8xl font-black mb-4 gold-text tracking-widest">
-                KW0RS
+        <header class="mb-16 border-l-8 border-red-700 pl-8 py-4">
+            <h1 class="gothic-font text-5xl md:text-7xl font-black text-white tracking-tighter uppercase mb-2">
+                REDACTED <span class="text-red-600">//</span> ARCHIVE
             </h1>
-            <h2 class="playfair italic text-2xl md:text-3xl text-slate-400 tracking-wide">
-                Архив Высших Медиа-Реликвий
-            </h2>
-            <div class="mt-8 flex justify-center">
-                <div class="h-12 w-px bg-gradient-to-b from-yellow-600 to-transparent"></div>
+            <div class="flex items-center gap-4 text-xs mono-tech uppercase text-zinc-500 tracking-[0.3em]">
+                <span>Log_Subject: Semyon</span>
+                <span class="text-red-800">●</span>
+                <span>Security: High_Inquisition</span>
             </div>
         </header>
 
-        <!-- ФИЛЬТРЫ -->
-        <section class="mb-16 relic-card rounded-xl p-8 border-t-2 border-yellow-600/50">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <!-- Search -->
-                <div>
-                    <label class="imperial-font text-[10px] tracking-widest text-yellow-600 uppercase mb-3 block">Запрос по названию</label>
-                    <input type="text" x-model="search" placeholder="NAME OF THE RECORD..." 
-                           class="w-full bg-transparent border-b border-yellow-600/30 py-3 text-xl focus:outline-none focus:border-yellow-500 transition-all placeholder:text-slate-700 italic">
+        <section class="mb-12 bg-zinc-900/30 p-8 rounded border border-zinc-800/50 backdrop-blur-md">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-2">
+                    <label class="mono-tech text-[10px] text-red-600 font-bold mb-2 block uppercase tracking-widest">Entry_Identifier</label>
+                    <input type="text" x-model="search" placeholder="Поиск по архиву..." class="red-input w-full p-3 gothic-font text-lg tracking-wide">
                 </div>
 
-                <!-- Category -->
                 <div>
-                    <label class="imperial-font text-[10px] tracking-widest text-yellow-600 uppercase mb-3 block">Классификация</label>
-                    <div class="flex flex-wrap gap-2">
-                        <template x-for="cat in ['movie', 'show', 'anime', 'game', 'book']">
-                            <button @click="categoryFilter = (categoryFilter === cat ? '' : cat)"
-                                    :class="categoryFilter === cat ? 'bg-yellow-600 text-black' : 'border border-yellow-600/30 text-slate-400'"
-                                    class="px-4 py-1.5 rounded-full text-[10px] imperial-font transition-all hover:border-yellow-600"
-                                    x-text="cat.toUpperCase()"></button>
-                        </template>
-                    </div>
+                    <label class="mono-tech text-[10px] text-zinc-500 mb-2 block uppercase tracking-widest">Classification</label>
+                    <select x-model="categoryFilter" class="red-input w-full p-3 text-sm mono-tech cursor-pointer">
+                        <option value="">ALL_RECORDS</option>
+                        <option value="movie">CINEMA</option>
+                        <option value="show">SERIES</option>
+                        <option value="anime">ANIME</option>
+                        <option value="game">ARTIFACTS (GAMES)</option>
+                        <option value="book">SCROLLS (BOOKS)</option>
+                    </select>
                 </div>
 
-                <!-- Sort -->
-                <div class="flex items-end justify-between gap-4">
-                    <div class="flex-1">
-                        <label class="imperial-font text-[10px] tracking-widest text-yellow-600 uppercase mb-3 block">Вектор хроник</label>
-                        <select x-model="sortKey" class="w-full bg-transparent border-b border-yellow-600/30 py-3 text-sm focus:outline-none cursor-pointer">
-                            <option value="rating-desc">ВЫСШИЙ СУД (Сначала ТОП)</option>
-                            <option value="year-desc">НОВЕЙШИЕ СВИТКИ</option>
-                            <option value="title">АЛФАВИТНЫЙ ПЕРЕЧЕНЬ</option>
-                        </select>
-                    </div>
-                    <button @click="pickRandomItem()" class="h-12 w-12 flex items-center justify-center border border-yellow-600/50 hover:bg-yellow-600 hover:text-black transition-all rounded-full">
-                        🎲
-                    </button>
+                <div>
+                    <label class="mono-tech text-[10px] text-zinc-500 mb-2 block uppercase tracking-widest">Priority_Order</label>
+                    <select x-model="sortKey" class="red-input w-full p-3 text-sm mono-tech cursor-pointer">
+                        <option value="rating-desc">VERDICT (DESC)</option>
+                        <option value="year-desc">CHRONOLOGY (NEW)</option>
+                        <option value="title">ALPHABETICAL (A-Z)</option>
+                    </select>
                 </div>
             </div>
         </section>
 
-        <!-- СЕТКА С ДИНАМИЧЕСКИМИ ОБВОДКАМИ -->
-        <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+        <main class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             <template x-for="item in filteredAndSortedItems" :key="item.title">
-                <!-- Alpine принудительно вешает нужный класс в зависимости от рейтинга -->
                 <article @click="openModal(item)" 
                          :class="getCardTierClass(item.rating)" 
-                         class="relic-card overflow-hidden flex flex-col h-full cursor-pointer">
+                         class="vault-card group rounded-sm overflow-hidden flex flex-col h-full cursor-pointer">
                     
-                    <!-- Media Container -->
-                    <div class="relative aspect-[3/4] overflow-hidden bg-slate-950">
-                        <img :src="item.image || 'https://via.placeholder.com/600x800'" 
-                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[20%] group-hover:grayscale-0"
+                    <div class="relative aspect-[2/3] bg-zinc-950 overflow-hidden">
+                        <img :src="item.image || 'https://via.placeholder.com/400x600?text=NO_SIGNAL'" 
+                             class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 grayscale-[60%] group-hover:grayscale-0 group-hover:brightness-110"
                              loading="lazy">
                         
-                        <!-- Floating Score -->
-                        <div class="absolute top-0 left-0 p-4">
-                            <div class="backdrop-blur-md bg-black/80 border w-12 h-12 rounded-full flex items-center justify-center"
-                                 :class="item.rating >= 10 ? 'border-yellow-400' : 'border-white/15'">
-                                <span class="imperial-font text-sm font-black" 
-                                      :class="item.rating >= 10 ? 'gold-text' : 'text-white'" 
-                                      x-text="item.rating || '?'"></span>
-                            </div>
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-4">
+                            <span class="gothic-font text-3xl font-black" 
+                                  :class="item.rating >= 10 ? 'text-red-600 drop-shadow-[0_0_8px_rgba(255,0,0,0.8)]' : 'text-white'" 
+                                  x-text="item.rating || '?'"></span>
                         </div>
-
-                        <!-- Эффект нимба для абсолютных богов (рейтинг > 10) -->
-                        <template x-if="item.rating > 10">
-                            <div class="absolute inset-0 bg-gradient-to-t from-purple-900/40 via-transparent to-transparent pointer-events-none"></div>
-                        </template>
                     </div>
 
-                    <!-- Description Area -->
-                    <div class="p-6 relative bg-black/40 flex-1 flex flex-col justify-between">
-                        <div>
-                            <span class="imperial-font text-[9px] tracking-widest text-yellow-600 uppercase" x-text="item.typeDisplay"></span>
-                            <h3 class="playfair text-2xl font-black text-white mt-1 group-hover:text-yellow-400 transition-all line-clamp-2" x-text="item.title"></h3>
-                        </div>
-                        
-                        <div class="mt-6 flex justify-between items-center opacity-60">
-                            <span class="mono-tech text-[10px]" x-text="item.year"></span>
-                            <div class="h-px flex-1 mx-4 bg-yellow-600/20"></div>
-                            <span class="imperial-font text-[9px] tracking-tighter uppercase truncate max-w-[80px]" x-text="item.genres[0] || 'Свиток'"></span>
+                    <div class="p-4 bg-zinc-900/80 border-t border-zinc-800 flex-1">
+                        <h3 class="gothic-font text-lg font-bold text-zinc-100 group-hover:text-red-500 transition-colors uppercase leading-tight" x-text="item.title"></h3>
+                        <div class="mt-4 flex justify-between items-center text-[10px] mono-tech text-zinc-500">
+                            <span x-text="item.typeDisplay"></span>
+                            <span x-text="item.year"></span>
                         </div>
                     </div>
                 </article>
@@ -215,64 +176,67 @@
         </main>
     </div>
 
-    <!-- МОДАЛКА (ИМПЕРСКИЙ РАЗДЕЛ) -->
     <div x-show="modalItem" 
-         class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-12 bg-black/95 backdrop-blur-xl"
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-black/98 backdrop-blur-2xl"
          x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0 scale-110"
-         x-transition:leave="transition ease-in duration-200"
+         x-transition:enter-start="opacity-0 translate-y-8"
          style="display: none;">
         
-        <div class="bg-gradient-to-b from-slate-900 to-black w-full max-w-6xl rounded-2xl overflow-hidden shadow-[0_0_100px_rgba(212,175,55,0.15)] border border-yellow-600/30 flex flex-col md:flex-row max-h-[90vh]"
+        <div class="bg-zinc-950 w-full max-w-6xl rounded-none border border-red-900/50 flex flex-col md:flex-row max-h-[95vh] shadow-[0_0_100px_rgba(139,0,0,0.3)]"
              @click.away="closeModal()">
             
-            <div class="md:w-2/5 relative h-64 md:h-auto overflow-hidden bg-black">
-                <img :src="modalItem?.image" class="w-full h-full object-cover">
+            <div class="md:w-2/5 relative h-64 md:h-auto border-r border-red-900/20">
+                <img :src="modalItem?.image" class="w-full h-full object-cover brightness-75">
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent to-zinc-950"></div>
             </div>
 
-            <div class="flex-1 p-8 md:p-12 overflow-y-auto">
-                <div class="flex justify-between items-start mb-8">
+            <div class="flex-1 p-8 md:p-16 overflow-y-auto readable-text">
+                <button @click="closeModal()" class="absolute top-6 right-8 text-zinc-600 hover:text-red-500 transition-colors mono-tech text-xl font-bold">[TERMINATE_LINK]</button>
+                
+                <header class="mb-12">
+                    <span class="mono-tech text-xs text-red-700 tracking-widest uppercase block mb-2" x-text="modalItem?.typeDisplay"></span>
+                    <h2 class="gothic-font text-5xl md:text-7xl font-black text-white uppercase tracking-tighter" x-text="modalItem?.title"></h2>
+                </header>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 border-y border-zinc-900 py-8">
                     <div>
-                        <span class="imperial-font text-xs text-yellow-600 tracking-[0.3em] uppercase block mb-2" x-text="modalItem?.typeDisplay"></span>
-                        <h2 class="playfair text-4xl md:text-5xl font-black text-white italic" x-text="modalItem?.title"></h2>
+                        <span class="mono-tech text-[9px] text-zinc-600 uppercase block mb-1">Verdict_Score</span>
+                        <span class="text-3xl font-black gothic-font text-red-600" x-text="modalItem?.rating + ' / 10'"></span>
                     </div>
-                    <button @click="closeModal()" class="text-yellow-600 hover:text-white transition-colors imperial-font text-2xl">[ X ]</button>
-                </div>
-
-                <div class="grid grid-cols-3 gap-4 mb-10">
-                    <div class="border-l border-yellow-600/30 pl-4">
-                        <span class="mono-tech text-[10px] text-slate-500 uppercase block">Вердикт</span>
-                        <span class="text-2xl font-black gold-text" x-text="modalItem?.rating + ' / 10'"></span>
-                    </div>
-                    <div class="border-l border-yellow-600/30 pl-4">
-                        <span class="mono-tech text-[10px] text-slate-500 uppercase block">Эпоха</span>
-                        <span class="text-2xl font-black text-white" x-text="modalItem?.year"></span>
-                    </div>
-                    <div class="border-l border-yellow-600/30 pl-4">
-                        <span class="mono-tech text-[10px] text-slate-500 uppercase block">Индекс</span>
-                        <span class="text-2xl font-black text-amber-500 uppercase">SAFE</span>
+                    <div>
+                        <span class="mono-tech text-[9px] text-zinc-600 uppercase block mb-1">Data_Source</span>
+                        <span class="text-xl font-bold text-zinc-300" x-text="modalItem?.year"></span>
                     </div>
                 </div>
 
-                <div class="space-y-8">
+                <div class="space-y-12">
                     <section>
-                        <h4 class="imperial-font text-xs text-yellow-600 border-b border-yellow-600/20 pb-2 mb-4 uppercase tracking-[0.2em]">Мнение // Рецензия</h4>
-                        <p class="playfair text-xl text-slate-200 leading-relaxed italic" x-text="modalItem?.review || 'Рецензия отсутствует.'"></p>
+                        <h4 class="mono-tech text-[10px] text-red-800 uppercase tracking-widest mb-4 border-b border-red-900/30 pb-2">Inquisitorial_Review</h4>
+                        <p class="text-xl text-zinc-200 font-light leading-relaxed whitespace-pre-line italic" x-text="modalItem?.review || 'No review available in current sector.'"></p>
                     </section>
-                    <section class="opacity-50">
-                        <h4 class="imperial-font text-xs text-slate-500 border-b border-slate-800 pb-2 mb-4 uppercase tracking-[0.2em]">Суть // Описание</h4>
-                        <p class="mono-tech text-sm leading-relaxed text-slate-400" x-text="modalItem?.description || 'Нет описания.'"></p>
+                    
+                    <section class="opacity-40">
+                        <h4 class="mono-tech text-[10px] text-zinc-600 uppercase tracking-widest mb-4 border-b border-zinc-800 pb-2">Registry_Description</h4>
+                        <p class="text-sm leading-relaxed text-zinc-400" x-text="modalItem?.description || 'Access denied.'"></p>
                     </section>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Загрузчик -->
     <div x-show="loading" class="fixed inset-0 bg-black z-[100] flex flex-col items-center justify-center">
-        <div class="w-16 h-16 border-t-2 border-b-2 border-yellow-600 rounded-full animate-spin mb-4"></div>
-        <h3 class="imperial-font text-yellow-600 text-xs tracking-[0.5em] uppercase animate-pulse">Открытие Врат Архива...</h3>
+        <div class="w-16 h-1 w-64 bg-zinc-900 overflow-hidden relative border border-zinc-800">
+            <div class="absolute inset-0 bg-red-700 animate-[loading_2s_infinite]" style="width: 40%"></div>
+        </div>
+        <h3 class="mono-tech text-red-700 text-xs tracking-[1em] uppercase mt-4 animate-pulse">Scanning_Vault...</h3>
     </div>
+
+    <style>
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(300%); }
+        }
+    </style>
 
     <script>
         function mediaApp() {
@@ -299,18 +263,13 @@
                 },
 
                 getType(t) {
-                    const m = { 'movie': 'МАНУСКРИПТ: КИНО', 'show': 'МАНУСКРИПТ: СЕРИАЛ', 'anime': 'МАНУСКРИПТ: АНИМЕ', 'game': 'АРТЕФАКТ: ИГРА', 'book': 'СВИТОК: ЛИТЕРАТУРА', 'cartoon': 'МУЛЬТФИЛЬМ' };
-                    return m[t] || 'ОБЪЕКТ РЕЕСТРА';
+                    const m = { 'movie': 'CINEMA_RECO', 'show': 'SERIES_RECO', 'anime': 'ANIME_RECO', 'game': 'ARTIFACT_RECO', 'book': 'SCROLL_RECO' };
+                    return m[t] || 'UNKNOWN_RECO';
                 },
 
-                // Динамическая раздача имперских статусов рамкам
                 getCardTierClass(rating) {
-                    if (rating === 10) {
-                        return 'tier-10';
-                    }
-                    if (rating > 10) {
-                        return 'tier-mega';
-                    }
+                    if (rating === 10) return 'tier-10';
+                    if (rating > 10) return 'tier-mega';
                     return '';
                 },
 
