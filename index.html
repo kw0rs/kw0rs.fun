@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Академия имени Вильяма Кворса</title>
+    <title>Академия имени Вильяма Кворса // CORE</title>
     
     <!-- Open Graph -->
     <meta property="og:title" content="Академия имени Вильяма Кворса">
@@ -25,129 +25,171 @@
     <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
     <link rel="manifest" href="/icon/site.webmanifest">
     <link rel="shortcut icon" href="/icon/favicon.ico">
-    
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght400;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Перегонка www на без www -->
+    <script>
+    if (location.hostname === 'www.kw0rs.fun') {
+        window.location.href = 'https://kw0rs.fun' + location.pathname;
+    }
+    </script>
+
+    <!-- Редирект с больших букв на маленькие -->
+    <script>
+    var path = window.location.pathname;
+    if (path !== path.toLowerCase()) {
+        window.location.pathname = path.toLowerCase();
+    }
+    </script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --core-black: #020203;
+            --panel-dark: #08080a;
+            --laser-red: #ff052b;
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0a0a;
-            color: #ffffff;
+            background-color: var(--core-black);
+            background-image: radial-gradient(circle at 50% 50%, rgba(255, 5, 43, 0.08) 0%, transparent 70%);
+            color: #efefef;
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            overflow-x: hidden;
         }
-        
-        .container {
-            text-align: center;
-            max-width: 400px;
+
+        .brutal-font { font-family: 'Inter', sans-serif; font-weight: 900; tracking: -0.05em; }
+        .tech-mono { font-family: 'Space Mono', monospace; }
+
+        .container-box {
+            max-width: 480px;
             width: 100%;
+            text-align: center;
         }
-        
-        .logo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 30px;
+
+        /* Кнопки-ноды терминала */
+        .btn-node {
             display: block;
-            border: 3px solid #333;
-        }
-        
-        h1 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #ffffff;
-        }
-        
-        .subtitle {
-            font-size: 16px;
-            color: #888;
-            margin-bottom: 40px;
-        }
-        
-        .buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        
-        .btn {
-            padding: 16px 24px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 12px;
-            color: #ffffff;
+            background: var(--panel-dark);
+            border: 1px solid #15151a;
+            padding: 18px 24px;
+            margin-bottom: 12px;
+            color: #fff;
             text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.2s ease;
+            position: relative;
+            text-align: left;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Чёткое масштабирование без лагов */
+        .btn-node:hover {
+            transform: scale(1.04) translateY(-2px);
+            border-color: var(--laser-red);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Лазерный маркер слева */
+        .btn-node::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--laser-red);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .btn-node:hover::before {
+            opacity: 1;
+        }
+
+        .btn-tag {
             display: block;
+            font-size: 9px;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2px;
+            transition: color 0.3s;
         }
-        
-        .btn:hover {
-            background: #2a2a2a;
-            border-color: #555;
-        }
-        
-        .btn-grades:hover {
-            background: #007AFF;
-            border-color: #007AFF;
-        }
-        
-        .btn-social:hover {
-            background: #FFD700;
-            border-color: #FFD700;
-            color: #000000;
-        }
-        
-        .btn-devices:hover {
-            background: #FF69B4;
-            border-color: #FF69B4;
-            color: #000000;
+        .btn-node:hover .btn-tag {
+            color: var(--laser-red);
         }
 
-        .btn-learn {
-            background: #141a14;
+        .btn-title {
+            font-weight: 800;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
         }
 
-        .btn-learn:hover {
-            background: #4CAF50;
-            border-color: #4CAF50;
-            color: #000000;
-        }
-
-        .btn-energy {
-            background: #1a1414;
-        }
-
-        .btn-energy:hover {
-            background: #FF4757;
-            border-color: #FF4757;
-            color: #ffffff;
-        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--core-black); }
+        ::-webkit-scrollbar-thumb { background: #222; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--laser-red); }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="https://kw0rs.uno/icon/williamkw0rs.jpg" alt="William Kwors" class="logo">
+
+    <div class="container-box">
         
-        <h1>Академия имени Вильяма Кворса</h1>
-        <p class="subtitle">Блин, а прикольный сайтик так-то.</p>
-        
-        <div class="buttons">
-            <a href="https://kw0rs.uno/WKRS" class="btn btn-grades">Оценки</a>
-            <a href="https://kw0rs.uno/social" class="btn btn-social">Социальные сети</a>
-            <a href="https://kw0rs.uno/devices" class="btn btn-devices">ПК и девайсы</a>
-            <a href="https://kw0rs.uno/anki" class="btn btn-learn">Учить немецкий</a>
-            <a href="https://kw0rs.uno/energy" class="btn btn-energy">⚡ Тирлист энергетиков</a>
+        <!-- LOGO & INFRASTRUCTURE -->
+        <div class="mb-10">
+            <div class="relative w-28 h-28 mx-auto mb-6 bg-zinc-950 border border-[#15151a] p-1 group transition-colors duration-300 hover:border-red-600">
+                <img src="https://kw0rs.uno/icon/williamkw0rs.jpg" alt="William Kwors" class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all">
+            </div>
+            
+            <div class="flex items-center justify-center gap-2 mb-3">
+                <span class="tech-mono text-[9px] text-red-500 bg-red-950/30 px-2 py-0.5 border border-red-900/40">ACADEMY_ROOT</span>
+                <span class="tech-mono text-[9px] text-zinc-600">ONLINE</span>
+            </div>
+            
+            <h1 class="brutal-font text-3xl sm:text-4xl uppercase tracking-tighter text-white">
+                Академия имени<br>Вильяма Кворса
+            </h1>
+            <p class="tech-mono text-[11px] text-zinc-500 mt-3 italic">«Блин, а прикольный сайтик так-то»</p>
         </div>
+
+        <!-- КНОПКИ УПРАВЛЕНИЯ -->
+        <div class="buttons-layout">
+            <a href="https://kw0rs.uno/WKRS" class="btn-node">
+                <span class="btn-tag tech-mono">Directory_01 // DB</span>
+                <span class="btn-title">Оценки</span>
+            </a>
+
+            <a href="https://kw0rs.uno/social" class="btn-node">
+                <span class="btn-tag tech-mono">Directory_02 // COMM</span>
+                <span class="btn-title">Социальные сети</span>
+            </a>
+
+            <a href="https://kw0rs.uno/devices" class="btn-node">
+                <span class="btn-tag tech-mono">Directory_03 // HW</span>
+                <span class="btn-title">ПК и девайсы</span>
+            </a>
+
+            <a href="https://kw0rs.uno/anki" class="btn-node">
+                <span class="btn-tag tech-mono">Directory_04 // EDU</span>
+                <span class="btn-title">Учить немецкий</span>
+            </a>
+
+            <a href="https://kw0rs.uno/energy" class="btn-node">
+                <span class="btn-tag tech-mono">Directory_05 // FUEL</span>
+                <span class="btn-title">⚡ Тирлист энергетиков</span>
+            </a>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="mt-12 opacity-20 tech-mono text-[8px] uppercase tracking-[0.4em]">
+            System version 2.6 // Terminal Monolith
+        </footer>
     </div>
+
 </body>
 </html>
