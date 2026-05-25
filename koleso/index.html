@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ТРИБУНА — ЛЮБОВНОЕ КОЛЕСО</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --core-black: #020203;
+            --panel-dark: #08080a;
+            --laser-red: #ff052b;
+        }
+
+        body {
+            background-color: var(--core-black);
+            background-image: radial-gradient(circle at 50% -20%, rgba(255,5,43,0.15) 0%, transparent 60%);
+            color: #efefef;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        .brutal-font { font-family: 'Inter', sans-serif; font-weight: 900; }
+        .tech-mono { font-family: 'Space Mono', monospace; }
+        .core-panel { background: var(--panel-dark); border: 1px solid #15151a; position: relative; }
+        
+        .glow-red {
+            box-shadow: 0 0 20px rgba(255,5,43,0.15), inset 0 0 10px rgba(255,5,43,0.05);
+        }
+
+        .slot-machine-item {
+            transition: all 0.1s ease-out;
+        }
+
+        .spinning {
+            animation: blurText 0.1s infinite linear;
+            color: var(--laser-red);
+            opacity: 0.7;
+        }
+
+        @keyframes blurText {
+            0% { filter: blur(0px); transform: translateY(-2px); }
+            50% { filter: blur(4px); transform: translateY(0px); }
+            100% { filter: blur(0px); transform: translateY(2px); }
+        }
+
+        .btn-laser {
+            background: rgba(255,5,43,0.05);
+            border: 1px solid rgba(255,5,43,0.3);
+            color: var(--laser-red);
+            transition: all 0.2s;
+        }
+        .btn-laser:hover {
+            background: var(--laser-red);
+            color: #000;
+            box-shadow: 0 0 20px rgba(255,5,43,0.4);
+        }
+        
+        .active-stage {
+            border-color: var(--laser-red) !important;
+            box-shadow: 0 0 15px rgba(255,5,43,0.2);
+        }
+    </style>
+</head>
+<body class="antialiased" x-data="tribuneApp()">
+
+    <div class="max-w-[1200px] mx-auto px-4 py-8 sm:py-12">
+        
+        <header class="mb-12 border-b-2 border-[#111] pb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="tech-mono text-[10px] text-red-500 bg-red-950/50 px-2 py-0.5 border border-red-900/40">STATUS: OPERATIONAL</span>
+                <span class="tech-mono text-[10px] text-zinc-600 underline">LUCKY_WHEEL_CORE_v2.1</span>
+            </div>
+            <h1 class="brutal-font uppercase tracking-tighter text-white leading-none" style="font-size:clamp(2rem,8vw,4rem)">
+                ТРИ<span class="text-red-600">.</span>БУ<span class="text-red-600">.</span>НА
+                <span class="text-zinc-600 font-normal tech-mono block sm:inline mt-2 sm:mt-0 text-xl">// LOVE WHEEL</span>
+            </h1>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <template x-for="s in [1,2,3]">
+                <button @click="setStage(s)" 
+                        :class="stage === s ? 'active-stage border-red-600 text-white' : 'border-[#15151a] text-zinc-500'"
+                        class="core-panel p-4 tech-mono text-xs uppercase tracking-widest transition-all hover:bg-zinc-900/50">
+                    Этап <span x-text="s"></span>
+                    <div class="text-[9px] mt-1 opacity-60" x-text="getStageDesc(s)"></div>
+                </button>
+            </template>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div class="core-panel p-8 glow-red flex flex-col items-center justify-center min-h-[200px]">
+                <span class="tech-mono text-[10px] text-zinc-600 absolute top-4 left-4">CRITERIA_01</span>
+                <span class="tech-mono text-xs text-zinc-500 uppercase mb-4">СКИПЫ</span>
+                <div class="brutal-font text-6xl sm:text-7xl" :class="{ 'spinning': isSpinning }" x-text="results.skips"></div>
+            </div>
+
+            <div class="core-panel p-8 glow-red flex flex-col items-center justify-center min-h-[200px]" 
+                 :class="{ 'opacity-20 grayscale': stage < 2 }">
+                <span class="tech-mono text-[10px] text-zinc-600 absolute top-4 left-4">CRITERIA_02</span>
+                <span class="tech-mono text-xs text-zinc-500 uppercase mb-4">ВРЕМЯ</span>
+                <div class="brutal-font text-4xl sm:text-5xl text-center" :class="{ 'spinning': isSpinning }" x-text="results.time"></div>
+                <div x-show="stage < 2" class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] tech-mono text-[10px] text-zinc-500">LOCKED_STAGE_1</div>
+            </div>
+
+            <div class="core-panel p-8 glow-red flex flex-col items-center justify-center min-h-[200px]" 
+                 :class="{ 'opacity-20 grayscale': stage < 3 }">
+                <span class="tech-mono text-[10px] text-zinc-600 absolute top-4 left-4">CRITERIA_03</span>
+                <span class="tech-mono text-xs text-zinc-500 uppercase mb-4">ПОЛ Собеседника</span>
+                <div class="brutal-font text-2xl sm:text-3xl text-center uppercase" :class="{ 'spinning': isSpinning }" x-text="results.gender"></div>
+                <div x-show="stage < 3" class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] tech-mono text-[10px] text-zinc-500">LOCKED_STAGE_2</div>
+            </div>
+
+        </div>
+
+        <div class="mt-12 flex flex-col items-center gap-6">
+            <button @click="spin()" 
+                    :disabled="isSpinning"
+                    class="w-full max-w-md py-6 brutal-font text-2xl uppercase tracking-tighter btn-laser disabled:opacity-50">
+                <span x-text="isSpinning ? 'КРУТИМ...' : 'ЗАПУСТИТЬ РУЛЕТКУ'"></span>
+            </button>
+            
+            <p class="tech-mono text-[10px] text-zinc-700 uppercase tracking-[0.2em]">
+                Нажми кнопку чтобы определить судьбу участника
+            </p>
+        </div>
+
+        <div class="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-[#111] pt-8">
+            <div class="text-zinc-500 text-xs leading-relaxed">
+                <h4 class="tech-mono text-white mb-2 uppercase">[!] ПРИМЕЧАНИЯ</h4>
+                <ul class="list-disc list-inside space-y-1 opacity-70">
+                    <li>Скипы работают в обе стороны</li>
+                    <li>Возраст: 13+ строго, < 18 называть можно</li>
+                    <li>При самоскипе опускаются оба участника</li>
+                </ul>
+            </div>
+            <div class="text-zinc-700 text-[10px] tech-mono flex flex-col justify-end text-right uppercase">
+                <p>Designed for Kwors Universe</p>
+                <p>© 2026 INTERNAL_TOOL_ONLY</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function tribuneApp() {
+            // КОНФИГ ШАНСОВ (WEIGHTS)
+            // Чем больше число, тем выше шанс выпадения этого варианта.
+            const weights = {
+                skips: [
+                    { val: '1', w: 1 },
+                    { val: '2', w: 1 },
+                    { val: '3', w: 1 }
+                ],
+                time: [
+                    { val: '30 СЕК', w: 1 },
+                    { val: '1 МИН', w: 1 },
+                    { val: '1.5 МИН', w: 1 },
+                    { val: '2 МИН', w: 1 }
+                ],
+                gender: [
+                    { val: 'Мальчик', w: 1 },
+                    { val: 'Девочка', w: 1 },
+                    { val: 'Без гендера', w: 1 }
+                ]
+            };
+
+            return {
+                stage: 1,
+                isSpinning: false,
+                results: {
+                    skips: '?',
+                    time: '1.5 МИН',
+                    gender: 'ЛЮБОЙ'
+                },
+
+                setStage(s) {
+                    this.stage = s;
+                    // Сбрасываем дефолты по правилам
+                    if (s < 3) this.results.time = '1.5 МИН';
+                    if (s < 3) this.results.gender = 'ПО ВЫБОРУ';
+                },
+
+                getStageDesc(s) {
+                    if (s === 1) return "Первые полчаса (Только скипы)";
+                    if (s === 2) return "Вторые полчаса (+Время)";
+                    return "Второй час (+Пол)";
+                },
+
+                // Функция взвешенного рандома
+                weightedRandom(items) {
+                    const totalWeight = items.reduce((acc, item) => acc + item.w, 0);
+                    let random = Math.random() * totalWeight;
+                    for (const item of items) {
+                        if (random < item.w) return item.val;
+                        random -= item.w;
+                    }
+                    return items[0].val;
+                },
+
+                async spin() {
+                    this.isSpinning = true;
+                    
+                    // Имитация кручения (визуал)
+                    let counter = 0;
+                    const interval = setInterval(() => {
+                        this.results.skips = Math.floor(Math.random() * 3) + 1;
+                        if (this.stage >= 2) {
+                            const times = ['30 СЕК', '1 МИН', '1.5 МИН', '2 МИН'];
+                            this.results.time = times[Math.floor(Math.random() * times.length)];
+                        }
+                        if (this.stage >= 3) {
+                            const genders = ['Мальчик', 'Девочка', 'Без гендера'];
+                            this.results.gender = genders[Math.floor(Math.random() * genders.length)];
+                        }
+                        counter++;
+                    }, 80);
+
+                    // Финальный результат через 1.5 секунды
+                    setTimeout(() => {
+                        clearInterval(interval);
+                        this.results.skips = this.weightedRandom(weights.skips);
+                        
+                        if (this.stage >= 2) {
+                            this.results.time = this.weightedRandom(weights.time);
+                        } else {
+                            this.results.time = '1.5 МИН';
+                        }
+
+                        if (this.stage >= 3) {
+                            this.results.gender = this.weightedRandom(weights.gender);
+                        } else {
+                            this.results.gender = 'ПО ВЫБОРУ';
+                        }
+                        
+                        this.isSpinning = false;
+                    }, 1500);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
