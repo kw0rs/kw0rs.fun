@@ -116,11 +116,6 @@
             border: 1px solid rgba(255,5,43,0.3);
             color: #ff6b6b;
         }
-
-        .proxy-status {
-            background: rgba(255,5,43,0.05);
-            border: 1px solid #1c1c24;
-        }
     </style>
 </head>
 <body class="antialiased">
@@ -157,21 +152,11 @@
                 <div class="flex-1">
                     <p class="font-bold mb-1">ОШИБКА ЗАГРУЗКИ ДАННЫХ</p>
                     <p x-text="loadError" class="text-zinc-400 text-[10px] mb-2"></p>
-                    <p class="text-zinc-500 text-[10px] mb-2">
-                        Попробовано прокси: <span x-text="triedProxies.join(', ')" class="text-zinc-400"></span>
-                    </p>
                     <p class="text-zinc-500 text-[10px]">
-                        Убедитесь, что таблица открыта для просмотра по ссылке (Файл → Настройки доступа → «Все, у кого есть ссылка»)
-                        и нажмите
+                        Нажмите
                         <button @click="loadItems()" class="text-red-500 hover:underline">[ПОВТОРИТЬ]</button>
                     </p>
                 </div>
-            </div>
-
-            <!-- Статус загрузки прокси -->
-            <div x-show="loadStatus && !loadError && !loading" class="proxy-status tech-mono text-[10px] text-zinc-600 px-3 py-1.5 mb-4 flex items-center gap-2">
-                <span class="text-green-600">✓</span>
-                <span x-text="loadStatus"></span>
             </div>
 
             <!-- Фильтры -->
@@ -375,39 +360,7 @@
     </div>
 
     <script>
-        const SHEET_ID  = '108822Zn_50UNHrdA1WgnsQAf8nroCI2QZh4RlrIhhR0';
-        const SHEET_GID = '0';
-        const CSV_URL   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`;
-
-        // Список прокси — пробуем по очереди
-        const PROXIES = [
-            { name: 'direct',          url: () => CSV_URL,                                                       mode: 'cors' },
-            { name: 'corsproxy.io',    url: () => `https://corsproxy.io/?${encodeURIComponent(CSV_URL)}`,        mode: 'cors' },
-            { name: 'allorigins',      url: () => `https://api.allorigins.win/raw?url=${encodeURIComponent(CSV_URL)}`, mode: 'cors' },
-            { name: 'thingproxy',      url: () => `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(CSV_URL)}`, mode: 'cors' },
-            { name: 'cors.sh',         url: () => CSV_URL, headers: { 'x-cors-api-key': 'temp_' }, corssh: true, mode: 'cors' },
-        ];
-
-        function parseCSV(text) {
-            const rows = [];
-            let row = [], cell = '', inQuotes = false;
-            for (let i = 0; i < text.length; i++) {
-                const ch = text[i], next = text[i + 1];
-                if (inQuotes) {
-                    if (ch === '"' && next === '"') { cell += '"'; i++; }
-                    else if (ch === '"')             { inQuotes = false; }
-                    else                             { cell += ch; }
-                } else {
-                    if      (ch === '"')                         { inQuotes = true; }
-                    else if (ch === ',')                         { row.push(cell); cell = ''; }
-                    else if (ch === '\r' && next === '\n')       { row.push(cell); cell = ''; rows.push(row); row = []; i++; }
-                    else if (ch === '\n' || ch === '\r')         { row.push(cell); cell = ''; rows.push(row); row = []; }
-                    else                                         { cell += ch; }
-                }
-            }
-            if (cell !== '' || row.length > 0) { row.push(cell); rows.push(row); }
-            return rows;
-        }
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby1VHaaP7U4AEf_eFhqZkdW-yeO0EpogTKgdowcug2LT5rFyBSuHivMR51bkgSYeSyJ/exec';
 
         function rowToItem(cols) {
             const title = (cols[1] || '').trim();
@@ -431,15 +384,6 @@
             };
         }
 
-        // Проверяет, что текст похож на CSV а не HTML-ошибку
-        function looksLikeCSV(text) {
-            const first = text.trimStart();
-            // Google Sheets redirect или HTML-страница ошибки
-            if (first.startsWith('<!') || first.startsWith('<html') || first.startsWith('<HTML')) return false;
-            // Минимальная проверка: есть хотя бы одна запятая в первых 200 символах
-            return text.slice(0, 200).includes(',');
-        }
-
         function mediaApp() {
             return {
                 search: '',
@@ -450,57 +394,24 @@
                 items: [],
                 loading: true,
                 loadError: null,
-                loadStatus: null,
                 loadingMsg: 'LOADING_CORE_DATA...',
                 showReview: true,
-                triedProxies: [],
 
                 async loadItems() {
-                    this.loading    = true;
-                    this.loadError  = null;
-                    this.loadStatus = null;
-                    this.triedProxies = [];
-
-                    let csvText = null;
-                    let usedProxy = null;
-
-                    for (const proxy of PROXIES) {
-                        this.loadingMsg = `TRYING_${proxy.name.toUpperCase()}...`;
-                        this.triedProxies.push(proxy.name);
-                        try {
-                            const opts = { method: 'GET', mode: proxy.mode || 'cors' };
-                            if (proxy.headers) opts.headers = proxy.headers;
-
-                            // Таймаут 8 секунд на каждый прокси
-                            const controller = new AbortController();
-                            const tid = setTimeout(() => controller.abort(), 8000);
-                            opts.signal = controller.signal;
-
-                            const res = await fetch(proxy.url(), opts);
-                            clearTimeout(tid);
-
-                            if (!res.ok) continue;
-                            const text = await res.text();
-                            if (looksLikeCSV(text)) {
-                                csvText   = text;
-                                usedProxy = proxy.name;
-                                break;
-                            }
-                        } catch (e) {
-                            // Пробуем следующий прокси
-                            console.warn(`Proxy ${proxy.name} failed:`, e.message || e);
-                        }
-                    }
-
-                    if (!csvText) {
-                        this.loadError = `Все прокси недоступны. Попробуйте позже или откройте таблицу напрямую.`;
-                        this.loading   = false;
-                        return;
-                    }
+                    this.loading   = true;
+                    this.loadError = null;
+                    this.loadingMsg = 'LOADING_CORE_DATA...';
 
                     try {
-                        const rows     = parseCSV(csvText);
-                        const dataRows = rows.slice(1);  // пропускаем заголовок
+                        const res = await fetch(SCRIPT_URL);
+                        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+                        const data = await res.json();
+
+                        // Скрипт возвращает массив массивов (строки таблицы)
+                        // первая строка — заголовки, пропускаем
+                        const rows = Array.isArray(data) ? data : (data.rows || data.data || []);
+                        const dataRows = rows.slice(1);
 
                         this.items = dataRows
                             .map(rowToItem)
@@ -513,10 +424,9 @@
                                     : 'Н/Д',
                             }));
 
-                        this.loadStatus = `Загружено через: ${usedProxy} · ${this.items.length} записей`;
                     } catch (err) {
-                        console.error('Ошибка парсинга CSV:', err);
-                        this.loadError = 'Ошибка разбора данных: ' + (err.message || err);
+                        console.error('Ошибка загрузки:', err);
+                        this.loadError = err.message || 'Неизвестная ошибка';
                     } finally {
                         this.loading = false;
                     }
