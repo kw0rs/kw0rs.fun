@@ -33,7 +33,6 @@
         .text-block { font-size: 1rem; line-height: 1.7; color: #e2e8f0; }
         .core-panel { background: var(--panel-dark); border: 1px solid #15151a; }
 
-        /* ── Карточки ─────────────────────────────────── */
         article.card-item {
             transition: transform 0.3s ease, box-shadow 0.3s ease !important;
         }
@@ -41,7 +40,6 @@
             article.card-item:hover { transform: scale(1.04) !important; }
         }
 
-        /* ТИР 10 */
         .tier-10 {
             border: 2px solid var(--laser-red) !important;
             box-shadow: 0 0 25px rgba(255,5,43,.25), inset 0 0 15px rgba(255,5,43,.1) !important;
@@ -54,7 +52,6 @@
             padding: 0 6px; z-index: 20;
         }
 
-        /* ТИР 11+ */
         .tier-mega {
             border: 2px solid transparent !important;
             background-image: linear-gradient(var(--panel-dark), var(--panel-dark)),
@@ -78,7 +75,6 @@
         @keyframes pulseBlink { 0%,100%{opacity:1} 50%{opacity:.5} }
         @keyframes loadingBar { 0%{left:-30%}100%{left:100%} }
 
-        /* ── Заглушка постера ──────────────────────────── */
         .no-poster {
             background: repeating-linear-gradient(45deg,#0a0a0d 0,#0a0a0d 10px,#0d0d11 10px,#0d0d11 20px);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -89,7 +85,6 @@
             text-align: center; text-transform: uppercase; letter-spacing: .05em; line-height: 1.5;
         }
 
-        /* ── Модалка на мобиле — полный экран снизу ────── */
         @media (max-width: 767px) {
             .modal-inner {
                 flex-direction: column !important;
@@ -100,41 +95,36 @@
                 width: 100% !important;
                 max-width: 100% !important;
             }
-            .modal-poster-col {
-                display: none !important;
-            }
-            .modal-content-col {
-                padding: 20px 16px !important;
-            }
-            .modal-title {
-                font-size: 1.6rem !important;
-            }
+            .modal-poster-col { display: none !important; }
+            .modal-content-col { padding: 20px 16px !important; }
+            .modal-title { font-size: 1.6rem !important; }
         }
 
-        /* ── Скроллбар ─────────────────────────────────── */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: var(--core-black); }
         ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--laser-red); }
 
-        /* ── Нативные селекты и инпуты на мобиле ───────── */
         select, input[type="text"] {
             -webkit-appearance: none;
             appearance: none;
             font-size: 16px;
         }
 
-        /* ── Ошибка загрузки ────────────────────────────── */
         .error-banner {
             background: rgba(255,5,43,0.1);
             border: 1px solid rgba(255,5,43,0.3);
             color: #ff6b6b;
         }
+
+        .proxy-status {
+            background: rgba(255,5,43,0.05);
+            border: 1px solid #1c1c24;
+        }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Кнопка В меню -->
     <button onclick="window.location.href='https://kw0rs.com'"
        class="fixed top-3 right-3 z-[200] flex items-center gap-2 tech-mono bg-[#08080a] border border-[#1c1c24] hover:border-red-900/60 px-3 py-2 transition-all duration-200 hover:shadow-[0_0_15px_rgba(255,5,43,0.2)] cursor-pointer"
        style="font-size:11px;color:#999;">
@@ -146,11 +136,10 @@
 
     <div class="max-w-[1600px] mx-auto px-3 sm:px-6 py-6 sm:py-12">
 
-        <!-- HEADER -->
         <header class="mb-8 sm:mb-16 pt-8 sm:pt-0 pb-6 sm:pb-8 border-b-2 border-[#111]">
             <div class="flex flex-col gap-3">
                 <div class="flex items-center gap-3">
-                    <span class="tech-mono text-[10px] text-red-500 bg-red-950/50 px-2 py-0.5 border border-red-900/40">SYS_V2.0</span>
+                    <span class="tech-mono text-[10px] text-red-500 bg-red-950/50 px-2 py-0.5 border border-red-900/40">SYS_V2.1</span>
                     <span class="tech-mono text-[10px] text-zinc-600">SECURE_CHANNEL</span>
                 </div>
                 <h1 class="brutal-font uppercase tracking-tighter text-white leading-none" style="font-size:clamp(2.2rem,10vw,5rem)">
@@ -160,34 +149,38 @@
             </div>
         </header>
 
-        <!-- УПРАВЛЕНИЕ -->
         <section class="mb-8 core-panel p-4 sm:p-6 sm:p-8" x-data="mediaApp()" x-init="loadItems()">
 
             <!-- Баннер ошибки -->
             <div x-show="loadError" class="error-banner tech-mono text-xs p-4 mb-4 flex items-start gap-3">
                 <span class="text-red-500 text-lg leading-none">⚠</span>
-                <div>
+                <div class="flex-1">
                     <p class="font-bold mb-1">ОШИБКА ЗАГРУЗКИ ДАННЫХ</p>
-                    <p x-text="loadError" class="text-zinc-400 text-[10px]"></p>
-                    <p class="text-zinc-500 text-[10px] mt-2">
-                        Убедитесь, что таблица открыта для публичного просмотра (Файл → Настройки доступа → «Все, у кого есть ссылка»)
+                    <p x-text="loadError" class="text-zinc-400 text-[10px] mb-2"></p>
+                    <p class="text-zinc-500 text-[10px] mb-2">
+                        Попробовано прокси: <span x-text="triedProxies.join(', ')" class="text-zinc-400"></span>
+                    </p>
+                    <p class="text-zinc-500 text-[10px]">
+                        Убедитесь, что таблица открыта для просмотра по ссылке (Файл → Настройки доступа → «Все, у кого есть ссылка»)
                         и нажмите
                         <button @click="loadItems()" class="text-red-500 hover:underline">[ПОВТОРИТЬ]</button>
                     </p>
                 </div>
             </div>
 
+            <!-- Статус загрузки прокси -->
+            <div x-show="loadStatus && !loadError && !loading" class="proxy-status tech-mono text-[10px] text-zinc-600 px-3 py-1.5 mb-4 flex items-center gap-2">
+                <span class="text-green-600">✓</span>
+                <span x-text="loadStatus"></span>
+            </div>
+
             <!-- Фильтры -->
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
-
-                <!-- Поиск -->
                 <div class="sm:col-span-2">
                     <label class="tech-mono text-[10px] text-zinc-500 uppercase mb-1.5 block">Поиск</label>
                     <input type="text" x-model="search" placeholder="Введи название тайтла..."
                            class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 transition-colors text-sm">
                 </div>
-
-                <!-- Категория -->
                 <div>
                     <label class="tech-mono text-[10px] text-zinc-500 uppercase mb-1.5 block">Сектор</label>
                     <select x-model="categoryFilter" class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 cursor-pointer text-sm">
@@ -200,8 +193,6 @@
                         <option value="cartoon">МУЛЬТФИЛЬМЫ</option>
                     </select>
                 </div>
-
-                <!-- Сортировка -->
                 <div>
                     <label class="tech-mono text-[10px] text-zinc-500 uppercase mb-1.5 block">Сортировка</label>
                     <select x-model="sortKey" class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 cursor-pointer text-sm">
@@ -223,7 +214,6 @@
                            class="accent-red-600 flex-1 h-1" style="max-width:140px">
                     <span class="tech-mono text-sm text-red-500 font-bold w-12" x-text="minRating + '/10'"></span>
                 </div>
-
                 <div class="flex gap-3">
                     <button @click="pickRandomItem()"
                             class="tech-mono text-xs bg-red-950/30 hover:bg-red-900/40 text-red-500 border border-red-900/50 px-4 py-2.5 transition-colors flex-1 sm:flex-none">
@@ -257,8 +247,6 @@
                     <article @click="openModal(item)"
                              :class="getCardTierClass(item.rating)"
                              class="card-item core-panel p-1.5 sm:p-2 hover:border-zinc-500 cursor-pointer group flex flex-col h-full relative">
-
-                        <!-- Обложка -->
                         <div class="relative overflow-hidden mb-2" style="aspect-ratio:2/3;background:#000">
                             <div x-show="!item.image" class="no-poster w-full h-full absolute inset-0">
                                 <svg width="28" height="28" viewBox="0 0 40 40" fill="none" style="opacity:.25">
@@ -271,16 +259,12 @@
                             <img x-show="item.image" :src="item.image"
                                  class="w-full h-full object-cover transition-all duration-500 grayscale-[30%] group-hover:grayscale-0"
                                  loading="lazy" @error="item.image = null">
-
-                            <!-- Оценка -->
                             <div class="absolute top-1.5 right-1.5 bg-black/90 px-1.5 py-0.5 border tech-mono font-bold"
                                  style="font-size:9px"
                                  :class="item.rating >= 10 ? 'text-red-500 border-red-900' : 'text-white border-zinc-800'">
                                 <span x-text="item.ratingDisplay"></span>
                             </div>
                         </div>
-
-                        <!-- Инфо -->
                         <div class="flex flex-col flex-1 px-0.5">
                             <span class="tech-mono text-zinc-600 uppercase mb-0.5" style="font-size:8px" x-text="item.typeDisplay"></span>
                             <h3 class="font-bold text-zinc-100 group-hover:text-red-500 transition-colors line-clamp-2 uppercase tracking-tight mb-1.5"
@@ -302,18 +286,15 @@
                 <button @click="clearFilters()" class="text-xs tech-mono text-red-500 hover:underline">[ СБРОСИТЬ ФИЛЬТРЫ ]</button>
             </div>
 
-            <!-- ── МОДАЛКА ─────────────────────────────────────── -->
+            <!-- МОДАЛКА -->
             <div x-show="modalItem"
                  class="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4 bg-black/95 backdrop-blur-md"
                  x-transition:enter="transition ease-out duration-200"
                  x-transition:enter-start="opacity-0 translate-y-4"
                  x-transition:enter-end="opacity-100 translate-y-0"
                  style="display:none;">
-
                 <div class="modal-inner bg-[#08080a] border border-[#1c1c24] w-full sm:max-w-5xl flex flex-col sm:flex-row max-h-[95vh] sm:max-h-[90vh] overflow-hidden"
                      @click.away="closeModal()">
-
-                    <!-- Постер (скрыт на мобиле через CSS) -->
                     <div class="modal-poster-col w-full sm:w-2/5 bg-black p-6 border-b sm:border-b-0 sm:border-r border-[#15151a] flex flex-col flex-shrink-0">
                         <div class="relative w-full overflow-hidden border border-[#15151a] shadow-2xl" style="aspect-ratio:2/3">
                             <div x-show="!modalItem?.image" class="no-poster w-full h-full absolute inset-0">
@@ -337,11 +318,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Контент -->
                     <div class="modal-content-col flex-1 p-5 sm:p-10 overflow-y-auto flex flex-col">
-
-                        <!-- Шапка модалки -->
                         <div class="flex justify-between items-start gap-3 mb-4">
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-3 mb-2 sm:hidden">
@@ -355,8 +332,6 @@
                                     class="tech-mono text-zinc-500 hover:text-white bg-[#030304] border border-[#15151a] flex-shrink-0 px-3 py-2"
                                     style="font-size:11px">✕</button>
                         </div>
-
-                        <!-- Табы -->
                         <div class="flex border-b border-[#15151a] mb-5">
                             <button @click="showReview = true"
                                     class="px-3 py-2.5 tech-mono text-xs uppercase tracking-wider border-b-2 transition-all"
@@ -369,8 +344,6 @@
                                 Описание
                             </button>
                         </div>
-
-                        <!-- Текст -->
                         <div class="text-block flex-1 overflow-y-auto">
                             <div x-show="showReview">
                                 <p class="whitespace-pre-line text-zinc-100 italic font-medium text-sm sm:text-base"
@@ -381,8 +354,6 @@
                                    x-text="modalItem?.description || 'Описание отсутствует.'"></p>
                             </div>
                         </div>
-
-                        <!-- Жанры -->
                         <div class="mt-5 flex flex-wrap gap-2">
                             <template x-for="genre in modalItem?.genres" :key="genre">
                                 <span class="tech-mono bg-[#030304] px-2.5 py-1 text-zinc-400 border border-[#15151a]"
@@ -398,108 +369,56 @@
                 <div class="h-1 w-40 bg-zinc-900 overflow-hidden relative">
                     <div class="absolute h-full bg-red-600 top-0 left-0 animate-[loadingBar_1.5s_infinite]" style="width:30%"></div>
                 </div>
-                <p class="tech-mono text-[10px] text-red-500 tracking-widest uppercase">LOADING_CORE_DATA...</p>
+                <p class="tech-mono text-[10px] text-red-500 tracking-widest uppercase" x-text="loadingMsg || 'LOADING_CORE_DATA...'"></p>
             </div>
         </section>
     </div>
 
     <script>
-        // ──────────────────────────────────────────────────────
-        // Google Sheets CSV Parser
-        // Таблица должна быть открыта для просмотра по ссылке!
-        // ──────────────────────────────────────────────────────
-        const SHEET_ID = '108822Zn_50UNHrdA1WgnsQAf8nroCI2QZh4RlrIhhR0';
-        // GID листа — 0 для первого листа. Если у тебя несколько листов,
-        // найди gid= в URL когда открываешь нужный лист.
+        const SHEET_ID  = '108822Zn_50UNHrdA1WgnsQAf8nroCI2QZh4RlrIhhR0';
         const SHEET_GID = '0';
+        const CSV_URL   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`;
 
-        // URL для CSV-экспорта
-        const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`;
+        // Список прокси — пробуем по очереди
+        const PROXIES = [
+            { name: 'direct',          url: () => CSV_URL,                                                       mode: 'cors' },
+            { name: 'corsproxy.io',    url: () => `https://corsproxy.io/?${encodeURIComponent(CSV_URL)}`,        mode: 'cors' },
+            { name: 'allorigins',      url: () => `https://api.allorigins.win/raw?url=${encodeURIComponent(CSV_URL)}`, mode: 'cors' },
+            { name: 'thingproxy',      url: () => `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(CSV_URL)}`, mode: 'cors' },
+            { name: 'cors.sh',         url: () => CSV_URL, headers: { 'x-cors-api-key': 'temp_' }, corssh: true, mode: 'cors' },
+        ];
 
-        /**
-         * Минималистичный CSV-парсер с поддержкой кавычек.
-         * Возвращает массив строк, каждая строка — массив ячеек.
-         */
         function parseCSV(text) {
             const rows = [];
-            let row = [];
-            let cell = '';
-            let inQuotes = false;
-
+            let row = [], cell = '', inQuotes = false;
             for (let i = 0; i < text.length; i++) {
-                const ch = text[i];
-                const next = text[i + 1];
-
+                const ch = text[i], next = text[i + 1];
                 if (inQuotes) {
-                    if (ch === '"' && next === '"') {
-                        cell += '"';
-                        i++;
-                    } else if (ch === '"') {
-                        inQuotes = false;
-                    } else {
-                        cell += ch;
-                    }
+                    if (ch === '"' && next === '"') { cell += '"'; i++; }
+                    else if (ch === '"')             { inQuotes = false; }
+                    else                             { cell += ch; }
                 } else {
-                    if (ch === '"') {
-                        inQuotes = true;
-                    } else if (ch === ',') {
-                        row.push(cell);
-                        cell = '';
-                    } else if (ch === '\r' && next === '\n') {
-                        row.push(cell);
-                        cell = '';
-                        rows.push(row);
-                        row = [];
-                        i++;
-                    } else if (ch === '\n' || ch === '\r') {
-                        row.push(cell);
-                        cell = '';
-                        rows.push(row);
-                        row = [];
-                    } else {
-                        cell += ch;
-                    }
+                    if      (ch === '"')                         { inQuotes = true; }
+                    else if (ch === ',')                         { row.push(cell); cell = ''; }
+                    else if (ch === '\r' && next === '\n')       { row.push(cell); cell = ''; rows.push(row); row = []; i++; }
+                    else if (ch === '\n' || ch === '\r')         { row.push(cell); cell = ''; rows.push(row); row = []; }
+                    else                                         { cell += ch; }
                 }
             }
-            if (cell !== '' || row.length > 0) {
-                row.push(cell);
-                rows.push(row);
-            }
+            if (cell !== '' || row.length > 0) { row.push(cell); rows.push(row); }
             return rows;
         }
 
-        /**
-         * Преобразует строку CSV в объект записи.
-         * Колонки (0-индексация):
-         *   0 — метка времени (игнорируем)
-         *   1 — Название
-         *   2 — Тип
-         *   3 — Оценка
-         *   4 — Год
-         *   5 — Жанры (через |)
-         *   6 — Описание
-         *   7 — Рецензия
-         *   8 — Картинка
-         */
         function rowToItem(cols) {
             const title = (cols[1] || '').trim();
             if (!title) return null;
-
             const rawRating = (cols[3] || '').trim();
-            // Оценка: число или ? → null
             const ratingNum = (rawRating === '?' || rawRating === '' || isNaN(parseFloat(rawRating)))
-                ? null
-                : parseFloat(rawRating);
-
+                ? null : parseFloat(rawRating);
             const rawGenres = (cols[5] || '').trim();
-            const genres = rawGenres
-                ? rawGenres.split('|').map(g => g.trim()).filter(Boolean)
-                : [];
-
+            const genres = rawGenres ? rawGenres.split('|').map(g => g.trim()).filter(Boolean) : [];
             const imageRaw = (cols[8] || '').trim();
-            // Отбрасываем placeholder-ссылки
             const image = imageRaw && !imageRaw.includes('via.placeholder.com') ? imageRaw : null;
-
             return {
                 title,
                 type:        (cols[2] || '').trim().toLowerCase(),
@@ -512,6 +431,15 @@
             };
         }
 
+        // Проверяет, что текст похож на CSV а не HTML-ошибку
+        function looksLikeCSV(text) {
+            const first = text.trimStart();
+            // Google Sheets redirect или HTML-страница ошибки
+            if (first.startsWith('<!') || first.startsWith('<html') || first.startsWith('<HTML')) return false;
+            // Минимальная проверка: есть хотя бы одна запятая в первых 200 символах
+            return text.slice(0, 200).includes(',');
+        }
+
         function mediaApp() {
             return {
                 search: '',
@@ -522,75 +450,86 @@
                 items: [],
                 loading: true,
                 loadError: null,
+                loadStatus: null,
+                loadingMsg: 'LOADING_CORE_DATA...',
                 showReview: true,
+                triedProxies: [],
 
                 async loadItems() {
-                    this.loading = true;
-                    this.loadError = null;
+                    this.loading    = true;
+                    this.loadError  = null;
+                    this.loadStatus = null;
+                    this.triedProxies = [];
+
+                    let csvText = null;
+                    let usedProxy = null;
+
+                    for (const proxy of PROXIES) {
+                        this.loadingMsg = `TRYING_${proxy.name.toUpperCase()}...`;
+                        this.triedProxies.push(proxy.name);
+                        try {
+                            const opts = { method: 'GET', mode: proxy.mode || 'cors' };
+                            if (proxy.headers) opts.headers = proxy.headers;
+
+                            // Таймаут 8 секунд на каждый прокси
+                            const controller = new AbortController();
+                            const tid = setTimeout(() => controller.abort(), 8000);
+                            opts.signal = controller.signal;
+
+                            const res = await fetch(proxy.url(), opts);
+                            clearTimeout(tid);
+
+                            if (!res.ok) continue;
+                            const text = await res.text();
+                            if (looksLikeCSV(text)) {
+                                csvText   = text;
+                                usedProxy = proxy.name;
+                                break;
+                            }
+                        } catch (e) {
+                            // Пробуем следующий прокси
+                            console.warn(`Proxy ${proxy.name} failed:`, e.message || e);
+                        }
+                    }
+
+                    if (!csvText) {
+                        this.loadError = `Все прокси недоступны. Попробуйте позже или откройте таблицу напрямую.`;
+                        this.loading   = false;
+                        return;
+                    }
 
                     try {
-                        // Используем CORS-прокси чтобы обойти ограничения браузера на прямые запросы к Google Sheets
-                        // Сначала пробуем напрямую, потом через прокси
-                        let csvText = null;
-
-                        // Попытка 1: напрямую (работает если сайт на том же домене или CORS разрешён)
-                        try {
-                            const res = await fetch(CSV_URL, { mode: 'cors' });
-                            if (res.ok) {
-                                csvText = await res.text();
-                            }
-                        } catch(e) {
-                            // CORS заблокировал — попробуем прокси
-                        }
-
-                        // Попытка 2: через публичный CORS-прокси
-                        if (!csvText) {
-                            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(CSV_URL)}`;
-                            const res2 = await fetch(proxyUrl);
-                            if (!res2.ok) throw new Error(`HTTP ${res2.status}`);
-                            csvText = await res2.text();
-                        }
-
-                        const rows = parseCSV(csvText);
-
-                        // Первая строка — заголовки, пропускаем
-                        const dataRows = rows.slice(1);
+                        const rows     = parseCSV(csvText);
+                        const dataRows = rows.slice(1);  // пропускаем заголовок
 
                         this.items = dataRows
                             .map(rowToItem)
                             .filter(Boolean)
                             .map(item => ({
                                 ...item,
-                                typeDisplay: this.getType(item.type),
+                                typeDisplay:   this.getType(item.type),
                                 ratingDisplay: item.rating !== null
                                     ? item.rating.toFixed(1) + '/10'
                                     : 'Н/Д',
                             }));
 
+                        this.loadStatus = `Загружено через: ${usedProxy} · ${this.items.length} записей`;
                     } catch (err) {
-                        console.error('Ошибка загрузки таблицы:', err);
-                        this.loadError = err.message || 'Неизвестная ошибка';
+                        console.error('Ошибка парсинга CSV:', err);
+                        this.loadError = 'Ошибка разбора данных: ' + (err.message || err);
                     } finally {
                         this.loading = false;
                     }
                 },
 
                 getType(t) {
-                    const m = {
-                        movie:   'CINEMA',
-                        show:    'SERIES',
-                        anime:   'ANIME',
-                        game:    'GAME',
-                        book:    'LITERATURE',
-                        cartoon: 'CARTOON',
-                    };
-                    return m[t] || 'RECORD';
+                    return { movie:'CINEMA', show:'SERIES', anime:'ANIME', game:'GAME', book:'LITERATURE', cartoon:'CARTOON' }[t] || 'RECORD';
                 },
 
                 getCardTierClass(rating) {
                     if (rating === null) return '';
-                    if (rating > 10) return 'tier-mega';
-                    if (rating === 10) return 'tier-10';
+                    if (rating > 10)    return 'tier-mega';
+                    if (rating === 10)  return 'tier-10';
                     return '';
                 },
 
@@ -598,16 +537,11 @@
                     let f = this.items.filter(i => {
                         if (this.search && !i.title.toLowerCase().includes(this.search.toLowerCase())) return false;
                         if (this.categoryFilter && i.type !== this.categoryFilter) return false;
-                        // Фильтр по минимальной оценке: записи без оценки скрываем только если слайдер > 0
-                        if (this.minRating > 0) {
-                            if (i.rating === null || i.rating < this.minRating) return false;
-                        }
+                        if (this.minRating > 0 && (i.rating === null || i.rating < this.minRating)) return false;
                         return true;
                     });
-
                     return f.sort((a, b) => {
                         if (this.sortKey === 'rating-desc') {
-                            // Без оценки — в конец
                             if (a.rating === null && b.rating === null) return 0;
                             if (a.rating === null) return 1;
                             if (b.rating === null) return -1;
@@ -627,18 +561,14 @@
                     });
                 },
 
-                openModal(item)  {
-                    this.modalItem = item;
-                    this.showReview = !!(item.review);
-                    document.body.style.overflow = 'hidden';
-                },
+                openModal(item)  { this.modalItem = item; this.showReview = !!(item.review); document.body.style.overflow = 'hidden'; },
                 closeModal()     { this.modalItem = null; document.body.style.overflow = ''; },
                 clearFilters()   { this.search = ''; this.categoryFilter = ''; this.sortKey = 'rating-desc'; this.minRating = 0; },
                 pickRandomItem() {
                     const l = this.filteredAndSortedItems;
                     if (l.length) this.openModal(l[Math.floor(Math.random() * l.length)]);
                 }
-            }
+            };
         }
     </script>
 </body>
