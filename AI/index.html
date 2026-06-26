@@ -365,6 +365,7 @@
         // Apps Script отдаёт числа как числа, даты как объекты — приводим всё к строке
         function s(v) { return (v === null || v === undefined) ? '' : String(v).trim(); }
 
+        // Парсинг строки-массива (если скрипт вернёт массив массивов)
         function rowToItem(cols) {
             const title = s(cols[1]);
             if (!title) return null;
@@ -383,6 +384,29 @@
                 genres,
                 description: s(cols[6]) || null,
                 review:      s(cols[7]) || null,
+                image,
+            };
+        }
+
+        // Парсинг объекта (текущий формат скрипта — читаем по именам колонок)
+        function objToItem(obj) {
+            const title = s(obj['Название']);
+            if (!title) return null;
+            const rawRating = s(obj['Оценка']);
+            const ratingNum = (rawRating === '?' || rawRating === '' || isNaN(parseFloat(rawRating)))
+                ? null : parseFloat(rawRating);
+            const rawGenres = s(obj['Жанры']);
+            const genres = rawGenres ? rawGenres.split('|').map(g => g.trim()).filter(Boolean) : [];
+            const imageRaw = s(obj['Картинка(ссылка)']);
+            const image = imageRaw && !imageRaw.includes('via.placeholder.com') ? imageRaw : null;
+            return {
+                title,
+                type:        s(obj['Тип']).toLowerCase(),
+                rating:      ratingNum,
+                year:        s(obj['Год']),
+                genres,
+                description: s(obj['Описание']) || null,
+                review:      s(obj['Рецензия']) || null,
                 image,
             };
         }
@@ -411,31 +435,21 @@
 
                         const data = await res.json();
 
-                        console.log('[КАЛ] raw data type:', typeof data, Array.isArray(data) ? 'array' : '');
-                        console.log('[КАЛ] first element:', JSON.stringify(data[0]));
-                        console.log('[КАЛ] total rows:', data.length);
-
-                        let dataRows;
+                        let parsed;
 
                         // Формат 1: массив массивов [[заголовки], [данные], ...]
                         if (Array.isArray(data) && Array.isArray(data[0])) {
-                            console.log('[КАЛ] формат: массив массивов');
-                            dataRows = data.slice(1);
+                            parsed = data.slice(1).map(rowToItem);
 
-                        // Формат 2: массив объектов [{col: val}, ...] — старый скрипт
-                        } else if (Array.isArray(data) && typeof data[0] === 'object') {
-                            console.log('[КАЛ] формат: массив объектов, ключи:', Object.keys(data[0]));
-                            // Конвертируем объекты в массивы по порядку значений
-                            const headers = Object.keys(data[0]);
-                            dataRows = data.map(obj => headers.map(h => obj[h] ?? ''));
-                            // В этом случае заголовки не в данных — не пропускаем первую строку
+                        // Формат 2: массив объектов [{col: val}, ...] — текущий скрипт
+                        } else if (Array.isArray(data) && data[0] && typeof data[0] === 'object') {
+                            parsed = data.map(objToItem);
 
                         } else {
                             throw new Error(`Неизвестный формат данных: ${typeof data[0]}`);
                         }
 
-                        this.items = dataRows
-                            .map(rowToItem)
+                        this.items = parsed
                             .filter(Boolean)
                             .map(item => ({
                                 ...item,
@@ -444,11 +458,6 @@
                                     ? item.rating.toFixed(1) + '/10'
                                     : 'Н/Д',
                             }));
-
-                        console.log('[КАЛ] итого спарсено items:', this.items.length);
-                        if (this.items.length === 0 && dataRows.length > 0) {
-                            console.warn('[КАЛ] строки есть, но все отфильтрованы rowToItem. Первая строка данных:', JSON.stringify(dataRows[0]));
-                        }
 
                     } catch (err) {
                         console.error('Ошибка загрузки:', err);
