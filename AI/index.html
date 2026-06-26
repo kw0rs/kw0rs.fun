@@ -362,24 +362,27 @@
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby1VHaaP7U4AEf_eFhqZkdW-yeO0EpogTKgdowcug2LT5rFyBSuHivMR51bkgSYeSyJ/exec';
 
+        // Apps Script отдаёт числа как числа, даты как объекты — приводим всё к строке
+        function s(v) { return (v === null || v === undefined) ? '' : String(v).trim(); }
+
         function rowToItem(cols) {
-            const title = (cols[1] || '').trim();
+            const title = s(cols[1]);
             if (!title) return null;
-            const rawRating = (cols[3] || '').trim();
+            const rawRating = s(cols[3]);
             const ratingNum = (rawRating === '?' || rawRating === '' || isNaN(parseFloat(rawRating)))
                 ? null : parseFloat(rawRating);
-            const rawGenres = (cols[5] || '').trim();
+            const rawGenres = s(cols[5]);
             const genres = rawGenres ? rawGenres.split('|').map(g => g.trim()).filter(Boolean) : [];
-            const imageRaw = (cols[8] || '').trim();
+            const imageRaw = s(cols[8]);
             const image = imageRaw && !imageRaw.includes('via.placeholder.com') ? imageRaw : null;
             return {
                 title,
-                type:        (cols[2] || '').trim().toLowerCase(),
+                type:        s(cols[2]).toLowerCase(),
                 rating:      ratingNum,
-                year:        (cols[4] || '').trim(),
+                year:        s(cols[4]),
                 genres,
-                description: (cols[6] || '').trim() || null,
-                review:      (cols[7] || '').trim() || null,
+                description: s(cols[6]) || null,
+                review:      s(cols[7]) || null,
                 image,
             };
         }
