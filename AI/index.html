@@ -408,10 +408,28 @@
 
                         const data = await res.json();
 
-                        // Скрипт возвращает массив массивов (строки таблицы)
-                        // первая строка — заголовки, пропускаем
-                        const rows = Array.isArray(data) ? data : (data.rows || data.data || []);
-                        const dataRows = rows.slice(1);
+                        console.log('[КАЛ] raw data type:', typeof data, Array.isArray(data) ? 'array' : '');
+                        console.log('[КАЛ] first element:', JSON.stringify(data[0]));
+                        console.log('[КАЛ] total rows:', data.length);
+
+                        let dataRows;
+
+                        // Формат 1: массив массивов [[заголовки], [данные], ...]
+                        if (Array.isArray(data) && Array.isArray(data[0])) {
+                            console.log('[КАЛ] формат: массив массивов');
+                            dataRows = data.slice(1);
+
+                        // Формат 2: массив объектов [{col: val}, ...] — старый скрипт
+                        } else if (Array.isArray(data) && typeof data[0] === 'object') {
+                            console.log('[КАЛ] формат: массив объектов, ключи:', Object.keys(data[0]));
+                            // Конвертируем объекты в массивы по порядку значений
+                            const headers = Object.keys(data[0]);
+                            dataRows = data.map(obj => headers.map(h => obj[h] ?? ''));
+                            // В этом случае заголовки не в данных — не пропускаем первую строку
+
+                        } else {
+                            throw new Error(`Неизвестный формат данных: ${typeof data[0]}`);
+                        }
 
                         this.items = dataRows
                             .map(rowToItem)
@@ -423,6 +441,11 @@
                                     ? item.rating.toFixed(1) + '/10'
                                     : 'Н/Д',
                             }));
+
+                        console.log('[КАЛ] итого спарсено items:', this.items.length);
+                        if (this.items.length === 0 && dataRows.length > 0) {
+                            console.warn('[КАЛ] строки есть, но все отфильтрованы rowToItem. Первая строка данных:', JSON.stringify(dataRows[0]));
+                        }
 
                     } catch (err) {
                         console.error('Ошибка загрузки:', err);
