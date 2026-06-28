@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>К.А.Л — Добавить тайтл</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --core-black: #020203;
+            --panel-dark: #08080a;
+            --laser-red: #ff052b;
+            --border: #15151a;
+            --border-mid: #1c1c24;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--core-black);
+            background-image: radial-gradient(circle at 50% -20%, rgba(255,5,43,0.10) 0%, transparent 60%);
+            color: #efefef;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        .brutal-font { font-family: 'Inter', sans-serif; font-weight: 900; }
+        .tech-mono   { font-family: 'Space Mono', monospace; }
+
+        /* NAV */
+        .nav-btn {
+            position: fixed; top: 12px; right: 12px; z-index: 200;
+            display: flex; align-items: center; gap: 8px;
+            font-family: 'Space Mono', monospace; font-size: 11px; color: #999;
+            background: var(--panel-dark); border: 1px solid var(--border-mid);
+            padding: 8px 12px; cursor: pointer; text-decoration: none;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .nav-btn:hover { border-color: rgba(255,5,43,.5); box-shadow: 0 0 15px rgba(255,5,43,.15); }
+
+        .wrap { max-width: 820px; margin: 0 auto; padding: 28px 16px; }
+
+        /* HEADER */
+        header { padding-top: 36px; padding-bottom: 28px; border-bottom: 2px solid #111; margin-bottom: 32px; }
+        .header-tag {
+            font-family: 'Space Mono', monospace; font-size: 10px; color: #ff052b;
+            background: rgba(255,5,43,.1); border: 1px solid rgba(255,5,43,.3);
+            padding: 2px 8px; display: inline-block; margin-bottom: 12px;
+        }
+        h1 {
+            font-family: 'Inter', sans-serif; font-weight: 900;
+            font-size: clamp(1.8rem, 8vw, 3.2rem);
+            text-transform: uppercase; letter-spacing: -.03em; line-height: 1;
+            color: #fff;
+        }
+        h1 span.red { color: var(--laser-red); }
+        .subtitle {
+            font-family: 'Space Mono', monospace; font-size: clamp(.7rem, 2.5vw, .9rem);
+            color: #444; margin-top: 8px;
+        }
+
+        /* FORM PANEL */
+        .panel {
+            background: var(--panel-dark);
+            border: 1px solid var(--border-mid);
+            padding: 28px 24px;
+            margin-bottom: 20px;
+        }
+        .panel-title {
+            font-family: 'Space Mono', monospace; font-size: 10px;
+            color: #555; text-transform: uppercase; letter-spacing: .08em;
+            margin-bottom: 20px; padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .panel-title::before {
+            content: ''; display: inline-block;
+            width: 3px; height: 12px; background: var(--laser-red);
+        }
+
+        /* FIELDS */
+        .field-group { margin-bottom: 20px; }
+        .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        @media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
+
+        label {
+            font-family: 'Space Mono', monospace; font-size: 10px;
+            color: #555; text-transform: uppercase; letter-spacing: .06em;
+            display: block; margin-bottom: 6px;
+        }
+        label .req { color: var(--laser-red); margin-left: 2px; }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="url"],
+        select,
+        textarea {
+            width: 100%;
+            background: #030304;
+            border: 1px solid #1a1a22;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            padding: 11px 13px;
+            outline: none;
+            transition: border-color .2s;
+            -webkit-appearance: none; appearance: none;
+            border-radius: 0;
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--laser-red); }
+        textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+        select { cursor: pointer; }
+        input::placeholder, textarea::placeholder { color: #333; }
+
+        /* Жанры */
+        .genres-grid {
+            display: flex; flex-wrap: wrap; gap: 8px;
+        }
+        .genre-chip {
+            font-family: 'Space Mono', monospace; font-size: 10px;
+            padding: 6px 12px; border: 1px solid #1a1a22;
+            background: #030304; color: #555; cursor: pointer;
+            transition: all .15s; user-select: none;
+        }
+        .genre-chip.active { border-color: var(--laser-red); color: #fff; background: rgba(255,5,43,.1); }
+        .genre-add { display: flex; gap: 8px; margin-top: 10px; }
+        .genre-add input { flex: 1; }
+        .genre-add button {
+            font-family: 'Space Mono', monospace; font-size: 11px;
+            background: rgba(255,5,43,.15); border: 1px solid rgba(255,5,43,.4);
+            color: #ff052b; padding: 0 16px; cursor: pointer; transition: all .15s;
+            white-space: nowrap;
+        }
+        .genre-add button:hover { background: rgba(255,5,43,.25); }
+
+        /* Рейтинг визуал */
+        .rating-display {
+            font-family: 'Space Mono', monospace; font-size: 22px;
+            font-weight: 700; color: var(--laser-red);
+            min-width: 60px; text-align: right;
+        }
+        .rating-row { display: flex; align-items: center; gap: 14px; }
+        .rating-row input[type="range"] {
+            flex: 1; background: none; border: none; padding: 0;
+            accent-color: var(--laser-red); height: 4px;
+        }
+
+        /* OUTPUT */
+        .output-panel {
+            background: #000;
+            border: 1px solid #1a1a22;
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .output-topbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 16px;
+            border-bottom: 1px solid #1a1a22;
+            background: #080808;
+        }
+        .output-label {
+            font-family: 'Space Mono', monospace; font-size: 10px; color: #444;
+        }
+        .copy-btn {
+            font-family: 'Space Mono', monospace; font-size: 10px;
+            background: rgba(255,5,43,.1); border: 1px solid rgba(255,5,43,.3);
+            color: #ff052b; padding: 5px 14px; cursor: pointer; transition: all .15s;
+        }
+        .copy-btn:hover { background: rgba(255,5,43,.2); }
+        .copy-btn.copied { color: #22c55e; border-color: rgba(34,197,94,.4); background: rgba(34,197,94,.1); }
+
+        pre {
+            font-family: 'Space Mono', monospace; font-size: 12px;
+            color: #ccc; padding: 20px 18px;
+            white-space: pre-wrap; word-break: break-all;
+            line-height: 1.7; overflow-x: auto;
+            margin: 0;
+        }
+
+        /* Подсветка JSON */
+        .json-key   { color: #ff6b8a; }
+        .json-str   { color: #a8d8a8; }
+        .json-num   { color: #87ceeb; }
+        .json-arr   { color: #f0c080; }
+        .json-punct { color: #555; }
+
+        /* Кнопка генерации */
+        .gen-btn {
+            width: 100%; padding: 16px;
+            font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: .08em;
+            background: var(--laser-red); color: #000; border: none; cursor: pointer;
+            transition: opacity .15s, transform .1s;
+            margin-bottom: 20px;
+        }
+        .gen-btn:hover  { opacity: .88; }
+        .gen-btn:active { transform: scale(.99); }
+
+        /* Превью постера */
+        .poster-preview {
+            width: 80px; height: 120px; object-fit: cover;
+            border: 1px solid #1a1a22; display: none;
+        }
+        .poster-preview.visible { display: block; }
+        .poster-wrap { display: flex; align-items: flex-start; gap: 12px; }
+        .poster-wrap > div { flex: 1; }
+
+        /* Счётчик рецензии */
+        .char-count {
+            font-family: 'Space Mono', monospace; font-size: 9px;
+            color: #333; text-align: right; margin-top: 4px;
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--core-black); }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--laser-red); }
+    </style>
+</head>
+<body>
+
+<a href="https://kw0rs.com" class="nav-btn">
+    <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
+        <path d="M6 1L2 5L6 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    В МЕНЮ
+</a>
+
+<div class="wrap">
+
+    <header>
+        <div class="header-tag">ADD_RECORD</div>
+        <h1>К<span class="red">.</span>А<span class="red">.</span>Л</h1>
+        <p class="subtitle">// Генератор записи для базы данных</p>
+    </header>
+
+    <!-- ── ОСНОВНАЯ ИНФО ── -->
+    <div class="panel">
+        <div class="panel-title">Основная информация</div>
+
+        <div class="field-group">
+            <label>Название <span class="req">*</span></label>
+            <input type="text" id="f-title" placeholder="Например: Берсерк">
+        </div>
+
+        <div class="field-row">
+            <div>
+                <label>Тип <span class="req">*</span></label>
+                <select id="f-type">
+                    <option value="anime">АНИМЕ</option>
+                    <option value="show">СЕРИАЛ</option>
+                    <option value="movie">КИНО</option>
+                    <option value="game">ИГРА</option>
+                    <option value="book">КНИГА</option>
+                    <option value="cartoon">МУЛЬТФИЛЬМ</option>
+                </select>
+            </div>
+            <div>
+                <label>Год</label>
+                <input type="number" id="f-year" placeholder="2024" min="1900" max="2099">
+            </div>
+        </div>
+
+        <div class="field-group">
+            <label>Рейтинг <span class="req">*</span></label>
+            <div class="rating-row">
+                <input type="range" id="f-rating-range" min="0" max="11" step="0.5" value="7"
+                       oninput="syncRating('range')">
+                <div class="rating-display" id="rating-display">7.0</div>
+                <input type="number" id="f-rating" value="7" min="0" max="11" step="0.5"
+                       style="width:80px;flex:none" oninput="syncRating('num')">
+            </div>
+            <div style="font-family:'Space Mono',monospace;font-size:9px;color:#333;margin-top:4px">
+                0–9.9 обычный · 10 = TOP_VERDICT · 11+ = OVER_LOAD
+            </div>
+        </div>
+    </div>
+
+    <!-- ── ПОСТЕР ── -->
+    <div class="panel">
+        <div class="panel-title">Обложка</div>
+        <div class="poster-wrap">
+            <div>
+                <label>URL постера</label>
+                <input type="url" id="f-image" placeholder="https://..." oninput="previewPoster()">
+            </div>
+            <img id="poster-img" class="poster-preview" alt="постер">
+        </div>
+    </div>
+
+    <!-- ── ЖАНРЫ ── -->
+    <div class="panel">
+        <div class="panel-title">Жанры</div>
+        <div class="genres-grid" id="genres-grid"></div>
+        <div class="genre-add">
+            <input type="text" id="genre-custom" placeholder="Свой жанр...">
+            <button onclick="addCustomGenre()">+ Добавить</button>
+        </div>
+    </div>
+
+    <!-- ── ОПИСАНИЕ / РЕЦЕНЗИЯ ── -->
+    <div class="panel">
+        <div class="panel-title">Контент</div>
+        <div class="field-group">
+            <label>Описание</label>
+            <textarea id="f-desc" placeholder="Краткое описание сюжета..."></textarea>
+        </div>
+        <div class="field-group">
+            <label>Рецензия</label>
+            <textarea id="f-review" placeholder="Личные впечатления, мнение..." style="min-height:120px"
+                      oninput="updateCharCount()"></textarea>
+            <div class="char-count" id="char-count">0 символов</div>
+        </div>
+    </div>
+
+    <!-- ── КНОПКА ── -->
+    <button class="gen-btn" onclick="generate()">[ СГЕНЕРИРОВАТЬ ЗАПИСЬ ]</button>
+
+    <!-- ── ВЫВОД ── -->
+    <div class="output-panel" id="output-panel" style="display:none">
+        <div class="output-topbar">
+            <span class="output-label">JSON_OUTPUT // готово к вставке в базу</span>
+            <button class="copy-btn" id="copy-btn" onclick="copyCode()">[ КОПИРОВАТЬ ]</button>
+        </div>
+        <pre id="output-code"></pre>
+    </div>
+
+</div>
+
+<script>
+    // ── Жанры по умолчанию ────────────────────────────
+    const DEFAULT_GENRES = [
+        'Экшен','Комедия','Драма','Романтика','Триллер',
+        'Ужасы','Фэнтези','Фантастика','Мистика','Аниме',
+        'Приключения','Криминал','Дарк Фэнтези','Чернуха',
+        'Боевые искусства','Меха','Исэкай','Спорт','Музыка','Слайс оф лайф'
+    ];
+
+    let selectedGenres = new Set();
+    let allGenres = [...DEFAULT_GENRES];
+
+    function renderGenres() {
+        const grid = document.getElementById('genres-grid');
+        grid.innerHTML = '';
+        allGenres.forEach(g => {
+            const chip = document.createElement('span');
+            chip.className = 'genre-chip' + (selectedGenres.has(g) ? ' active' : '');
+            chip.textContent = g;
+            chip.onclick = () => {
+                if (selectedGenres.has(g)) selectedGenres.delete(g);
+                else selectedGenres.add(g);
+                renderGenres();
+            };
+            grid.appendChild(chip);
+        });
+    }
+
+    function addCustomGenre() {
+        const inp = document.getElementById('genre-custom');
+        const val = inp.value.trim();
+        if (!val) return;
+        if (!allGenres.includes(val)) { allGenres.push(val); }
+        selectedGenres.add(val);
+        inp.value = '';
+        renderGenres();
+    }
+
+    document.getElementById('genre-custom').addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); addCustomGenre(); }
+    });
+
+    // ── Рейтинг ───────────────────────────────────────
+    function syncRating(from) {
+        let val;
+        if (from === 'range') {
+            val = parseFloat(document.getElementById('f-rating-range').value);
+            document.getElementById('f-rating').value = val;
+        } else {
+            val = parseFloat(document.getElementById('f-rating').value) || 0;
+            val = Math.min(11, Math.max(0, val));
+            document.getElementById('f-rating-range').value = val;
+        }
+        document.getElementById('rating-display').textContent = val.toFixed(1);
+    }
+
+    // ── Превью постера ────────────────────────────────
+    function previewPoster() {
+        const url = document.getElementById('f-image').value.trim();
+        const img = document.getElementById('poster-img');
+        if (url) {
+            img.src = url;
+            img.className = 'poster-preview visible';
+            img.onerror = () => img.className = 'poster-preview';
+        } else {
+            img.className = 'poster-preview';
+        }
+    }
+
+    // ── Счётчик символов ──────────────────────────────
+    function updateCharCount() {
+        const len = document.getElementById('f-review').value.length;
+        document.getElementById('char-count').textContent = len + ' символов';
+    }
+
+    // ── Генерация ─────────────────────────────────────
+    function generate() {
+        const title  = document.getElementById('f-title').value.trim();
+        const type   = document.getElementById('f-type').value;
+        const rating = parseFloat(document.getElementById('f-rating').value) || 0;
+        const year   = parseInt(document.getElementById('f-year').value) || null;
+        const image  = document.getElementById('f-image').value.trim();
+        const desc   = document.getElementById('f-desc').value.trim();
+        const review = document.getElementById('f-review').value.trim();
+
+        if (!title) {
+            document.getElementById('f-title').focus();
+            document.getElementById('f-title').style.borderColor = 'var(--laser-red)';
+            return;
+        }
+
+        const obj = {
+            title,
+            type,
+            rating: rating.toFixed(1),
+            year: year || undefined,
+            genres: [...selectedGenres],
+            description: desc,
+            review,
+            image: image || null
+        };
+
+        // Убираем undefined
+        Object.keys(obj).forEach(k => obj[k] === undefined && delete obj[k]);
+
+        const json = JSON.stringify(obj, null, 2);
+        const highlighted = syntaxHL(json);
+
+        document.getElementById('output-code').innerHTML = highlighted;
+        const panel = document.getElementById('output-panel');
+        panel.style.display = 'block';
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        const copyBtn = document.getElementById('copy-btn');
+        copyBtn.classList.remove('copied');
+        copyBtn.textContent = '[ КОПИРОВАТЬ ]';
+    }
+
+    // ── Подсветка синтаксиса ─────────────────────────
+    function syntaxHL(json) {
+        return json
+            .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+            .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, match => {
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) return `<span class="json-key">${match}</span>`;
+                    return `<span class="json-str">${match}</span>`;
+                }
+                if (/true|false/.test(match)) return `<span class="json-arr">${match}</span>`;
+                if (/null/.test(match)) return `<span class="json-punct">${match}</span>`;
+                return `<span class="json-num">${match}</span>`;
+            });
+    }
+
+    // ── Копировать ────────────────────────────────────
+    function copyCode() {
+        const title  = document.getElementById('f-title').value.trim();
+        const type   = document.getElementById('f-type').value;
+        const rating = parseFloat(document.getElementById('f-rating').value) || 0;
+        const year   = parseInt(document.getElementById('f-year').value) || null;
+        const image  = document.getElementById('f-image').value.trim();
+        const desc   = document.getElementById('f-desc').value.trim();
+        const review = document.getElementById('f-review').value.trim();
+
+        const obj = {
+            title, type,
+            rating: rating.toFixed(1),
+            ...(year ? { year } : {}),
+            genres: [...selectedGenres],
+            description: desc,
+            review,
+            image: image || null
+        };
+
+        navigator.clipboard.writeText(JSON.stringify(obj, null, 2)).then(() => {
+            const btn = document.getElementById('copy-btn');
+            btn.textContent = '[ СКОПИРОВАНО ✓ ]';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.textContent = '[ КОПИРОВАТЬ ]';
+                btn.classList.remove('copied');
+            }, 2000);
+        });
+    }
+
+    // ── Init ──────────────────────────────────────────
+    renderGenres();
+</script>
+</body>
+</html>
