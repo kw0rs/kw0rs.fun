@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Реестр пива</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --core-black: #020203;
+            --panel-dark: #08080a;
+            --laser-red: #ff052b;
+            --hop-amber: #ffb02e;
+        }
+
+        body {
+            background-color: var(--core-black);
+            background-image: radial-gradient(circle at 50% -20%, rgba(255, 5, 43, 0.15) 0%, transparent 60%);
+            color: #efefef;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        .brutal-font { font-family: 'Inter', sans-serif; font-weight: 900; tracking: -0.05em; }
+        .tech-mono { font-family: 'Space Mono', monospace; }
+
+        .card-item {
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease !important;
+        }
+        .card-item:hover {
+            transform: scale(1.05) !important;
+            z-index: 10;
+        }
+
+        /* 👑 10/10 — СТАТИЧНЫЙ ПАФОС */
+        .tier-mega {
+            border: 2px solid transparent !important;
+            background-image: linear-gradient(var(--panel-dark), var(--panel-dark)),
+                              linear-gradient(90deg, #ff052b, #200005, #ff052b) !important;
+            background-origin: border-box !important;
+            background-clip: padding-box, border-box !important;
+            box-shadow: 0 0 30px rgba(255, 5, 43, 0.4) !important;
+        }
+
+        /* 🔴 9-8 */
+        .tier-hi {
+            border: 2px solid var(--laser-red) !important;
+            box-shadow: 0 0 20px rgba(255, 5, 43, 0.2) !important;
+        }
+
+        /* 🟡 7-6 */
+        .tier-mid {
+            border: 1px solid var(--hop-amber) !important;
+            box-shadow: 0 0 12px rgba(255, 176, 46, 0.12) !important;
+        }
+
+        .no-poster {
+            background: repeating-linear-gradient(45deg, #0a0a0d 0, #0a0a0d 10px, #0d0d11 10px, #0d0d11 20px);
+            border: 1px dashed #2a2a35;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .tier-row {
+            background: #08080a;
+            border: 1px solid #15151a;
+            margin-bottom: 24px;
+        }
+        .tier-label-box {
+            min-width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: 900;
+            border-right: 1px solid #15151a;
+            background: #030304;
+        }
+
+        .mag7-badge {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #efefef;
+            background: linear-gradient(90deg, rgba(255,5,43,0.15), rgba(255,176,46,0.08));
+            border: 1px solid #2a2a35;
+            padding: 5px 10px;
+        }
+        .mag7-badge::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            background: var(--laser-red);
+            box-shadow: 0 0 8px var(--laser-red);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--core-black); }
+        ::-webkit-scrollbar-thumb { background: #222; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--laser-red); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="max-w-[1400px] mx-auto px-6 py-12">
+
+        <header class="mb-16 border-b-2 border-[#111] pb-8 relative">
+            <div class="flex items-center gap-3 mb-4 flex-wrap">
+                <span class="tech-mono text-xs text-red-500 bg-red-950/50 px-2 py-0.5 border border-red-900/40">BEER_REGISTRY</span>
+                <span class="tech-mono text-xs text-zinc-600">STATIC_LOAD_MODE</span>
+                <span class="mag7-badge">by Mag-7</span>
+            </div>
+            <h1 class="brutal-font text-4xl sm:text-7xl uppercase tracking-tighter text-white">
+                П<span class="text-red-600">.</span>И<span class="text-red-600">.</span>В <span class="text-zinc-600 text-3xl sm:text-4xl font-normal tech-mono">// Mag-7 Пивной Лист</span>
+            </h1>
+            <div class="mt-6 flex gap-4">
+                <a href="/" class="tech-mono text-[10px] uppercase border border-zinc-800 px-4 py-2 hover:border-red-600 hover:text-red-500 transition-all">
+                    [ ← RETURN_TO_MAIN ]
+                </a>
+            </div>
+        </header>
+
+        <div id="content" class="tech-mono text-zinc-500 uppercase tracking-widest text-center py-20">
+            Инициализация потока данных...
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script>
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1_Z97l6DZHq57gYrk_LiQTDc3Qr60yNxSznQQeA_EzEQ/export?format=csv';
+        // Шкала оценок 0-10 (по убыванию), '?' — для нераспознанных значений
+        const scaleOrder = ['10', '9', '8', '7', '6', '5', '4', '3', '2', '1', '0', '?'];
+
+        function loadData() {
+            Papa.parse(SHEET_URL, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    renderRatingList(results.data);
+                }
+            });
+        }
+
+        function normalizeScore(raw) {
+            if (raw === undefined || raw === null) return '?';
+            const str = raw.toString().trim().replace(',', '.');
+            if (str === '') return '?';
+            const num = parseFloat(str);
+            if (isNaN(num)) return '?';
+            const rounded = Math.round(num);
+            if (rounded < 0 || rounded > 10) return '?';
+            return rounded.toString();
+        }
+
+        function renderRatingList(data) {
+            const buckets = {};
+            scaleOrder.forEach(score => buckets[score] = []);
+
+            data.forEach(row => {
+                const name = row['Название'] || row['название'] || row['Name'] || '';
+                const brand = row['Бренд'] || row['бренд'] || row['Brand'] || '';
+                const rawRating = row['Оценка'] || row['оценка'] || row['Rating'] || '';
+                const image = row['Картинка'] || row['картинка'] || row['Image'] || '';
+
+                if (name) {
+                    const score = normalizeScore(rawRating);
+                    buckets[score].push({ name, brand, score, image });
+                }
+            });
+
+            let html = '';
+            scaleOrder.forEach(score => {
+                let tierClass = '';
+                const num = parseInt(score, 10);
+                if (score === '10') tierClass = 'tier-mega';
+                else if (num >= 8 && num <= 9) tierClass = 'tier-hi';
+                else if (num >= 6 && num <= 7) tierClass = 'tier-mid';
+
+                const labelColor = score === '10' ? 'text-red-500'
+                    : (num >= 6 && !isNaN(num)) ? 'text-amber-400'
+                    : 'text-zinc-700';
+
+                html += `
+                    <div class="tier-row flex flex-col md:flex-row ${tierClass}">
+                        <div class="tier-label-box brutal-font ${labelColor}">
+                            ${score}
+                        </div>
+                        <div class="flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 p-6 bg-black/20">
+                `;
+
+                if (buckets[score].length > 0) {
+                    buckets[score].forEach(item => {
+                        html += `
+                            <div class="card-item bg-[#0a0a0d] border border-[#15151a] p-2 flex flex-col relative group">
+                                <div class="relative aspect-square mb-3 overflow-hidden bg-black flex items-center justify-center">
+                                    ${item.image ?
+                                        `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">` : ''
+                                    }
+                                    <div class="no-poster w-full h-full absolute inset-0" style="${item.image ? 'display:none' : 'display:flex'}">
+                                        <span class="text-zinc-800 text-2xl mb-1">✕</span>
+                                        <span class="tech-mono text-[8px] text-zinc-600 uppercase">Этикетка<br>отсутствует</span>
+                                    </div>
+                                    <div class="absolute top-1 right-1 bg-black/80 border border-zinc-800 px-1.5 py-0.5 tech-mono text-[9px] text-red-500">
+                                        ${item.score}/10
+                                    </div>
+                                </div>
+                                <div class="px-1">
+                                    <div class="text-[10px] tech-mono text-zinc-600 uppercase mb-1 truncate">${item.brand || 'No_Brand'}</div>
+                                    <div class="text-xs font-bold text-zinc-100 uppercase leading-tight line-clamp-2">${item.name}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    html += `<div class="col-span-full py-4 text-center tech-mono text-zinc-800 text-xs tracking-widest uppercase italic">Сектор пуст</div>`;
+                }
+
+                html += `</div></div>`;
+            });
+
+            document.getElementById('content').innerHTML = html;
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
