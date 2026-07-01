@@ -85,6 +85,37 @@
             background: #030304;
         }
 
+        .reviewer-badge {
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #efefef;
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid #2a2a35;
+            padding: 2px 5px;
+            max-width: calc(100% - 8px);
+        }
+        .reviewer-badge::before {
+            content: "";
+            width: 4px;
+            height: 4px;
+            min-width: 4px;
+            background: var(--hop-amber);
+            box-shadow: 0 0 6px var(--hop-amber);
+        }
+        .reviewer-badge span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .mag7-badge {
             position: relative;
             display: inline-flex;
@@ -140,7 +171,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script>
-        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1Bj5PXHyKKkt8L_fimqKBHRgbpdYdJUsbiir4J1oujAw/export?format=csv';
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1_Z97l6DZHq57gYrk_LiQTDc3Qr60yNxSznQQeA_EzEQ/export?format=csv';
         // Шкала оценок 0-10 (по убыванию), '?' — для нераспознанных значений
         const scaleOrder = ['10', '9', '8', '7', '6', '5', '4', '3', '2', '1', '0', '?'];
 
@@ -174,10 +205,11 @@
                 const brand = row['Бренд'] || row['бренд'] || row['Brand'] || '';
                 const rawRating = row['Оценка'] || row['оценка'] || row['Rating'] || '';
                 const image = row['Картинка'] || row['картинка'] || row['Image'] || '';
+                const reviewer = row['Оценил'] || row['оценил'] || row['Reviewer'] || '';
 
                 if (name) {
                     const score = normalizeScore(rawRating);
-                    buckets[score].push({ name, brand, score, image });
+                    buckets[score].push({ name, brand, score, image, reviewer });
                 }
             });
 
@@ -216,6 +248,7 @@
                                     <div class="absolute top-1 right-1 bg-black/80 border border-zinc-800 px-1.5 py-0.5 tech-mono text-[9px] text-red-500">
                                         ${item.score}/10
                                     </div>
+                                    ${item.reviewer ? `<div class="reviewer-badge"><span>${item.reviewer}</span></div>` : ''}
                                 </div>
                                 <div class="px-1">
                                     <div class="text-[10px] tech-mono text-zinc-600 uppercase mb-1 truncate">${item.brand || 'No_Brand'}</div>
