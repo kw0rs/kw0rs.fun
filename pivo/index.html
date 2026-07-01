@@ -96,9 +96,9 @@
             font-size: 8px;
             letter-spacing: 0.05em;
             text-transform: uppercase;
-            color: #efefef;
+            color: var(--reviewer-color, #efefef);
             background: rgba(0, 0, 0, 0.85);
-            border: 1px solid #2a2a35;
+            border: 1px solid var(--reviewer-color, #2a2a35);
             padding: 2px 5px;
             max-width: calc(100% - 8px);
         }
@@ -107,8 +107,8 @@
             width: 4px;
             height: 4px;
             min-width: 4px;
-            background: var(--hop-amber);
-            box-shadow: 0 0 6px var(--hop-amber);
+            background: var(--reviewer-color, var(--hop-amber));
+            box-shadow: 0 0 6px var(--reviewer-color, var(--hop-amber));
         }
         .reviewer-badge span {
             overflow: hidden;
@@ -185,6 +185,29 @@
             });
         }
 
+        // Палитра для авторов оценок — контрастные, но не кислотные тона под тёмную тему
+        const reviewerPalette = [
+            '#ff052b', // laser-red
+            '#ffb02e', // hop-amber
+            '#2ecfff', // cyan
+            '#8a6bff', // violet
+            '#4dff8f', // mint
+            '#ff6bd6', // pink
+            '#ffe14d', // yellow
+            '#6bd6ff', // sky
+        ];
+
+        function reviewerColor(name) {
+            if (!name) return null;
+            let hash = 0;
+            for (let i = 0; i < name.length; i++) {
+                hash = (hash << 5) - hash + name.charCodeAt(i);
+                hash |= 0;
+            }
+            const idx = Math.abs(hash) % reviewerPalette.length;
+            return reviewerPalette[idx];
+        }
+
         function normalizeScore(raw) {
             if (raw === undefined || raw === null) return '?';
             const str = raw.toString().trim().replace(',', '.');
@@ -248,7 +271,7 @@
                                     <div class="absolute top-1 right-1 bg-black/80 border border-zinc-800 px-1.5 py-0.5 tech-mono text-[9px] text-red-500">
                                         ${item.score}/10
                                     </div>
-                                    ${item.reviewer ? `<div class="reviewer-badge"><span>${item.reviewer}</span></div>` : ''}
+                                    ${item.reviewer ? `<div class="reviewer-badge" style="--reviewer-color: ${reviewerColor(item.reviewer)}"><span>${item.reviewer}</span></div>` : ''}
                                 </div>
                                 <div class="px-1">
                                     <div class="text-[10px] tech-mono text-zinc-600 uppercase mb-1 truncate">${item.brand || 'No_Brand'}</div>
