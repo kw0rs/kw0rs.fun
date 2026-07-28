@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Любовь в вопросах — генератор</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #150c1e;
+    --surface: #211432;
+    --surface-2: #2c1c40;
+    --pink: #ff4d94;
+    --gold: #ffcb61;
+    --text: #f5ecff;
+    --muted: #9d87b3;
+    --line: rgba(245,236,255,0.08);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+  html,body{margin:0; padding:0; height:100%;}
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 32px 16px;
+    position: relative;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image: radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 3px 3px;
+    pointer-events:none;
+    z-index:0;
+  }
+  .stage-glow{
+    position:fixed;
+    top:-20%;
+    left:50%;
+    transform:translateX(-50%);
+    width:900px;
+    height:900px;
+    background: radial-gradient(circle, rgba(255,77,148,0.16) 0%, rgba(255,203,97,0.05) 35%, transparent 70%);
+    filter: blur(10px);
+    animation: pulse-glow 6s ease-in-out infinite;
+    pointer-events:none;
+    z-index:0;
+  }
+  @keyframes pulse-glow{
+    0%,100% { opacity:0.7; transform:translateX(-50%) scale(1); }
+    50% { opacity:1; transform:translateX(-50%) scale(1.08); }
+  }
+  .wrap{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:640px;
+  }
+  .credit{
+    text-align:center;
+    font-family:'Manrope', sans-serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.06em;
+    color: var(--muted);
+    text-transform:uppercase;
+    margin-bottom:10px;
+    opacity:0.75;
+  }
+  .eyebrow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    font-family:'Unbounded', sans-serif;
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color: var(--gold);
+    margin-bottom:28px;
+  }
+  .eyebrow::before, .eyebrow::after{
+    content:"";
+    height:1px;
+    width:32px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+  .eyebrow::after{ background: linear-gradient(90deg, var(--gold), transparent); }
+
+  .stage{
+    position:relative;
+    background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:52px 36px;
+    text-align:center;
+    box-shadow: 0 40px 80px -30px rgba(0,0,0,0.6);
+    min-height:180px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+  }
+  .round-label{
+    position:absolute;
+    top:18px;
+    left:24px;
+    font-family:'Unbounded', sans-serif;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.1em;
+    color: var(--muted);
+    text-transform:uppercase;
+  }
+  .round-dots{
+    position:absolute;
+    top:20px;
+    right:24px;
+    display:flex;
+    gap:6px;
+  }
+  .dot{
+    width:8px; height:8px;
+    border-radius:50%;
+    background: var(--line);
+    transition: background 0.2s ease;
+  }
+  .dot.filled{ background: var(--pink); }
+
+  #question{
+    font-family:'Unbounded', sans-serif;
+    font-weight:700;
+    font-size:clamp(20px, 4vw, 30px);
+    line-height:1.35;
+    color: var(--text);
+    max-width:480px;
+    transition: opacity 0.15s ease;
+  }
+  #question.placeholder{
+    color: var(--muted);
+    font-weight:400;
+    font-size:17px;
+    font-family:'Manrope', sans-serif;
+  }
+  #author{
+    font-size:13px;
+    font-weight:600;
+    color: var(--gold);
+    opacity:0;
+    transition: opacity 0.15s ease;
+  }
+  #author.show{ opacity:1; }
+
+  .controls{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-top:24px;
+    flex-wrap:wrap;
+  }
+  button.main{
+    font-family:'Unbounded', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:0.02em;
+    padding:15px 28px;
+    border-radius:12px;
+    border:none;
+    cursor:pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  button.main:active{ transform: scale(0.97); }
+  button.main:disabled{ opacity:0.4; cursor:not-allowed; }
+
+  .btn-next{
+    background: linear-gradient(135deg, var(--pink), #ff7ab0);
+    color:#1a0a12;
+    box-shadow: 0 10px 26px -10px rgba(255,77,148,0.6);
+  }
+  .btn-next:hover{ box-shadow: 0 12px 30px -8px rgba(255,77,148,0.8); }
+
+  .btn-secondary{
+    background: transparent;
+    color: var(--muted);
+    border:1px solid var(--line);
+  }
+  .btn-secondary:hover{ color: var(--text); border-color: var(--muted); }
+
+  .toast{
+    position:fixed;
+    bottom:28px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background: var(--surface-2);
+    border:1px solid var(--line);
+    color: var(--text);
+    font-size:13px;
+    font-weight:600;
+    padding:10px 18px;
+    border-radius:100px;
+    opacity:0;
+    pointer-events:none;
+    transition: all 0.25s ease;
+    z-index:10;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+
+  .footnote{
+    text-align:center;
+    color: var(--muted);
+    font-size:12px;
+    margin-top:22px;
+    line-height:1.6;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .stage-glow{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage-glow"></div>
+
+<div class="wrap">
+  <div class="credit">by kw0rs for Lounge</div>
+  <div class="eyebrow">Любовь в вопросах</div>
+
+  <div class="stage">
+    <div class="round-label">Вопрос <span id="qnum">—</span> из 3</div>
+    <div class="round-dots" id="dots"></div>
+    <div id="question" class="placeholder">Загружаю вопросы…</div>
+    <div id="author"></div>
+  </div>
+
+  <div class="controls">
+    <button class="main btn-next" id="nextBtn" disabled>Следующий вопрос →</button>
+    <button class="main btn-secondary" id="copyBtn">Копировать</button>
+  </div>
+
+  <div class="footnote" id="footnote">Каждые 3 вопроса — новый раунд, дальше по кругу</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Google Sheet: https://docs.google.com/spreadsheets/d/16zuU3f73g0HWwla3uJi8hJarN1ePW1-sw_QESTcBsng
+// Колонки в таблице: Дата/время (не используется) | Вопрос | Автор вопроса
+const CSV_URL = "https://docs.google.com/spreadsheets/d/16zuU3f73g0HWwla3uJi8hJarN1ePW1-sw_QESTcBsng/export?format=csv";
+
+let ALL_QUESTIONS = [];
+
+const state = {
+  pool: [],
+  used: [],
+  roundIndex: 0
+};
+
+function shuffle(arr){
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Простой CSV-парсер с поддержкой кавычек и запятых внутри полей
+function parseCSV(text){
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++){
+    const c = text[i];
+    if (inQuotes){
+      if (c === '"'){
+        if (text[i + 1] === '"'){ field += '"'; i++; }
+        else inQuotes = false;
+      } else field += c;
+    } else {
+      if (c === '"') inQuotes = true;
+      else if (c === ','){ row.push(field); field = ''; }
+      else if (c === '\n' || c === '\r'){
+        if (field !== '' || row.length){ row.push(field); rows.push(row); row = []; field = ''; }
+        if (c === '\r' && text[i + 1] === '\n') i++;
+      } else field += c;
+    }
+  }
+  if (field !== '' || row.length){ row.push(field); rows.push(row); }
+  return rows;
+}
+
+function pluralSuffix(n){
+  const mod10 = n % 10, mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return 'а';
+  if ([2,3,4].includes(mod10) && ![12,13,14].includes(mod100)) return '';
+  return 'ов';
+}
+
+function rebuildPool(){
+  state.pool = shuffle(ALL_QUESTIONS.filter(q => !state.used.includes(q.question)));
+  if (state.pool.length === 0 && ALL_QUESTIONS.length > 0){
+    state.used = [];
+    state.pool = shuffle(ALL_QUESTIONS);
+  }
+}
+
+async function loadQuestionsFromSheet(){
+  const footnote = document.getElementById('footnote');
+  const nextBtn = document.getElementById('nextBtn');
+  try {
+    const res = await fetch(CSV_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('bad response');
+    const text = await res.text();
+    const rows = parseCSV(text);
+    if (rows.length < 2) throw new Error('empty sheet');
+
+    const header = rows[0].map(h => h.trim().toLowerCase());
+    const qIdx = header.findIndex(h => h.includes('вопрос') && !h.includes('автор'));
+    const aIdx = header.findIndex(h => h.includes('автор'));
+    if (qIdx === -1) throw new Error('no question column');
+
+    const list = [];
+    for (let i = 1; i < rows.length; i++){
+      const r = rows[i];
+      const question = (r[qIdx] || '').trim();
+      if (!question) continue;
+      const author = aIdx !== -1 ? (r[aIdx] || '').trim() : '';
+      list.push({ question, author });
+    }
+
+    if (list.length === 0) throw new Error('no valid rows');
+
+    ALL_QUESTIONS = list;
+    footnote.textContent = `Загружено вопросов: ${list.length}. Каждые 3 — новый раунд`;
+    nextBtn.disabled = false;
+    return true;
+  } catch (err){
+    footnote.textContent = 'Не удалось загрузить таблицу. Проверь доступ к таблице по ссылке и перезагрузи страницу';
+    document.getElementById('question').textContent = 'Таблица недоступна';
+    return false;
+  }
+}
+
+const questionEl = document.getElementById('question');
+const authorEl = document.getElementById('author');
+const qnumEl = document.getElementById('qnum');
+const dotsEl = document.getElementById('dots');
+const toastEl = document.getElementById('toast');
+
+function renderDots(){
+  dotsEl.innerHTML = '';
+  for (let i = 0; i < 3; i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i < state.roundIndex ? ' filled' : '');
+    dotsEl.appendChild(d);
+  }
+}
+
+function nextQuestion(){
+  if (state.pool.length === 0) rebuildPool();
+  if (state.pool.length === 0) return;
+
+  const item = state.pool.pop();
+  state.used.push(item.question);
+
+  state.roundIndex = state.roundIndex >= 3 ? 1 : state.roundIndex + 1;
+
+  questionEl.classList.remove('placeholder');
+  questionEl.style.opacity = 0;
+  authorEl.classList.remove('show');
+  setTimeout(() => {
+    questionEl.textContent = item.question;
+    questionEl.style.opacity = 1;
+    if (item.author){
+      authorEl.textContent = `— вопрос от ${item.author}`;
+      authorEl.classList.add('show');
+    } else {
+      authorEl.textContent = '';
+    }
+  }, 120);
+
+  qnumEl.textContent = state.roundIndex;
+  renderDots();
+}
+
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 1600);
+}
+
+document.getElementById('nextBtn').onclick = nextQuestion;
+
+document.getElementById('copyBtn').onclick = () => {
+  const text = questionEl.textContent;
+  if (!text || questionEl.classList.contains('placeholder')) {
+    showToast('Сначала сгенерируй вопрос');
+    return;
+  }
+  navigator.clipboard.writeText(text).then(() => showToast('Скопировано')).catch(() => showToast('Не удалось скопировать'));
+};
+
+(async function init(){
+  renderDots();
+  await loadQuestionsFromSheet();
+  rebuildPool();
+})();
+</script>
+
+</body>
+</html>
