@@ -95,6 +95,7 @@
   }
   .eyebrow::after{ background: linear-gradient(90deg, var(--gold), transparent); }
 
+  /* Фиксированный размер сцены — не прыгает от длины вопроса */
   .stage{
     position:relative;
     background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
@@ -103,7 +104,7 @@
     padding:52px 36px;
     text-align:center;
     box-shadow: 0 40px 80px -30px rgba(0,0,0,0.6);
-    min-height:180px;
+    height:380px;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -136,11 +137,22 @@
   }
   .dot.filled{ background: var(--pink); }
 
+  /* Область вопроса — фиксированная высота, скролл на случай очень длинного текста */
+  .question-box{
+    width:100%;
+    max-width:480px;
+    height:220px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow-y:auto;
+    scrollbar-width:thin;
+  }
   #question{
     font-family:'Unbounded', sans-serif;
     font-weight:700;
-    font-size:clamp(20px, 4vw, 30px);
-    line-height:1.35;
+    font-size:22px;
+    line-height:1.4;
     color: var(--text);
     max-width:480px;
     transition: opacity 0.15s ease;
@@ -152,6 +164,7 @@
     font-family:'Manrope', sans-serif;
   }
   #author{
+    min-height:18px;
     font-size:13px;
     font-weight:600;
     color: var(--gold);
@@ -225,6 +238,11 @@
     line-height:1.6;
   }
 
+  @media (max-width: 480px){
+    .stage{ height:420px; padding:44px 24px; }
+    .question-box{ height:280px; }
+  }
+
   @media (prefers-reduced-motion: reduce){
     .stage-glow{ animation:none; }
   }
@@ -241,7 +259,9 @@
   <div class="stage">
     <div class="round-label">Вопрос <span id="qnum">—</span> из 3</div>
     <div class="round-dots" id="dots"></div>
-    <div id="question" class="placeholder">Загружаю вопросы…</div>
+    <div class="question-box">
+      <div id="question" class="placeholder">Загружаю вопросы…</div>
+    </div>
     <div id="author"></div>
   </div>
 
