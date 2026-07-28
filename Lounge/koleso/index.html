@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ТРИБУНА — CORE_v3.0</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--core-black:#020203;--panel-dark:#08080a;--laser-red:#ff052b}
+body{background-color:var(--core-black);background-image:radial-gradient(circle at 50% -20%,rgba(255,5,43,0.15) 0%,transparent 60%);color:#efefef;font-family:'Inter',sans-serif;min-height:100vh}
+.brutal-font{font-family:'Inter',sans-serif;font-weight:900}
+.tech-mono{font-family:'Space Mono',monospace}
+.core-panel{background:var(--panel-dark);border:1px solid #15151a;position:relative}
+.glow-red{box-shadow:0 0 20px rgba(255,5,43,0.15)}
+
+@keyframes slotSpin{
+  0%{transform:translateY(0);opacity:1}
+  20%{transform:translateY(-8px);opacity:0.3}
+  40%{transform:translateY(6px);opacity:0.6}
+  60%{transform:translateY(-4px);opacity:0.4}
+  80%{transform:translateY(3px);opacity:0.8}
+  100%{transform:translateY(0);opacity:1}
+}
+@keyframes scanline{
+  0%{top:-20%}100%{top:110%}
+}
+@keyframes flickerBorder{
+  0%,100%{border-color:rgba(255,5,43,0.8);box-shadow:0 0 25px rgba(255,5,43,0.5),inset 0 0 15px rgba(255,5,43,0.08)}
+  30%{border-color:rgba(255,5,43,0.3);box-shadow:0 0 8px rgba(255,5,43,0.2)}
+  60%{border-color:rgba(255,5,43,1);box-shadow:0 0 40px rgba(255,5,43,0.7),inset 0 0 20px rgba(255,5,43,0.12)}
+}
+@keyframes pulseGlow{
+  0%,100%{box-shadow:0 0 20px rgba(255,5,43,0.15)}
+  50%{box-shadow:0 0 45px rgba(255,5,43,0.5),inset 0 0 20px rgba(255,5,43,0.06)}
+}
+.spinning-panel{
+  animation:flickerBorder 0.15s infinite linear;
+  border-color:rgba(255,5,43,0.8)!important;
+}
+.spinning-val{
+  animation:slotSpin 0.12s infinite ease-in-out;
+  color:var(--laser-red);
+  display:inline-block;
+}
+.result-revealed{
+  animation:pulseGlow 2s ease-in-out infinite;
+  border-color:rgba(255,5,43,0.5)!important;
+}
+.scanline-overlay{
+  position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:10;border-radius:inherit;
+}
+.scanline-overlay::after{
+  content:'';position:absolute;left:0;right:0;height:30%;
+  background:linear-gradient(transparent,rgba(255,5,43,0.12),transparent);
+  animation:scanline 0.35s linear infinite;
+}
+.btn-laser{background:rgba(255,5,43,0.05);border:1px solid rgba(255,5,43,0.3);color:var(--laser-red);transition:all 0.2s;cursor:pointer}
+.btn-laser:hover:not(:disabled){background:var(--laser-red);color:#000;box-shadow:0 0 20px rgba(255,5,43,0.4)}
+.timer-val{font-variant-numeric:tabular-nums;letter-spacing:-4px}
+</style>
+</head>
+<body class="antialiased" x-data="tribuneApp()">
+
+<!-- RULES OVERLAY -->
+<div x-show="showRules" class="fixed inset-0 z-[500] flex items-center justify-center p-4 bg-black/95 backdrop-blur-md">
+  <div class="core-panel max-w-xl w-full p-8 border-red-900/50 glow-red text-center">
+    <h2 class="brutal-font text-4xl text-white uppercase mb-6 tracking-tighter">Вход в систему</h2>
+    <div class="text-zinc-500 tech-mono text-xs space-y-4 mb-8 text-left border-l-2 border-red-600 pl-4">
+      <p>[1] Крутится всё сразу: скипы, время и гендер.</p>
+      <p>[2] Скип тратится кнопкой "-1 SKIP".</p>
+      <p>[3] Таймер запускается вручную после результата.</p>
+    </div>
+    <button @click="showRules=false" class="w-full py-4 brutal-font text-xl btn-laser uppercase">Авторизовать</button>
+  </div>
+</div>
+
+<div class="max-w-[1000px] mx-auto px-4 py-6 transition-all duration-500" :class="showRules?'blur-xl':''">
+
+  <header class="mb-8 flex justify-between items-end border-b border-zinc-900 pb-4">
+    <h1 class="brutal-font text-4xl sm:text-6xl uppercase tracking-tighter text-white">
+      Любовное<span class="text-red-600">.</span>Колесо<span class="text-red-600">.</span>V1.0
+    </h1>
+    <div class="tech-mono text-[10px] text-zinc-600 text-right uppercase">v3.0_final<br>ready_to_spin</div>
+  </header>
+
+  <!-- PANELS -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+    <!-- SKIPS -->
+    <div class="core-panel p-6 flex flex-col items-center justify-center min-h-[180px] transition-all duration-300"
+         :class="isSpinning?'spinning-panel':'result-revealed'">
+      <div x-show="isSpinning" class="scanline-overlay"></div>
+      <span class="tech-mono text-[9px] text-zinc-600 absolute top-2 left-3 uppercase">Skips_Available</span>
+      <div class="brutal-font text-7xl mb-2"
+           :class="isSpinning?'spinning-val text-red-600': skipsLeft>0?'text-red-600':'text-zinc-800'"
+           x-text="isSpinning?'?':skipsLeft"></div>
+      <button @click="useSkip()"
+        :disabled="isSpinning||skipsLeft<=0"
+        class="w-full py-2 tech-mono text-[10px] uppercase border border-zinc-800 hover:border-red-600 transition-colors disabled:opacity-20">
+        [ -1 SKIP ]
+      </button>
+    </div>
+
+    <!-- TIME -->
+    <div class="core-panel p-6 flex flex-col items-center justify-center min-h-[180px] transition-all duration-300"
+         :class="isSpinning?'spinning-panel':'result-revealed'">
+      <div x-show="isSpinning" class="scanline-overlay"></div>
+      <span class="tech-mono text-[9px] text-zinc-600 absolute top-2 left-3 uppercase">Time_Limit</span>
+      <div class="brutal-font text-3xl text-center uppercase"
+           :class="isSpinning?'spinning-val':''"
+           x-text="results.time"></div>
+    </div>
+
+    <!-- GENDER -->
+    <div class="core-panel p-6 flex flex-col items-center justify-center min-h-[180px] transition-all duration-300"
+         :class="isSpinning?'spinning-panel':'result-revealed'">
+      <div x-show="isSpinning" class="scanline-overlay"></div>
+      <span class="tech-mono text-[9px] text-zinc-600 absolute top-2 left-3 uppercase">Target_Gender</span>
+      <div class="brutal-font text-xl text-center uppercase"
+           :class="isSpinning?'spinning-val':''"
+           x-text="results.gender"></div>
+    </div>
+  </div>
+
+  <!-- TIMER -->
+  <div class="core-panel p-8 mb-6 border-zinc-800 bg-[#040405] glow-red">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-8">
+      <div class="timer-val brutal-font text-8xl sm:text-9xl tracking-tighter"
+           :class="timeLeft<10&&timeLeft>0?'text-red-600 animate-pulse':'text-white'">
+        <span x-text="formatTime(timeLeft)"></span>
+      </div>
+      <div class="flex flex-col gap-2 w-full sm:w-48">
+        <button @click="toggleTimer()"
+          class="py-4 tech-mono text-xs uppercase border border-zinc-800 transition-all"
+          :class="isTimerRunning?'bg-red-900/20 text-red-500 border-red-600':'text-green-500 hover:bg-zinc-900'">
+          <span x-text="isTimerRunning?'[ STOP ]':'[ START ]'"></span>
+        </button>
+        <button @click="resetTimer()"
+          class="py-4 tech-mono text-xs uppercase text-zinc-500 border border-zinc-800 hover:text-zinc-100 transition-all">
+          [ RESET ]
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <button @click="spin()" :disabled="isSpinning"
+    class="w-full py-8 brutal-font text-3xl uppercase tracking-tighter btn-laser disabled:opacity-50">
+    <span x-text="isSpinning?'GENERATING...':'КРУТИТЬ КОЛЕСО'"></span>
+  </button>
+</div>
+
+<script>
+function tribuneApp(){
+  // ====== КОНФИГ ШАНСОВ ======
+  const weights={
+    skips:[
+      {val:1,w:4},
+      {val:2,w:5},
+      {val:3,w:3}
+    ],
+    time:[
+      {val:'30 СЕК', w:4, s:30},
+      {val:'1 МИН',  w:5, s:60},
+      {val:'1.5 МИН',w:5, s:90},
+      {val:'2 МИН',  w:4, s:120}
+    ],
+    gender:[
+      {val:'Мальчик',      w:5},
+      {val:'Девочка',      w:5},
+      {val:'Любой гендер', w:3},
+      {val:'Без гендера',  w:1}
+    ]
+  };
+  // ===========================
+
+  function weightedRandom(items){
+    const total=items.reduce((acc,i)=>acc+i.w,0);
+    let rand=Math.random()*total;
+    for(const i of items){
+      rand-=i.w;
+      if(rand<0) return i;
+    }
+    return items[items.length-1];
+  }
+
+  const timeOptions=weights.time.map(i=>i.val);
+  const genderOptions=weights.gender.map(i=>i.val);
+
+  return{
+    showRules:true,
+    isSpinning:false,
+    skipsLeft:0,
+    results:{time:'1.5 МИН',gender:'—'},
+    timeLeft:90,
+    activeDuration:90,
+    isTimerRunning:false,
+    timerInterval:null,
+    _animInterval:null,
+
+    formatTime(s){
+      const m=Math.floor(s/60);
+      const sec=s%60;
+      return`${m}:${sec.toString().padStart(2,'0')}`;
+    },
+
+    useSkip(){if(this.skipsLeft>0)this.skipsLeft--},
+
+    toggleTimer(){
+      if(this.isTimerRunning){
+        clearInterval(this.timerInterval);
+      }else{
+        if(this.timeLeft<=0)return;
+        this.timerInterval=setInterval(()=>{
+          if(this.timeLeft>0)this.timeLeft--;
+          else{clearInterval(this.timerInterval);this.isTimerRunning=false;}
+        },1000);
+      }
+      this.isTimerRunning=!this.isTimerRunning;
+    },
+
+    resetTimer(){
+      clearInterval(this.timerInterval);
+      this.isTimerRunning=false;
+      this.timeLeft=this.activeDuration;
+    },
+
+    async spin(){
+      this.isSpinning=true;
+      this.resetTimer();
+
+      this._animInterval=setInterval(()=>{
+        this.results.time=timeOptions[Math.floor(Math.random()*timeOptions.length)];
+        this.results.gender=genderOptions[Math.floor(Math.random()*genderOptions.length)];
+      },80);
+
+      setTimeout(()=>{
+        clearInterval(this._animInterval);
+
+        this.skipsLeft=weightedRandom(weights.skips).val;
+
+        const timeRes=weightedRandom(weights.time);
+        this.results.time=timeRes.val;
+        this.activeDuration=timeRes.s;
+
+        this.results.gender=weightedRandom(weights.gender).val;
+
+        this.timeLeft=this.activeDuration;
+        this.isSpinning=false;
+      },1400);
+    }
+  }
+}
+</script>
+</body>
+</html>
