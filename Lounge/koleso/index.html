@@ -17,7 +17,10 @@
     --gold: #ffcb61;
     --text: #f5ecff;
     --muted: #9d87b3;
-    --line: rgba(245,236,255,0.08);
+    --line: rgba(245,236,255,0.06); /* Чуть тоньше */
+    /* Новые переменные для теней с оттенком */
+    --shadow-dark: rgba(10, 5, 15, 0.5);
+    --shadow-pink: rgba(255, 77, 148, 0.25);
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
   html,body{margin:0; padding:0; min-height:100%;}
@@ -29,17 +32,19 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    padding: 48px 16px 32px;
+    padding: 60px 20px 40px; /* Увеличены отступы */
     position: relative;
     overflow-x:hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   /* ambient texture */
   body::before{
     content:"";
     position:fixed; inset:0;
-    background-image: radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px);
-    background-size: 3px 3px;
+    background-image: radial-gradient(rgba(245,236,255,0.02) 1px, transparent 1px); /* Цвет точек в тон */
+    background-size: 4px 4px; /* Чуть реже */
     pointer-events:none;
     z-index:0;
   }
@@ -47,173 +52,219 @@
     content:"";
     position:fixed; inset:0;
     background:
-      radial-gradient(1px 1px at 12% 22%, rgba(255,203,97,0.5), transparent),
-      radial-gradient(1px 1px at 82% 15%, rgba(255,77,148,0.5), transparent),
-      radial-gradient(1.5px 1.5px at 68% 78%, rgba(255,203,97,0.4), transparent),
-      radial-gradient(1px 1px at 25% 88%, rgba(255,77,148,0.4), transparent),
-      radial-gradient(1px 1px at 92% 60%, rgba(245,236,255,0.35), transparent);
+      radial-gradient(1.5px 1.5px at 12% 22%, rgba(255,203,97,0.3), transparent),
+      radial-gradient(1.5px 1.5px at 82% 15%, rgba(255,77,148,0.3), transparent),
+      radial-gradient(2px 2px at 68% 78%, rgba(255,203,97,0.2), transparent),
+      radial-gradient(1.5px 1.5px at 25% 88%, rgba(255,77,148,0.2), transparent);
     pointer-events:none;
     z-index:0;
-    animation: twinkle 5s ease-in-out infinite;
+    animation: twinkle 6s ease-in-out infinite; /* Чуть медленнее */
   }
   @keyframes twinkle{
-    0%,100%{ opacity:0.5; }
+    0%,100%{ opacity:0.4; }
     50%{ opacity:1; }
   }
 
   .stage-glow{
     position:fixed;
-    top:-24%;
+    top:-30%; /* Глубже */
     left:50%;
     transform:translateX(-50%);
-    width:960px;
-    height:960px;
-    background: radial-gradient(circle, rgba(255,77,148,0.16) 0%, rgba(255,203,97,0.05) 35%, transparent 70%);
-    filter: blur(10px);
-    animation: pulse-glow 6s ease-in-out infinite;
+    width:1000px;
+    height:1000px;
+    /* Мягче градиент */
+    background: radial-gradient(circle, rgba(255,77,148,0.12) 0%, rgba(33, 20, 50, 0) 60%);
+    filter: blur(40px); /* Больше размытия */
+    animation: pulse-glow 8s ease-in-out infinite;
     pointer-events:none;
     z-index:0;
+    backface-visibility: hidden;
   }
   @keyframes pulse-glow{
-    0%,100% { opacity:0.7; transform:translateX(-50%) scale(1); }
-    50% { opacity:1; transform:translateX(-50%) scale(1.08); }
+    0%,100% { opacity:0.6; transform:translateX(-50%) scale(1); }
+    50% { opacity:1; transform:translateX(-50%) scale(1.05); }
   }
 
   .wrap{
     position:relative;
     z-index:1;
     width:100%;
-    max-width:780px;
+    max-width:800px; /* Чуть шире */
   }
 
   /* ===== HEADER ===== */
   .header{
     text-align:center;
-    margin-bottom:32px;
+    margin-bottom:40px; /* Больше отступ */
   }
   .crest{
-    width:52px; height:52px;
-    margin:0 auto 18px;
+    width:56px; height:56px; /* Чуть крупнее */
+    margin:0 auto 20px;
     display:flex; align-items:center; justify-content:center;
     border-radius:50%;
-    background: linear-gradient(160deg, rgba(255,77,148,0.18), rgba(255,203,97,0.1));
-    border:1px solid rgba(255,203,97,0.35);
-    box-shadow: 0 0 0 6px rgba(255,77,148,0.06), 0 14px 30px -14px rgba(255,77,148,0.6);
+    background: linear-gradient(160deg, rgba(255,77,148,0.15), rgba(21, 12, 30, 0.2));
+    border:1px solid rgba(255,203,97,0.25);
+    /* Более сложные тени */
+    box-shadow: 
+      0 0 0 5px rgba(255,77,148,0.04), 
+      inset 0 0 12px rgba(255,77,148,0.1),
+      0 10px 30px -10px var(--shadow-pink);
   }
-  .crest svg{ width:24px; height:24px; }
+  .crest svg{ width:26px; height:26px; filter: drop-shadow(0 0 4px var(--pink)); }
 
   .eyebrow{
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:12px;
+    gap:16px; /* Больше зазор */
     font-family:'Unbounded', sans-serif;
     font-weight:700;
-    font-size:12px;
-    letter-spacing:0.22em;
+    font-size:11px; /* Чуть меньше */
+    letter-spacing:0.25em; /* Больше разрядка */
     text-transform:uppercase;
     color: var(--gold);
-    margin-bottom:10px;
+    margin-bottom:12px;
+    opacity: 0.9;
   }
   .eyebrow::before, .eyebrow::after{
     content:"";
     height:1px;
-    width:28px;
-    background: linear-gradient(90deg, transparent, var(--gold));
+    width:40px; /* Длиннее */
+    /* Градиент, тающий к краям */
+    background: linear-gradient(90deg, transparent, rgba(255,203,97,0.5), transparent);
   }
-  .eyebrow::after{ background: linear-gradient(90deg, var(--gold), transparent); }
 
   .headline{
     font-family:'Unbounded', sans-serif;
     font-weight:900;
-    font-size: clamp(26px, 4.6vw, 36px);
-    letter-spacing:-0.01em;
-    margin:0 0 8px;
-    background: linear-gradient(135deg, var(--text) 30%, var(--pink) 100%);
+    font-size: clamp(28px, 5vw, 40px); /* Крупнее */
+    letter-spacing:-0.03em; /* Плотнее */
+    margin:0 0 10px;
+    background: linear-gradient(135deg, #ffffff 10%, var(--text) 40%, var(--pink) 100%);
     -webkit-background-clip:text;
     background-clip:text;
     color:transparent;
+    filter: drop-shadow(0 2px 10px rgba(255,77,148,0.15));
   }
   .subline{
-    font-size:13.5px;
+    font-size:14px;
     color: var(--muted);
-    font-weight:600;
+    font-weight:500;
     margin:0;
+    letter-spacing: 0.01em;
   }
 
   /* ===== REEL CARDS ===== */
   .spins-grid{
     display:grid;
     grid-template-columns: repeat(3, 1fr);
-    gap:14px;
-    margin-bottom:18px;
+    gap:16px; /* Больше зазор */
+    margin-bottom:24px;
   }
   @media (max-width: 640px){
-    .spins-grid{ grid-template-columns: 1fr; }
+    .spins-grid{ grid-template-columns: 1fr; gap: 12px; }
   }
 
   .spin-card{
     position:relative;
-    background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+    background: linear-gradient(180deg, var(--surface) 0%, #1a1028 100%);
     border:1px solid var(--line);
-    border-radius:20px;
-    padding:16px 16px 18px;
-    box-shadow: 0 30px 60px -28px rgba(0,0,0,0.6);
-    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    border-radius:24px; /* Скругление больше */
+    padding:20px 20px 22px;
+    /* Тень с оттенком и внутренний rim-light сверху */
+    box-shadow: 
+      inset 0 1px 1px rgba(245,236,255,0.05),
+      0 20px 40px -15px var(--shadow-dark);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
   }
+  /* Ховер эффект для статики */
+  .spin-card:hover:not(.spinning){
+    border-color: rgba(255,203,97,0.15);
+    transform: translateY(-2px);
+    box-shadow: 
+      inset 0 1px 1px rgba(245,236,255,0.08),
+      0 25px 50px -15px var(--shadow-dark),
+      0 0 15px -5px rgba(255,203,97,0.1);
+  }
+
   .spin-card.spinning{
-    border-color: rgba(255,77,148,0.45);
-    box-shadow: 0 0 0 1px rgba(255,77,148,0.25), 0 30px 60px -28px rgba(0,0,0,0.6), 0 0 24px -4px rgba(255,77,148,0.35);
-    transform: translateY(-1px);
+    border-color: rgba(255,77,148,0.5);
+    box-shadow: 
+      0 0 0 1px rgba(255,77,148,0.1), 
+      0 20px 40px -15px var(--shadow-dark), 
+      0 0 30px -5px rgba(255,77,148,0.25);
+    /* Анимация вибрации */
+    animation: card-shake 0.15s ease-in-out infinite;
   }
+  
+  @keyframes card-shake {
+    0% { transform: translate(0, -1px); }
+    50% { transform: translate(1px, -1px) skewX(0.5deg); }
+    100% { transform: translate(-1px, -1px); }
+  }
+
   /* marquee corner ticks */
   .spin-card::before, .spin-card::after{
     content:"";
     position:absolute;
-    width:9px; height:9px;
+    width:7px; height:7px; /* Меньше */
     border-radius:50%;
     background: var(--gold);
-    opacity:0.35;
-    top:10px;
+    opacity:0.25;
+    top:14px;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
   }
-  .spin-card::before{ left:10px; }
-  .spin-card::after{ right:10px; background:var(--pink); }
+  .spin-card::before{ left:14px; }
+  .spin-card::after{ right:14px; background:var(--pink); }
+  
+  .spin-card:hover::before, .spin-card:hover::after { opacity: 0.5; }
+
   .spin-card.spinning::before, .spin-card.spinning::after{
-    animation: bulb-flicker 0.9s ease-in-out infinite;
-    opacity:0.9;
+    animation: bulb-flicker 0.6s ease-in-out infinite; /* Быстрее */
+    opacity:1;
   }
   @keyframes bulb-flicker{
-    0%,100%{ opacity:0.35; filter: drop-shadow(0 0 0 transparent); }
-    50%{ opacity:1; filter: drop-shadow(0 0 6px currentColor); }
+    0%,100%{ opacity:0.4; filter: drop-shadow(0 0 0 transparent); }
+    50%{ opacity:1; filter: drop-shadow(0 0 8px currentColor); }
   }
 
   .spin-label-row{
     display:flex;
     align-items:center;
-    gap:6px;
-    margin-bottom:12px;
+    gap:8px; /* Больше */
+    margin-bottom:16px;
+    justify-content: center; /* Центрирование */
   }
   .spin-icon{
     width:16px; height:16px;
     flex:none;
-    opacity:0.7;
+    opacity:0.6;
+    transition: opacity 0.3s ease;
   }
+  .spin-card:hover .spin-icon { opacity: 1; }
+
   .spin-label{
     font-family:'Unbounded', sans-serif;
     font-size:10px;
     font-weight:700;
-    letter-spacing:0.12em;
+    letter-spacing:0.15em; /* Больше */
     color: var(--muted);
     text-transform:uppercase;
   }
 
+  /* ===== THE REEL (улучшено) ===== */
   .reel-mask{
     position:relative;
     overflow:hidden;
-    background: rgba(0,0,0,0.28);
-    border-radius:14px;
-    border:1px solid var(--line);
-    box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+    /* Градиент имитирует вогнутость */
+    background: linear-gradient(180deg, #0d0714 0%, #150c1e 50%, #0d0714 100%);
+    border-radius:16px;
+    border:1px solid rgba(0,0,0,0.3);
+    /* Глубокая внутренняя тень */
+    box-shadow: 
+      inset 0 10px 20px -5px rgba(0,0,0,0.6),
+      inset 0 -10px 20px -5px rgba(0,0,0,0.6),
+      0 1px 1px rgba(255,255,255,0.03);
   }
   .reel-strip{
     display:flex;
@@ -226,146 +277,182 @@
     justify-content:center;
     text-align:center;
     width:100%;
-    padding:0 8px;
+    padding:0 12px;
     font-family:'Unbounded', sans-serif;
     color: var(--text);
+    /* Неоновое свечение тексту */
+    text-shadow: 0 0 10px rgba(245,236,255,0.15);
   }
+  /* Затемнение по краям для объема */
   .reel-fade-top, .reel-fade-bottom{
-    position:absolute; left:0; right:0; height:40%;
+    position:absolute; left:0; right:0; height:35%;
     z-index:6; pointer-events:none;
   }
-  .reel-fade-top{ top:0; background: linear-gradient(var(--surface), transparent); }
-  .reel-fade-bottom{ bottom:0; background: linear-gradient(transparent, var(--surface-2)); }
+  .reel-fade-top{ top:0; background: linear-gradient(to bottom, #0d0714 10%, transparent); }
+  .reel-fade-bottom{ bottom:0; background: linear-gradient(to top, #0d0714 10%, transparent); }
 
   .skip-row{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    margin-top:12px;
+    margin-top:16px;
     gap:8px;
+    padding: 0 4px;
   }
   .skip-count{
-    font-size:11.5px;
-    font-weight:700;
+    font-size:12px;
+    font-weight:600;
     color: var(--muted);
     letter-spacing:0.02em;
   }
   .skip-count b{
     color: var(--pink);
-    font-weight:800;
+    font-weight:700;
     font-family:'Space Mono', monospace;
-    font-size:13px;
+    font-size:14px;
+    margin-left: 2px;
+    text-shadow: 0 0 8px rgba(255,77,148,0.3);
   }
 
+  /* ===== BUTTONS ===== */
   button.main{
     font-family:'Unbounded', sans-serif;
     font-weight:700;
     font-size:14px;
-    letter-spacing:0.02em;
-    padding:15px 28px;
-    border-radius:12px;
+    letter-spacing:0.03em;
+    padding:16px 28px;
+    border-radius:14px;
     border:none;
     cursor:pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
   }
-  button.main:active:not(:disabled){ transform: scale(0.97); }
-  button.main:disabled{ opacity:0.4; cursor:not-allowed; }
+  button.main:active:not(:disabled){ transform: scale(0.96); }
+  button.main:disabled{ opacity:0.5; cursor:not-allowed; box-shadow: none !important; }
 
   .btn-spin{
-    position:relative;
     width:100%;
     background: linear-gradient(135deg, var(--pink), #ff7ab0);
     color:#1a0a12;
-    box-shadow: 0 10px 26px -10px rgba(255,77,148,0.6);
-    font-size:17px;
-    padding:19px 28px;
+    box-shadow: 0 10px 25px -5px var(--shadow-pink);
+    font-size:18px;
+    padding:20px 28px;
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:10px;
-    overflow:hidden;
+    gap:12px;
   }
+  /* Улучшенный блик */
   .btn-spin::after{
     content:"";
     position:absolute; inset:0;
-    background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.35) 34%, transparent 48%);
-    transform: translateX(-120%);
+    background: linear-gradient(115deg, transparent 25%, rgba(255,255,255,0.4) 35%, transparent 45%);
+    transform: translateX(-150%);
+    transition: none;
   }
-  .btn-spin:hover:not(:disabled){ box-shadow: 0 12px 30px -8px rgba(255,77,148,0.8); }
-  .btn-spin:hover:not(:disabled)::after{ transform: translateX(120%); transition: transform 0.7s ease; }
-  .btn-spin svg{ width:18px; height:18px; }
-  .btn-spin.is-spinning svg{ animation: spin-icon 0.9s linear infinite; }
+  .btn-spin:hover:not(:disabled){ 
+    box-shadow: 0 12px 30px -2px rgba(255,77,148,0.5); 
+    transform: translateY(-1px);
+  }
+  .btn-spin:hover:not(:disabled)::after{ 
+    transform: translateX(150%); 
+    transition: transform 0.8s shadow-pink; 
+  }
+  
+  .btn-spin svg{ width:20px; height:20px; }
+  .btn-spin.is-spinning svg{ animation: spin-icon 0.8s linear infinite; }
   @keyframes spin-icon{ to{ transform: rotate(360deg); } }
 
   .btn-secondary{
-    background: transparent;
+    background: rgba(245,236,255,0.03);
     color: var(--muted);
     border:1px solid var(--line);
-    font-size:11.5px;
-    padding:9px 14px;
+    font-size:11px;
+    padding:10px 16px;
+    border-radius: 10px;
   }
-  .btn-secondary:hover:not(:disabled){ color: var(--text); border-color: var(--muted); }
+  .btn-secondary:hover:not(:disabled){ 
+    color: var(--text); 
+    border-color: rgba(245,236,255,0.15); 
+    background: rgba(245,236,255,0.06);
+  }
 
-  /* ===== TIMER ===== */
+  /* ===== TIMER BLOCK ===== */
   .timer-block{
     position:relative;
-    background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+    background: linear-gradient(180deg, var(--surface) 0%, #1a1028 100%);
     border:1px solid var(--line);
-    border-radius:20px;
-    padding:26px 28px;
-    margin-bottom:20px;
+    border-radius:24px;
+    padding:24px 30px;
+    margin-bottom:24px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:24px;
+    gap:20px;
     flex-wrap:wrap;
-    box-shadow: 0 30px 60px -28px rgba(0,0,0,0.6);
+    box-shadow: 
+      inset 0 1px 1px rgba(245,236,255,0.05),
+      0 20px 40px -15px var(--shadow-dark);
   }
   .timer-side{
     display:flex;
     flex-direction:column;
-    gap:6px;
+    gap:4px;
   }
   .timer-kicker{
     font-family:'Unbounded', sans-serif;
     font-size:10px;
     font-weight:700;
-    letter-spacing:0.14em;
+    letter-spacing:0.18em;
     text-transform:uppercase;
     color: var(--muted);
+    opacity: 0.8;
   }
   .timer-val{
     font-family:'Space Mono', monospace;
     font-weight:700;
-    font-size:clamp(46px, 8.5vw, 72px);
-    letter-spacing:-1px;
+    font-size:clamp(50px, 9vw, 76px); /* Крупнее */
+    letter-spacing:-0.04em;
     color: var(--text);
     font-variant-numeric: tabular-nums;
     line-height:1;
+    text-shadow: 0 0 15px rgba(245,236,255,0.2);
   }
   .timer-val.low{
     color: var(--pink);
     animation: time-pulse 1s ease-in-out infinite;
+    text-shadow: 0 0 15px rgba(255,77,148,0.4);
   }
   @keyframes time-pulse{
     0%,100%{ opacity:1; }
-    50%{ opacity:0.55; }
+    50%{ opacity:0.7; }
   }
   .timer-controls{
     display:flex;
-    gap:8px;
+    gap:10px;
   }
-  .timer-controls button{ flex:1; }
-
+  
   .btn-timer-start{
-    background: rgba(255,203,97,0.12);
-    border:1px solid rgba(255,203,97,0.4);
+    background: rgba(255,203,97,0.08);
+    border:1px solid rgba(255,203,97,0.25);
     color: var(--gold);
+    min-width: 100px;
+  }
+  .btn-timer-start:hover:not(:disabled) {
+    background: rgba(255,203,97,0.15);
+    border-color: rgba(255,203,97,0.4);
+    box-shadow: 0 0 15px -3px rgba(255,203,97,0.2);
   }
   .btn-timer-start.running{
+    background: rgba(255,77,148,0.1);
+    border-color: rgba(255,77,148,0.3);
+    color: var(--pink);
+  }
+  .btn-timer-start.running:hover:not(:disabled) {
     background: rgba(255,77,148,0.15);
     border-color: rgba(255,77,148,0.5);
-    color: var(--pink);
+    box-shadow: 0 0 15px -3px rgba(255,77,148,0.2);
   }
 
   /* ===== FOOTER CREDIT ===== */
@@ -373,19 +460,18 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:8px;
-    margin-top:26px;
+    gap:10px;
+    margin-top:32px;
     font-family:'Manrope', sans-serif;
-    font-size:11.5px;
-    font-weight:600;
+    font-size:12px;
+    font-weight:500;
     color: var(--muted);
-    letter-spacing:0.03em;
+    opacity: 0.7;
   }
   .credit .dot{
     width:4px; height:4px;
     border-radius:50%;
-    background: var(--pink);
-    opacity:0.6;
+    background: var(--line);
   }
   .credit .brand{
     font-family:'Unbounded', sans-serif;
@@ -421,29 +507,29 @@
     <!-- SKIP SPIN -->
     <div class="spin-card" :class="isSpinning?'spinning':''">
       <div class="spin-label-row">
-        <svg class="spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke="var(--pink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span class="spin-label">Спин: скипы</span>
+        <svg class="spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke="var(--pink)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="spin-label">Скипы</span>
       </div>
       <div class="reel-mask" :style="`height:${itemHeight}px`">
         <div class="reel-fade-top"></div>
         <div class="reel-fade-bottom"></div>
         <div class="reel-strip" :style="`transform:translateY(-${skipOffset}px);transition:${skipTransition}`">
           <template x-for="(item,idx) in reelSkips" :key="'sk'+idx">
-            <div class="reel-item" :style="`height:${itemHeight}px; font-size:44px; font-weight:900; color:var(--pink)`" x-text="item"></div>
+            <div class="reel-item" :style="`height:${itemHeight}px; font-size:48px; font-weight:900; color:var(--pink); text-shadow: 0 0 15px rgba(255,77,148,0.4)`" x-text="item"></div>
           </template>
         </div>
       </div>
       <div class="skip-row">
         <span class="skip-count">Осталось: <b x-text="skipsLeft"></b></span>
-        <button class="main btn-secondary" @click="useSkip()" :disabled="isSpinning||skipsLeft<=0">−1 скип</button>
+        <button class="main btn-secondary" @click="useSkip()" :disabled="isSpinning||skipsLeft<=0">−1</button>
       </div>
     </div>
 
     <!-- TIME SPIN -->
     <div class="spin-card" :class="isSpinning?'spinning':''">
       <div class="spin-label-row">
-        <svg class="spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="8.5" stroke="var(--gold)" stroke-width="2"/><path d="M12 7.5V12l3 2" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span class="spin-label">Спин: время</span>
+        <svg class="spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="8.5" stroke="var(--gold)" stroke-width="2.5"/><path d="M12 7.5V12l3 2" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="spin-label">Время</span>
       </div>
       <div class="reel-mask" :style="`height:${itemHeight}px`">
         <div class="reel-fade-top"></div>
@@ -459,8 +545,8 @@
     <!-- GENDER SPIN -->
     <div class="spin-card" :class="isSpinning?'spinning':''">
       <div class="spin-label-row">
-        <svg class="spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="9" r="5" stroke="var(--text)" stroke-width="2" opacity="0.75"/><path d="M12 14v7M9 18h6" stroke="var(--text)" stroke-width="2" stroke-linecap="round" opacity="0.75"/></svg>
-        <span class="spin-label">Спин: пол</span>
+        <svg class="spin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="9" r="5" stroke="var(--text)" stroke-width="2.5" opacity="0.8"/><path d="M12 14v7M9 18h6" stroke="var(--text)" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/></svg>
+        <span class="spin-label">Пол</span>
       </div>
       <div class="reel-mask" :style="`height:${itemHeight}px`">
         <div class="reel-fade-top"></div>
@@ -478,7 +564,7 @@
   <!-- TIMER -->
   <div class="timer-block">
     <div class="timer-side">
-      <span class="timer-kicker">Таймер</span>
+      <span class="timer-kicker">Текущий раунд</span>
       <div class="timer-val" :class="timeLeft<10&&timeLeft>0?'low':''" x-text="formatTime(timeLeft)"></div>
     </div>
     <div class="timer-controls">
@@ -490,8 +576,8 @@
   </div>
 
   <button class="main btn-spin" :class="isSpinning?'is-spinning':''" @click="spin()" :disabled="isSpinning">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 12a8 8 0 1 1-2.34-5.66" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M20 4v5h-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span x-text="isSpinning?'Крутится…':'Крутить колесо'"></span>
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 12a8 8 0 1 1-2.34-5.66" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M20 4v5h-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span x-text="isSpinning?'Удача решает…':'Крутить колесо'"></span>
   </button>
 
   <div class="credit">
@@ -562,12 +648,12 @@ function tribuneApp(){
     isSpinning:false,
     skipsLeft:0,
 
-    timeLeft:90,
-    activeDuration:90,
+    timeLeft:0, // Изначально 0
+    activeDuration:0,
     isTimerRunning:false,
     timerInterval:null,
 
-    itemHeight:96,
+    itemHeight:100, // Чуть увеличил для новых отступов
     reelSkips:[0],
     reelTime:['—'],
     reelGender:['—'],
@@ -606,16 +692,22 @@ function tribuneApp(){
     },
 
     async spin(){
+      if(this.isSpinning) return;
       this.isSpinning=true;
-      this.resetTimer();
+      
+      // Сброс таймера перед круткой
+      clearInterval(this.timerInterval);
+      this.isTimerRunning=false;
+      this.timeLeft = 0;
 
       const skipRes=weightedRandom(weights.skips);
       const timeRes=weightedRandom(weights.time);
       const genderRes=weightedRandom(weights.gender);
 
-      this.reelSkips=buildStrip(skipOptions,skipRes.val,6);
-      this.reelTime=buildStrip(timeOptions,timeRes.val,6);
-      this.reelGender=buildStrip(genderOptions,genderRes.val,6);
+      // Увеличил количество повторов для более долгой крутки (8 вместо 6)
+      this.reelSkips=buildStrip(skipOptions,skipRes.val,8);
+      this.reelTime=buildStrip(timeOptions,timeRes.val,8);
+      this.reelGender=buildStrip(genderOptions,genderRes.val,8);
 
       // instant reset, no transition
       this.skipTransition='none';
@@ -627,14 +719,17 @@ function tribuneApp(){
 
       await this.$nextTick();
 
-      // stagger stops left to right, 0.5s apart
-      const skipDuration=1.4, timeDuration=1.9, genderDuration=2.4;
+      // stagger stops left to right, transitions a bit longer for "weight"
+      const skipDuration=2.0, timeDuration=2.6, genderDuration=3.2;
 
       requestAnimationFrame(()=>{
         requestAnimationFrame(()=>{
-          this.skipTransition=`transform ${skipDuration}s cubic-bezier(0.13,0.85,0.15,1)`;
-          this.timeTransition=`transform ${timeDuration}s cubic-bezier(0.13,0.85,0.15,1)`;
-          this.genderTransition=`transform ${genderDuration}s cubic-bezier(0.13,0.85,0.15,1)`;
+          // Улучшенный bezier для эффекта "резиновой" остановки
+          const bezier = 'cubic-bezier(0.15, 0.9, 0.2, 1)';
+          this.skipTransition=`transform ${skipDuration}s ${bezier}`;
+          this.timeTransition=`transform ${timeDuration}s ${bezier}`;
+          this.genderTransition=`transform ${genderDuration}s ${bezier}`;
+          
           this.skipOffset=(this.reelSkips.length-1)*this.itemHeight;
           this.timeOffset=(this.reelTime.length-1)*this.itemHeight;
           this.genderOffset=(this.reelGender.length-1)*this.itemHeight;
