@@ -97,7 +97,6 @@
 
         @keyframes laserShift { 0%{background-position:0%}100%{background-position:200%} }
         @keyframes pulseBlink { 0%,100%{opacity:1} 50%{opacity:.5} }
-        @keyframes loadingBar { 0%{left:-30%}100%{left:100%} }
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(12px); }
             to   { opacity: 1; transform: translateY(0); }
@@ -132,11 +131,11 @@
             .modal-title { font-size: 1.6rem !important; }
         }
 
-        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: var(--core-black); }
-        ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--laser-red); }
-        * { scrollbar-width: thin; scrollbar-color: #222 var(--core-black); }
+        * { scrollbar-width: thin; scrollbar-color: #333 var(--core-black); }
 
         select, input[type="text"] {
             -webkit-appearance: none;
@@ -157,7 +156,7 @@
             width: 40px; height: 4px; background: #333; border-radius: 2px; margin: 0 auto 12px;
         }
     </style>
-<base target="_blank">
+    <base target="_blank">
 </head>
 <body class="antialiased" x-data="mediaApp()" x-init="init()" @keydown.escape.window="modalItem && closeModal()">
 
@@ -175,7 +174,7 @@
         <header class="mb-8 sm:mb-16 pt-8 sm:pt-0 pb-6 sm:pb-8 border-b-2 border-[#111]">
             <div class="flex flex-col gap-3">
                 <div class="flex items-center gap-3">
-                    <span class="tech-mono text-[10px] text-red-500 bg-red-950/50 px-2 py-0.5 border border-red-900/40">SYS_V2.1</span>
+                    <span class="tech-mono text-[10px] text-red-500 bg-red-950/50 px-2 py-0.5 border border-red-900/40 rounded-sm">SYS_V2.1</span>
                     <span class="tech-mono text-[10px] text-zinc-600">SECURE_CHANNEL</span>
                 </div>
                 <h1 class="brutal-font uppercase tracking-tighter text-white leading-none" style="font-size:clamp(2.2rem,10vw,5rem)">
@@ -185,19 +184,20 @@
             </div>
         </header>
 
-        <section class="mb-8 core-panel p-4 sm:p-6 lg:p-8">
+        <section class="mb-8 core-panel p-4 sm:p-6 lg:p-8 rounded-sm">
 
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
                 <div class="sm:col-span-2">
                     <label class="tech-mono text-[10px] text-zinc-500 uppercase mb-1.5 block" for="search-input">Поиск</label>
-                    <input id="search-input" type="text" x-model="search" placeholder="Введи название тайтла..."
-                           class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 transition-colors text-sm"
+                    <!-- ОПТИМИЗАЦИЯ: используем .debounce для поиска -->
+                    <input id="search-input" type="text" x-model.debounce.300ms="search" placeholder="Введи название тайтла..."
+                           class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 transition-colors text-sm rounded-sm"
                            autocomplete="off" enterkeyhint="search">
                 </div>
 
                 <div>
                     <label class="tech-mono text-[10px] text-zinc-500 uppercase mb-1.5 block" for="category-select">Сектор</label>
-                    <select id="category-select" x-model="categoryFilter" class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 cursor-pointer text-sm">
+                    <select id="category-select" x-model="categoryFilter" class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 cursor-pointer text-sm rounded-sm">
                         <option value="">ВСЕ</option>
                         <option value="movie">КИНО</option>
                         <option value="show">СЕРИАЛЫ</option>
@@ -209,7 +209,7 @@
 
                 <div>
                     <label class="tech-mono text-[10px] text-zinc-500 uppercase mb-1.5 block" for="sort-select">Сортировка</label>
-                    <select id="sort-select" x-model="sortKey" class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 cursor-pointer text-sm">
+                    <select id="sort-select" x-model="sortKey" class="w-full bg-[#030304] border border-[#1a1a22] p-3 text-white focus:outline-none focus:border-red-600 cursor-pointer text-sm rounded-sm">
                         <option value="rating-desc">РЕЙТИНГ ↓</option>
                         <option value="rating-asc">РЕЙТИНГ ↑</option>
                         <option value="year-desc">ГОД (новые)</option>
@@ -224,29 +224,29 @@
                 <div class="flex items-center gap-3 flex-1">
                     <span class="tech-mono text-[10px] text-zinc-500 whitespace-nowrap">МИН. ОЦЕНКА:</span>
                     <input type="range" x-model.number="minRating" min="0" max="10" step="1"
-                           class="accent-red-600 flex-1 h-1" style="max-width:140px" id="rating-range"
+                           class="accent-red-600 flex-1 h-1 cursor-pointer" style="max-width:140px" id="rating-range"
                            aria-label="Минимальный рейтинг">
                     <span class="tech-mono text-sm text-red-500 font-bold w-12" x-text="minRating + '/10'"></span>
                 </div>
 
                 <div class="flex gap-3 flex-wrap">
                     <button type="button" @click="showFavoritesOnly = !showFavoritesOnly"
-                            class="tech-mono text-xs border px-4 py-2.5 transition-colors flex-1 sm:flex-none"
+                            class="tech-mono text-xs border px-4 py-2.5 transition-colors flex-1 sm:flex-none rounded-sm"
                             :class="showFavoritesOnly ? 'bg-red-950/40 text-red-400 border-red-800' : 'bg-transparent text-zinc-500 border-[#15151a] hover:text-white'">
                         <span x-text="showFavoritesOnly ? '★ ИЗБРАННОЕ' : '☆ ИЗБРАННОЕ'"></span>
                     </button>
                     <button type="button" @click="pickRandomItem()"
-                            class="tech-mono text-xs bg-red-950/30 hover:bg-red-900/40 text-red-500 border border-red-900/50 px-4 py-2.5 transition-colors flex-1 sm:flex-none">
+                            class="tech-mono text-xs bg-red-950/30 hover:bg-red-900/40 text-red-500 border border-red-900/50 px-4 py-2.5 transition-colors flex-1 sm:flex-none rounded-sm">
                         [СЛУЧАЙНЫЙ]
                     </button>
                     <button type="button" @click="clearFilters()"
-                            class="tech-mono text-xs text-zinc-500 hover:text-white px-3 py-2 transition-colors border border-[#15151a]">
+                            class="tech-mono text-xs text-zinc-500 hover:text-white px-3 py-2 transition-colors border border-[#15151a] rounded-sm">
                         Сброс
                     </button>
                 </div>
             </div>
 
-            <div class="mt-4 flex gap-6 tech-mono text-xs text-zinc-600 flex-wrap">
+            <div aria-live="polite" class="mt-4 flex gap-6 tech-mono text-xs text-zinc-600 flex-wrap">
                 <span>ВСЕГО: <span class="text-white font-bold" x-text="items.length"></span></span>
                 <span class="text-red-900">//</span>
                 <span>ПОКАЗАНО: <span class="text-red-500 font-bold" x-text="displayItems.length"></span></span>
@@ -260,8 +260,8 @@
             <div class="flex gap-2 overflow-x-auto pb-2" style="scrollbar-width:none;">
                 <template x-for="item in history" :key="'hist_'+item._id">
                     <button type="button" @click="openModal(item)"
-                            class="flex-shrink-0 core-panel p-2 hover:border-zinc-500 transition-colors text-left group min-w-[140px] max-w-[180px]">
-                        <div class="relative mb-1.5" style="aspect-ratio:2/3;background:#000">
+                            class="flex-shrink-0 core-panel p-2 hover:border-zinc-500 transition-colors text-left group min-w-[140px] max-w-[180px] rounded-sm">
+                        <div class="relative mb-1.5 rounded-sm overflow-hidden" style="aspect-ratio:2/3;background:#000">
                             <img x-show="item.image" :src="item.image" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" loading="lazy">
                             <div x-show="!item.image" class="no-poster w-full h-full">
                                 <span class="no-poster-text">постер<br>отсутствует</span>
@@ -281,10 +281,10 @@
                 <article role="listitem"
                          @click="openModal(item)"
                          :class="getCardTierClass(item.rating)"
-                         class="card-item card-enter core-panel p-1.5 sm:p-2 hover:border-zinc-500 cursor-pointer group flex flex-col h-full relative"
+                         class="card-item card-enter core-panel p-1.5 sm:p-2 rounded-sm hover:border-zinc-500 cursor-pointer group flex flex-col h-full relative"
                          :style="'animation-delay:' + (Math.min(index * 0.03, 0.5)) + 's'">
 
-                    <div class="relative overflow-hidden mb-2" style="aspect-ratio:2/3;background:#000">
+                    <div class="relative overflow-hidden mb-2 rounded-sm" style="aspect-ratio:2/3;background:#000">
                         <div x-show="!item.image" class="no-poster w-full h-full absolute inset-0" x-cloak>
                             <svg width="28" height="28" viewBox="0 0 40 40" fill="none" style="opacity:.25" aria-hidden="true">
                                 <rect x="4" y="6" width="32" height="28" rx="1" stroke="#888" stroke-width="1.5" stroke-dasharray="3 2"/>
@@ -297,7 +297,7 @@
                              class="w-full h-full object-cover transition-all duration-500 grayscale-[30%] group-hover:grayscale-0"
                              loading="lazy" @error="item.image = ''" :alt="'Постер: ' + item.title">
 
-                        <div class="absolute top-1.5 right-1.5 bg-black/90 px-1.5 py-0.5 border tech-mono font-bold"
+                        <div class="absolute top-1.5 right-1.5 bg-black/90 px-1.5 py-0.5 border tech-mono font-bold rounded-sm"
                              style="font-size:9px"
                              :class="item.rating >= 10 ? 'text-red-500 border-red-900' : 'text-white border-zinc-800'">
                             <span x-text="item.rating ? item.rating.toFixed(1) + '/10' : 'Н/Д'"></span>
@@ -305,8 +305,8 @@
 
                         <button type="button"
                                 @click.stop="toggleFavorite(item._id)"
-                                class="absolute top-1.5 left-1.5 z-10 p-1 transition-transform active:scale-90"
-                                :class="isFavorite(item._id) ? 'text-red-500' : 'text-zinc-700 hover:text-zinc-400'"
+                                class="absolute top-1.5 left-1.5 z-10 p-1 transition-transform active:scale-90 bg-black/40 rounded-full hover:bg-black/80"
+                                :class="isFavorite(item._id) ? 'text-red-500' : 'text-zinc-400 hover:text-white'"
                                 :aria-label="isFavorite(item._id) ? 'Удалить из избранного' : 'Добавить в избранное'">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -329,16 +329,16 @@
         </main>
 
         <div x-show="displayItems.length === 0 && !loading" x-cloak
-             class="text-center py-16 border border-dashed border-[#15151a] mt-8">
+             class="text-center py-16 border border-dashed border-[#15151a] mt-8 rounded-sm">
             <p class="tech-mono text-xs text-zinc-600 uppercase tracking-widest mb-4">РЕЗУЛЬТАТЫ НЕ НАЙДЕНЫ</p>
-            <button type="button" @click="clearFilters()" class="text-xs tech-mono text-red-500 hover:underline">[ СБРОСИТЬ ФИЛЬТРЫ ]</button>
+            <button type="button" @click="clearFilters()" class="text-xs tech-mono text-red-500 hover:underline focus:outline-none">[ СБРОСИТЬ ФИЛЬТРЫ ]</button>
         </div>
 
         <div x-show="loadError && !loading" x-cloak
-             class="text-center py-16 border border-dashed border-red-900/40 mt-8">
+             class="text-center py-16 border border-dashed border-red-900/40 mt-8 rounded-sm">
             <p class="tech-mono text-xs text-red-500 uppercase tracking-widest mb-2">ОШИБКА ЗАГРУЗКИ ДАННЫХ</p>
             <p class="tech-mono text-[10px] text-zinc-600 mb-4">Не удалось загрузить медиа-библиотеку. Проверьте наличие JSON-файлов.</p>
-            <button type="button" @click="loadItems()" class="text-xs tech-mono text-white bg-red-900/30 border border-red-800 px-4 py-2 hover:bg-red-900/50 transition-colors">
+            <button type="button" @click="loadItems()" class="text-xs tech-mono text-white bg-red-900/30 border border-red-800 px-4 py-2 hover:bg-red-900/50 transition-colors rounded-sm">
                 [ ПОВТОРИТЬ ]
             </button>
         </div>
@@ -356,11 +356,11 @@
              :aria-labelledby="modalItem ? 'modal-title' : null"
              @click="if ($event.target === $el) closeModal()">
 
-            <div class="modal-inner bg-[#08080a] border border-[#1c1c24] w-full sm:max-w-5xl flex flex-col sm:flex-row max-h-[95vh] sm:max-h-[90vh] overflow-hidden"
+            <div class="modal-inner bg-[#08080a] border border-[#1c1c24] w-full sm:max-w-5xl flex flex-col sm:flex-row max-h-[95vh] sm:max-h-[90vh] overflow-hidden rounded-sm"
                  x-init="$nextTick(() => { trapFocus($el); initSwipe($el); })">
 
                 <div class="modal-poster-col w-full sm:w-2/5 bg-black p-6 border-b sm:border-b-0 sm:border-r border-[#15151a] flex flex-col flex-shrink-0">
-                    <div class="relative w-full overflow-hidden border border-[#15151a] shadow-2xl" style="aspect-ratio:2/3">
+                    <div class="relative w-full overflow-hidden border border-[#15151a] shadow-2xl rounded-sm" style="aspect-ratio:2/3">
                         <div x-show="!modalItem?.image" class="no-poster w-full h-full absolute inset-0" x-cloak>
                             <svg width="50" height="50" viewBox="0 0 40 40" fill="none" style="opacity:.15" aria-hidden="true">
                                 <rect x="4" y="6" width="32" height="28" rx="1" stroke="#aaa" stroke-width="1.5" stroke-dasharray="3 2"/>
@@ -372,11 +372,11 @@
                         <img x-show="modalItem?.image" :src="modalItem?.image" class="w-full h-full object-cover" @error="modalItem.image=''" :alt="'Постер: ' + modalItem?.title">
                     </div>
                     <div class="grid grid-cols-2 gap-2 tech-mono text-center mt-4">
-                        <div class="bg-[#030304] p-3 border border-[#15151a]">
+                        <div class="bg-[#030304] p-3 border border-[#15151a] rounded-sm">
                             <span class="text-[9px] text-zinc-600 block uppercase">SCORE</span>
                             <span class="text-xl font-bold text-red-500" x-text="(modalItem?.rating || 0) + '/10'"></span>
                         </div>
-                        <div class="bg-[#030304] p-3 border border-[#15151a]">
+                        <div class="bg-[#030304] p-3 border border-[#15151a] rounded-sm">
                             <span class="text-[9px] text-zinc-600 block uppercase">YEAR</span>
                             <span class="text-xl font-bold text-white" x-text="modalItem?.year || '—'"></span>
                         </div>
@@ -384,7 +384,6 @@
                 </div>
 
                 <div class="modal-content-col flex-1 p-5 sm:p-10 overflow-y-auto flex flex-col">
-
                     <div class="flex justify-between items-start gap-3 mb-4">
                         <div class="flex-1 min-w-0">
                             <div class="sm:hidden swipe-handle" aria-hidden="true"></div>
@@ -397,7 +396,7 @@
                             <h2 id="modal-title" class="modal-title brutal-font text-white uppercase tracking-tighter mt-1 leading-tight break-words" x-text="modalItem?.title"></h2>
                         </div>
                         <button type="button" @click="closeModal()"
-                                class="tech-mono text-zinc-500 hover:text-white bg-[#030304] border border-[#15151a] flex-shrink-0 px-3 py-2"
+                                class="tech-mono text-zinc-500 hover:text-white bg-[#030304] border border-[#15151a] flex-shrink-0 px-3 py-2 rounded-sm"
                                 style="font-size:11px" aria-label="Закрыть">✕</button>
                     </div>
 
@@ -429,20 +428,20 @@
 
                     <div class="mt-5 flex flex-wrap gap-2">
                         <template x-for="genre in modalItem?.genres" :key="genre">
-                            <span class="tech-mono bg-[#030304] px-2.5 py-1 text-zinc-400 border border-[#15151a]"
+                            <span class="tech-mono bg-[#030304] px-2.5 py-1 text-zinc-400 border border-[#15151a] rounded-sm"
                                   style="font-size:10px" x-text="genre"></span>
                         </template>
                     </div>
 
                     <div class="mt-6 pt-4 border-t border-[#15151a] flex gap-3">
                         <button type="button" @click="toggleFavorite(modalItem._id);"
-                                class="tech-mono text-xs px-4 py-2.5 border transition-colors"
+                                class="tech-mono text-xs px-4 py-2.5 border transition-colors rounded-sm"
                                 :class="isFavorite(modalItem._id) ? 'bg-red-950/40 text-red-400 border-red-800' : 'bg-[#030304] text-zinc-400 border-[#15151a] hover:text-white'">
                             <span x-text="isFavorite(modalItem._id) ? '★ В ИЗБРАННОМ' : '☆ В ИЗБРАННОЕ'"></span>
                         </button>
                         <button type="button" @click="shareItem()"
                                 x-show="canShare"
-                                class="tech-mono text-xs bg-[#030304] text-zinc-400 border border-[#15151a] hover:text-white px-4 py-2.5 transition-colors">
+                                class="tech-mono text-xs bg-[#030304] text-zinc-400 border border-[#15151a] hover:text-white px-4 py-2.5 transition-colors rounded-sm">
                             ПОДЕЛИТЬСЯ
                         </button>
                     </div>
@@ -454,7 +453,7 @@
                 x-show="showScrollTop"
                 x-transition
                 @click="window.scrollTo({top:0,behavior:'smooth'})"
-                class="fixed bottom-6 right-6 z-40 bg-[#08080a] border border-[#1c1c24] text-zinc-500 hover:text-white hover:border-red-900/60 p-3 transition-all shadow-lg"
+                class="fixed bottom-6 right-6 z-40 bg-[#08080a] border border-[#1c1c24] text-zinc-500 hover:text-white hover:border-red-900/60 p-3 transition-all shadow-lg rounded-sm"
                 aria-label="Наверх">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M18 15l-6-6-6 6"/>
@@ -473,7 +472,6 @@
         function mediaApp() {
             return {
                 search: '',
-                debouncedSearch: '',
                 categoryFilter: '',
                 sortKey: 'rating-desc',
                 minRating: 0,
@@ -493,7 +491,6 @@
                 canShare: typeof navigator !== 'undefined' && !!navigator.share,
 
                 files: ['anime_data.json','movies_data.json','games_data.json','books_data.json','cartoons_data.json'],
-                _searchTimer: null,
 
                 init() {
                     this.loadFilters();
@@ -501,16 +498,11 @@
                     this.loadHistory();
                     this.loadItems();
 
-                    this.$watch('search', (val) => {
-                        clearTimeout(this._searchTimer);
-                        this._searchTimer = setTimeout(() => {
-                            this.debouncedSearch = val;
+                    ['search','categoryFilter','sortKey','minRating','showFavoritesOnly','items'].forEach(key => {
+                        this.$watch(key, () => {
+                            this.updateDisplay();
                             this.saveFilters();
-                        }, 300);
-                    });
-
-                    ['debouncedSearch','categoryFilter','sortKey','minRating','showFavoritesOnly','items'].forEach(key => {
-                        this.$watch(key, () => this.updateDisplay());
+                        });
                     });
 
                     this._onScroll = () => { this.showScrollTop = window.scrollY > 500; };
@@ -521,7 +513,6 @@
                 },
 
                 destroy() {
-                    clearTimeout(this._searchTimer);
                     window.removeEventListener('scroll', this._onScroll);
                     document.removeEventListener('visibilitychange', this._onVis);
                 },
@@ -580,8 +571,8 @@
 
                 updateDisplay() {
                     let f = this.items.filter(i => {
-                        const matchesSearch = !this.debouncedSearch ||
-                            i.title.toLowerCase().includes(this.debouncedSearch.toLowerCase());
+                        const matchesSearch = !this.search || 
+                            i.title.toLowerCase().includes(this.search.toLowerCase());
                         const matchesCategory = !this.categoryFilter || i.type === this.categoryFilter;
                         const matchesRating = !this.minRating || i.rating >= this.minRating;
                         const matchesFav = !this.showFavoritesOnly || this.favorites.includes(i._id);
@@ -616,6 +607,7 @@
                 },
 
                 trapFocus(el) {
+                    if (!el) return;
                     const focusable = el.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
                     if (!focusable.length) return;
                     const first = focusable[0];
@@ -638,13 +630,15 @@
                 initSwipe(el) {
                     if (!el) return;
                     let startY = 0;
-                    const inner = el.querySelector('.modal-inner');
+                    const inner = el; 
                     if (!inner) return;
 
                     const onStart = (e) => { startY = e.touches[0].clientY; };
                     const onMove = (e) => {
                         const currentY = e.touches[0].clientY;
                         const diff = currentY - startY;
+                        
+                        // Закрытие при свайпе вниз (если прокрутка в самом верху)
                         if (diff > 80 && inner.scrollTop <= 0) {
                             this.closeModal();
                         }
@@ -655,7 +649,6 @@
 
                 clearFilters() {
                     this.search = '';
-                    this.debouncedSearch = '';
                     this.categoryFilter = '';
                     this.sortKey = 'rating-desc';
                     this.minRating = 0;
@@ -693,14 +686,14 @@
                 loadHistory() {
                     try {
                         const raw = localStorage.getItem('kal-history');
-                        this.history = raw ? JSON.parse(raw) : [];
+                        if(raw) this.history = JSON.parse(raw) || [];
                     } catch(e) { this.history = []; }
                 },
 
                 loadFavorites() {
                     try {
                         const raw = localStorage.getItem('kal-favorites');
-                        this.favorites = raw ? JSON.parse(raw) : [];
+                        if(raw) this.favorites = JSON.parse(raw) || [];
                     } catch(e) { this.favorites = []; }
                 },
 
@@ -720,12 +713,13 @@
                         const raw = localStorage.getItem('kal-filters');
                         if (!raw) return;
                         const data = JSON.parse(raw);
-                        this.search = data.search || '';
-                        this.debouncedSearch = this.search;
-                        this.categoryFilter = data.categoryFilter || '';
-                        this.sortKey = data.sortKey || 'rating-desc';
-                        this.minRating = data.minRating || 0;
-                        this.showFavoritesOnly = data.showFavoritesOnly || false;
+                        if(data) {
+                            this.search = data.search || '';
+                            this.categoryFilter = data.categoryFilter || '';
+                            this.sortKey = data.sortKey || 'rating-desc';
+                            this.minRating = data.minRating || 0;
+                            this.showFavoritesOnly = data.showFavoritesOnly || false;
+                        }
                     } catch(e) {}
                 },
 
