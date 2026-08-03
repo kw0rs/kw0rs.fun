@@ -1,505 +1,275 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>NUMERA PREDICT</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0a0b0f; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: #0a0b0f; }
-  ::-webkit-scrollbar-thumb { background: #1a1b23; border-radius: 3px; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-</style>
-<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUEL_REGISTRY // Энерго-Лист</title>
+    
+    <!-- Подключаем Tailwind для стилей -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Шрифты -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --core-black: #020203;
+            --panel-dark: #08080a;
+            --laser-red: #ff052b;
+        }
+
+        body {
+            background-color: var(--core-black);
+            /* Улучшенный фоновый градиент для глубины */
+            background-image: 
+                radial-gradient(circle at 50% -20%, rgba(255, 5, 43, 0.18) 0%, transparent 60%),
+                radial-gradient(circle at 10% 100%, rgba(20, 20, 25, 0.5) 0%, transparent 40%);
+            color: #efefef;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        .brutal-font { font-family: 'Inter', sans-serif; font-weight: 900; tracking: -0.05em; }
+        .tech-mono { font-family: 'Space Mono', monospace; }
+
+        /* --- Анимации --- */
+        @keyframes reactor-pulse {
+            0% { box-shadow: 0 0 15px rgba(255, 5, 43, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(255, 5, 43, 0.8); }
+            100% { box-shadow: 0 0 15px rgba(255, 5, 43, 0.4); }
+        }
+
+        /* Базовые стили карточки */
+        .card-item {
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease !important;
+        }
+        
+        /* Эффект при наведении */
+        .card-item:hover {
+            transform: scale(1.05) translateY(-5px) !important;
+            z-index: 10;
+            border-color: #333 !important;
+        }
+
+        /* 👑 S-TIER — КИБЕР-РЕАКТОР */
+        .tier-mega {
+            border: 2px solid transparent !important;
+            background-image: linear-gradient(var(--panel-dark), var(--panel-dark)), 
+                              linear-gradient(90deg, #ff052b, #200005, #ff052b) !important;
+            background-origin: border-box !important;
+            background-clip: padding-box, border-box !important;
+            box-shadow: 0 0 30px rgba(255, 5, 43, 0.4) !important;
+        }
+
+        /* Уникальный эффект наведения для карт в S-тире */
+        .tier-mega .card-item:hover {
+            animation: reactor-pulse 1.5s infinite;
+            border-color: var(--laser-red) !important;
+        }
+
+        /* 🔴 A-TIER — ЛАЗЕРНЫЙ КОНТУР */
+        .tier-10 {
+            border: 2px solid var(--laser-red) !important;
+            box-shadow: 0 0 20px rgba(255, 5, 43, 0.2) !important;
+        }
+
+        /* Заглушка для отсутствующего постера */
+        .no-poster {
+            background: repeating-linear-gradient(45deg, #0a0a0d 0, #0a0a0d 10px, #0d0d11 10px, #0d0d11 20px);
+            border: 1px dashed #2a2a35;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* Контейнер строки тира */
+        .tier-row {
+            background: #08080a;
+            border: 1px solid #15151a;
+            margin-bottom: 24px;
+        }
+
+        /* Улучшенный адаптивный заголовок тира */
+        .tier-label-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 900;
+            border-bottom: 1px solid #15151a; /* Линия снизу на мобильных */
+            background: #030304;
+        }
+
+        @media (min-width: 768px) {
+            .tier-label-box {
+                width: 100px; /* Фиксированная ширина на десктопе */
+                border-bottom: none;
+                border-right: 1px solid #15151a; /* Линия справа на десктопе */
+            }
+        }
+
+        /* Кастомный скроллбар */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--core-black); }
+        ::-webkit-scrollbar-thumb { background: #222; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--laser-red); }
+    </style>
 </head>
-<body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useEffect } = React;
+<body class="antialiased">
 
-// ─── TRANSLATIONS ───────────────────────────────────────────────
-const T = {
-  en: {
-    logo: "NUMERA", logoSub: "PREDICT", balance: "Balance", deposit: "Deposit", profile: "Profile",
-    weeklyJackpot: "Weekly Jackpot", rolloverSub: "Next rollover if no exact match", enterWeekly: "Enter Weekly Event",
-    activeEvents: "Active Events", bonus: "Bonus", daily: "Daily", weekly: "Weekly", monthly: "Monthly",
-    participants: "Participants", prizePool: "Prize Pool", entry: "Entry", free: "FREE", enterGuess: "Enter Guess",
-    pastEvents: "Previous Events", viewAll: "View All", eventPage: "Event Details", countdown: "Time Remaining",
-    source: "Resolution Source", transparency: "5% entry fee + 5% payout fee", enterExact: "Enter exact number",
-    allowedRange: "Allowed range", confirmEntry: "Confirm Entry", yourGuess: "Your guess",
-    resultsAfter: "Results will be available after closure.", result: "Result",
-    totalParticipants: "Total Participants", totalPool: "Total Pool", winners: "Winners",
-    payoutPerWinner: "Payout / Winner", distribution: "Full Distribution", number: "Number",
-    totalEntries: "Total Entries", noWinners: "No Winners — Rollover", profilePage: "Profile",
-    totalWinnings: "Total Winnings", totalLosses: "Total Losses", winRate: "Win Rate",
-    activeEntries: "Active Entries", history: "History", event: "Event", yourGuessCol: "Your Guess",
-    resultCol: "Result", status: "Status", payout: "Payout", won: "WON", lost: "LOST", pending: "PENDING",
-    back: "← Back", days: "d", hours: "h", minutes: "m", seconds: "s", finalResult: "Final Result",
-    closed: "CLOSED", live: "LIVE", home: "Home", events: "Events", noRollover: "No rollover",
-    fullRollover: "Full rollover if no winners", fixedReward: "Fixed reward", perUser: "per user",
-    oneEntryPerUser: "One entry per user",
-  },
-  ru: {
-    logo: "НУМЕРА", logoSub: "ПРОГНОЗ", balance: "Баланс", deposit: "Депозит", profile: "Профиль",
-    weeklyJackpot: "Недельный Джекпот", rolloverSub: "Переход в след. неделю при отсутствии точных совпадений",
-    enterWeekly: "Участвовать в Недельном", activeEvents: "Активные События", bonus: "Бонус", daily: "Дневной",
-    weekly: "Недельный", monthly: "Месячный", participants: "Участники", prizePool: "Призовой Фонд",
-    entry: "Взнос", free: "БЕСПЛАТНО", enterGuess: "Сделать Прогноз", pastEvents: "Прошедшие События",
-    viewAll: "Показать Все", eventPage: "Детали События", countdown: "Оставшееся Время",
-    source: "Источник Результата", transparency: "5% комиссия за вход + 5% комиссия с выплаты",
-    enterExact: "Введите точное число", allowedRange: "Допустимый диапазон",
-    confirmEntry: "Подтвердить Участие", yourGuess: "Ваш прогноз",
-    resultsAfter: "Результаты будут доступны после закрытия.", result: "Результат",
-    totalParticipants: "Всего Участников", totalPool: "Общий Фонд", winners: "Победители",
-    payoutPerWinner: "Выплата / Победитель", distribution: "Полное Распределение", number: "Число",
-    totalEntries: "Всего Ставок", noWinners: "Нет Победителей — Перенос", profilePage: "Профиль",
-    totalWinnings: "Общий Выигрыш", totalLosses: "Общие Потери", winRate: "% Побед",
-    activeEntries: "Активные Записи", history: "История", event: "Событие", yourGuessCol: "Ваш Прогноз",
-    resultCol: "Результат", status: "Статус", payout: "Выплата", won: "ВЫИГР.", lost: "ПРОИГР.",
-    pending: "ОЖИДАНИЕ", back: "← Назад", days: "д", hours: "ч", minutes: "м", seconds: "с",
-    finalResult: "Итоговый Результат", closed: "ЗАКРЫТ", live: "АКТИВНО", home: "Главная",
-    events: "События", noRollover: "Без переноса", fullRollover: "Полный перенос при отсутствии победителей",
-    fixedReward: "Фиксированная награда", perUser: "на участника", oneEntryPerUser: "Одна запись на пользователя",
-  },
-};
-
-// ─── MOCK DATA ──────────────────────────────────────────────────
-const activeEvents = [
-  { id:"b1",type:"bonus",titleEn:'How many times will "AI" be said in the TechConf keynote?',titleRu:'Сколько раз скажут "ИИ" на основном докладе TechConf?',entry:0,participants:1843,pool:100,fixedReward:true,countdown:3*3600+22*60+14,range:[0,200],source:"techconf.live/keynote" },
-  { id:"d1",type:"daily",titleEn:"How many goals will be scored in Liverpool vs Arsenal?",titleRu:"Сколько голов будет забито в матче Ливерпуль — Арсенал?",entry:5,participants:2341,pool:(2341*4.75).toFixed(0),countdown:5*3600+45*60+30,range:[0,15],source:"premierleague.com/match/12345" },
-  { id:"d2",type:"daily",titleEn:"How many tweets will @elonmusk post in 24 hours?",titleRu:"Сколько твитов опубликует @elonmusk за 24 часа?",entry:5,participants:4120,pool:(4120*4.75).toFixed(0),countdown:18*3600+12*60+45,range:[0,300],source:"x.com/elonmusk" },
-  { id:"w1",type:"weekly",titleEn:"How many points will the S&P 500 close at on Friday (rounded)?",titleRu:"На скольких пунктах закроется S&P 500 в пятницу (округлённо)?",entry:10,participants:1940,pool:(1940*9.5).toFixed(0),countdown:4*86400+6*3600+30*60,range:[4000,6000],source:"finance.yahoo.com/spy" },
-  { id:"w2",type:"weekly",titleEn:'How many times will "the" be spoken in Episode 5 of The Show?',titleRu:'Сколько раз скажут "the" в 5 серии The Show?',entry:10,participants:876,pool:(876*9.5).toFixed(0),countdown:5*86400+14*3600+10*60,range:[0,500],source:"theshow.tv/episode5" },
-  { id:"m1",type:"monthly",titleEn:"Total number of SpaceX launches in March 2026?",titleRu:"Общее количество запусков SpaceX в марте 2026?",entry:15,participants:3210,pool:(3210*14.25).toFixed(0),countdown:27*86400+8*3600+15*60,range:[0,30],source:"spacex.com/launches" },
-];
-
-const pastEvents = [
-  { id:"pd1",type:"daily",titleEn:"Goals in Bayern vs Dortmund",titleRu:"Голы в Бавария — Дортмунд",result:4,participants:1892,pool:8987,winners:87,payoutPerWinner:98.24 },
-  { id:"pd2",type:"daily",titleEn:"Tweets by @NASA in 24h",titleRu:"Твиты @NASA за 24ч",result:12,participants:3201,pool:15205,winners:24,payoutPerWinner:602.10 },
-  { id:"pd3",type:"daily",titleEn:"Red cards in Premier League matchday 28",titleRu:"Красные карточки в туре 28 Премьер-лиги",result:2,participants:2145,pool:10189,winners:312,payoutPerWinner:31.05 },
-  { id:"pw1",type:"weekly",titleEn:"S&P 500 Friday close (rounded)",titleRu:"Закрытие S&P 500 в пятницу (округлённо)",result:5234,participants:2103,pool:19979,winners:0,payoutPerWinner:0 },
-  { id:"pw2",type:"weekly",titleEn:"Total UFC knockouts in UFC 312",titleRu:"Всего нокаутов на UFC 312",result:5,participants:1450,pool:13775,winners:62,payoutPerWinner:211.15 },
-  { id:"pm1",type:"monthly",titleEn:"SpaceX launches in February 2026",titleRu:"Запуски SpaceX в феврале 2026",result:11,participants:2890,pool:41183,winners:18,payoutPerWinner:2174.02 },
-  { id:"pb1",type:"bonus",titleEn:'Times "blockchain" said at CryptoSummit',titleRu:'Сколько раз сказали "блокчейн" на CryptoSummit',result:47,participants:2201,pool:100,winners:3,payoutPerWinner:100 },
-  { id:"pb2",type:"bonus",titleEn:"Minutes of halftime show at Super Bowl",titleRu:"Минуты шоу в перерыве Супербоула",result:14,participants:5320,pool:100,winners:892,payoutPerWinner:100 },
-];
-
-const profileData = {
-  balance:1245.50, totalWinnings:3420.80, totalLosses:890.00, winRate:18.4, activeEntries:3,
-  history:[
-    {event:"Goals in Bayern vs Dortmund",guess:4,result:4,status:"won",payout:98.24},
-    {event:"Tweets by @NASA in 24h",guess:15,result:12,status:"lost",payout:0},
-    {event:"S&P 500 Friday close",guess:5234,result:5234,status:"won",payout:0},
-    {event:"SpaceX launches Feb 2026",guess:10,result:11,status:"lost",payout:0},
-    {event:"Liverpool vs Arsenal goals",guess:null,result:null,status:"pending",payout:null},
-    {event:"S&P 500 close this Friday",guess:null,result:null,status:"pending",payout:null},
-    {event:"SpaceX launches March",guess:null,result:null,status:"pending",payout:null},
-  ],
-};
-
-const closedEventData = {
-  distribution:[
-    {num:0,entries:45},{num:1,entries:189},{num:2,entries:412},{num:3,entries:523},
-    {num:4,entries:87},{num:5,entries:298},{num:6,entries:187},{num:7,entries:89},
-    {num:8,entries:42},{num:9,entries:15},{num:10,entries:5},
-  ],
-};
-
-// ─── UTILITIES ──────────────────────────────────────────────────
-const typeColors = {
-  bonus:{bg:"#1a2e1a",border:"#00e5a0",text:"#00e5a0",badge:"#00e5a022"},
-  daily:{bg:"#1a1e2e",border:"#4d8ef7",text:"#4d8ef7",badge:"#4d8ef722"},
-  weekly:{bg:"#2a1a2e",border:"#c06df7",text:"#c06df7",badge:"#c06df722"},
-  monthly:{bg:"#2e2a1a",border:"#f7b94d",text:"#f7b94d",badge:"#f7b94d22"},
-};
-
-function formatMoney(n){
-  if(n>=1000) return "$"+n.toLocaleString("en-US",{minimumFractionDigits:0,maximumFractionDigits:2});
-  return "$"+Number(n).toFixed(2);
-}
-
-function useCountdown(initial){
-  const[sec,setSec]=useState(initial);
-  useEffect(()=>{const iv=setInterval(()=>setSec(s=>s>0?s-1:0),1000);return()=>clearInterval(iv)},[]);
-  return{d:Math.floor(sec/86400),h:Math.floor((sec%86400)/3600),m:Math.floor((sec%3600)/60),s:sec%60};
-}
-
-function CountdownDisplay({seconds,t,size="md"}){
-  const c=useCountdown(seconds);
-  const fs=size==="lg"?"clamp(24px,5vw,48px)":size==="sm"?"16px":"clamp(20px,3vw,28px)";
-  const mono={fontFamily:"'JetBrains Mono',monospace",letterSpacing:"0.05em"};
-  return(
-    <div style={{display:"flex",alignItems:"center",gap:size==="sm"?4:8,fontSize:fs,...mono}}>
-      {c.d>0&&<><span style={{color:"#e0e0e0"}}>{String(c.d).padStart(2,"0")}</span><span style={{color:"#00e5a0",opacity:.5}}>{t.days}</span><span style={{color:"#333"}}>:</span></>}
-      <span style={{color:"#e0e0e0"}}>{String(c.h).padStart(2,"0")}</span><span style={{color:"#00e5a0",opacity:.5}}>{t.hours}</span><span style={{color:"#333"}}>:</span>
-      <span style={{color:"#e0e0e0"}}>{String(c.m).padStart(2,"0")}</span><span style={{color:"#00e5a0",opacity:.5}}>{t.minutes}</span><span style={{color:"#333"}}>:</span>
-      <span style={{color:"#e0e0e0"}}>{String(c.s).padStart(2,"0")}</span><span style={{color:"#00e5a0",opacity:.5}}>{t.seconds}</span>
-    </div>
-  );
-}
-
-// ─── HEADER ─────────────────────────────────────────────────────
-function Header({lang,setLang,t,setPage}){
-  return(
-    <header style={{background:"linear-gradient(180deg,#0a0b0f,#0d0e14)",borderBottom:"1px solid #1a1b23",position:"sticky",top:0,zIndex:50}}>
-      <div style={{maxWidth:1200,margin:"0 auto",padding:"12px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8}}>
-        <div style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer"}} onClick={()=>setPage("home")}>
-          <div style={{width:36,height:36,borderRadius:8,background:"linear-gradient(135deg,#00e5a0,#00b37e)",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:18,color:"#0a0b0f",fontFamily:"'JetBrains Mono',monospace"}}>N</div>
-          <div>
-            <div style={{fontWeight:700,fontSize:15,color:"#e0e0e0",letterSpacing:"0.12em",fontFamily:"'JetBrains Mono',monospace",lineHeight:1}}>{t.logo}</div>
-            <div style={{fontSize:9,color:"#00e5a0",letterSpacing:"0.3em",fontFamily:"'JetBrains Mono',monospace",lineHeight:1,marginTop:2}}>{t.logoSub}</div>
-          </div>
-        </div>
-        <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
-          <div style={{display:"flex",borderRadius:6,overflow:"hidden",border:"1px solid #1a1b23"}}>
-            {["en","ru"].map(l=>(
-              <button key={l} onClick={()=>setLang(l)} style={{padding:"6px 10px",fontSize:12,fontWeight:600,background:lang===l?"#00e5a0":"transparent",color:lang===l?"#0a0b0f":"#666",border:"none",cursor:"pointer",fontFamily:"'JetBrains Mono',monospace",letterSpacing:"0.05em"}}>{l.toUpperCase()}</button>
-            ))}
-          </div>
-          <div style={{padding:"6px 12px",borderRadius:6,background:"#111218",border:"1px solid #1a1b23",display:"flex",alignItems:"center",gap:6}}>
-            <span style={{fontSize:11,color:"#666"}}>{t.balance}</span>
-            <span style={{fontSize:14,fontWeight:700,color:"#00e5a0",fontFamily:"'JetBrains Mono',monospace"}}>${profileData.balance.toFixed(2)}</span>
-          </div>
-          <button style={{padding:"6px 14px",borderRadius:6,fontSize:12,fontWeight:700,background:"linear-gradient(135deg,#00e5a0,#00b37e)",color:"#0a0b0f",border:"none",cursor:"pointer",fontFamily:"'JetBrains Mono',monospace"}}>{t.deposit}</button>
-          <button onClick={()=>setPage("profile")} style={{width:36,height:36,borderRadius:8,background:"#111218",border:"1px solid #1a1b23",color:"#888",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>👤</button>
-        </div>
-      </div>
-    </header>
-  );
-}
-
-// ─── EVENT CARD ─────────────────────────────────────────────────
-function EventCard({ev,t,lang,onClick}){
-  const c=typeColors[ev.type];
-  const[hov,setHov]=useState(false);
-  return(
-    <div onClick={onClick} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)} style={{background:`linear-gradient(135deg,${c.bg},#0d0e14)`,border:`1px solid ${hov?c.border+"66":c.border+"22"}`,borderRadius:12,padding:20,cursor:"pointer",transition:"all .25s",transform:hov?"translateY(-2px)":"none",position:"relative",overflow:"hidden"}}>
-      <div style={{position:"absolute",top:0,right:0,width:120,height:120,background:`radial-gradient(circle at top right,${c.border}08,transparent 70%)`}}/>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
-        <span style={{padding:"3px 8px",borderRadius:4,fontSize:10,fontWeight:700,background:c.badge,color:c.text,letterSpacing:"0.1em",fontFamily:"'JetBrains Mono',monospace",textTransform:"uppercase"}}>{t[ev.type]}</span>
-        <span style={{display:"flex",alignItems:"center",gap:4,padding:"3px 8px",borderRadius:4,fontSize:10,background:"#00e5a015",color:"#00e5a0",fontFamily:"'JetBrains Mono',monospace"}}>
-          <span style={{width:6,height:6,borderRadius:"50%",background:"#00e5a0",animation:"pulse 2s infinite"}}/>
-          {t.live}
-        </span>
-      </div>
-      <h3 style={{fontSize:14,fontWeight:600,color:"#d0d0d0",marginBottom:14,lineHeight:1.4,minHeight:40}}>{lang==="en"?ev.titleEn:ev.titleRu}</h3>
-      <CountdownDisplay seconds={ev.countdown} t={t} size="sm"/>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginTop:14}}>
-        <div style={{background:"#0a0b0f80",borderRadius:6,padding:"8px 10px"}}>
-          <div style={{fontSize:10,color:"#666",marginBottom:2}}>{t.participants}</div>
-          <div style={{fontSize:16,fontWeight:700,color:"#e0e0e0",fontFamily:"'JetBrains Mono',monospace"}}>{Number(ev.participants).toLocaleString()}</div>
-        </div>
-        <div style={{background:"#0a0b0f80",borderRadius:6,padding:"8px 10px"}}>
-          <div style={{fontSize:10,color:"#666",marginBottom:2}}>{t.prizePool}</div>
-          <div style={{fontSize:16,fontWeight:700,color:"#00e5a0",fontFamily:"'JetBrains Mono',monospace"}}>{ev.fixedReward?"$100":formatMoney(ev.pool)}</div>
-        </div>
-      </div>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:14,paddingTop:14,borderTop:`1px solid ${c.border}15`}}>
-        <span style={{fontSize:13,fontWeight:600,color:ev.entry===0?"#00e5a0":"#e0e0e0",fontFamily:"'JetBrains Mono',monospace"}}>{ev.entry===0?t.free:`$${ev.entry}`}</span>
-        <span style={{padding:"6px 14px",borderRadius:6,fontSize:12,fontWeight:700,background:c.text+"18",color:c.text,fontFamily:"'JetBrains Mono',monospace"}}>{t.enterGuess} →</span>
-      </div>
-    </div>
-  );
-}
-
-// ─── PAST EVENT CARD ────────────────────────────────────────────
-function PastEventCard({ev,t,lang,onClick}){
-  const c=typeColors[ev.type];
-  const nw=ev.winners===0;
-  const[hov,setHov]=useState(false);
-  return(
-    <div onClick={onClick} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)} style={{background:"#0d0e14",border:`1px solid ${hov?"#1a1b2380":"#1a1b2330"}`,borderRadius:10,padding:16,cursor:"pointer",transition:"all .2s"}}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-        <span style={{padding:"2px 6px",borderRadius:4,fontSize:9,fontWeight:700,background:c.badge,color:c.text,letterSpacing:"0.1em",fontFamily:"'JetBrains Mono',monospace",textTransform:"uppercase"}}>{t[ev.type]}</span>
-        <span style={{padding:"2px 6px",borderRadius:4,fontSize:9,background:"#ffffff08",color:"#666",fontFamily:"'JetBrains Mono',monospace"}}>{t.closed}</span>
-      </div>
-      <h4 style={{fontSize:13,fontWeight:500,color:"#aaa",marginBottom:12}}>{lang==="en"?ev.titleEn:ev.titleRu}</h4>
-      <div style={{fontSize:28,fontWeight:800,color:"#00e5a0",fontFamily:"'JetBrains Mono',monospace",marginBottom:12,textAlign:"center",padding:"8px 0",background:"#00e5a008",borderRadius:8}}>{ev.result}</div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,fontSize:11}}>
-        <div><span style={{color:"#555"}}>{t.participants}: </span><span style={{color:"#aaa",fontFamily:"'JetBrains Mono',monospace"}}>{ev.participants.toLocaleString()}</span></div>
-        <div><span style={{color:"#555"}}>{t.prizePool}: </span><span style={{color:"#aaa",fontFamily:"'JetBrains Mono',monospace"}}>{formatMoney(ev.pool)}</span></div>
-        <div><span style={{color:"#555"}}>{t.winners}: </span><span style={{color:nw?"#f74d4d":"#00e5a0",fontFamily:"'JetBrains Mono',monospace"}}>{nw?"0":ev.winners}</span></div>
-        <div><span style={{color:"#555"}}>{t.payout}: </span><span style={{color:nw?"#f74d4d":"#00e5a0",fontFamily:"'JetBrains Mono',monospace"}}>{nw?"—":formatMoney(ev.payoutPerWinner)}</span></div>
-      </div>
-    </div>
-  );
-}
-
-// ─── HOME PAGE ──────────────────────────────────────────────────
-function HomePage({t,lang,setPage,setSelectedEvent}){
-  const we=activeEvents.find(e=>e.type==="weekly");
-  return(
-    <div>
-      <section style={{background:"linear-gradient(135deg,#0d0e14,#1a0e2e 50%,#0d0e14)",padding:"48px 16px",textAlign:"center",position:"relative",overflow:"hidden"}}>
-        <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:500,height:500,borderRadius:"50%",background:"radial-gradient(circle,#c06df710,transparent 70%)"}}/>
-        <div style={{position:"relative",zIndex:1,maxWidth:700,margin:"0 auto"}}>
-          <div style={{fontSize:12,color:"#c06df7",letterSpacing:"0.3em",fontFamily:"'JetBrains Mono',monospace",marginBottom:8,fontWeight:600,textTransform:"uppercase"}}>{t.weeklyJackpot}</div>
-          <div style={{fontSize:"clamp(48px,10vw,80px)",fontWeight:800,fontFamily:"'JetBrains Mono',monospace",lineHeight:1,marginBottom:12,background:"linear-gradient(135deg,#fff,#c06df7)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>${Number(we.pool).toLocaleString()}</div>
-          <div style={{fontSize:14,color:"#777",marginBottom:28,maxWidth:400,margin:"0 auto 28px"}}>{t.rolloverSub}</div>
-          <CountdownDisplay seconds={we.countdown} t={t} size="lg"/>
-          <button onClick={()=>{setSelectedEvent(we);setPage("event-active")}} style={{marginTop:32,padding:"14px 36px",borderRadius:8,background:"linear-gradient(135deg,#c06df7,#8b3ecf)",color:"#fff",border:"none",fontSize:15,fontWeight:700,cursor:"pointer",fontFamily:"'JetBrains Mono',monospace",letterSpacing:"0.05em",boxShadow:"0 4px 24px #c06df740"}}>{t.enterWeekly} — $10</button>
-        </div>
-      </section>
-
-      <section style={{maxWidth:1200,margin:"0 auto",padding:"40px 16px"}}>
-        <h2 style={{fontSize:22,fontWeight:700,color:"#e0e0e0",marginBottom:28,fontFamily:"'JetBrains Mono',monospace",letterSpacing:"0.05em"}}>{t.activeEvents}</h2>
-        {["bonus","daily","weekly","monthly"].map(type=>{
-          const evs=activeEvents.filter(e=>e.type===type);
-          if(!evs.length) return null;
-          const c=typeColors[type];
-          return(
-            <div key={type} style={{marginBottom:32}}>
-              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14,flexWrap:"wrap"}}>
-                <span style={{width:8,height:8,borderRadius:"50%",background:c.border,boxShadow:`0 0 8px ${c.border}60`}}/>
-                <span style={{fontSize:13,fontWeight:700,color:c.text,letterSpacing:"0.15em",fontFamily:"'JetBrains Mono',monospace",textTransform:"uppercase"}}>{t[type]}</span>
-                <span style={{fontSize:11,color:"#555",fontFamily:"'JetBrains Mono',monospace"}}>
-                  {type==="bonus"&&`• ${t.fixedReward} $100 ${t.perUser} • ${t.noRollover}`}
-                  {type==="daily"&&`• $5 ${t.entry.toLowerCase()} • ${t.noRollover}`}
-                  {type==="weekly"&&`• $10 ${t.entry.toLowerCase()} • ${t.fullRollover}`}
-                  {type==="monthly"&&`• $15 ${t.entry.toLowerCase()} • ${t.fullRollover}`}
-                </span>
-              </div>
-              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:16}}>
-                {evs.map(ev=><EventCard key={ev.id} ev={ev} t={t} lang={lang} onClick={()=>{setSelectedEvent(ev);setPage("event-active")}}/>)}
-              </div>
+    <div class="max-w-[1400px] mx-auto px-6 py-12">
+        
+        <header class="mb-16 border-b-2 border-[#111] pb-8 relative">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="tech-mono text-xs text-red-500 bg-red-950/50 px-2 py-0.5 border border-red-900/40">FUEL_REGISTRY</span>
+                <!-- Динамический счетчик, заполняется JS -->
+                <span id="load-status" class="tech-mono text-xs text-zinc-600">[ СТАТУС: ИНИЦИАЛИЗАЦИЯ... ]</span>
             </div>
-          );
-        })}
-      </section>
-
-      <section style={{maxWidth:1200,margin:"0 auto",padding:"0 16px 60px"}}>
-        <h2 style={{fontSize:22,fontWeight:700,color:"#e0e0e0",marginBottom:28,fontFamily:"'JetBrains Mono',monospace",letterSpacing:"0.05em"}}>{t.pastEvents}</h2>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:14}}>
-          {pastEvents.map(ev=><PastEventCard key={ev.id} ev={ev} t={t} lang={lang} onClick={()=>{setSelectedEvent(ev);setPage("event-closed")}}/>)}
-        </div>
-      </section>
-    </div>
-  );
-}
-
-// ─── ACTIVE EVENT PAGE ──────────────────────────────────────────
-function ActiveEventPage({ev,t,lang,setPage}){
-  const[guess,setGuess]=useState("");
-  const[submitted,setSubmitted]=useState(false);
-  const c=typeColors[ev.type];
-  const handleDigit=d=>{if(guess.length<5)setGuess(g=>g+d)};
-  const handleDelete=()=>setGuess(g=>g.slice(0,-1));
-  const handleSubmit=()=>{if(guess!=="")setSubmitted(true)};
-
-  return(
-    <div style={{maxWidth:700,margin:"0 auto",padding:"20px 16px 80px"}}>
-      <button onClick={()=>setPage("home")} style={{background:"none",border:"none",color:"#666",fontSize:14,cursor:"pointer",fontFamily:"'JetBrains Mono',monospace",marginBottom:20,padding:0}}>{t.back}</button>
-      <div style={{background:`linear-gradient(135deg,${c.bg},#0d0e14)`,border:`1px solid ${c.border}22`,borderRadius:14,padding:24,marginBottom:20}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-          <span style={{padding:"3px 8px",borderRadius:4,fontSize:10,fontWeight:700,background:c.badge,color:c.text,letterSpacing:"0.1em",fontFamily:"'JetBrains Mono',monospace",textTransform:"uppercase"}}>{t[ev.type]}</span>
-          <span style={{padding:"3px 8px",borderRadius:4,fontSize:10,background:"#00e5a015",color:"#00e5a0",fontFamily:"'JetBrains Mono',monospace"}}>{t.live}</span>
-        </div>
-        <h1 style={{fontSize:20,fontWeight:700,color:"#e0e0e0",marginBottom:20,lineHeight:1.4}}>{lang==="en"?ev.titleEn:ev.titleRu}</h1>
-        <div style={{marginBottom:16}}>
-          <span style={{fontSize:11,color:"#555"}}>{t.countdown}</span>
-          <div style={{marginTop:6}}><CountdownDisplay seconds={ev.countdown} t={t} size="md"/></div>
-        </div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:16}}>
-          <div style={{background:"#0a0b0f80",borderRadius:8,padding:12}}>
-            <div style={{fontSize:10,color:"#555",marginBottom:4}}>{t.participants}</div>
-            <div style={{fontSize:20,fontWeight:700,color:"#e0e0e0",fontFamily:"'JetBrains Mono',monospace"}}>{ev.participants.toLocaleString()}</div>
-          </div>
-          <div style={{background:"#0a0b0f80",borderRadius:8,padding:12}}>
-            <div style={{fontSize:10,color:"#555",marginBottom:4}}>{t.prizePool}</div>
-            <div style={{fontSize:20,fontWeight:700,color:"#00e5a0",fontFamily:"'JetBrains Mono',monospace"}}>{ev.fixedReward?"$100":formatMoney(ev.pool)}</div>
-          </div>
-          <div style={{background:"#0a0b0f80",borderRadius:8,padding:12}}>
-            <div style={{fontSize:10,color:"#555",marginBottom:4}}>{t.entry}</div>
-            <div style={{fontSize:20,fontWeight:700,color:ev.entry===0?"#00e5a0":c.text,fontFamily:"'JetBrains Mono',monospace"}}>{ev.entry===0?t.free:`$${ev.entry}`}</div>
-          </div>
-        </div>
-        <div style={{fontSize:11,color:"#444",marginBottom:8}}><span style={{color:"#555"}}>{t.source}: </span><span style={{color:c.text,textDecoration:"underline"}}>{ev.source}</span></div>
-        <div style={{fontSize:11,color:"#444"}}>{t.transparency}</div>
-      </div>
-
-      {!submitted?(
-        <div style={{background:"#0d0e14",border:"1px solid #1a1b23",borderRadius:14,padding:24,textAlign:"center"}}>
-          <div style={{fontSize:12,color:"#666",marginBottom:6}}>{t.enterExact}</div>
-          <div style={{fontSize:11,color:"#444",marginBottom:20}}>{t.allowedRange}: {ev.range[0]}–{ev.range[1]}</div>
-          <div style={{fontSize:"clamp(40px,8vw,64px)",fontWeight:800,color:guess?"#fff":"#333",fontFamily:"'JetBrains Mono',monospace",minHeight:80,display:"flex",alignItems:"center",justifyContent:"center",borderBottom:`2px solid ${guess?c.border:"#1a1b23"}`,marginBottom:24,paddingBottom:8,transition:"all .2s"}}>{guess||"—"}</div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,maxWidth:280,margin:"0 auto 20px"}}>
-            {[1,2,3,4,5,6,7,8,9,null,0,"del"].map((d,i)=>{
-              if(d===null)return <div key={i}/>;
-              return <button key={i} onClick={()=>d==="del"?handleDelete():handleDigit(String(d))} style={{padding:"14px 0",borderRadius:8,fontSize:22,fontWeight:600,background:d==="del"?"#1a0e0e":"#111218",color:d==="del"?"#f74d4d":"#e0e0e0",border:"1px solid #1a1b23",cursor:"pointer",fontFamily:"'JetBrains Mono',monospace"}}>{d==="del"?"⌫":d}</button>;
-            })}
-          </div>
-          <button onClick={handleSubmit} disabled={!guess} style={{width:"100%",maxWidth:280,padding:"14px 0",borderRadius:8,fontSize:14,fontWeight:700,background:guess?`linear-gradient(135deg,${c.border},${c.border}cc)`:"#1a1b23",color:guess?"#0a0b0f":"#444",border:"none",cursor:guess?"pointer":"default",fontFamily:"'JetBrains Mono',monospace",letterSpacing:"0.05em",boxShadow:guess?`0 4px 20px ${c.border}40`:"none"}}>{t.confirmEntry}{ev.entry>0?` — $${ev.entry}`:""}</button>
-        </div>
-      ):(
-        <div style={{background:"#0d0e14",border:`1px solid ${c.border}33`,borderRadius:14,padding:32,textAlign:"center"}}>
-          <div style={{fontSize:12,color:"#666",marginBottom:8}}>{t.yourGuess}</div>
-          <div style={{fontSize:56,fontWeight:800,color:c.text,fontFamily:"'JetBrains Mono',monospace",marginBottom:16}}>{guess}</div>
-          <div style={{fontSize:13,color:"#555",padding:"12px 20px",background:"#0a0b0f",borderRadius:8}}>{t.resultsAfter}</div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ─── CLOSED EVENT PAGE ──────────────────────────────────────────
-function ClosedEventPage({ev,t,lang,setPage}){
-  const c=typeColors[ev.type];
-  const nw=ev.winners===0;
-  const dist=closedEventData.distribution;
-  const maxE=Math.max(...dist.map(r=>r.entries));
-
-  return(
-    <div style={{maxWidth:700,margin:"0 auto",padding:"20px 16px 80px"}}>
-      <button onClick={()=>setPage("home")} style={{background:"none",border:"none",color:"#666",fontSize:14,cursor:"pointer",fontFamily:"'JetBrains Mono',monospace",marginBottom:20,padding:0}}>{t.back}</button>
-      <div style={{background:`linear-gradient(135deg,${c.bg},#0d0e14)`,border:`1px solid ${c.border}22`,borderRadius:14,padding:24,marginBottom:20}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-          <span style={{padding:"3px 8px",borderRadius:4,fontSize:10,fontWeight:700,background:c.badge,color:c.text,letterSpacing:"0.1em",fontFamily:"'JetBrains Mono',monospace",textTransform:"uppercase"}}>{t[ev.type]}</span>
-          <span style={{padding:"2px 6px",borderRadius:4,fontSize:9,background:"#ffffff08",color:"#666",fontFamily:"'JetBrains Mono',monospace"}}>{t.closed}</span>
-        </div>
-        <h1 style={{fontSize:20,fontWeight:700,color:"#e0e0e0",marginBottom:24,lineHeight:1.4}}>{lang==="en"?ev.titleEn:ev.titleRu}</h1>
-        <div style={{textAlign:"center",padding:24,background:"#0a0b0f",borderRadius:12,marginBottom:20,border:"1px solid #00e5a022"}}>
-          <div style={{fontSize:12,color:"#00e5a0",letterSpacing:"0.2em",fontFamily:"'JetBrains Mono',monospace",marginBottom:8}}>{t.finalResult}</div>
-          <div style={{fontSize:64,fontWeight:800,color:"#00e5a0",fontFamily:"'JetBrains Mono',monospace",lineHeight:1,textShadow:"0 0 40px #00e5a020"}}>{ev.result}</div>
-        </div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-          {[
-            {label:t.totalParticipants,value:ev.participants.toLocaleString(),color:"#e0e0e0"},
-            {label:t.totalPool,value:formatMoney(ev.pool),color:"#e0e0e0"},
-            {label:t.winners,value:nw?"0":String(ev.winners),color:nw?"#f74d4d":"#00e5a0"},
-            {label:t.payoutPerWinner,value:nw?"—":formatMoney(ev.payoutPerWinner),color:nw?"#f74d4d":"#00e5a0"},
-          ].map((s,i)=>(
-            <div key={i} style={{background:"#0a0b0f80",borderRadius:8,padding:12}}>
-              <div style={{fontSize:10,color:"#555",marginBottom:4}}>{s.label}</div>
-              <div style={{fontSize:20,fontWeight:700,color:s.color,fontFamily:"'JetBrains Mono',monospace"}}>{s.value}</div>
+            <h1 class="brutal-font text-4xl sm:text-7xl uppercase tracking-tighter text-white">
+                К<span class="text-red-600">.</span>А<span class="text-red-600">.</span>Л <span class="text-zinc-600 text-3xl sm:text-4xl font-normal tech-mono">// Кворс Энерго Лист</span>
+            </h1>
+            <div class="mt-6 flex gap-4">
+                <a href="/" class="tech-mono text-[10px] uppercase border border-zinc-800 px-4 py-2 hover:border-red-600 hover:text-red-500 transition-all">
+                    [ ← RETURN_TO_MAIN ]
+                </a>
             </div>
-          ))}
+        </header>
+
+        <!-- Контейнер для вывода тирлиста -->
+        <div id="content" class="tech-mono text-zinc-500 uppercase tracking-widest text-center py-20">
+            [ ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ... ]
         </div>
-        {nw&&<div style={{marginTop:14,padding:"10px 16px",borderRadius:8,background:"#f74d4d10",border:"1px solid #f74d4d22",fontSize:13,color:"#f74d4d",textAlign:"center",fontFamily:"'JetBrains Mono',monospace"}}>{t.noWinners}</div>}
-      </div>
-
-      <div style={{background:"#0d0e14",border:"1px solid #1a1b23",borderRadius:14,padding:24}}>
-        <h3 style={{fontSize:14,fontWeight:700,color:"#888",marginBottom:16,fontFamily:"'JetBrains Mono',monospace",letterSpacing:"0.1em"}}>{t.distribution}</h3>
-        <div style={{overflowX:"auto"}}>
-          <table style={{width:"100%",borderCollapse:"collapse"}}>
-            <thead>
-              <tr>
-                <th style={{textAlign:"left",padding:"8px 12px",fontSize:11,color:"#555",borderBottom:"1px solid #1a1b23",fontFamily:"'JetBrains Mono',monospace"}}>{t.number}</th>
-                <th style={{textAlign:"right",padding:"8px 12px",fontSize:11,color:"#555",borderBottom:"1px solid #1a1b23",fontFamily:"'JetBrains Mono',monospace"}}>{t.totalEntries}</th>
-                <th style={{textAlign:"right",padding:"8px 12px",fontSize:11,color:"#555",borderBottom:"1px solid #1a1b23"}}></th>
-              </tr>
-            </thead>
-            <tbody>
-              {dist.map(row=>{
-                const isW=row.num===ev.result;
-                const bw=(row.entries/maxE)*100;
-                return(
-                  <tr key={row.num} style={{background:isW?"#00e5a008":"transparent"}}>
-                    <td style={{padding:"10px 12px",fontSize:15,fontWeight:isW?800:500,color:isW?"#00e5a0":"#aaa",fontFamily:"'JetBrains Mono',monospace",borderBottom:"1px solid #0a0b0f"}}>{row.num}{isW&&" ✓"}</td>
-                    <td style={{padding:"10px 12px",fontSize:14,fontWeight:isW?700:400,color:isW?"#00e5a0":"#777",fontFamily:"'JetBrains Mono',monospace",textAlign:"right",borderBottom:"1px solid #0a0b0f"}}>{row.entries}</td>
-                    <td style={{padding:"10px 12px",borderBottom:"1px solid #0a0b0f",width:"40%"}}><div style={{height:6,borderRadius:3,background:isW?"#00e5a0":"#1a1b23",width:`${bw}%`}}/></td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
-  );
-}
 
-// ─── PROFILE PAGE ───────────────────────────────────────────────
-function ProfilePage({t,lang,setPage}){
-  const p=profileData;
-  const sc={won:"#00e5a0",lost:"#f74d4d",pending:"#f7b94d"};
-  return(
-    <div style={{maxWidth:700,margin:"0 auto",padding:"20px 16px 80px"}}>
-      <button onClick={()=>setPage("home")} style={{background:"none",border:"none",color:"#666",fontSize:14,cursor:"pointer",fontFamily:"'JetBrains Mono',monospace",marginBottom:20,padding:0}}>{t.back}</button>
-      <h1 style={{fontSize:24,fontWeight:700,color:"#e0e0e0",marginBottom:24,fontFamily:"'JetBrains Mono',monospace"}}>{t.profilePage}</h1>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:12,marginBottom:28}}>
-        {[
-          {label:t.balance,value:formatMoney(p.balance),color:"#e0e0e0"},
-          {label:t.totalWinnings,value:formatMoney(p.totalWinnings),color:"#00e5a0"},
-          {label:t.totalLosses,value:formatMoney(p.totalLosses),color:"#f74d4d"},
-          {label:t.winRate,value:p.winRate+"%",color:"#f7b94d"},
-          {label:t.activeEntries,value:String(p.activeEntries),color:"#c06df7"},
-        ].map((s,i)=>(
-          <div key={i} style={{background:"#0d0e14",border:"1px solid #1a1b23",borderRadius:10,padding:16}}>
-            <div style={{fontSize:10,color:"#555",marginBottom:6,fontFamily:"'JetBrains Mono',monospace"}}>{s.label}</div>
-            <div style={{fontSize:22,fontWeight:700,color:s.color,fontFamily:"'JetBrains Mono',monospace"}}>{s.value}</div>
-          </div>
-        ))}
-      </div>
-      <h2 style={{fontSize:16,fontWeight:700,color:"#888",marginBottom:16,fontFamily:"'JetBrains Mono',monospace",letterSpacing:"0.1em"}}>{t.history}</h2>
-      <div style={{background:"#0d0e14",border:"1px solid #1a1b23",borderRadius:12,overflow:"hidden"}}>
-        <div style={{overflowX:"auto"}}>
-          <table style={{width:"100%",borderCollapse:"collapse",minWidth:550}}>
-            <thead>
-              <tr>
-                {[t.event,t.yourGuessCol,t.resultCol,t.status,t.payout].map((h,i)=>(
-                  <th key={i} style={{textAlign:i===0?"left":"center",padding:"12px 14px",fontSize:11,color:"#444",borderBottom:"1px solid #1a1b23",fontFamily:"'JetBrains Mono',monospace",fontWeight:600}}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {p.history.map((h,i)=>(
-                <tr key={i} style={{borderBottom:"1px solid #0a0b0f"}}>
-                  <td style={{padding:"12px 14px",fontSize:13,color:"#aaa"}}>{h.event}</td>
-                  <td style={{padding:"12px 14px",fontSize:14,color:"#e0e0e0",textAlign:"center",fontFamily:"'JetBrains Mono',monospace",fontWeight:600}}>{h.guess??"\u2014"}</td>
-                  <td style={{padding:"12px 14px",fontSize:14,color:"#e0e0e0",textAlign:"center",fontFamily:"'JetBrains Mono',monospace",fontWeight:600}}>{h.result??"\u2014"}</td>
-                  <td style={{padding:"12px 14px",textAlign:"center"}}><span style={{padding:"3px 8px",borderRadius:4,fontSize:10,fontWeight:700,background:sc[h.status]+"18",color:sc[h.status],fontFamily:"'JetBrains Mono',monospace"}}>{t[h.status]}</span></td>
-                  <td style={{padding:"12px 14px",fontSize:14,textAlign:"center",color:h.payout>0?"#00e5a0":"#555",fontFamily:"'JetBrains Mono',monospace",fontWeight:600}}>{h.payout!=null?(h.payout>0?formatMoney(h.payout):"$0"):"\u2014"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-}
+    <!-- Библиотека PapaParse для чтения CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    
+    <script>
+        // Ссылка на твою Google Таблицу (CSV формат)
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1_Z97l6DZHq57gYrk_LiQTDc3Qr60yNxSznQQeA_EzEQ/export?format=csv';
+        const tierOrder = ['S', 'A', 'B', 'C', 'D', 'F', '?'];
+        
+        // --- 1. Функция безопасности: Экранирование HTML ---
+        // Защищает от XSS-атак, если в таблице появится зловредный код.
+        function escapeHTML(str) {
+            if (!str) return '';
+            return str.toString().replace(/[&<>'"]/g, tag => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+            }[tag]));
+        }
+        
+        // Основная функция загрузки данных
+        function loadData() {
+            Papa.parse(SHEET_URL, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    renderTierList(results.data);
+                },
+                // --- 2. Обработка ошибок загрузки ---
+                error: function(err) {
+                    console.error("Ошибка PapaParse:", err);
+                    document.getElementById('content').innerHTML = `
+                        <div class="text-red-500 tech-mono text-sm border border-red-900 bg-red-950/30 p-6 inline-block">
+                            [ОШИБКА_СИСТЕМЫ]: НЕ УДАЛОСЬ ЗАГРУЗИТЬ ПОТОК ДАННЫХ.<br>
+                            ПРОВЕРЬТЕ ПОДКЛЮЧЕНИЕ ИЛИ ССЫЛКУ НА ТАБЛИЦУ.
+                        </div>
+                    `;
+                }
+            });
+        }
+        
+        // Функция отрисовки тирлиста
+        function renderTierList(data) {
+            const tiers = {};
+            tierOrder.forEach(tier => tiers[tier] = []);
+            let totalCount = 0; // Счетчик энергосов
+            
+            // Обработка сырых данных из таблицы
+            data.forEach(row => {
+                // Извлекаем и экранируем данные
+                const name = escapeHTML(row['Название'] || row['название'] || row['Name']);
+                const brand = escapeHTML(row['Бренд'] || row['бренд'] || row['Brand']);
+                let rating = escapeHTML(row['Оценка'] || row['оценка'] || row['Rating']);
+                const image = escapeHTML(row['Картинка'] || row['картинка'] || row['Image']); // Ссылки не экранируем
+                
+                // Проверяем валидность строки
+                if (name && rating) {
+                    rating = rating.toString().trim().toUpperCase();
+                    // Если оценка не из списка, кидаем в '?'
+                    if (!tiers[rating]) rating = '?';
+                    tiers[rating].push({ name, brand, rating, image });
+                    totalCount++; // Увеличиваем счетчик
+                }
+            });
 
-// ─── BOTTOM NAV ─────────────────────────────────────────────────
-function BottomNav({page,setPage,t}){
-  return(
-    <div style={{position:"fixed",bottom:0,left:0,right:0,background:"#0a0b0f",borderTop:"1px solid #1a1b23",display:"flex",justifyContent:"center",gap:32,padding:"10px 0",paddingBottom:"max(10px, env(safe-area-inset-bottom))",zIndex:50}}>
-      {[{key:"home",label:t.home,icon:"⌂"},{key:"profile",label:t.profile,icon:"👤"}].map(it=>(
-        <button key={it.key} onClick={()=>setPage(it.key)} style={{background:"none",border:"none",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:2,color:page===it.key?"#00e5a0":"#555",fontSize:18}}>
-          <span>{it.icon}</span>
-          <span style={{fontSize:10,fontFamily:"'JetBrains Mono',monospace"}}>{it.label}</span>
-        </button>
-      ))}
-    </div>
-  );
-}
+            // --- 3. Обновление счетчика в шапке ---
+            document.getElementById('load-status').textContent = `[ LOADED_ENTITIES: ${totalCount} ]`;
 
-// ─── MAIN APP ───────────────────────────────────────────────────
-function App(){
-  const[lang,setLang]=useState("en");
-  const[page,setPage]=useState("home");
-  const[selectedEvent,setSelectedEvent]=useState(null);
-  const t=T[lang];
-  return(
-    <div style={{minHeight:"100vh",background:"#0a0b0f",color:"#e0e0e0",fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}}>
-      <Header lang={lang} setLang={setLang} t={t} setPage={setPage}/>
-      <main style={{paddingBottom:70}}>
-        {page==="home"&&<HomePage t={t} lang={lang} setPage={setPage} setSelectedEvent={setSelectedEvent}/>}
-        {page==="event-active"&&selectedEvent&&<ActiveEventPage ev={selectedEvent} t={t} lang={lang} setPage={setPage}/>}
-        {page==="event-closed"&&selectedEvent&&<ClosedEventPage ev={selectedEvent} t={t} lang={lang} setPage={setPage}/>}
-        {page==="profile"&&<ProfilePage t={t} lang={lang} setPage={setPage}/>}
-      </main>
-      <BottomNav page={page} setPage={setPage} t={t}/>
-    </div>
-  );
-}
+            // Если данных вообще нет
+            if (totalCount === 0) {
+                document.getElementById('content').innerHTML = `<div class="py-20 text-center tech-mono text-zinc-700">[ БАЗА ДАННЫХ ПУСТА ]</div>`;
+                return;
+            }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
-</script>
+            // Формируем HTML
+            let html = '';
+            tierOrder.forEach(tier => {
+                let tierClass = '';
+                // Применяем уникальные стили для S и A тиров
+                if (tier === 'S') tierClass = 'tier-mega';
+                else if (tier === 'A') tierClass = 'tier-10';
+
+                // Заголовок тира: адаптивная высота (h-16 на мобильных, md:h-auto на десктопе)
+                html += `
+                    <div class="tier-row flex flex-col md:flex-row ${tierClass}">
+                        <div class="tier-label-box brutal-font h-16 md:h-auto ${tier === 'S' ? 'text-red-500' : 'text-zinc-700'}">
+                            ${tier}
+                        </div>
+                        <div class="flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 p-6 bg-black/20">
+                `;
+                
+                // Отрисовка банок в текущем тире
+                if (tiers[tier].length > 0) {
+                    tiers[tier].forEach(item => {
+                        html += `
+                            <div class="card-item bg-[#0a0a0d] border border-[#15151a] p-2 flex flex-col relative group">
+                                <div class="relative aspect-square mb-3 overflow-hidden bg-black flex items-center justify-center">
+                                    ${item.image ? 
+                                        // --- 4. Ленивая загрузка (loading="lazy") ---
+                                        `<img src="${item.image}" alt="${item.name}" loading="lazy" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">` : ''
+                                    }
+                                    <div class="no-poster w-full h-full absolute inset-0" style="${item.image ? 'display:none' : 'display:flex'}">
+                                        <span class="text-zinc-800 text-2xl mb-1">✕</span>
+                                        <span class="tech-mono text-[8px] text-zinc-600 uppercase">Постер<br>отсутствует</span>
+                                    </div>
+                                    <div class="absolute top-1 right-1 bg-black/80 border border-zinc-800 px-1.5 py-0.5 tech-mono text-[9px] text-red-500">
+                                        TIER ${item.rating}
+                                    </div>
+                                </div>
+                                <div class="px-1 mt-auto">
+                                    <div class="text-[10px] tech-mono text-zinc-600 uppercase mb-1 truncate">${item.brand || 'No_Brand'}</div>
+                                    <div class="text-xs font-bold text-zinc-100 uppercase leading-tight line-clamp-2">${item.name}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    // Пустой сектор
+                    html += `<div class="col-span-full py-4 text-center tech-mono text-zinc-800 text-xs tracking-widest uppercase italic">[ СЕКТОР ПУСТ ]</div>`;
+                }
+                
+                html += `</div></div>`;
+            });
+            
+            // Вставляем готовый HTML
+            document.getElementById('content').innerHTML = html;
+        }
+
+        // Запускаем процесс
+        loadData();
+    </script>
 </body>
 </html>
